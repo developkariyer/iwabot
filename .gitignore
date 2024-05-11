@@ -1,0 +1,17 @@
+# Ignoring specific configuration files
+_db.php
+_slack.php
+
+# General PHP and editor ignore rules
+/vendor/
+/node_modules/
+
+# Environment files
+.env
+
+# Log files
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
