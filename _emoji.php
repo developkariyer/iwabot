@@ -21,7 +21,9 @@ function retrieveEmojis() {
         foreach ($emojis as $emoji => $url) {
             $stmt->execute([$emoji, $url]);
         }
+        return count($emojis);
     }
+    return 0;
 }
 
 function getEmoji($emoji) {

@@ -15,18 +15,33 @@ include '_header.php';
     </div>
     <div class="row">
         <div class="col-4 d-flex justify-content-center">
-            <a href="iwalog.php" class="btn btn-primary">Show My Channels' Logs</a>
+            <div class="m-3">
+                <a href="iwalog.php" class="btn btn-primary">Show My Channels' Logs</a>
+            </div>
         </div>
         <div class="col-4 d-flex justify-content-center">
-        <a href="iwaudio.php" class="btn btn-primary">Browse Audio Library</a>
+            <div class="m-3">
+                <a href="iwaudio.php" class="btn btn-primary">Browse Audio Library</a>
+            </div>
         </div>
-        <div class="col-4 d-flex justify-content-center">
+        <div class="col-4 d-flex flex-column justify-content-center">
         <?php if (in_array($_SESSION['user_info']['sub'], $GLOBALS['slack']['admins'])): ?>
-            <a href="iwachannels.php" class="btn btn-success">Reload Channels</a>&nbsp;
-            <a href="iwa_messages.php" class="btn btn-success">Reload Users</a>&nbsp;
-            <a href="iwa_messages.php" class="btn btn-success">Reload Emojis</a>
+            <div class="justify-content-center m-3">
+                <center><a href="iwachannels.php" class="btn btn-success">Reload Channels</a></center>
+            </div>
+            <div class="justify-content-center m-3">
+                <center><a href="iwausers.php" class="btn btn-success">Assing Users to Channels</a></center>
+            </div>
+            <div class="justify-content-center m-3">
+                <center><a href="iwauserinfo.php" class="btn btn-success">Reload Users</a></center>
+            </div>
+            <div class="justify-content-center m-3">
+                <center><a href="iwaemoji.php" class="btn btn-success">Reload Emojis</a></center>
+            </div>
         <?php else: ?>
-            <a href="#" class="btn btn-primary">Reserved for Future Actions</a>
+            <div class="justify-content-center m-3">
+                <center><a href="#" class="btn btn-primary">Reserved for Future Actions</a></center>
+            </div>
         <?php endif; ?>
         </div>
     </div>

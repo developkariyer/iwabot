@@ -1,0 +1,204 @@
+2024-05-12 21:02:11 Array
+(
+)
+
+2024-05-12 21:05:29 {"id":11903806887,"kind":"todo_created","details":{"notified_recipient_ids":[]},"created_at":"2024-05-13T00:05:29.226+03:00","recording":{"id":7390290981,"status":"active","visible_to_clients":false,"created_at":"2024-05-13T00:05:29.211+03:00","updated_at":"2024-05-13T00:05:29.222+03:00","title":"Başka bir deneme","inherits_status":true,"type":"Todo","url":"https://3.basecampapi.com/5615861/buckets/37362929/todos/7390290981.json","app_url":"https://3.basecamp.com/5615861/buckets/37362929/todos/7390290981","bookmark_url":"https://3.basecampapi.com/5615861/my/bookmarks/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaTVuYVdRNkx5OWlZek12VW1WamIzSmthVzVuTHpjek9UQXlPVEE1T0RFX1pYaHdhWEpsYzE5cGJnWTZCa1ZVIiwiZXhwIjpudWxsLCJwdXIiOiJyZWFkYWJsZSJ9fQ==--7ed41e988b060f6367af9685a0a959cb06cc7674.json","subscription_url":"https://3.basecampapi.com/5615861/buckets/37362929/recordings/7390290981/subscription.json","position":4,"parent":{"id":7363600924,"title":"Depo","type":"Todolist","url":"https://3.basecampapi.com/5615861/buckets/37362929/todolists/7363600924.json","app_url":"https://3.basecamp.com/5615861/buckets/37362929/todolists/7363600924"},"bucket":{"id":37362929,"name":"Wayfair","type":"Project"},"creator":{"id":45917692,"attachable_sgid":"eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588","name":"Umut","email_address":"iwa@kariyerfora.com","personable_type":"User","title":"Project Manager","bio":null,"location":null,"created_at":"2024-04-26T20:13:29.863+03:00","updated_at":"2024-04-26T20:21:41.221+03:00","admin":false,"owner":false,"client":false,"employee":false,"time_zone":"Europe/Moscow","avatar_url":"https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1","can_ping":true,"can_manage_projects":false,"can_manage_people":false},"content":"Başka bir deneme"},"creator":{"id":45917692,"attachable_sgid":"eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588","name":"Umut","email_address":"iwa@kariyerfora.com","personable_type":"User","title":"Project Manager","bio":null,"location":null,"created_at":"2024-04-26T20:13:29.863+03:00","updated_at":"2024-04-26T20:21:41.221+03:00","admin":false,"owner":false,"client":false,"employee":false,"time_zone":"Europe/Moscow","avatar_url":"https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1","can_ping":true,"can_manage_projects":false,"can_manage_people":false}}
+2024-05-12 21:06:05 {"id":11903807254,"kind":"todo_assignment_changed","details":{"added_person_ids":[45917692],"removed_person_ids":[]},"created_at":"2024-05-13T00:06:04.848+03:00","recording":{"id":7390291264,"status":"active","visible_to_clients":false,"created_at":"2024-05-13T00:06:04.759+03:00","updated_at":"2024-05-13T00:06:04.835+03:00","title":"deneme","inherits_status":true,"type":"Todo","url":"https://3.basecampapi.com/5615861/buckets/37362929/todos/7390291264.json","app_url":"https://3.basecamp.com/5615861/buckets/37362929/todos/7390291264","bookmark_url":"https://3.basecampapi.com/5615861/my/bookmarks/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaTVuYVdRNkx5OWlZek12VW1WamIzSmthVzVuTHpjek9UQXlPVEV5TmpRX1pYaHdhWEpsYzE5cGJnWTZCa1ZVIiwiZXhwIjpudWxsLCJwdXIiOiJyZWFkYWJsZSJ9fQ==--1e6f3992adf6dadad6cf6b8eb46ca6bd1ebbd810.json","subscription_url":"https://3.basecampapi.com/5615861/buckets/37362929/recordings/7390291264/subscription.json","position":5,"parent":{"id":7363600924,"title":"Depo","type":"Todolist","url":"https://3.basecampapi.com/5615861/buckets/37362929/todolists/7363600924.json","app_url":"https://3.basecamp.com/5615861/buckets/37362929/todolists/7363600924"},"bucket":{"id":37362929,"name":"Wayfair","type":"Project"},"creator":{"id":45917692,"attachable_sgid":"eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588","name":"Umut","email_address":"iwa@kariyerfora.com","personable_type":"User","title":"Project Manager","bio":null,"location":null,"created_at":"2024-04-26T20:13:29.863+03:00","updated_at":"2024-04-26T20:21:41.221+03:00","admin":false,"owner":false,"client":false,"employee":false,"time_zone":"Europe/Moscow","avatar_url":"https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1","can_ping":true,"can_manage_projects":false,"can_manage_people":false},"content":"deneme"},"creator":{"id":45917692,"attachable_sgid":"eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588","name":"Umut","email_address":"iwa@kariyerfora.com","personable_type":"User","title":"Project Manager","bio":null,"location":null,"created_at":"2024-04-26T20:13:29.863+03:00","updated_at":"2024-04-26T20:21:41.221+03:00","admin":false,"owner":false,"client":false,"employee":false,"time_zone":"Europe/Moscow","avatar_url":"https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1","can_ping":true,"can_manage_projects":false,"can_manage_people":false}}
+2024-05-12 21:06:05 {"id":11903807253,"kind":"todo_created","details":{"notified_recipient_ids":[]},"created_at":"2024-05-13T00:06:04.773+03:00","recording":{"id":7390291264,"status":"active","visible_to_clients":false,"created_at":"2024-05-13T00:06:04.759+03:00","updated_at":"2024-05-13T00:06:04.771+03:00","title":"deneme","inherits_status":true,"type":"Todo","url":"https://3.basecampapi.com/5615861/buckets/37362929/todos/7390291264.json","app_url":"https://3.basecamp.com/5615861/buckets/37362929/todos/7390291264","bookmark_url":"https://3.basecampapi.com/5615861/my/bookmarks/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaTVuYVdRNkx5OWlZek12VW1WamIzSmthVzVuTHpjek9UQXlPVEV5TmpRX1pYaHdhWEpsYzE5cGJnWTZCa1ZVIiwiZXhwIjpudWxsLCJwdXIiOiJyZWFkYWJsZSJ9fQ==--1e6f3992adf6dadad6cf6b8eb46ca6bd1ebbd810.json","subscription_url":"https://3.basecampapi.com/5615861/buckets/37362929/recordings/7390291264/subscription.json","position":5,"parent":{"id":7363600924,"title":"Depo","type":"Todolist","url":"https://3.basecampapi.com/5615861/buckets/37362929/todolists/7363600924.json","app_url":"https://3.basecamp.com/5615861/buckets/37362929/todolists/7363600924"},"bucket":{"id":37362929,"name":"Wayfair","type":"Project"},"creator":{"id":45917692,"attachable_sgid":"eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588","name":"Umut","email_address":"iwa@kariyerfora.com","personable_type":"User","title":"Project Manager","bio":null,"location":null,"created_at":"2024-04-26T20:13:29.863+03:00","updated_at":"2024-04-26T20:21:41.221+03:00","admin":false,"owner":false,"client":false,"employee":false,"time_zone":"Europe/Moscow","avatar_url":"https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1","can_ping":true,"can_manage_projects":false,"can_manage_people":false},"content":"deneme"},"creator":{"id":45917692,"attachable_sgid":"eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588","name":"Umut","email_address":"iwa@kariyerfora.com","personable_type":"User","title":"Project Manager","bio":null,"location":null,"created_at":"2024-04-26T20:13:29.863+03:00","updated_at":"2024-04-26T20:21:41.221+03:00","admin":false,"owner":false,"client":false,"employee":false,"time_zone":"Europe/Moscow","avatar_url":"https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1","can_ping":true,"can_manage_projects":false,"can_manage_people":false}}
+2024-05-12 21:06:33 {"id":11903807634,"kind":"todo_created","details":{"notified_recipient_ids":[]},"created_at":"2024-05-13T00:06:33.332+03:00","recording":{"id":7390291522,"status":"active","visible_to_clients":false,"created_at":"2024-05-13T00:06:33.317+03:00","updated_at":"2024-05-13T00:06:33.329+03:00","title":"deniyoruz","inherits_status":true,"type":"Todo","url":"https://3.basecampapi.com/5615861/buckets/37362929/todos/7390291522.json","app_url":"https://3.basecamp.com/5615861/buckets/37362929/todos/7390291522","bookmark_url":"https://3.basecampapi.com/5615861/my/bookmarks/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaTVuYVdRNkx5OWlZek12VW1WamIzSmthVzVuTHpjek9UQXlPVEUxTWpJX1pYaHdhWEpsYzE5cGJnWTZCa1ZVIiwiZXhwIjpudWxsLCJwdXIiOiJyZWFkYWJsZSJ9fQ==--f07e24001ac88fd49495b042fcd682e3dc9aa8ca.json","subscription_url":"https://3.basecampapi.com/5615861/buckets/37362929/recordings/7390291522/subscription.json","position":6,"parent":{"id":7363600924,"title":"Depo","type":"Todolist","url":"https://3.basecampapi.com/5615861/buckets/37362929/todolists/7363600924.json","app_url":"https://3.basecamp.com/5615861/buckets/37362929/todolists/7363600924"},"bucket":{"id":37362929,"name":"Wayfair","type":"Project"},"creator":{"id":45917692,"attachable_sgid":"eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588","name":"Umut","email_address":"iwa@kariyerfora.com","personable_type":"User","title":"Project Manager","bio":null,"location":null,"created_at":"2024-04-26T20:13:29.863+03:00","updated_at":"2024-04-26T20:21:41.221+03:00","admin":false,"owner":false,"client":false,"employee":false,"time_zone":"Europe/Moscow","avatar_url":"https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1","can_ping":true,"can_manage_projects":false,"can_manage_people":false},"content":"deniyoruz"},"creator":{"id":45917692,"attachable_sgid":"eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588","name":"Umut","email_address":"iwa@kariyerfora.com","personable_type":"User","title":"Project Manager","bio":null,"location":null,"created_at":"2024-04-26T20:13:29.863+03:00","updated_at":"2024-04-26T20:21:41.221+03:00","admin":false,"owner":false,"client":false,"employee":false,"time_zone":"Europe/Moscow","avatar_url":"https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1","can_ping":true,"can_manage_projects":false,"can_manage_people":false}}
+2024-05-12 21:06:33 {"id":11903807635,"kind":"todo_assignment_changed","details":{"added_person_ids":[45917692],"removed_person_ids":[]},"created_at":"2024-05-13T00:06:33.409+03:00","recording":{"id":7390291522,"status":"active","visible_to_clients":false,"created_at":"2024-05-13T00:06:33.317+03:00","updated_at":"2024-05-13T00:06:33.395+03:00","title":"deniyoruz","inherits_status":true,"type":"Todo","url":"https://3.basecampapi.com/5615861/buckets/37362929/todos/7390291522.json","app_url":"https://3.basecamp.com/5615861/buckets/37362929/todos/7390291522","bookmark_url":"https://3.basecampapi.com/5615861/my/bookmarks/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaTVuYVdRNkx5OWlZek12VW1WamIzSmthVzVuTHpjek9UQXlPVEUxTWpJX1pYaHdhWEpsYzE5cGJnWTZCa1ZVIiwiZXhwIjpudWxsLCJwdXIiOiJyZWFkYWJsZSJ9fQ==--f07e24001ac88fd49495b042fcd682e3dc9aa8ca.json","subscription_url":"https://3.basecampapi.com/5615861/buckets/37362929/recordings/7390291522/subscription.json","position":6,"parent":{"id":7363600924,"title":"Depo","type":"Todolist","url":"https://3.basecampapi.com/5615861/buckets/37362929/todolists/7363600924.json","app_url":"https://3.basecamp.com/5615861/buckets/37362929/todolists/7363600924"},"bucket":{"id":37362929,"name":"Wayfair","type":"Project"},"creator":{"id":45917692,"attachable_sgid":"eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588","name":"Umut","email_address":"iwa@kariyerfora.com","personable_type":"User","title":"Project Manager","bio":null,"location":null,"created_at":"2024-04-26T20:13:29.863+03:00","updated_at":"2024-04-26T20:21:41.221+03:00","admin":false,"owner":false,"client":false,"employee":false,"time_zone":"Europe/Moscow","avatar_url":"https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1","can_ping":true,"can_manage_projects":false,"can_manage_people":false},"content":"deniyoruz"},"creator":{"id":45917692,"attachable_sgid":"eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588","name":"Umut","email_address":"iwa@kariyerfora.com","personable_type":"User","title":"Project Manager","bio":null,"location":null,"created_at":"2024-04-26T20:13:29.863+03:00","updated_at":"2024-04-26T20:21:41.221+03:00","admin":false,"owner":false,"client":false,"employee":false,"time_zone":"Europe/Moscow","avatar_url":"https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1","can_ping":true,"can_manage_projects":false,"can_manage_people":false}}
+2024-05-12 21:07:46 {"id":11903808873,"kind":"todo_created","details":{"notified_recipient_ids":[]},"created_at":"2024-05-13T00:07:46.249+03:00","recording":{"id":7390292481,"status":"active","visible_to_clients":false,"created_at":"2024-05-13T00:07:46.232+03:00","updated_at":"2024-05-13T00:07:46.245+03:00","title":"deneme","inherits_status":true,"type":"Todo","url":"https://3.basecampapi.com/5615861/buckets/37362929/todos/7390292481.json","app_url":"https://3.basecamp.com/5615861/buckets/37362929/todos/7390292481","bookmark_url":"https://3.basecampapi.com/5615861/my/bookmarks/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaTVuYVdRNkx5OWlZek12VW1WamIzSmthVzVuTHpjek9UQXlPVEkwT0RFX1pYaHdhWEpsYzE5cGJnWTZCa1ZVIiwiZXhwIjpudWxsLCJwdXIiOiJyZWFkYWJsZSJ9fQ==--dcd2091d50877e272ffef8da2a071d0591964e51.json","subscription_url":"https://3.basecampapi.com/5615861/buckets/37362929/recordings/7390292481/subscription.json","position":7,"parent":{"id":7363600924,"title":"Depo","type":"Todolist","url":"https://3.basecampapi.com/5615861/buckets/37362929/todolists/7363600924.json","app_url":"https://3.basecamp.com/5615861/buckets/37362929/todolists/7363600924"},"bucket":{"id":37362929,"name":"Wayfair","type":"Project"},"creator":{"id":45917692,"attachable_sgid":"eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588","name":"Umut","email_address":"iwa@kariyerfora.com","personable_type":"User","title":"Project Manager","bio":null,"location":null,"created_at":"2024-04-26T20:13:29.863+03:00","updated_at":"2024-04-26T20:21:41.221+03:00","admin":false,"owner":false,"client":false,"employee":false,"time_zone":"Europe/Moscow","avatar_url":"https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1","can_ping":true,"can_manage_projects":false,"can_manage_people":false},"content":"deneme"},"creator":{"id":45917692,"attachable_sgid":"eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588","name":"Umut","email_address":"iwa@kariyerfora.com","personable_type":"User","title":"Project Manager","bio":null,"location":null,"created_at":"2024-04-26T20:13:29.863+03:00","updated_at":"2024-04-26T20:21:41.221+03:00","admin":false,"owner":false,"client":false,"employee":false,"time_zone":"Europe/Moscow","avatar_url":"https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1","can_ping":true,"can_manage_projects":false,"can_manage_people":false}}
+2024-05-12 21:07:57 {"id":11903809007,"kind":"todo_created","details":{"notified_recipient_ids":[]},"created_at":"2024-05-13T00:07:56.772+03:00","recording":{"id":7390292583,"status":"active","visible_to_clients":false,"created_at":"2024-05-13T00:07:56.757+03:00","updated_at":"2024-05-13T00:07:56.768+03:00","title":"asd","inherits_status":true,"type":"Todo","url":"https://3.basecampapi.com/5615861/buckets/37362929/todos/7390292583.json","app_url":"https://3.basecamp.com/5615861/buckets/37362929/todos/7390292583","bookmark_url":"https://3.basecampapi.com/5615861/my/bookmarks/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaTVuYVdRNkx5OWlZek12VW1WamIzSmthVzVuTHpjek9UQXlPVEkxT0RNX1pYaHdhWEpsYzE5cGJnWTZCa1ZVIiwiZXhwIjpudWxsLCJwdXIiOiJyZWFkYWJsZSJ9fQ==--37620d8acb49a04becc73a43bc6d18c4d24d6596.json","subscription_url":"https://3.basecampapi.com/5615861/buckets/37362929/recordings/7390292583/subscription.json","position":8,"parent":{"id":7363600924,"title":"Depo","type":"Todolist","url":"https://3.basecampapi.com/5615861/buckets/37362929/todolists/7363600924.json","app_url":"https://3.basecamp.com/5615861/buckets/37362929/todolists/7363600924"},"bucket":{"id":37362929,"name":"Wayfair","type":"Project"},"creator":{"id":45917692,"attachable_sgid":"eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588","name":"Umut","email_address":"iwa@kariyerfora.com","personable_type":"User","title":"Project Manager","bio":null,"location":null,"created_at":"2024-04-26T20:13:29.863+03:00","updated_at":"2024-04-26T20:21:41.221+03:00","admin":false,"owner":false,"client":false,"employee":false,"time_zone":"Europe/Moscow","avatar_url":"https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1","can_ping":true,"can_manage_projects":false,"can_manage_people":false},"content":"asd"},"creator":{"id":45917692,"attachable_sgid":"eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588","name":"Umut","email_address":"iwa@kariyerfora.com","personable_type":"User","title":"Project Manager","bio":null,"location":null,"created_at":"2024-04-26T20:13:29.863+03:00","updated_at":"2024-04-26T20:21:41.221+03:00","admin":false,"owner":false,"client":false,"employee":false,"time_zone":"Europe/Moscow","avatar_url":"https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1","can_ping":true,"can_manage_projects":false,"can_manage_people":false}}
+2024-05-12 21:08:14 {"id":11903809247,"kind":"todo_created","details":{"notified_recipient_ids":[]},"created_at":"2024-05-13T00:08:13.764+03:00","recording":{"id":7390292749,"status":"active","visible_to_clients":false,"created_at":"2024-05-13T00:08:13.744+03:00","updated_at":"2024-05-13T00:08:13.760+03:00","title":"aadgdga","inherits_status":true,"type":"Todo","url":"https://3.basecampapi.com/5615861/buckets/37362929/todos/7390292749.json","app_url":"https://3.basecamp.com/5615861/buckets/37362929/todos/7390292749","bookmark_url":"https://3.basecampapi.com/5615861/my/bookmarks/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaTVuYVdRNkx5OWlZek12VW1WamIzSmthVzVuTHpjek9UQXlPVEkzTkRrX1pYaHdhWEpsYzE5cGJnWTZCa1ZVIiwiZXhwIjpudWxsLCJwdXIiOiJyZWFkYWJsZSJ9fQ==--e22b9b5e286c2c70f16d4d4b29c684d21cc0af51.json","subscription_url":"https://3.basecampapi.com/5615861/buckets/37362929/recordings/7390292749/subscription.json","position":9,"parent":{"id":7363600924,"title":"Depo","type":"Todolist","url":"https://3.basecampapi.com/5615861/buckets/37362929/todolists/7363600924.json","app_url":"https://3.basecamp.com/5615861/buckets/37362929/todolists/7363600924"},"bucket":{"id":37362929,"name":"Wayfair","type":"Project"},"creator":{"id":45917692,"attachable_sgid":"eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588","name":"Umut","email_address":"iwa@kariyerfora.com","personable_type":"User","title":"Project Manager","bio":null,"location":null,"created_at":"2024-04-26T20:13:29.863+03:00","updated_at":"2024-04-26T20:21:41.221+03:00","admin":false,"owner":false,"client":false,"employee":false,"time_zone":"Europe/Moscow","avatar_url":"https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1","can_ping":true,"can_manage_projects":false,"can_manage_people":false},"content":"aadgdga"},"creator":{"id":45917692,"attachable_sgid":"eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588","name":"Umut","email_address":"iwa@kariyerfora.com","personable_type":"User","title":"Project Manager","bio":null,"location":null,"created_at":"2024-04-26T20:13:29.863+03:00","updated_at":"2024-04-26T20:21:41.221+03:00","admin":false,"owner":false,"client":false,"employee":false,"time_zone":"Europe/Moscow","avatar_url":"https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1","can_ping":true,"can_manage_projects":false,"can_manage_people":false}}
+2024-05-12 21:08:14 {"id":11903809248,"kind":"todo_assignment_changed","details":{"added_person_ids":[45917692],"removed_person_ids":[]},"created_at":"2024-05-13T00:08:13.861+03:00","recording":{"id":7390292749,"status":"active","visible_to_clients":false,"created_at":"2024-05-13T00:08:13.744+03:00","updated_at":"2024-05-13T00:08:13.845+03:00","title":"aadgdga","inherits_status":true,"type":"Todo","url":"https://3.basecampapi.com/5615861/buckets/37362929/todos/7390292749.json","app_url":"https://3.basecamp.com/5615861/buckets/37362929/todos/7390292749","bookmark_url":"https://3.basecampapi.com/5615861/my/bookmarks/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaTVuYVdRNkx5OWlZek12VW1WamIzSmthVzVuTHpjek9UQXlPVEkzTkRrX1pYaHdhWEpsYzE5cGJnWTZCa1ZVIiwiZXhwIjpudWxsLCJwdXIiOiJyZWFkYWJsZSJ9fQ==--e22b9b5e286c2c70f16d4d4b29c684d21cc0af51.json","subscription_url":"https://3.basecampapi.com/5615861/buckets/37362929/recordings/7390292749/subscription.json","position":9,"parent":{"id":7363600924,"title":"Depo","type":"Todolist","url":"https://3.basecampapi.com/5615861/buckets/37362929/todolists/7363600924.json","app_url":"https://3.basecamp.com/5615861/buckets/37362929/todolists/7363600924"},"bucket":{"id":37362929,"name":"Wayfair","type":"Project"},"creator":{"id":45917692,"attachable_sgid":"eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588","name":"Umut","email_address":"iwa@kariyerfora.com","personable_type":"User","title":"Project Manager","bio":null,"location":null,"created_at":"2024-04-26T20:13:29.863+03:00","updated_at":"2024-04-26T20:21:41.221+03:00","admin":false,"owner":false,"client":false,"employee":false,"time_zone":"Europe/Moscow","avatar_url":"https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1","can_ping":true,"can_manage_projects":false,"can_manage_people":false},"content":"aadgdga"},"creator":{"id":45917692,"attachable_sgid":"eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588","name":"Umut","email_address":"iwa@kariyerfora.com","personable_type":"User","title":"Project Manager","bio":null,"location":null,"created_at":"2024-04-26T20:13:29.863+03:00","updated_at":"2024-04-26T20:21:41.221+03:00","admin":false,"owner":false,"client":false,"employee":false,"time_zone":"Europe/Moscow","avatar_url":"https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1","can_ping":true,"can_manage_projects":false,"can_manage_people":false}}
+2024-05-12 21:30:37Array
+(
+    [id] => 11903847588
+    [kind] => todo_assignment_changed
+    [details] => Array
+        (
+            [added_person_ids] => Array
+                (
+                )
+
+            [removed_person_ids] => Array
+                (
+                    [0] => 45917692
+                )
+
+        )
+
+    [created_at] => 2024-05-13T00:30:36.763+03:00
+    [recording] => Array
+        (
+            [id] => 7390292749
+            [status] => active
+            [visible_to_clients] => 
+            [created_at] => 2024-05-13T00:08:13.744+03:00
+            [updated_at] => 2024-05-13T00:30:36.749+03:00
+            [title] => aadgdga
+            [inherits_status] => 1
+            [type] => Todo
+            [url] => https://3.basecampapi.com/5615861/buckets/37362929/todos/7390292749.json
+            [app_url] => https://3.basecamp.com/5615861/buckets/37362929/todos/7390292749
+            [bookmark_url] => https://3.basecampapi.com/5615861/my/bookmarks/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaTVuYVdRNkx5OWlZek12VW1WamIzSmthVzVuTHpjek9UQXlPVEkzTkRrX1pYaHdhWEpsYzE5cGJnWTZCa1ZVIiwiZXhwIjpudWxsLCJwdXIiOiJyZWFkYWJsZSJ9fQ==--e22b9b5e286c2c70f16d4d4b29c684d21cc0af51.json
+            [subscription_url] => https://3.basecampapi.com/5615861/buckets/37362929/recordings/7390292749/subscription.json
+            [position] => 9
+            [parent] => Array
+                (
+                    [id] => 7363600924
+                    [title] => Depo
+                    [type] => Todolist
+                    [url] => https://3.basecampapi.com/5615861/buckets/37362929/todolists/7363600924.json
+                    [app_url] => https://3.basecamp.com/5615861/buckets/37362929/todolists/7363600924
+                )
+
+            [bucket] => Array
+                (
+                    [id] => 37362929
+                    [name] => Wayfair
+                    [type] => Project
+                )
+
+            [creator] => Array
+                (
+                    [id] => 45917692
+                    [attachable_sgid] => eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588
+                    [name] => Umut
+                    [email_address] => iwa@kariyerfora.com
+                    [personable_type] => User
+                    [title] => Project Manager
+                    [bio] => 
+                    [location] => 
+                    [created_at] => 2024-04-26T20:13:29.863+03:00
+                    [updated_at] => 2024-04-26T20:21:41.221+03:00
+                    [admin] => 
+                    [owner] => 
+                    [client] => 
+                    [employee] => 
+                    [time_zone] => Europe/Moscow
+                    [avatar_url] => https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1
+                    [can_ping] => 1
+                    [can_manage_projects] => 
+                    [can_manage_people] => 
+                )
+
+            [content] => aadgdga
+        )
+
+    [creator] => Array
+        (
+            [id] => 45917692
+            [attachable_sgid] => eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588
+            [name] => Umut
+            [email_address] => iwa@kariyerfora.com
+            [personable_type] => User
+            [title] => Project Manager
+            [bio] => 
+            [location] => 
+            [created_at] => 2024-04-26T20:13:29.863+03:00
+            [updated_at] => 2024-04-26T20:21:41.221+03:00
+            [admin] => 
+            [owner] => 
+            [client] => 
+            [employee] => 
+            [time_zone] => Europe/Moscow
+            [avatar_url] => https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1
+            [can_ping] => 1
+            [can_manage_projects] => 
+            [can_manage_people] => 
+        )
+
+)
+
+2024-05-12 21:31:33Array
+(
+    [id] => 11903853539
+    [kind] => todo_trashed
+    [details] => Array
+        (
+            [status_was] => active
+        )
+
+    [created_at] => 2024-05-13T00:31:33.385+03:00
+    [recording] => Array
+        (
+            [id] => 7390292749
+            [status] => trashed
+            [visible_to_clients] => 
+            [created_at] => 2024-05-13T00:08:13.744+03:00
+            [updated_at] => 2024-05-13T00:31:33.374+03:00
+            [title] => aadgdga
+            [inherits_status] => 
+            [type] => Todo
+            [url] => https://3.basecampapi.com/5615861/buckets/37362929/todos/7390292749.json
+            [app_url] => https://3.basecamp.com/5615861/buckets/37362929/todos/7390292749
+            [bookmark_url] => https://3.basecampapi.com/5615861/my/bookmarks/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaTVuYVdRNkx5OWlZek12VW1WamIzSmthVzVuTHpjek9UQXlPVEkzTkRrX1pYaHdhWEpsYzE5cGJnWTZCa1ZVIiwiZXhwIjpudWxsLCJwdXIiOiJyZWFkYWJsZSJ9fQ==--e22b9b5e286c2c70f16d4d4b29c684d21cc0af51.json
+            [subscription_url] => https://3.basecampapi.com/5615861/buckets/37362929/recordings/7390292749/subscription.json
+            [parent] => Array
+                (
+                    [id] => 7363600924
+                    [title] => Depo
+                    [type] => Todolist
+                    [url] => https://3.basecampapi.com/5615861/buckets/37362929/todolists/7363600924.json
+                    [app_url] => https://3.basecamp.com/5615861/buckets/37362929/todolists/7363600924
+                )
+
+            [bucket] => Array
+                (
+                    [id] => 37362929
+                    [name] => Wayfair
+                    [type] => Project
+                )
+
+            [creator] => Array
+                (
+                    [id] => 45917692
+                    [attachable_sgid] => eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588
+                    [name] => Umut
+                    [email_address] => iwa@kariyerfora.com
+                    [personable_type] => User
+                    [title] => Project Manager
+                    [bio] => 
+                    [location] => 
+                    [created_at] => 2024-04-26T20:13:29.863+03:00
+                    [updated_at] => 2024-04-26T20:21:41.221+03:00
+                    [admin] => 
+                    [owner] => 
+                    [client] => 
+                    [employee] => 
+                    [time_zone] => Europe/Moscow
+                    [avatar_url] => https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1
+                    [can_ping] => 1
+                    [can_manage_projects] => 
+                    [can_manage_people] => 
+                )
+
+            [content] => aadgdga
+        )
+
+    [creator] => Array
+        (
+            [id] => 45917692
+            [attachable_sgid] => eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588
+            [name] => Umut
+            [email_address] => iwa@kariyerfora.com
+            [personable_type] => User
+            [title] => Project Manager
+            [bio] => 
+            [location] => 
+            [created_at] => 2024-04-26T20:13:29.863+03:00
+            [updated_at] => 2024-04-26T20:21:41.221+03:00
+            [admin] => 
+            [owner] => 
+            [client] => 
+            [employee] => 
+            [time_zone] => Europe/Moscow
+            [avatar_url] => https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1
+            [can_ping] => 1
+            [can_manage_projects] => 
+            [can_manage_people] => 
+        )
+
+)
+
