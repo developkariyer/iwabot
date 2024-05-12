@@ -1,9 +1,6 @@
 <?php
-session_start();
-require_once('_slack.php');
 
-$redirectUri = 'https://iwarden.iwaconcept.com/iwabot/iwalogin.php';
-$loggedInUri = 'https://iwarden.iwaconcept.com/iwabot/iwalog.php';
+require_once('_login.php');
 
 if (isset($_GET['logout'])) {
     unset($_SESSION['logged_in']);
@@ -12,14 +9,10 @@ if (isset($_GET['logout'])) {
     exit;
 }
 
-if (!isset($_SESSION['logged_in'])) {
-    header('Location: '.$redirectUri);
-    exit;
-} 
-
-
+require_once('_slack.php');
 require_once '_db.php';
-if ($_SESSION['user_info']['sub']==='U071R4SR7U0') {
+
+if (in_array($_SESSION['user_info']['sub'], $GLOBALS['slack']['admins'])) {
     $sql = "SELECT c.channel_id, c.name FROM channels c ORDER BY name";
     $stmt = $GLOBALS['pdo']->prepare($sql);
     $stmt->execute();
@@ -31,55 +24,14 @@ if ($_SESSION['user_info']['sub']==='U071R4SR7U0') {
 
 $channels = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-?><!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slack Log</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden; /* Prevent scrolling on the entire page */
-        }
-        .username {
-            color: navy;
-            font-weight: bold;
-        }
-        .row {
-            flex-grow: 1; /* Allows the row to fill the available space */
-            overflow: hidden; /* Prevent scrolling within the row */
-        }
-        .container-fluid {
-            height: 100%; /* Make sure the outer container takes full height of the viewport */
-            display: flex;
-            flex-direction: column;
-        }
-        .channel-container {
-            height: 100vh; /* 75% of the viewport height */
-            overflow-y: auto; /* Add scrollbar if content overflows */
-        }
-        #message-container {
-            height: 100vh; /* 75% of the viewport height */
-            overflow-y: auto; /* Add scrollbar if content overflows */
-        }
-        #messagesDisplay {
-            height: 100%;
-        }
-        #channelsList {
-            height: 100%; /* Make the list take up the full height of its container */
-        }        
-    </style>
-</head>
-<body>
+include '_header.php';
+?>
     <div class="container-fluid">
         <div class="row">
             <div class="col-2">
                 <div class="channel-container">
-                    <h3><?= $_SESSION['user_info']['name'] ?></h3>
+                    <a href="./">Home Page</a>
+                    <h3><?= $_SESSION['user_info']['name'] ?></a></h3>
                     <h4>Channels</h4>
                     <ul id="channelsList" class="list-group">
                         <?php foreach ($channels as $channel): ?>
@@ -92,14 +44,13 @@ $channels = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
             <div class="col-10">
                 <div id="message-container">
-                    <div id="messagesDisplay">
-                        Messages will be displayed here
+                    <div id="messagesDisplay" class="">
+                        Select a channel to see logs...
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const links = document.querySelectorAll('.messageload');
@@ -118,11 +69,13 @@ $channels = $stmt->fetchAll(PDO::FETCH_ASSOC);
             fetch('iwa_messages.php?channel_id=' + channelId)
                 .then(response => response.text())
                 .then(html => {
-                    document.getElementById('messagesDisplay').innerHTML = html;
+                    const messagesDisplay = document.getElementById('messagesDisplay');
+                    messagesDisplay.innerHTML = html;
+                    messagesDisplay.scrollTop = messagesDisplay.scrollHeight;
+                    document.getElementById('message-container').scrollTop = document.getElementById('message-container').scrollHeight;
                 })
                 .catch(error => console.error('Error loading the messages:', error));
         }
     </script>
-</body>
-</html>
-
+<?php
+include '_footer.php';

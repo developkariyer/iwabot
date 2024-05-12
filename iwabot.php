@@ -11,12 +11,12 @@ if (isset($eventData['type']) && $eventData['type'] === 'url_verification') {
     exit;
 }
 
-if (!isset($eventData['token']) || $eventData['token'] !== $verificationToken) {
+if (!isset($eventData['token']) || $eventData['token'] !== $GLOBALS['slack']['verificationToken']) {
     die('Unauthorized request');
 }
 
 require_once('_db.php');
 
-$stmt = $pdo->prepare("INSERT INTO rawlog (json) VALUES (?)");
+$stmt = $GLOBALS['pdo']->prepare("INSERT INTO rawlog (json) VALUES (?)");
 $stmt->execute([json_encode($eventData)]);
 

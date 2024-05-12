@@ -1,19 +1,18 @@
 <?php
 
+require_once('_login.php');
+
 if (!isset($_GET['channel_id'])) {
     echo "No channel selected...";
     exit;
 }
 
-session_start();
-if (!isset($_SESSION['logged_in'])) {
-    header('Location: https://iwarden.iwaconcept.com/iwabot/iwalogin.php');
-    exit;
-}
-
 require_once '_db.php';
+require_once '_slack.php';
+require_once '_emoji.php';
+require_once '_utils.php';
 
-if ($_SESSION['user_info']['sub']==='U071R4SR7U0') {
+if (in_array($_SESSION['user_info']['sub'], $GLOBALS['slack']['admins'])) {
     $sql = "SELECT c.channel_id as channel_id, c.name as channel_name FROM channels c WHERE c.channel_id = ? ORDER BY name LIMIT 1";
     $stmt = $GLOBALS['pdo']->prepare($sql);
     $stmt->execute([$_GET['channel_id']]);
@@ -35,76 +34,80 @@ $stmt->bindParam(':channel_id', $channel['channel_id']);
 $stmt->execute();
 $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$sql = "SELECT user_id, json->>'$.real_name' as name FROM users";
-$stmt = $GLOBALS['pdo']->prepare($sql);
-$stmt->execute();
-$dbusers = $stmt->fetchAll(PDO::FETCH_ASSOC);
-$users = [];
-foreach ($dbusers as $user) {
-    $users[$user['user_id']] = $user['name'];
-}
-
-function slackUsername($text) {
-    global $users;
-    return preg_replace_callback('/<@(U[0-9A-Z]+)>/', function ($matches) use ($users) {
-        $userId = $matches[1];
-        if (isset($users[$userId])) {
-            return '<b>'.$users[$userId].'</b>';
-        }
-        return $matches[0];
-    }, $text);
-}
-
 $displayMessages = [];
-$hashTags = [];
 
 foreach ($messages as $message) {
     $msg = json_decode($message['json'], true);
-    $text = isset($msg['event']['text']) ? slackUsername($msg['event']['text']) : '?';
-    preg_match_all('/#(\w+)/', $text, $matches);
-    foreach ($matches[1] as $tag) {
-        $hashTags[$tag] = $tag;
-    }
 
-    $user = isset($msg['event']['user']) ? $users[$msg['event']['user']] : 'System';
+    if (isset($msg['event']['hidden'])) continue;
+
+    $text = isset($msg['event']['text']) ?  : '';
+
+    $userId = $msg['event']['user'] ?? $msg['event']['previous_message']['user'] ?? $msg['event']['message']['user'] ?? '';
     $date = date('Y-m-d H:i:s', $msg['event_time']);
-    switch ($msg['event']['type']) {
+    $event_ts = $msg['event']['event_ts'];
+    $eventType = $msg['event']['type'];
+    $eventSubType = $msg['event']['subtype'] ?? '';
+
+    switch ($eventType) {
         case 'message':
-            if (isset($msg['event']['thread_ts'])) {
-                if (!isset($displayMessages[$msg['event']['thread_ts']]['thread'])) $displayMessages[$msg['event']['thread_ts']]['thread'] = [];
-                $displayMessages[$msg['event']['thread_ts']]['thread'][] = "$date <span class='username'>$user:</span> $text <small>{$message['id']}</small>";
-            } else {
-                $displayMessages[$msg['event']['event_ts']] = ['msg' => "$date <span class='username'>$user:</span> $text <small>{$message['id']}</small>"];
+            if ($eventSubType === 'message_deleted') {
+                $logItem = "</i>Message has been deleted.</i>";
+                $event_ts = $msg['event']['deleted_ts'];
+                break;
             }
-            break;
-        case 'message_changed':
-            break;
-        case 'message_deleted':
+            if ($eventSubType === 'message_changed') {
+                $logItem = slackize($msg['event']['message']['text'])." (edited)";
+                break;
+            }
+            $logItem = slackize($msg['event']['text']);
             break;
         case 'member_joined_channel':
-            $displayMessages[$msg['event']['event_ts']] = ['msg' => "<b>$user</b> has joined channel"];
+            $logItem = "<i>User has joined channel</i>";
             break;
         default:
+            $logItem = $msg['event']['type'];
             break;
     }
-    
+    $logItem = "<div class='col-auto'>
+                    <div class='no-wrap'>   
+                        <span class='username'>".username($userId).":</span>
+                    </div>
+                </div>
+                <div class='col ps-0'>
+                    <div>
+                        $logItem <small>[$date/{$message['id']}]</small>
+                    </div>
+                </div>";
+
+    if (isset($msg['event']['thread_ts'])) {
+        if (!isset($displayMessages[$msg['event']['thread_ts']]['thread'])) $displayMessages[$msg['event']['thread_ts']]['thread'] = [];
+        $displayMessages[$msg['event']['thread_ts']]['thread'][$event_ts] = $logItem;
+    } else {
+        $displayMessages[$event_ts] = ['msg' => $logItem];
+    }  
 }
 
 echo "<h3>Messages for channel: {$channel['channel_name']}</h3>";
-echo "<h4>Hash Tags</h4>";
-foreach ($hashTags as $tag) {
-    echo "<a href='#' class='btn btn-primary btn-sm messageload'>$tag</a> ";
-}
+echo "<div style='width: 97%;'>";
 
-echo "<ul>";
+$bgcolors = [
+    '#e0e0e0',
+    '#c0c0c0',
+];
+
 foreach ($displayMessages as $msg) {
-    echo "<li>{$msg['msg']}</li>";
+    echo "<div class='row' style='background-color: ".current($bgcolors).";'>";
+    echo $msg['msg'];
     if (isset($msg['thread'])) {
-        echo '<ul>';
         foreach ($msg['thread'] as $submsg) {
-            echo "<li>{$submsg}</li>";
+            echo "<div class='row ms-1 ps-5'>";
+            echo $submsg;
+            echo "</div>";
         }
-        echo '</ul>';
     }
+    echo "</div>";
+    if (!next($bgcolors)) reset($bgcolors);
 }
-echo "</ul>";
+echo "</div>";
+echo "End of messages";

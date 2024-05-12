@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligent Workspace Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevent scrolling on the entire page */
+        }
+        .slack-user {
+            color: red;
+            font-weight: bold;
+        }
+        .username {
+            color: navy;
+            font-weight: bold;
+        }
+        .row {
+            flex-grow: 1; /* Allows the row to fill the available space */
+            overflow: hidden; /* Prevent scrolling within the row */
+        }
+        .container-fluid {
+            height: 100%; /* Make sure the outer container takes full height of the viewport */
+            display: flex;
+            flex-direction: column;
+        }
+        .channel-container {
+            height: 100vh; /* 75% of the viewport height */
+            overflow-y: auto; /* Add scrollbar if content overflows */
+        }
+        #message-container {
+            height: 100vh; /* 75% of the viewport height */
+            overflow-y: auto; /* Add scrollbar if content overflows */
+        }
+        #messagesDisplay {
+            height: 100%;
+        }
+        #channelsList {
+            height: 100%; /* Make the list take up the full height of its container */
+        }        
+        .no-wrap {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+<?php
+if (isset($_SESSION['messages'])) {
+    foreach ($_SESSION['messages'] as $message) {
+        echo '<div class="alert alert-info">'.$message.'</div>';
+    }
+    unset($_SESSION['messages']);
+}

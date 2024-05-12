@@ -50,14 +50,14 @@ function addUserToChannel($channelId, $userId) {
     return false;
 }
 
-$stmt = $pdo->prepare("SELECT channel_id FROM channels WHERE channel_id = ?");
+$stmt = $GLOBALS['pdo']->prepare("SELECT channel_id FROM channels WHERE channel_id = ?");
 $stmt->execute([$_POST['channel_id']]);
 if (!$stmt->rowCount()) {
     header('Location: ./');
     exit;
 }
 
-$stmt = $pdo->prepare("SELECT user_id FROM users WHERE user_id = ?");
+$stmt = $GLOBALS['pdo']->prepare("SELECT user_id FROM users WHERE user_id = ?");
 $stmt->execute([$_POST['user_id']]);
 if (!$stmt->rowCount()) {
     header('Location: ./');
