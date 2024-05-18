@@ -47,6 +47,10 @@ if (isset($_GET['code']) && isset($_GET['state']) && isset($_SESSION['state']) &
         $_SESSION['access_token'] = $response['access_token'];
         $tokenParts = explode('.', $response['id_token']);
         $_SESSION['user_info'] = json_decode(base64_decode($tokenParts[1]), true);
+        if (isset($_SESSION['prev_url'])) {
+            $loggedInUri = $_SESSION['prev_url'];
+            unset($_SESSION['prev_url']);
+        }
         header('Location: '.$loggedInUri);
         exit;
     } else {
@@ -64,7 +68,7 @@ include('_header.php');
 <div class="container">
     <div class="jumbotron m-5 p-5">
         <center>
-        <h1>Welcome to IWA Bot, <span class="username"><?= $_SESSION['user_info']['name'] ?></span></h1>
+        <h1>Welcome to IWA Bot, <span class="username"><?= $_SESSION['user_info']['name'] ?? '' ?></span></h1>
         <p>Click the button below to login with your Slack account.</p>
         <?php echo $content; ?>
         </center>

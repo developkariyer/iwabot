@@ -1,0 +1,216 @@
+<?php
+
+
+function homeBlockInfluencer() {
+    return [
+        [
+            'type' => 'divider',
+        ],
+        [
+            'type' => 'header',
+            'text' => [
+                'type' => 'plain_text',
+                'text' => 'Sosyal Medya Ekibi',
+                'emoji' => true,
+            ],
+        ],
+        [
+            'type' => 'actions',
+            'elements' => [
+                [
+                    'type' => 'button',
+                    'text' => [
+                        'type' => 'plain_text',
+                        'text' => ':instagram: Influencer Ekle',
+                        'emoji' => true,
+                    ],
+                    'style' => 'primary',
+                    'value' => 'influencer_add',
+                    'action_id' => 'influencer_add',
+                ],
+                [
+                    'type' => 'button',
+                    'text' => [
+                        'type' => 'plain_text',
+                        'text' => ':instagram: Influencer Listesi',
+                        'emoji' => true,
+                    ],
+                    'value' => 'influencer_list',
+                    'url' => 'https://iwarden.iwaconcept.com/iwabot/iwainfluencers.php',
+                    'action_id' => 'influencer_list',
+                ],
+                [
+                    'type' => 'button',
+                    'text' => [
+                        'type' => 'plain_text',
+                        'text' => ':musical_note: Audio URL Ekle',
+                        'emoji' => true,
+                    ],
+                    'style' => 'primary',
+                    'value' => 'url_add',
+                    'action_id' => 'url_add',
+                ],
+                [
+                    'type' => 'button',
+                    'text' => [
+                        'type' => 'plain_text',
+                        'text' => ':musical_note: Audio URL Listesi',
+                        'emoji' => true,
+                    ],
+                    'value' => 'url_list',
+                    'url' => 'https://iwarden.iwaconcept.com/iwabot/iwas.php',
+                    'action_id' => 'url_list',
+                ],
+            ],
+        ],
+    ];
+}
+
+function addInfluencerBlock() {
+    return [
+        'type' => 'modal',
+        'callback_id' => 'influencer_add',
+        'title' => [
+            'type' => 'plain_text',
+            'text' => 'Yeni Influencer Ekle',
+        ],
+        'submit' => [
+            'type' => 'plain_text',
+            'text' => 'Ekle',
+        ],
+        'close' => [
+            'type' => 'plain_text',
+            'text' => 'Vazgeç',
+        ],
+        'blocks' => [
+            [
+                'type' => 'input',
+                'block_id' => 'influencer_name',
+                'element' => [
+                    'type' => 'plain_text_input',
+                    'action_id' => 'influencer_name',
+                    'placeholder' => [
+                        'type' => 'plain_text',
+                        'text' => '@influencer',
+                    ],
+                ],
+                'label' => [
+                    'type' => 'plain_text',
+                    'text' => 'Influencer Kısa İsmi - @ işareti ile başlamalıdır',
+                ],
+            ],
+            [
+                'type' => 'input',
+                'block_id' => 'influencer_url',
+                'element' => [
+                    "type" => "url_text_input",
+                    'action_id' => 'influencer_url',
+                    'placeholder' => [
+                        'type' => 'plain_text',
+                        'text' => 'URL',
+                    ],
+                ],
+                'label' => [
+                    'type' => 'plain_text',
+                    'text' => 'URL',
+                ],
+            ],
+            [
+                'type' => 'section',
+                'block_id' => 'influencer_websites',
+                'text' => [
+                    'type' => 'mrkdwn',
+                    'text' => 'Web Siteleri'
+                ],
+                'accessory' => [
+                    'type' => 'multi_static_select',
+                    'action_id' => 'influencer_websites',
+                    'placeholder' => [
+                        'type' => 'plain_text',
+                        'text' => 'Web Sitesi/Siteleri Seçin',
+                        'emoji' => true,
+                    ],
+                    'options' => [
+                        [
+                            'text' => [
+                                'type' => 'plain_text',
+                                'text' => 'IWA (Yurt içi)',
+                                'emoji' => true,
+                            ],
+                            'value' => 'iwa_tr',
+                        ],
+                        [
+                            'text' => [
+                                'type' => 'plain_text',
+                                'text' => 'IWA (Yurt dışı)',
+                                'emoji' => true,
+                            ],
+                            'value' => 'iwa_intl',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'type' => 'input',
+                'block_id' => 'influencer_description',
+                'optional' => true,
+                'element' => [
+                    'type' => 'plain_text_input',
+                    'action_id' => 'influencer_description',
+                    'placeholder' => [
+                        'type' => 'plain_text',
+                        'text' => 'Açıklama',
+                    ],
+                ],
+                'label' => [
+                    'type' => 'plain_text',
+                    'text' => 'Açıklama',
+                ],
+            ],
+            [
+                'type' => 'input',
+                'block_id' => 'influencer_follower_count',
+                'optional' => true,
+                'element' => [
+                    'type' => 'number_input',
+                    'is_decimal_allowed' => false,
+                    'action_id' => 'influencer_follower_count',
+                ],
+                'label' => [
+                    'type' => 'plain_text',
+                    'text' => 'Takipçi Sayısı',
+                ],
+            ],
+        ],
+    ];
+}
+
+function addInfluencerSuccessBlock($name) {
+    return [
+        'type' => 'modal',
+        'title' => [
+            'type' => 'plain_text',
+            'text' => 'Yeni Influencer Ekle',
+        ],
+        'close' => [
+            'type' => 'plain_text',
+            'text' => 'Kapat',
+        ],
+        'submit' => [
+            'type' => 'plain_text',
+            'text' => 'Tamam',
+        ],
+        'blocks' => [
+            [
+                'type' => 'section',
+                'text' => [
+                    'type' => 'mrkdwn',
+                    'text' => "Influencer *$name* eklendi.",
+                ],
+            ],
+        ],
+        'clear_on_close' => true,
+        'notify_on_close' => false,
+    ];
+}
+

@@ -1,7 +1,7 @@
 <?php
 
 require_once('_login.php');
-require_once('_slack.php');
+require_once('_init.php');
 
 include '_header.php';
 
@@ -21,7 +21,7 @@ include '_header.php';
         </div>
         <div class="col-4 d-flex justify-content-center">
             <div class="m-3">
-                <a href="iwaudio.php" class="btn btn-primary">Browse Audio Library</a>
+                <a href="iwas.php" class="btn btn-primary">Browse IWA URL Library</a>
             </div>
         </div>
         <div class="col-4 d-flex flex-column justify-content-center">

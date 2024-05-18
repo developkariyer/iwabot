@@ -7,10 +7,7 @@ if (!isset($_GET['channel_id'])) {
     exit;
 }
 
-require_once '_db.php';
-require_once '_slack.php';
-require_once '_emoji.php';
-require_once '_utils.php';
+require_once '_init.php';
 
 if (in_array($_SESSION['user_info']['sub'], $GLOBALS['slack']['admins'])) {
     $sql = "SELECT c.channel_id as channel_id, c.name as channel_name FROM channels c WHERE c.channel_id = ? ORDER BY name LIMIT 1";

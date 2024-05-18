@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intelligent Workspace Assistant</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap5-toggle@5.0.4/css/bootstrap5-toggle.min.css" rel="stylesheet">
     <style>
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Prevent scrolling on the entire page */
         }
         .slack-user {
             color: red;

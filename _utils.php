@@ -67,3 +67,33 @@ function addMessage($message) {
     }
     $_SESSION['messages'][] = $message;
 }
+
+
+function username($userId) {
+    if (!isset($GLOBALS['users'])) {
+        require_once('_db.php');
+        $sql = "SELECT user_id, json->>'$.real_name' as name FROM users";
+        $stmt = $GLOBALS['pdo']->prepare($sql);
+        $stmt->execute();
+        $dbusers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $GLOBALS['users'] = [];
+        foreach ($dbusers as $user) {
+            $GLOBALS['users'][$user['user_id']] = $user['name'];
+        }
+    }
+    return $GLOBALS['users'][$userId] ?? $userId;
+}
+
+
+function channelNameToId($channelName) {
+    $stmt = $GLOBALS['pdo']->prepare('SELECT channel_id FROM channels WHERE name = ?');
+    $stmt->execute([$channelName]);
+    $channel = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $channel['channel_id'] ?? '';
+}
+
+function userInChannel($userId, $channelId) {
+    $stmt = $GLOBALS['pdo']->prepare('SELECT * FROM channel_user WHERE user_id = ? AND channel_id = ?');
+    $stmt->execute([$userId, $channelId]);
+    return $stmt->fetch(PDO::FETCH_ASSOC) ? true : false;
+}

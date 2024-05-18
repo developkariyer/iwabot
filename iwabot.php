@@ -15,8 +15,15 @@ if (!isset($eventData['token']) || $eventData['token'] !== $GLOBALS['slack']['ve
     die('Unauthorized request');
 }
 
-require_once('_db.php');
+require_once('_init.php');
+
+if ($eventData['event']['type'] === 'app_home_opened') {
+    curlPost('https://slack.com/api/views.publish', [
+        'user_id' => $eventData['event']['user'],
+        'view' => homeBlock($eventData['event']['user']),
+    ]);
+    exit;
+}
 
 $stmt = $GLOBALS['pdo']->prepare("INSERT INTO rawlog (json) VALUES (?)");
 $stmt->execute([json_encode($eventData)]);
-

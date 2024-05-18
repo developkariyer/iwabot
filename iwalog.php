@@ -9,8 +9,7 @@ if (isset($_GET['logout'])) {
     exit;
 }
 
-require_once('_slack.php');
-require_once '_db.php';
+require_once('_init.php');
 
 if (in_array($_SESSION['user_info']['sub'], $GLOBALS['slack']['admins'])) {
     $sql = "SELECT c.channel_id, c.name FROM channels c ORDER BY name";
