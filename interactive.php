@@ -25,12 +25,19 @@ try {
 }
 
 if ($eventData['type'] === 'block_actions') {
-    if ($eventData['actions'][0]['type'] === 'button' && $eventData['actions'][0]['value'] === 'influencer_add') {
-        $response = curlPost('https://slack.com/api/views.open', [
-            'trigger_id' => $eventData['trigger_id'],
-            'view' => addInfluencerBlock(),
-        ]);
-        file_put_contents('postlog.txt', json_encode($response, true) . PHP_EOL, FILE_APPEND);
+    if ($eventData['actions'][0]['type'] === 'button') {
+        if ($eventData['actions'][0]['value'] === 'influencer_add') {
+            $response = curlPost('https://slack.com/api/views.open', [
+                'trigger_id' => $eventData['trigger_id'],
+                'view' => addInfluencerBlock(),
+            ]);
+        }
+        if ($eventData['actions'][0]['value'] === 'url_add') {
+            $response = curlPost('https://slack.com/api/views.open', [
+                'trigger_id' => $eventData['trigger_id'],
+                'view' => addAudioUrlBlock(),
+            ]);
+        }
     }
     exit;
 }
@@ -54,7 +61,23 @@ function validateInfluencerInput($name, $url, $websites) {
     return $errors;
 }
 
+function validateAudioUrlInput($url, $description, $hashtags) {
+    $errors = [];
+    if (empty($url) || !filter_var($url, FILTER_VALIDATE_URL)) {
+        $errors['url_add'] = 'Geçerli bir URL girin';
+    }
+    foreach ($hashtags as $hashtag) {
+        $hashtag = trim($hashtag);
+        if (empty($hashtag) || $hashtag[0] !== '#') {
+            $errors['url_hashtags'] = 'Hashtagler araladında boşlukla yazılmalı ve # ile başlamalı';
+            break;
+        }
+    }
+    return $errors;
+}
+
 if ($eventData['type'] === 'view_submission') {
+
     if ($eventData['view']['callback_id'] === 'influencer_add') {
         $name = $eventData['view']['state']['values']['influencer_name']['influencer_name']['value'];
         $url = $eventData['view']['state']['values']['influencer_url']['influencer_url']['value'];
@@ -80,11 +103,40 @@ if ($eventData['type'] === 'view_submission') {
         $stmt = $GLOBALS['pdo']->prepare('INSERT INTO influencers (name, url, description, follower, websites, user) VALUES (?,?,?,?,?,?)');
         $stmt->execute([$name, $url, $description, $follower, json_encode($websites), $user]);
 
-        $response = curlPost('https://slack.com/api/chat.postMessage', [
-            'channel' => $user,
-            'text' => "Influencer $name, ".json_encode($websites)." için eklendi. Influencer sayfası için $url adresini ziyaret edebilirsiniz.",
+        header('Content-Type: application/json');
+        echo json_encode([
+            'response_action' => 'update',
+            'view' => addInfluencerSuccessBlock($name),
         ]);
-        file_put_contents('postlog.txt', json_encode($response, true) . PHP_EOL, FILE_APPEND);
+        exit;
     }
-    exit;
+
+    if ($eventData['view']['callback_id'] === 'url_add') {
+        $url = $eventData['view']['state']['values']['url_url']['url_url']['value'];
+        $description = $eventData['view']['state']['values']['url_description']['url_description']['value'];
+        $hashtags = explode(" ", $eventData['view']['state']['values']['url_hashtags']['url_hashtags']['value']);
+        $user = $eventData['user']['id'];
+
+        $errors = validateAudioUrlInput($url, $description, $hashtags);
+        if (!empty($errors)) {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'response_action' => 'errors',
+                'errors' => $errors,
+            ]);
+            error_log(json_encode($errors, true));
+            exit;
+        }
+
+        $stmt = $GLOBALS['pdo']->prepare('INSERT INTO audio (url, description, hashtags, user) VALUES (?,?,?,?)');
+        $stmt->execute([$url, $description, json_encode($hashtags), $user]);
+
+        header('Content-Type: application/json');
+        echo json_encode([
+            'response_action' => 'update',
+            'view' => addAudioUrlSuccessBlock($url),
+        ]);
+        exit;
+    }
+
 }

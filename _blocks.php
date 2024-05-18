@@ -1,6 +1,6 @@
 <?php
 
-require_once('_blocks_influencers.php');
+require_once('_blocks_social.php');
 
 function homeBlock($userId) {
     $blocks = [
@@ -15,7 +15,7 @@ function homeBlock($userId) {
     ];
 
     if (userInChannel($userId, 'C072LD7FQ12')) {
-        $blocks = array_merge($blocks, homeBlockInfluencer());
+        $blocks = array_merge($blocks, homeBlockSocial());
     }
 
     return [

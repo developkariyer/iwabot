@@ -1,7 +1,7 @@
 <?php
 
 
-function homeBlockInfluencer() {
+function homeBlockSocial() {
     return [
         [
             'type' => 'divider',
@@ -58,7 +58,7 @@ function homeBlockInfluencer() {
                         'emoji' => true,
                     ],
                     'value' => 'url_list',
-                    'url' => 'https://iwarden.iwaconcept.com/iwabot/iwas.php',
+                    'url' => 'https://iwarden.iwaconcept.com/iwabot/iwaaudiourl.php',
                     'action_id' => 'url_list',
                 ],
             ],
@@ -196,16 +196,107 @@ function addInfluencerSuccessBlock($name) {
             'type' => 'plain_text',
             'text' => 'Kapat',
         ],
-        'submit' => [
-            'type' => 'plain_text',
-            'text' => 'Tamam',
-        ],
         'blocks' => [
             [
                 'type' => 'section',
                 'text' => [
                     'type' => 'mrkdwn',
                     'text' => "Influencer *$name* eklendi.",
+                ],
+            ],
+        ],
+        'clear_on_close' => true,
+        'notify_on_close' => false,
+    ];
+}
+
+function addAudioUrlBlock() {
+    return [
+        'type' => 'modal',
+        'callback_id' => 'url_add',
+        'title' => [
+            'type' => 'plain_text',
+            'text' => 'Yeni Audio URL Ekle',
+        ],
+        'submit' => [
+            'type' => 'plain_text',
+            'text' => 'Ekle',
+        ],
+        'close' => [
+            'type' => 'plain_text',
+            'text' => 'Vazgeç',
+        ],
+        'blocks' => [
+            [
+                'type' => 'input',
+                'block_id' => 'url_url',
+                'element' => [
+                    "type" => "url_text_input",
+                    'action_id' => 'url_url',
+                    'placeholder' => [
+                        'type' => 'plain_text',
+                        'text' => 'URL',
+                    ],
+                ],
+                'label' => [
+                    'type' => 'plain_text',
+                    'text' => 'URL',
+                ],
+            ],
+            [
+                'type' => 'input',
+                'block_id' => 'url_description',
+                'element' => [
+                    'type' => 'plain_text_input',
+                    'action_id' => 'url_description',
+                    'placeholder' => [
+                        'type' => 'plain_text',
+                        'text' => 'Açıklama',
+                    ],
+                ],
+                'label' => [
+                    'type' => 'plain_text',
+                    'text' => 'Açıklama',
+                ],
+            ],
+            [
+                'type' => 'input',
+                'block_id' => 'url_hashtags',
+                'optional' => true,
+                'element' => [
+                    'type' => 'plain_text_input',
+                    'action_id' => 'url_hashtags',
+                    'placeholder' => [
+                        'type' => 'plain_text',
+                        'text' => 'Hashtags',
+                    ],
+                ],
+                'label' => [
+                    'type' => 'plain_text',
+                    'text' => 'Hashtags',
+                ],
+            ],
+        ],
+    ];
+}
+
+function addAudioUrlSuccessBlock($url) {
+    return [
+        'type' => 'modal',
+        'title' => [
+            'type' => 'plain_text',
+            'text' => 'Yeni Audio URL Ekle',
+        ],
+        'close' => [
+            'type' => 'plain_text',
+            'text' => 'Kapat',
+        ],
+        'blocks' => [
+            [
+                'type' => 'section',
+                'text' => [
+                    'type' => 'mrkdwn',
+                    'text' => "*$url* eklendi.",
                 ],
             ],
         ],

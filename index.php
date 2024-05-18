@@ -1,6 +1,13 @@
 <?php
 
 require_once('_login.php');
+
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header ('Location: login.php');
+    exit;
+}
+
 require_once('_init.php');
 
 include '_header.php';
@@ -9,19 +16,22 @@ include '_header.php';
 <div class="container mt-5">
     <div class="jumbotron m-5 p-5">
         <center>
-            <h1>Welcome to IWA Bot, <span class="username"><?= $_SESSION['user_info']['name'] ?></span></h1>
-            <p>Click the buttons below to see IWA Bot in action.</p>
+            <h1>IWA Bot'a hoş geldiniz, <span class="username"><?= $_SESSION['user_info']['name'] ?></span></h1>
+            <p>Lütfen yapmak istediğiniz işlemi seçiniz.</p>
         </center>
     </div>
     <div class="row">
         <div class="col-4 d-flex justify-content-center">
             <div class="m-3">
-                <a href="iwalog.php" class="btn btn-primary">Show My Channels' Logs</a>
+                <a href="iwalog.php" class="btn btn-primary">Kanal Arşivleri</a>
             </div>
         </div>
-        <div class="col-4 d-flex justify-content-center">
+        <div class="col-4 d-flex flex-column    ">
             <div class="m-3">
-                <a href="iwas.php" class="btn btn-primary">Browse IWA URL Library</a>
+                <center><a href="iwaaudiourl.php" class="btn btn-primary">Audio URL Kütüphanesi</a></center>
+            </div>
+            <div class="m-3">
+                <center><a href="iwainfluencers.php" class="btn btn-primary">Influencer Listesi</a></center>
             </div>
         </div>
         <div class="col-4 d-flex flex-column justify-content-center">
@@ -38,11 +48,10 @@ include '_header.php';
             <div class="justify-content-center m-3">
                 <center><a href="iwaemoji.php" class="btn btn-success">Reload Emojis</a></center>
             </div>
-        <?php else: ?>
-            <div class="justify-content-center m-3">
-                <center><a href="#" class="btn btn-primary">Reserved for Future Actions</a></center>
-            </div>
         <?php endif; ?>
+            <div class="justify-content-center m-3">
+                <center><a href="./?logout=1" class="btn btn-danger">Logout</a></center>
+            </div>
         </div>
     </div>
 </div>
