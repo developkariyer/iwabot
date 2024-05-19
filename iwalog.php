@@ -1,14 +1,6 @@
 <?php
 
 require_once('_login.php');
-
-if (isset($_GET['logout'])) {
-    unset($_SESSION['logged_in']);
-    session_destroy();
-    header('Location: '.$redirectUri);
-    exit;
-}
-
 require_once('_init.php');
 
 if (in_array($_SESSION['user_info']['sub'], $GLOBALS['slack']['admins'])) {

@@ -14,7 +14,7 @@ function homeBlock($userId) {
         ],
     ];
 
-    if (userInChannel($userId, 'C072LD7FQ12')) {
+    if (canViewPage('app_cm', $userId)) {
         $blocks = array_merge($blocks, homeBlockSocial());
     }
 

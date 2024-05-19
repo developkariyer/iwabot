@@ -1,6 +1,5 @@
 <?php
 
-
 function homeBlockSocial() {
     return [
         [
@@ -10,7 +9,18 @@ function homeBlockSocial() {
             'type' => 'header',
             'text' => [
                 'type' => 'plain_text',
-                'text' => 'Sosyal Medya Ekibi',
+                'text' => 'İçerik Yönetimi',
+                'emoji' => true,
+            ],
+        ],
+        [
+            'type' => 'divider',
+        ],
+        [
+            'type' => 'header',
+            'text' => [
+                'type' => 'plain_text',
+                'text' => 'Sosyal Medya',
                 'emoji' => true,
             ],
         ],

@@ -6,7 +6,7 @@ $dbPassword = 'dbpassword';
 
 try {
     $GLOBALS['pdo'] = new PDO("mysql:host=$dbHost;dbname=$dbName", $dbUser, $dbPassword);
-    $GLOBALS['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Set error mode for better debugging
+    $GLOBALS['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die('Database connection failed: ' . $e->getMessage());
 }

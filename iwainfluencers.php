@@ -3,7 +3,7 @@
 require_once('_login.php');
 require_once('_init.php');
 
-if (!userInChannel($_SESSION['user_id'], 'C072LD7FQ12')) {
+if (!canViewPage('app_cm')) {
     addMessage('Bu sayfayı görüntülemek için yetkiniz yok.', 'danger');
     header('Location: index.php');
     exit;

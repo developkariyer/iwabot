@@ -68,7 +68,6 @@ function addMessage($message) {
     $_SESSION['messages'][] = $message;
 }
 
-
 function username($userId) {
     if (!isset($GLOBALS['users'])) {
         require_once('_db.php');
@@ -84,6 +83,12 @@ function username($userId) {
     return $GLOBALS['users'][$userId] ?? $userId;
 }
 
+function channelIdToName($channelId) {
+    $stmt = $GLOBALS['pdo']->prepare('SELECT name FROM channels WHERE channel_id = ?');
+    $stmt->execute([$channelId]);
+    $channel = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $channel['name'] ?? '';
+}
 
 function channelNameToId($channelName) {
     $stmt = $GLOBALS['pdo']->prepare('SELECT channel_id FROM channels WHERE name = ?');
@@ -96,4 +101,103 @@ function userInChannel($userId, $channelId) {
     $stmt = $GLOBALS['pdo']->prepare('SELECT * FROM channel_user WHERE user_id = ? AND channel_id = ?');
     $stmt->execute([$userId, $channelId]);
     return $stmt->fetch(PDO::FETCH_ASSOC) ? true : false;
+}
+
+function curlGet($url, $data) {
+    $fullUrl = empty($data) ? $url : $url.'?'.http_build_query($data);
+    $ch = curl_init($fullUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        'Content-Type: application/json; charset=utf-8',
+        'Authorization: Bearer '.$GLOBALS['slack']['botUserOAuthToken'],
+    ));
+    $response = curl_exec($ch);
+    $curlError = curl_errno($ch);
+    curl_close($ch);
+    if ($curlError) {
+        $error_msg = curl_error($ch);
+        error_log("API error: $error_msg"); 
+        return [];
+    } else {
+        return json_decode($response, true);
+    }
+    return  [];
+}
+
+function curlPost($url, $data) {
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        'Content-Type: application/json; charset=utf-8',
+        'Authorization: Bearer '.$GLOBALS['slack']['botUserOAuthToken'],
+    ));
+    $response = curl_exec($ch);
+    $curlError = curl_errno($ch);
+    curl_close($ch);
+    if ($curlError) {
+        $error_msg = curl_error($ch);
+        error_log("API error: $error_msg"); 
+        return [];
+    } else {
+        return json_decode($response, true);
+    }
+    return  [];
+}
+
+function getChannelList() {
+    $response = curlGet(
+        'https://slack.com/api/conversations.list',
+        [
+            'types' => 'public_channel,private_channel',
+        ]
+    );
+    if (isset($response['channels']) && is_array($response['channels'])) {
+        return $response['channels'];
+    }
+    return [];
+}
+
+function getUsersInChannel($channelId) {
+    $response = curlGet(
+        'https://slack.com/api/conversations.members',
+        [
+            'channel' => $channelId,
+        ]
+    );
+    if (isset($response['members']) && is_array($response['members'])) {
+        return $response['members'];
+    }
+    return [];
+}
+
+function getUserInfo($userId) {
+    $response = curlGet(
+        'https://slack.com/api/users.info',
+        [
+            'user' => $userId,
+        ]
+    );
+    if (isset($response['user']) && is_array($response['user'])) {
+        return $response['user'];
+    }
+    return [];
+}
+
+function canViewPage($appName, $userId=null) {
+    $userId = $userId ?? $_SESSION['user_id'];
+    if (isset($GLOBALS['slack'][$appName])) {
+        if (in_array($userId, $GLOBALS['slack']['admins'])) {
+            addMessage('Admin olduğunuz için bu sayfaya erişiminiz var.');
+            return true;
+        }
+        foreach ($GLOBALS['slack'][$appName] as $channelId) {
+            if (userInChannel($userId, $channelId)) {
+                addMessage("<b>".channelIdToName($channelId).'</b> kanalında olduğunuz için bu sayfaya erişiminiz var.');
+                return true;
+            }
+        }
+    }
+    return false;
 }

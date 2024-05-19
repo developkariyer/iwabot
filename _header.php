@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap5-toggle@5.0.4/css/bootstrap5-toggle.min.css" rel="stylesheet">
     <style>
         html, body {
-            height: 100%;
+            height: auto;
             margin: 0;
             padding: 0;
         }
@@ -53,8 +53,12 @@
 <body>
 <?php
 if (isset($_SESSION['messages'])) {
-    foreach ($_SESSION['messages'] as $message) {
-        echo '<div class="alert alert-info">'.$message.'</div>';
-    }
+    foreach ($_SESSION['messages'] as $message) { ?>
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <?= $message ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php }
     unset($_SESSION['messages']);
 }
+?>
