@@ -27,3 +27,4 @@ if ($eventData['event']['type'] === 'app_home_opened') {
 
 $stmt = $GLOBALS['pdo']->prepare("INSERT INTO rawlog (json) VALUES (?)");
 $stmt->execute([json_encode($eventData)]);
+

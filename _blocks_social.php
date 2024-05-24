@@ -182,7 +182,7 @@ function addInfluencerBlock() {
                 'block_id' => 'influencer_follower_count',
                 'optional' => true,
                 'element' => [
-                    'type' => 'number_input',
+                    'type' => 'plain_text_input',
                     'is_decimal_allowed' => false,
                     'action_id' => 'influencer_follower_count',
                 ],

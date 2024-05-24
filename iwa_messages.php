@@ -33,6 +33,8 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $displayMessages = [];
 
+
+
 foreach ($messages as $message) {
     $msg = json_decode($message['json'], true);
 
@@ -45,6 +47,7 @@ foreach ($messages as $message) {
     $event_ts = $msg['event']['event_ts'];
     $eventType = $msg['event']['type'];
     $eventSubType = $msg['event']['subtype'] ?? '';
+    $files = $msg['event']['files'] ?? [];
 
     switch ($eventType) {
         case 'message':
@@ -57,7 +60,10 @@ foreach ($messages as $message) {
                 $logItem = slackize($msg['event']['message']['text'])." (edited)";
                 break;
             }
-            $logItem = slackize($msg['event']['text']);
+            $logItem = slackize($msg['event']['text']).'<br>';
+            foreach ($files as $file) {
+                $logItem .= previewFile($file).'<br>';
+            }
             break;
         case 'member_joined_channel':
             $logItem = "<i>User has joined channel</i>";
@@ -95,7 +101,7 @@ $bgcolors = [
 
 foreach ($displayMessages as $msg) {
     echo "<div class='row' style='background-color: ".current($bgcolors).";'>";
-    echo $msg['msg'];
+    echo $msg['msg'] ?? '';
     if (isset($msg['thread'])) {
         foreach ($msg['thread'] as $submsg) {
             echo "<div class='row ms-1 ps-5'>";
