@@ -19,8 +19,7 @@ function aiResponse($prompt) {
         ],
     ]);
     
-    //print_r($response->toArray());   
-    print_r($response->choices[0]->message->content);
+    return print_r($response->choices[0]->message->content, true);
 }
 
 require_once('_init.php');
@@ -42,8 +41,6 @@ $textDb = $GLOBALS['pdo']->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 
 $jsonlog = [];
 foreach ($textDb as $text) {
-    
-
     $channel = '#'.channelIdToName($text['channel']);
     if ($channel === '#general') continue;
 
@@ -62,19 +59,49 @@ foreach ($textDb as $text) {
     ];
 }
 
-$prompt = "Aşağıda şirketimizin son 24 saatlik Slack arşivi var.
-Şirkette ne olup bittiği hakkında yönetici özeti hazırla.
-Her konunun sonunda parantez içinde o konu ile ilgili kullanıcı isimlerini belirt.
-Herhangi bir ürün ismi geçiyorsa özette detaylarıyla birlikte açıkça belirt.
-Anlamlı bir içerik olmayan kanalları dikkate alma.
-İş ile ilgili olmayan hususları dikkate alma.
-Numerik verilerle ilgili tablo oluştur.
-Tespit edilen ciddi kriz alanları varsa ayrıca tablo
+$json = json_encode($jsonlog);
 
-Yöneticilerimiz: @Hüseyin Başaran, @Aytaç Yüksel, @Mehmet, @Umit Maden, @Serkan Gürkan
+$t = $GLOBALS['pdo']->query('SELECT created_at FROM slack_summary WHERE created_at > (UNIX_TIMESTAMP() - 86000)')->fetchColumn();
+if ($t) exit;
 
-24 saatlik log = ".json_encode($jsonlog);
+$previousReport = $GLOBALS['pdo']->query('SELECT report FROM slack_summary ORDER BY id DESC LIMIT 1')->fetchColumn();
 
-echo "<pre>";
-//print_r($jsonlog);
-aiResponse($prompt);
+
+$basePrompt = "Verilen bilgileri kullanarak aşağıdaki [Format] doğrultusunda bir yönetici özeti hazırla.
+Eğer json bölümünde, formatta olan bir başlık ile ilgili bilgi bulamazsan boş bırak.
+Formattaki parantezler sana yol göstermek içindir, nihai raporda onları gösterme.
+Her konunun ilgilisinin ismini parantez içinde belirt.
+Yorum yapma, kısa cümleler kullan ve mümkün olan her yerde maddeler halinde yaz.
+[Önceki Rapor] sana context sağlaması içindir, [Önceki Rapor] içinde olup da [Json] içinde geçmeyen hususları dikkate alma.
+[Json] temel bilgi kaynağındır. Json içinde yer almayan hususları rapora dahil etme. [json] içinde yeterli bilgi olmadığı zaman rapordaki ilgili bölüme 'Bir gelişme yok' yaz.
+
+[Format]:
+*Öne çıkanlar* (maddeler halinde)
+*Etkileşimler*
+- Müşteri Sorunları (kısa maddeler halinde)
+- İç Koordinasyon  (maddeler halinde)
+*Proje Güncellemeleri*
+- İçerik ve Kreatif
+- Influencer İşbirlikleri (influencer isimlerini belirt)
+- Ürün Geliştirme/İyileştirme (ürün isimlerini belirt)
+*Satış ve Pazarlama*
+- Satış İstatistikleri (verisi mevcut her site için ayrı tablo)
+- Strateji Tartışmaları
+*Operasyonel Sorunlar*
+- Envanter Yönetimi
+- Rekabet ve Fiyatlandırma
+*Devam eden sorunlar* (maddeler halinde)
+
+";
+
+$prompt = "$basePrompt\n[Önceki Rapor]: $previousReport\n\n\n[json]: $json";
+
+//messageChannel('C072ZHN5YUV', $prompt); exit; // this is test channel 
+
+$report = aiResponse($prompt);
+
+$stmt = $GLOBALS['pdo']->prepare('INSERT INTO slack_summary (prompt, json, report) VALUES (?,?,?)');
+$stmt->execute([$basePrompt, $json, $report]);
+
+messageChannel('C072R4E46BG', "*BU RAPOR OTOMATİK OLARAK HAZIRLANMIŞTIR!*\n\n$report"); // this is core-plus channel
+

@@ -168,9 +168,27 @@ function curlPost($url, $data) {
         error_log("API error: $error_msg"); 
         return [];
     } else {
-        error_log($response);
         return json_decode($response, true);
     }
+}
+
+function messageChannel($channelId, $msg, $thread_ts = null) {
+    if ($thread_ts) {
+        $payload = [
+            'channel' => $channelId,
+            'text' => $msg,
+            'thread_ts' => $thread_ts,
+        ];
+    } else {
+        $payload = [
+            'channel' => $channelId,
+            'text' => $msg,
+        ];
+    }
+    return curlPost(
+        'https://slack.com/api/chat.postMessage', 
+        $payload
+    );
 }
 
 function getChannelList() {

@@ -25,71 +25,56 @@ if (!$channel) {
     exit;
 }
 
-$sql = "SELECT id, json FROM rawlog WHERE json->>'$.event.channel' = :channel_id ORDER BY id ASC";
+$sql = "SELECT json, json->>'$.event.event_ts' AS event_ts FROM rawlog WHERE json->>'$.event.channel' = :channel_id ORDER BY event_ts ASC";
 $stmt = $GLOBALS['pdo']->prepare($sql);
 $stmt->bindParam(':channel_id', $channel['channel_id']);
 $stmt->execute();
 $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$displayMessages = [];
-
-
-
+$messageArray = [];
 foreach ($messages as $message) {
     $msg = json_decode($message['json'], true);
-
     if (isset($msg['event']['hidden'])) continue;
-
-    $text = isset($msg['event']['text']) ?  : '';
-
-    $userId = $msg['event']['user'] ?? $msg['event']['previous_message']['user'] ?? $msg['event']['message']['user'] ?? '';
-    $date = date('Y-m-d H:i:s', $msg['event_time']);
-    $event_ts = $msg['event']['event_ts'];
-    $eventType = $msg['event']['type'];
-    $eventSubType = $msg['event']['subtype'] ?? '';
-    $files = $msg['event']['files'] ?? [];
-
-    switch ($eventType) {
-        case 'message':
-            if ($eventSubType === 'message_deleted') {
-                $logItem = "</i>Message has been deleted.</i>";
-                $event_ts = $msg['event']['deleted_ts'];
-                break;
-            }
-            if ($eventSubType === 'message_changed') {
-                $logItem = slackize($msg['event']['message']['text'])." (edited)";
-                break;
-            }
-            $logItem = slackize($msg['event']['text']).'<br>';
-            foreach ($files as $file) {
-                $logItem .= previewFile($file).'<br>';
-            }
+    if ($msg['event']['type'] !== 'message') continue;
+    $subType = $msg['event']['subtype'] ?? '';
+    switch ($subType) {
+        case 'message_changed':
+            $previous_ts = $msg['event']['previous_message']['event_ts'];
+            $messageArray[$previous_ts] = $msg['event']['message'];
             break;
-        case 'member_joined_channel':
-            $logItem = "<i>User has joined channel</i>";
+        case 'message_deleted':
+            $deleted_ts = $msg['event']['deleted_ts'];
+            if (isset($messageArray[$deleted_ts])) unset($messageArray[$deleted_ts]);
             break;
         default:
-            $logItem = $msg['event']['type'];
+            $messageArray[$message['event_ts']] = $msg;
             break;
     }
-    $logItem = "<div class='col-auto'>
-                    <div class='no-wrap'>   
-                        <span class='username'>".username($userId).":</span>
-                    </div>
-                </div>
-                <div class='col ps-0'>
-                    <div>
-                        $logItem <small>[$date/{$message['id']}]</small>
-                    </div>
-                </div>";
+}
 
-    if (isset($msg['event']['thread_ts'])) {
-        if (!isset($displayMessages[$msg['event']['thread_ts']]['thread'])) $displayMessages[$msg['event']['thread_ts']]['thread'] = [];
-        $displayMessages[$msg['event']['thread_ts']]['thread'][$event_ts] = $logItem;
+$displayMessages = [];
+foreach ($messageArray as $event_ts => $message) {
+    $text = $message['event']['text'] ?? '';
+    $userId = $message['event']['user'] ?? $message['event']['message']['user'] ?? '';
+    $date = date('Y-m-d H:i:s', $event_ts);
+    $files = $message['event']['files'] ?? [];
+
+    $logItem = "<div class='col-auto'><div class='no-wrap'><span class='username'>".username($userId).":</span></div></div>".
+                "<div class='col ps-0'><div>".slackize($text)."<br><small>($date)</small>";
+
+    foreach ($files as $file) {
+        $logItem .= previewFile($file).'<br>';
+    }
+    $logItem .="</div></div>";
+
+    if (isset($message['event']['thread_ts'])) {
+        if (!isset($displayMessages[$message['event']['thread_ts']]['thread'])) $displayMessages[$message['event']['thread_ts']]['thread'] = [];
+        $displayMessages[$message['event']['thread_ts']]['thread'][$event_ts] = $logItem;
     } else {
         $displayMessages[$event_ts] = ['msg' => $logItem];
-    }  
+    }
 }
+
 
 echo "<h3>Messages for channel: {$channel['channel_name']}</h3>";
 echo "<div style='width: 97%;'>";

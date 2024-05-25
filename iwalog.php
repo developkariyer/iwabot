@@ -8,7 +8,7 @@ if (in_array($_SESSION['user_info']['sub'], $GLOBALS['slack']['admins'])) {
     $stmt = $GLOBALS['pdo']->prepare($sql);
     $stmt->execute();
 } else {
-    $sql = "SELECT c.channel_id, c.name FROM channels c JOIN channel_user cu ON c.channel_id = cu.channel_id WHERE cu.user_id = ? ORDER BY name";
+    $sql = "SELECT DISTINCT c.channel_id, c.name FROM channels c JOIN channel_user cu ON c.channel_id = cu.channel_id WHERE cu.user_id = ? ORDER BY name";
     $stmt = $GLOBALS['pdo']->prepare($sql);
     $stmt->execute([$_SESSION['user_info']['sub']]);
 }
