@@ -61,7 +61,7 @@ foreach ($textDb as $text) {
 
 $json = json_encode($jsonlog);
 
-$t = $GLOBALS['pdo']->query('SELECT created_at FROM slack_summary WHERE created_at > (UNIX_TIMESTAMP() - 86000)')->fetchColumn();
+$t = $GLOBALS['pdo']->query("SELECT created_at FROM slack_summary WHERE created_at > (NOW() - INTERVAL 23 HOUR - INTERVAL 50 MINUTE)")->fetchColumn();
 if ($t) exit;
 
 $previousReport = $GLOBALS['pdo']->query('SELECT report FROM slack_summary ORDER BY id DESC LIMIT 1')->fetchColumn();
@@ -78,18 +78,18 @@ Yorum yapma, kısa cümleler kullan ve mümkün olan her yerde maddeler halinde 
 [Format]:
 *Öne çıkanlar* (maddeler halinde)
 *Etkileşimler*
-- Müşteri Sorunları (kısa maddeler halinde)
-- İç Koordinasyon  (maddeler halinde)
+(Müşteri Sorunları, kısa maddeler halinde)
+(İç Koordinasyon, maddeler halinde)
 *Proje Güncellemeleri*
-- İçerik ve Kreatif
-- Influencer İşbirlikleri (influencer isimlerini belirt)
-- Ürün Geliştirme/İyileştirme (ürün isimlerini belirt)
+(İçerik ve Kreatif)
+(Influencer İşbirlikleri, influencer isimlerini belirt)
+(Ürün Geliştirme/İyileştirme, ürün isimlerini belirt)
 *Satış ve Pazarlama*
-- Satış İstatistikleri (verisi mevcut her site için ayrı tablo)
-- Strateji Tartışmaları
+(Satış İstatistikleri, veri mevcut her site için ayrı istatistik)
+(Strateji Tartışmaları)
 *Operasyonel Sorunlar*
-- Envanter Yönetimi
-- Rekabet ve Fiyatlandırma
+(Envanter Yönetimi)
+(Rekabet ve Fiyatlandırma)
 *Devam eden sorunlar* (maddeler halinde)
 
 ";
