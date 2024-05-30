@@ -185,10 +185,11 @@ function messageChannel($channelId, $msg, $thread_ts = null) {
             'text' => $msg,
         ];
     }
-    return curlPost(
+    $response = curlPost(
         'https://slack.com/api/chat.postMessage', 
         $payload
     );
+    return $response['ts'] ?? null;
 }
 
 function getChannelList() {
@@ -258,4 +259,92 @@ function previewFile($file) {
         return "<a href='iwa_file.php?id=$id' target='_blank'><img src='iwa_file.php?id=$id&thumb=1' alt='{$file['name']}' style='max-width: 360px; max-height: 360px;'></a>";
     }
     return "<a href='iwa_file.php?id=$id' target='_blank'>{$file['name']}</a>";
+}
+
+function openProjectApiGet($href, $params = []) {
+    return openProjectApiCall($href, $params);
+}
+
+function openProjectApiCall($href, $params = []) {
+    $url = "https://op.iwaconcept.com$href";
+    if (!empty($params)) {
+        $url .= '?'.http_build_query($params);
+    }
+    $apiKey ='a27fb9d4540f3bd402b6263e494668a5925f1f31615a4e434bb3232c25971bb7';
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    curl_setopt($ch, CURLOPT_USERPWD, "apikey:$apiKey");
+    $response = curl_exec($ch);
+    if (curl_errno($ch)) {
+        error_log('cURL error: ' . curl_error($ch));
+        return false;
+    }    
+    curl_close($ch);
+    return $response;
+}
+
+function openProjectApiPost($href, $payload) {
+    // change content-type to application/json
+    $url = "https://op.iwaconcept.com$href";
+    $apiKey ='a27fb9d4540f3bd402b6263e494668a5925f1f31615a4e434bb3232c25971bb7';
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    curl_setopt($ch, CURLOPT_USERPWD, "apikey:$apiKey");
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);    
+    $response = curl_exec($ch);
+    if (curl_errno($ch)) {
+        error_log('cURL error: ' . curl_error($ch));
+        return false;
+    }
+    curl_close($ch);
+    return $response;
+}
+
+function openProjectUpdateUsers() {
+    if (isset($GLOBALS['opUsers'])) return;
+    $GLOBALS['pdo']->query('DELETE FROM op_users');
+    $GLOBALS['pdo']->beginTransaction();
+    $response = openProjectApiGet('/api/v3/users', ['pageSize' => 200]);
+    $response = json_decode($response, true);
+    $GLOBALS['opUsers'] = [];
+    foreach ($response['_embedded']['elements'] as $user) {
+        $stmt = $GLOBALS['pdo']->prepare('INSERT INTO op_users (json) VALUES (?)');
+        $stmt->execute([json_encode($user)]);
+        $GLOBALS['opUsers'][$user['id']] = $user;
+    }    
+    $GLOBALS['pdo']->commit();
+}
+
+function openProjectUpdateGroups() {
+    if (isset($GLOBALS['opGroups'])) return;
+    $GLOBALS['pdo']->query('DELETE FROM op_groups');
+    $GLOBALS['pdo']->beginTransaction();
+    $response = openProjectApiGet('/api/v3/groups', ['pageSize' => 200]);
+    $response = json_decode($response, true);
+    $GLOBALS['opGroups'] = [];
+    foreach ($response['_embedded']['elements'] as $group) {
+        $stmt = $GLOBALS['pdo']->prepare('INSERT INTO op_groups (json) VALUES (?)');
+        $stmt->execute([json_encode($group)]);
+        $GLOBALS['opGroups'][$group['id']] = $group;
+    }    
+    $GLOBALS['pdo']->commit();
+}
+
+function openProjectUpdateWorkPackages() {
+    $GLOBALS['pdo']->query('DELETE FROM op_workpackages');
+    $GLOBALS['pdo']->beginTransaction();
+    $response = openProjectApiGet('/api/v3/work_packages', ['pageSize' => 200]);
+    $response = json_decode($response, true);
+    foreach ($response['_embedded']['elements'] as $workpackage) {
+        $response = openProjectApiGet('/api/v3/work_packages/'.$workpackage['id']);
+        $stmt = $GLOBALS['pdo']->prepare('INSERT INTO op_workpackages (json) VALUES (?)');
+        $stmt->execute([$response]);
+    }
+    $GLOBALS['pdo']->commit();
 }

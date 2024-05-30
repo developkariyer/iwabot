@@ -20,6 +20,25 @@ function performCurlRequest($url, $apiKey) {
     return $response;
 }
 
+function performCurlPost($url, $apiKey, $payload) {
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    curl_setopt($ch, CURLOPT_USERPWD, "apikey:$apiKey");
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+    $response = curl_exec($ch);
+    
+    if (curl_errno($ch)) {
+        echo 'cURL error: ' . curl_error($ch);
+        return false;
+    }
+    
+    curl_close($ch);
+    return $response;
+}
+
 $currentPage = 1;
 $pageSize = 1;
 $morePages = true;
@@ -47,45 +66,3 @@ while ($morePages) {
 }
 
 
-
-
-
-
-/*
-$postData = file_get_contents('php://input');
-
-file_put_contents('postlog.txt', $postData . PHP_EOL, FILE_APPEND);
-
-$payload = json_decode($postData, true);
-
-$userEmail = $payload['work_package']['_embedded']['assignee']['email'] ?? '';
-
-if (empty($userEmail)) exit;
-
-require_once('_init.php');
-
-$stmt = $GLOBALS['pdo']->prepare("SELECT user_id FROM users WHERE json->>'$.profile.email' = ?");
-$stmt->execute([$userEmail]);
-$userId = $stmt->fetchColumn();
-
-if (empty($userId)) exit;
-
-$workpackageId = $payload['work_package']['id'];
-
-if (empty($workpackageId)) exit;
-
-$url = 'https://op.iwaconcept.com/work_packages/' . $workpackageId;
-
-$msg = "Komutan Logar! Bir cisim yaklaşıyor: $url";
-
-$response = curlPost(
-    'https://op.iwaconcept.com/api/v3/chat.postMessage', 
-    [
-        'channel' => $userId,
-        'text' => $msg,
-    ]
-);
-
-file_put_contents('postlog.txt', json_encode($response) . PHP_EOL, FILE_APPEND);
-
-*/

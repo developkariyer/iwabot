@@ -1,34 +1,55 @@
 <?php
 
+// if not called by cronjob exit
+if (php_sapi_name() !== 'cli') exit;
+
 require_once('_init.php');
 
-$msgToChannel = 'C074PP75YM6'; // this is live channel
-//$msgToChannel = 'C072ZHN5YUV'; // this is test channel
+openProjectUpdateUsers();
+openProjectUpdateGroups();
+openProjectUpdateWorkPackages();
 
+$dailyReport = [];
 
-$wpList = $GLOBALS['pdo']->query('SELECT 
-        json->>\'$.work_package.subject\' AS wp_subject, 
-        json->>\'$.work_package.date\' AS wp_date, 
-        json->>\'$.work_package._embedded.status.name\' AS wp_status,
-        user_id, 
-        wp_id 
-    FROM op_workpackages 
-    WHERE 
-        json->>\'$.work_package._embedded.status.isClosed\' = "false" 
-    ORDER BY wp_date ASC')->fetchAll(PDO::FETCH_ASSOC);
+$workPackages = $GLOBALS['pdo']->query('SELECT * FROM op_workpackages')->fetchAll(PDO::FETCH_ASSOC);
+foreach ($workPackages as $workPackage) {
+    $json = json_decode($workPackage['json'], true);
+    if ($json['_embedded']['status']['isClosed']) continue;
+    if (empty($json['_embedded']['assignee'])) continue;
+    $wpId = $json['id'];
+    $wpDate = $json['date'] ?? 'Tarih yok';
+    $wpSubject = $json['subject'] ?? 'Konu yok';
+    $wpStatus = $json['_embedded']['status']['name'] ?? 'Durum yok';
+    $wpText = "<https://op.iwaconcept.com/work_packages/{$wpId}|{$wpDate}: {$wpSubject} ({$wpId}/{$wpStatus})>";
 
-$msgArray = [];
-foreach ($wpList as $wp) {
-    $wp['wp_date'] ??= 'Tarih yok';
-    $url = "<https://op.iwaconcept.com/work_packages/{$wp['wp_id']}|{$wp['wp_date']}: {$wp['wp_subject']} ({$wp['wp_id']}/{$wp['wp_status']})>";
-    $user = userEmailToId($wp['user_id']) ?? 'Atanmamış';
-    if (empty($msgArray["<@$user>"])) $msgArray["<@$user>"] = [];
-    $msgArray["<@$user>"][] = $url;
+    $wpMembers = [];
+    if ($json['_embedded']['assignee']['_type'] === 'Group') {
+        $members = $json['_embedded']['assignee']['_links']['members'] ?? [];
+        foreach ($members as $member) {
+            $wpMembers[] = explode("/", $member['href'])[4];
+        }
+        $wpText.= " ({$json['_embedded']['assignee']['name']} üyeliğiniz sebebiyle)";
+    } else {
+        $wpMembers[] = $json['_embedded']['assignee']['id'];
+    }
+
+    foreach ($wpMembers as $wpMember) {
+        if (empty($dailyReport[$wpMember])) $dailyReport[$wpMember] = [];
+        $dailyReport[$wpMember][] = $wpText;
+    }
 }
 
-$msg = date('d.m.Y')." sabahı itibarı ile devam eden içerik paketlerinin özet durumu:\n";
-foreach ($msgArray as $user => $urls) {
-    $msg .= "*$user:*\n- " . implode("\n- ", $urls) . "\n";
+foreach ($dailyReport as $userId => $urls) {
+    if (empty($urls)) continue;
+
+    $userName = $GLOBALS['opUsers'][$userId]['name'] ?? '';
+    $slackId = userEmailToId($GLOBALS['opUsers'][$userId]['email'] ?? '');
+    
+
+    $msg = "Merhaba <@$userName>,\n\n";
+    $msg.= "Bugün itibarı ile devam eden içerik paketlerinizin özeti aşağıda sunulmuştur.\n\nKolay gelsin.\n\n";
+    $msg.= "- " . implode("\n- ", $urls) . "\n";
+    messageChannel($slackId, $msg);
 }
 
-messageChannel($msgToChannel, $msg);
+

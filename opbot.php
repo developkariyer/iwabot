@@ -10,23 +10,32 @@ $workpackageId = $payload['work_package']['id'] ?? null;
 if (empty($workpackageId)) exit;
 $url = 'https://op.iwaconcept.com/work_packages/' . $workpackageId;
 
-$userEmail = $payload['work_package']['_embedded']['assignee']['email'] ?? null;
-$userId = userEmailToId($userEmail);
+if  (isset($payload['work_package']['_embedded']['assignee']['_type']) && $payload['work_package']['_embedded']['assignee']['_type'] === 'Group') {
+    $members = $payload['work_package']['_embedded']['assignee']['_links']['members'] ?? [];
+    $userEmail = [];
+    foreach ($members as $member) {
+        $memberHref = openProjectApiCall($member['href']);
+        $memberJson = json_decode($memberHref, true);        
+        $email = $memberJson['email'] ?? null;
+        $userEmail[$email] = userEmailToId($email);
+    }
+} else {
+    $userEmail = $payload['work_package']['_embedded']['assignee']['email'] ?? null;
+    $userId = userEmailToId($userEmail);
+}
 
 $workpackageName = $payload['work_package']['subject'] ?? null;
 
-$stmt = $GLOBALS['pdo']->prepare("SELECT thread_ts, wp_id, user_id FROM op_workpackages WHERE wp_id = ?");
-$stmt->execute([$workpackageId]);
-$opWorkpackage = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (empty($opWorkpackage)) {
-    $sql = "INSERT INTO op_workpackages (user_id, json, thread_ts, wp_id) VALUES (?, ?, ?, ?)";
-} else {
-    $sql = "UPDATE op_workpackages SET user_id = ?, json = ?, thread_ts = ? WHERE wp_id = ?";
-}
-$stmt = $GLOBALS['pdo']->prepare($sql);
-$stmt->execute([$userEmail, $postData, 0, $workpackageId]);
-
-if (!empty($userId) && $userEmail !== $opWorkpackage['user_id']) {
-    messageChannel($userId, "Komutan Logar! Bir cisim yaklaşıyor: <$url|{$workpackageName}> ({$workpackageId})");
+if (!is_array($userEmail) && !empty($userId)) {
+    $stmt = $GLOBALS['pdo']->prepare('SELECT thread_ts FROM op_slack_threads WHERE wp_id = :workpackage_id AND slack_id = :slack_id');
+    $stmt->execute(['workpackage_id' => $workpackageId, 'slack_id' => $userId]);
+    $thread_ts = $stmt->fetchColumn();
+    if (empty($thread_ts)) {
+        $thread_ts = messageChannel($userId, "Sevgili <@$userId>, sizinle ilgili görevde bir gelişme var. Detaylarına şuradan bakabilirsiniz: <$url|{$workpackageName}> ({$workpackageId})");
+        $stmt = $GLOBALS['pdo']->prepare('INSERT INTO op_slack_threads (wp_id, slack_id, thread_ts) VALUES (:workpackage_id, :slack_id, :thread_ts)');
+        $stmt->execute(['workpackage_id' => $workpackageId, 'slack_id' => $userId, 'thread_ts' => $thread_ts]);
+    } else {
+        messageChannel($userId, "Sevgili <@$userId>, sizinle ilgili görevde bir gelişme var. Detaylarına şuradan bakabilirsiniz: <$url|{$workpackageName}> ({$workpackageId})", $thread_ts);
+    }
 }
