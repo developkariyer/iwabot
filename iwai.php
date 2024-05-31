@@ -75,21 +75,14 @@ Yorum yapma, kısa cümleler kullan ve mümkün olan her yerde maddeler halinde 
 [Önceki Rapor] sana context sağlaması içindir, [Önceki Rapor] içinde olup da [Json] içinde geçmeyen hususları dikkate alma.
 [Json] temel bilgi kaynağındır. Json içinde yer almayan hususları rapora dahil etme. [json] içinde yeterli bilgi olmadığı zaman rapordaki ilgili bölüme 'Bir gelişme yok' yaz.
 
+Önemli: Ürettiğin rapor ile Json içeriği karşılaştır. Json içerikte olmayan konuları rapordan çıkar.
+
 [Format]:
 *Öne çıkanlar* (maddeler halinde)
 *Etkileşimler*
-(Müşteri Sorunları, kısa maddeler halinde)
-(İç Koordinasyon, maddeler halinde)
 *Proje Güncellemeleri*
-(İçerik ve Kreatif)
-(Influencer İşbirlikleri, influencer isimlerini belirt)
-(Ürün Geliştirme/İyileştirme, ürün isimlerini belirt)
 *Satış ve Pazarlama*
-(Satış İstatistikleri, veri mevcut her site için ayrı istatistik)
-(Strateji Tartışmaları)
 *Operasyonel Sorunlar*
-(Envanter Yönetimi)
-(Rekabet ve Fiyatlandırma)
 *Devam eden sorunlar* (maddeler halinde)
 
 ";

@@ -266,11 +266,11 @@ function openProjectApiGet($href, $params = []) {
 }
 
 function openProjectApiCall($href, $params = []) {
-    $url = "https://op.iwaconcept.com$href";
+    $url = $GLOBALS['openproject']['url'].$href;
+    $apiKey = $GLOBALS['openproject']['key'];
     if (!empty($params)) {
         $url .= '?'.http_build_query($params);
     }
-    $apiKey ='a27fb9d4540f3bd402b6263e494668a5925f1f31615a4e434bb3232c25971bb7';
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -286,9 +286,8 @@ function openProjectApiCall($href, $params = []) {
 }
 
 function openProjectApiPost($href, $payload) {
-    // change content-type to application/json
-    $url = "https://op.iwaconcept.com$href";
-    $apiKey ='a27fb9d4540f3bd402b6263e494668a5925f1f31615a4e434bb3232c25971bb7';
+    $url = $GLOBALS['openproject']['url'].$href;
+    $apiKey = $GLOBALS['openproject']['key'];
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
