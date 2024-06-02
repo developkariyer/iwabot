@@ -69,23 +69,25 @@ if ($t) exit;
 $previousReport = $GLOBALS['pdo']->query('SELECT report FROM slack_summary ORDER BY id DESC LIMIT 1')->fetchColumn();
 
 
-$basePrompt = "Verilen bilgileri kullanarak aşağıdaki [Format] doğrultusunda bir yönetici özeti hazırla.
-Eğer json bölümünde, formatta olan bir başlık ile ilgili bilgi bulamazsan boş bırak.
-Formattaki parantezler sana yol göstermek içindir, nihai raporda onları gösterme.
-Her konunun ilgilisinin ismini parantez içinde belirt.
-Yorum yapma, kısa cümleler kullan ve mümkün olan her yerde maddeler halinde yaz.
-[Önceki Rapor] sana context sağlaması içindir, [Önceki Rapor] içinde olup da [Json] içinde geçmeyen hususları dikkate alma.
-[Json] temel bilgi kaynağındır. Json içinde yer almayan hususları rapora dahil etme. [json] içinde yeterli bilgi olmadığı zaman rapordaki ilgili bölüme 'Bir gelişme yok' yaz.
+$basePrompt = "Using the information below, please prepare a manager summary according to [Format].
+If you can't find information about a title in the [json] section, delete that part.
+Don't include anything in the report that is not in the [json] content.
+Mention the name of the person responsible for each topic in parentheses.
+Keep your comments short and use short sentences, and write in bullet points whenever possible.
+Do not invent information that is not in the [json] content.
+[Json] is the main source of information.
+[Önceki Rapor] is for giving you a context, do not include [Önceki Rapor] if there is no information on that subject in [json].
 
-Önemli: Ürettiğin rapor ile Json içeriği karşılaştır. Json içerikte olmayan konuları rapordan çıkar.
+Following content is in Turkish. Make your final report in Turkish please.
+
 
 [Format]:
-*Öne çıkanlar* (maddeler halinde)
+*Öne çıkanlar*
 *Etkileşimler*
 *Proje Güncellemeleri*
 *Satış ve Pazarlama*
 *Operasyonel Sorunlar*
-*Devam eden sorunlar* (maddeler halinde)
+*Devam eden sorunlar*
 
 ";
 
