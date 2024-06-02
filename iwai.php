@@ -24,6 +24,8 @@ function aiResponse($prompt) {
 
 require_once('_init.php');
 
+$interval = date('N') === '1' ? 259200 : 86400;
+
 $sql = "SELECT
             json->>'$.event.text' AS text,
             json->>'$.event.user' AS user,
@@ -33,7 +35,7 @@ $sql = "SELECT
         FROM rawlog
         WHERE 
             json->>'$.event.type' = 'message'
-            AND json->>'$.event_time' > (UNIX_TIMESTAMP() - 86400)
+            AND json->>'$.event_time' > (UNIX_TIMESTAMP() - $interval)
         ORDER BY channel, event_time
 ";
 
