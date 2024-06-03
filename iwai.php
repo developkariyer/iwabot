@@ -1,5 +1,6 @@
 <?php
 
+
 require 'iwai/vendor/autoload.php';
 use OpenAI;
 
@@ -94,6 +95,11 @@ Following content is in Turkish. Make your final report in Turkish please.
 $prompt = "$basePrompt\n[Önceki Rapor]: $previousReport\n\n\n[json]: $json";
 
 //messageChannel('C072ZHN5YUV', $prompt); exit; // this is test channel 
+
+if (php_sapi_name() === 'cli') {
+    echo $prompt;
+    exit;
+}
 
 $report = aiResponse($prompt);
 
