@@ -2,6 +2,8 @@
 _db.php
 _slack.php
 _openproject.php
+_openai.php
+
 
 # General PHP and editor ignore rules
 /vendor/

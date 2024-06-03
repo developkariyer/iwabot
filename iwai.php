@@ -6,7 +6,7 @@ use OpenAI;
 
 function aiResponse($prompt) {
 
-    $yourApiKey = 'sk-proj-dCYw6lxW1gqltMCT9YPVT3BlbkFJbbfND9MgKuPs0uWFPhPz';
+    $yourApiKey = $GLOBALS['openai'];
     
     $client = OpenAI::client($yourApiKey);
 
