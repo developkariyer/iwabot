@@ -6,8 +6,7 @@ _openai.php
 
 
 # General PHP and editor ignore rules
-/vendor/
-/node_modules/
+
 
 # Environment files
 .env
