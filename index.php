@@ -21,7 +21,7 @@ include '_header.php';
         </center>
     </div>
     <div class="row">
-        <div class="col-4 d-flex flex-column justify-content-center">
+        <div class="col-4 d-flex flex-column ">
             <div class="m-3">
                 <a href="iwalog.php" class="btn btn-primary">Kanal Arşivleri</a>
             </div>
@@ -37,7 +37,7 @@ include '_header.php';
                 <center><a href="iwainfluencers.php" class="btn btn-primary">Influencer Listesi</a></center>
             </div>
         </div>
-        <div class="col-4 d-flex flex-column justify-content-center">
+        <div class="col-4 d-flex flex-column ">
         <?php if (in_array($_SESSION['user_info']['sub'], $GLOBALS['slack']['admins'])): ?>
             <div class="justify-content-center m-3">
                 <center><a href="iwachannels.php" class="btn btn-success">Reload Channels</a></center>
