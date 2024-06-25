@@ -118,11 +118,14 @@ include '_header.php';
             $.ajax({
                 url: 'wh_product_info.php',
                 method: 'POST',
-                data: { barcode: detectedBarcode },
+                data: { 
+                    barcode: detectedBarcode,
+                    shelf: '<?= $shelfId ?>'
+                },
                 dataType: 'json',
                 success: function(response) {
                     productInfo.innerHTML = response.productInfo;
-                    stock = response.stock; // Store stock in the global variable
+                    stock = response.stock;
                     if (stock === 0) {
                         takeButton.disabled = true;
                     } else {
@@ -137,6 +140,7 @@ include '_header.php';
                 }
             });
         };
+
 
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             try {
