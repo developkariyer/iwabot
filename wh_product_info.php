@@ -3,27 +3,51 @@
 require_once('_login.php');
 require_once('_init.php');
 
-// Simulate getting product info based on the barcode
-function getProductInfo($barcode) {
-    // Hypothetical product data for demonstration
-    $productInfo = [
-        '8690793600321' => [
-            'productInfo' => 'Product Name: Example Product<br>Description: This is an example product.<br>Price: $10.00',
-            'stock' => 10
-        ],
-        '9876543210987' => [
-            'productInfo' => 'Product Name: Another Product<br>Description: This is another example product.<br>Price: $20.00',
-            'stock' => 0
-        ]
+if (!isset($_POST['barcode'])) {
+    echo json_encode([
+        'productInfo' => 'Barkod numarası yok.',
+        'stock' => 0
+    ]);
+}
+
+$shelf = $_POST['shelf'] ?? '';
+
+function productInfoArray($product, $shelf) {
+
+    $stmt = $GLOBALS['pdo']->prepare('SELECT count(*) FROM wh_shelf_product WHERE product_id = :product_id');
+    $stmt->execute(['product_id' => $product['id']]);
+    $totalStock = $stmt->fetchColumn();
+
+    if (!empty($shelf)) {
+        $stmt = $GLOBALS['pdo']->prepare('SELECT count(*) FROM wh_shelf_product WHERE product_id = :product_id AND shelf_id = :shelf_id');
+        $stmt->execute(['product_id' => $product['id'], 'shelf_id' => $shelf]);
+        $stock = $stmt->fetchColumn();
+    } else {
+        $stock = 0;
+    }
+
+    return [
+        'productInfo' => "Ürün Adı: {$product['name']}".
+                        "<br>Ürün Kodu: {$product['fnsku']}".
+                        "<br>Kategori: {$product['category']}".
+                        "<br>Ölçüler (metrik): {$product['dimension1']}x{$product['dimension2']}x{$product['dimension3']}cm, {$product['weight']}gr".
+                        "<br>Toplam Stok: $totalStock".
+                        "<br>Raf Stok: $stock",
+        'stock' => $stock,
     ];
-
-    return isset($productInfo[$barcode]) ? $productInfo[$barcode] : ['productInfo' => 'Product information not found.', 'stock' => 0];
 }
 
-if (isset($_POST['barcode'])) {
-    $barcode = $_POST['barcode'];
-    $productInfo = getProductInfo($barcode);
-    echo json_encode($productInfo);
+$barcode = $_POST['barcode'];
+
+$stmt = $GLOBALS['pdo']->prepare('SELECT * FROM wh_product WHERE fnsku = :fnsku LIMIT 1');
+$stmt->execute(['fnsku' => $barcode]);
+
+if ($product = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    echo json_encode(productInfoArray($product, $shelf));
 } else {
-    echo json_encode(['productInfo' => 'No barcode provided.', 'stock' => 0]);
+    echo json_encode([
+        'productInfo' => 'Ürün bilgisi bulunamadı.',
+        'stock' => 0]
+    );
 }
+
