@@ -72,7 +72,7 @@ include '_header.php';
             <video id="video" width="100%" height="400" autoplay></video>
             <p>Scanned Code: <span id="barcode">Waiting...</span></p>
         </div>
-        <div class="input-group mt-4 m-3">
+        <div class="input-group mt-4">
             <input type="text" id="manualBarcode" class="form-control" placeholder="Manuel Barkod Girin">
             <button class="btn btn-primary" id="manualSubmit">Submit</button>
             <button class="btn btn-success" id="openCamera">Kameradan Tara</button>
