@@ -27,6 +27,7 @@ include '_header.php';
             <button type="submit" class="btn btn-primary w-100">Devam</button>
         </form>
     </div>
+    <hr>
     <div class="d-grid gap-2 mt-4 m-3">
         <a href="./wh.php" class="btn btn-secondary btn-lg w-100">Depo Yönetim Ana Sayfa</a>
         <a href="./" class="btn btn-secondary btn-lg w-100">Ana Sayfa</a>
