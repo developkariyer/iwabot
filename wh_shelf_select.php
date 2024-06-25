@@ -26,7 +26,7 @@ include '_header.php';
                 </select>
             </div>
             <!-- hide show fields for new raf/koli based on SELECT value -->
-            <div class="mb-3 d-none" id="newShelf">
+            <div class="mb-3" id="newShelf">
                 <label for="newShelfName" class="form-label">Yeni Raf / Koli Adı</label>
                 <input type="text" class="form-control" id="newShelfName" name="newShelfName">
                 <label for="newShelfType" class="form-label">Tipi</label>
