@@ -23,7 +23,7 @@ if (
         !isset($_POST['actionType']) ||
         !in_array($_POST['actionType'], ['take', 'put'])
     ) {
-    header('Location: wh_shelf_product.php?shelf='.url_encode($_POST['shelf']));
+    header('Location: wh_shelf_product.php?shelf='.urlencode($_POST['shelf']));
     exit;
 }
 
@@ -31,7 +31,7 @@ if (
 $stmt = $GLOBALS['pdo']->prepare('SELECT * FROM wh_product WHERE fnsku = :fnsku LIMIT 1');
 $stmt->execute(['fnsku' => $_POST['barcode']]);
 if (!$product = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    header('Location: wh_shelf_product.php?shelf='.url_encode($_POST['shelf']));
+    header('Location: wh_shelf_product.php?shelf='.urlencode($_POST['shelf']));
     exit;
 }
 
@@ -41,7 +41,7 @@ if ($_POST['actionType'] == 'take') {
     $stmt->execute(['product_id' => $product['id'], 'shelf_id' => $shelf['id']]);
     $stock = $stmt->fetchColumn();
     if ($stock < $_POST['stock']) {
-        header('Location: wh_shelf_product.php?shelf='.url_encode($_POST['shelf']));
+        header('Location: wh_shelf_product.php?shelf='.urlencode($_POST['shelf']));
         exit;
     }
 }
@@ -56,4 +56,4 @@ if ($_POST['actionType'] == 'take') {
     }
 }
 
-header('Location: wh_shelf_product.php?shelf='.url_encode($_POST['shelf']));
+header('Location: wh_shelf_product.php?shelf='.urlencode($_POST['shelf']));
