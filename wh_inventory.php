@@ -89,7 +89,7 @@ include '_header.php';
                             <tr>
                                 <td><?= $product['name'] ?></td>
                                 <td><?= $product['fnsku'] ?></td>
-                                <td><?= $product['shelf_count'] ?></td>
+                                <td><?= "{$product['shelf_count']}/{$productCounts[$product['id']]}" ?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
