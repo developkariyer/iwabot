@@ -221,7 +221,6 @@ include '_header.php';
 
         backButton.addEventListener('click', async () => {
             confirmModal.hide();
-            openCamera();
         });
 
         takeButton.addEventListener('click', () => {
