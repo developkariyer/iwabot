@@ -3,6 +3,8 @@
 require_once('_login.php');
 require_once('_init.php');
 
+$productId = $_GET['product'] ?? '';
+
 $shelfs = $GLOBALS['pdo']->query('SELECT * FROM wh_shelf ORDER BY type DESC, name ASC')->fetchAll(PDO::FETCH_ASSOC);
 $shelf = [];
 foreach ($shelfs as $s) {
@@ -48,12 +50,12 @@ include '_header.php';
                 <?php foreach ($shelf as $s): ?>
                     <?php if ($s['parent_id']) continue; ?>
                     <tr>
-                        <td colspan="3"><h3><?= "{$s['name']} / {$s['type']}" ?><?= $s['parent_id'] ? " Raf: {$shelf[$s['parent_id']]['name']}" : "" ?></h3></td>
+                        <td colspan="3"><h3><a href="wh_shelf_product.php?shelf=<?= $s['id'] ?>"><?= "{$s['name']} / {$s['type']}" ?><?= $s['parent_id'] ? " Raf: {$shelf[$s['parent_id']]['name']}" : "" ?></a></h3></td>
                     </tr>
                     <?php if (!empty($s['children'])): ?>
                         <?php foreach ($s['children'] as $child): ?>
                             <tr>
-                                <td colspan="3"><h4><?= "{$shelf[$child]['name']} / {$shelf[$child]['type']}" ?></h4></td>
+                                <td colspan="3"><h4><a href = "wh_shelf_product.php?shelf=<?= $child ?>"><?= "{$shelf[$child]['name']} / {$shelf[$child]['type']}" ?></a></h4></td>
                             </tr>
                             <?php if (empty($shelf[$child]['products'])): ?>
                                 <tr>
@@ -66,6 +68,7 @@ include '_header.php';
                                     <th>Stok / Toplam</th>
                                 </tr>
                                 <?php foreach ($shelf[$child]['products'] as $product): ?>
+                                    <?php if ($productId && $product['id'] != $productId) continue; ?>
                                     <tr>
                                         <td><?= $product['name'] ?></td>
                                         <td><?= $product['fnsku'] ?></td>
@@ -86,6 +89,7 @@ include '_header.php';
                             <th>Stok / Toplam</th>
                         </tr>
                         <?php foreach ($s['products'] as $product): ?>
+                            <?php if ($productId && $product['id'] != $productId) continue; ?>
                             <tr>
                                 <td><?= $product['name'] ?></td>
                                 <td><?= $product['fnsku'] ?></td>
