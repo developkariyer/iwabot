@@ -40,6 +40,10 @@ include '_header.php';
         <h2>Sayım / Ürün Yerleştir</h2>
         <video id="video" width="100%" height="400" autoplay></video>
         <p>Scanned Code: <span id="barcode">Waiting...</span></p>
+        <div class="input-group mt-3">
+            <input type="text" id="manualBarcode" class="form-control" placeholder="Manuel Barkod Girin">
+            <button class="btn btn-primary" id="manualSubmit">Submit</button>
+        </div>
     </div>
     <div class="d-grid gap-2 m-3 mt-4">
         <a href="./wh.php" class="btn btn-secondary btn-lg w-100">Depo Yönetim Ana Sayfa</a>
@@ -92,8 +96,38 @@ include '_header.php';
         const backButton = document.getElementById('backButton');
         const takeButton = document.getElementById('takeButton');
         const putButton = document.getElementById('putButton');
+        const manualSubmit = document.getElementById('manualSubmit');
+        const manualBarcode = document.getElementById('manualBarcode');
 
         let stream;
+
+        const getProductInfo = (detectedBarcode) => {
+            barcodeElement.innerText = detectedBarcode;
+            modalBarcode.innerText = detectedBarcode;
+            barcodeInput.value = detectedBarcode;
+
+            // Make AJAX call to get product info
+            $.ajax({
+                url: 'wh_product_info.php',
+                method: 'POST',
+                data: { barcode: detectedBarcode },
+                dataType: 'json',
+                success: function(response) {
+                    productInfo.innerHTML = response.productInfo;
+                    if (response.stock === 0) {
+                        takeButton.disabled = true;
+                    } else {
+                        takeButton.disabled = false;
+                    }
+                    confirmModal.show();
+                },
+                error: function() {
+                    productInfo.innerHTML = 'Failed to retrieve product information.';
+                    takeButton.disabled = true;
+                    confirmModal.show();
+                }
+            });
+        };
 
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             try {
@@ -109,33 +143,9 @@ include '_header.php';
                                 const barcodes = await barcodeDetector.detect(video);
                                 if (barcodes.length > 0) {
                                     const detectedBarcode = barcodes[0].rawValue;
-                                    barcodeElement.innerText = detectedBarcode;
-                                    modalBarcode.innerText = detectedBarcode;
-                                    barcodeInput.value = detectedBarcode;
                                     video.pause();
                                     stream.getTracks().forEach(track => track.stop());
-                                    
-                                    // Make AJAX call to get product info
-                                    $.ajax({
-                                        url: 'wh_product_info.php',
-                                        method: 'POST',
-                                        data: { barcode: detectedBarcode },
-                                        dataType: 'json',
-                                        success: function(response) {
-                                            productInfo.innerHTML = response.productInfo;
-                                            if (response.stock === 0) {
-                                                takeButton.disabled = true;
-                                            } else {
-                                                takeButton.disabled = false;
-                                            }
-                                            confirmModal.show();
-                                        },
-                                        error: function() {
-                                            productInfo.innerHTML = 'Failed to retrieve product information.';
-                                            takeButton.disabled = true;
-                                            confirmModal.show();
-                                        }
-                                    });
+                                    getProductInfo(detectedBarcode);
                                 }
                             } catch (error) {
                                 console.error('Barcode detection failed:', error);
@@ -171,6 +181,13 @@ include '_header.php';
         putButton.addEventListener('click', () => {
             actionType.value = 'put';
             barcodeForm.submit();
+        });
+
+        manualSubmit.addEventListener('click', () => {
+            const manualBarcodeValue = manualBarcode.value.trim();
+            if (manualBarcodeValue) {
+                getProductInfo(manualBarcodeValue);
+            }
         });
     });
 </script>
