@@ -32,21 +32,44 @@ if (empty($shelfId)) {
     exit;
 }
 
+// get all products in shelf and show in a table
+$stmt = $GLOBALS['pdo']->prepare('SELECT * FROM wh_shelf_product WHERE shelf_id = :shelf_id');
+$stmt->execute(['shelf_id' => $shelfId]);
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 include '_header.php';
 
 ?>
 <div class="container mt-5">
     <div class="mt-5">
         <h2>Sayım / Ürün Yerleştir</h2>
-        <video id="video" width="100%" height="400" autoplay></video>
-        <p>Scanned Code: <span id="barcode">Waiting...</span></p>
+        <!-- Show shelf name and products in shelf using $products in a table -->
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>İsim</th>
+                    <th>FNSKU</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($products as $product): ?>
+                    <tr>
+                        <td><?= $product['id'] ?></td>
+                        <td><?= $product['name'] ?></td>
+                        <td><?= $product['fnsku'] ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <div class="d-none" id="cameraOpenDiv">
+            <video id="video" width="100%" height="400" autoplay></video>
+            <p>Scanned Code: <span id="barcode">Waiting...</span></p>
+        </div>
         <div class="input-group mt-3">
             <input type="text" id="manualBarcode" class="form-control" placeholder="Manuel Barkod Girin">
             <button class="btn btn-primary" id="manualSubmit">Submit</button>
-        </div>
-        <div class="mt-3">
-            <button class="btn btn-success" id="openCamera">Kamerayı Aç</button>
-            <button class="btn btn-danger" id="closeCamera">Kamerayı Kapat</button>
+            <button class="btn btn-success" id="openCamera">Kameradan Tara</button>
         </div>
     </div>
     <div class="d-grid gap-2 m-3 mt-4">
@@ -110,7 +133,7 @@ include '_header.php';
         const decrementButton = document.getElementById('decrementButton');
         const incrementButton = document.getElementById('incrementButton');
         const openCameraButton = document.getElementById('openCamera');
-        const closeCameraButton = document.getElementById('closeCamera');
+        const cameraOpenDiv = document.getElementById('cameraOpenDiv');
 
         let stream;
         let stock = 0; // Global variable to store stock
@@ -148,6 +171,7 @@ include '_header.php';
         };
 
         const openCamera = async () => {
+            cameraOpenDiv.classList.remove('d-none');
             if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                 try {
                     stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
@@ -236,7 +260,6 @@ include '_header.php';
         });
 
         openCameraButton.addEventListener('click', openCamera);
-        closeCameraButton.addEventListener('click', closeCamera);
     });
 </script>
 
@@ -244,10 +267,3 @@ include '_header.php';
 
 include '_footer.php';
 
-
-/*
-
-// get all products in shelf and show in a table
-$stmt = $GLOBALS['pdo']->prepare('SELECT * FROM wh_shelf_product WHERE shelf_id = :shelf_id');
-$stmt->execute(['shelf_id' => $shelfId]);
-$products = $stmt->fetchAll(PDO::FETCH_ASSOC);*/

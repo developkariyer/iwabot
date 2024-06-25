@@ -19,14 +19,15 @@ include '_header.php';
             <div class="mb-3">
                 <label for="shelf" class="form-label">Raf / Koli Seçin</label>
                 <select class="form-select" id="shelf" name="shelf" required>
-                    <option value="add_new">Yeni Raf / Koli Ekle</option>
+                    <option value="">Seçiniz...</option>
                     <?php foreach ($shelf as $s): ?>
                         <option value="<?= $s['id'] ?>"><?= $s['name'] ?> (<?= $s['type'] ?><?= $s['parent_id'] ? ' / '.$shelf[$s['parent_id']]['name'] : '' ?>)</option>
                     <?php endforeach; ?>
+                    <option value="add_new">Yeni Raf / Koli Ekle</option>
                 </select>
             </div>
             <!-- hide show fields for new raf/koli based on SELECT value -->
-            <div class="mb-3" id="newShelf">
+            <div class="mb-3 d-none" id="newShelf">
                 <label for="newShelfName" class="form-label">Yeni Raf / Koli Adı</label>
                 <input type="text" class="form-control" id="newShelfName" name="newShelfName">
                 <label for="newShelfType" class="form-label">Tipi</label>
