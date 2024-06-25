@@ -107,6 +107,7 @@ include '_header.php';
         const incrementButton = document.getElementById('incrementButton');
 
         let stream;
+        let stock = 0; // Global variable to store stock
 
         const getProductInfo = (detectedBarcode) => {
             barcodeElement.innerText = detectedBarcode;
@@ -121,7 +122,8 @@ include '_header.php';
                 dataType: 'json',
                 success: function(response) {
                     productInfo.innerHTML = response.productInfo;
-                    if (response.stock === 0) {
+                    stock = response.stock; // Store stock in the global variable
+                    if (stock === 0) {
                         takeButton.disabled = true;
                     } else {
                         takeButton.disabled = false;
@@ -200,11 +202,25 @@ include '_header.php';
         decrementButton.addEventListener('click', () => {
             if (quantityInput.value > 1) {
                 quantityInput.value--;
+                if (quantityInput.value <= stock) {
+                    takeButton.disabled = false;
+                }
             }
         });
 
         incrementButton.addEventListener('click', () => {
             quantityInput.value++;
+            if (quantityInput.value > stock) {
+                takeButton.disabled = true;
+            }
+        });
+
+        quantityInput.addEventListener('input', () => {
+            if (quantityInput.value > stock) {
+                takeButton.disabled = true;
+            } else {
+                takeButton.disabled = false;
+            }
         });
     });
 </script>
