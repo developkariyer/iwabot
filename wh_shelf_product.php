@@ -3,31 +3,30 @@
 require_once('_login.php');
 require_once('_init.php');
 
-if (isset($_POST['shelf'])) {
-    $shelfId = $_POST['shelf'];
-    if ($shelfId === 'add_new') {
-        $newShelfName = $_POST['newShelfName'];
-        $newShelfType = $_POST['newShelfType'];
-        $newShelfParent = $_POST['newShelfParent'] ?: null;
+$shelfId = $_GET['shelf'] ?? $_POST['shelf'] ?? null;
 
-        $stmt = $GLOBALS['pdo']->prepare('INSERT INTO wh_shelf (name, type, parent_id) VALUES (:name, :type, :parent_id)');
-        $stmt->execute([
-            'name' => $newShelfName,
-            'type' => $newShelfType,
-            'parent_id' => $newShelfParent
-        ]);
+if ($shelfId === 'add_new') {
+    $newShelfName = $_POST['newShelfName'];
+    $newShelfType = $_POST['newShelfType'];
+    $newShelfParent = $_POST['newShelfParent'] ?: null;
 
-        $shelfId = $GLOBALS['pdo']->lastInsertId();
-    }
-
-    $shelf_check = $GLOBALS['pdo']->prepare('SELECT * FROM wh_shelf WHERE id = :id LIMIT 1');
-    $shelf_check->execute(['id' => $shelfId]);
-    if (!$shelf_check->rowCount()) {
-        unset($shelfId);
-    }
-} 
+    $stmt = $GLOBALS['pdo']->prepare('INSERT INTO wh_shelf (name, type, parent_id) VALUES (:name, :type, :parent_id)');
+    $stmt->execute([
+        'name' => $newShelfName,
+        'type' => $newShelfType,
+        'parent_id' => $newShelfParent
+    ]);
+    $shelfId = $GLOBALS['pdo']->lastInsertId();
+}
 
 if (empty($shelfId)) {
+    header('Location: wh_shelf_select.php');
+    exit;
+}
+
+$shelf_check = $GLOBALS['pdo']->prepare('SELECT * FROM wh_shelf WHERE id = :id LIMIT 1');
+$shelf_check->execute(['id' => $shelfId]);
+if (!$shelf_check->rowCount()) {
     header('Location: wh_shelf_select.php');
     exit;
 }
