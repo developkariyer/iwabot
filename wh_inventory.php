@@ -7,6 +7,12 @@ $shelfs = $GLOBALS['pdo']->query('SELECT * FROM wh_shelf ORDER BY type DESC, nam
 $shelf = [];
 foreach ($shelfs as $s) {
     $shelf[$s['id']] = $s;
+    if ($s['parent_id'] && isset($shelf[$s['parent_id']])) {
+        if (!isset($shelf[$s['parent_id']]['children'])) {
+            $shelf[$s['parent_id']]['children'] = [];
+        }
+        $shelf[$s['parent_id']]['children'][] = $s['id'];
+    }
 }
 
 $productCounts = [];
@@ -38,23 +44,72 @@ include '_header.php';
     <div class="mt-4 m-3">
         <h2>Depo Listesi</h2>
         <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Ürün Adı</th>
-                    <th>Ürün Kodu</th>
-                    <th>Stok / Toplam</th>
-                </tr>
-            </thead>
             <tbody>
                 <?php foreach ($shelf as $s): ?>
+                    <?php if ($s['parent_id']) continue; ?>
                     <tr>
-                        <td colspan="3"><h2><?= "{$s['name']} / {$s['type']}" ?><?= $s['parent_id'] ? " Raf: {$shelf[$s['parent_id']]['name']}" : "" ?></h2></td>
+                        <td colspan="3"><h3><?= "{$s['name']} / {$s['type']}" ?><?= $s['parent_id'] ? " Raf: {$shelf[$s['parent_id']]['name']}" : "" ?></h3></td>
+                    </tr>
+                    <?php if (!empty($s['children'])): ?>
+                        <?php foreach ($s['children'] as $child): ?>
+                            <tr>
+                                <td colspan="3"><h4><?= "{$shelf[$child]['name']} / {$shelf[$child]['type']}" ?></h4></td>
+                            </tr>
+                            <?php if (empty($shelf[$child]['products'])): ?>
+                                <tr>
+                                    <td colspan="3"><?= $shelf[$child]['type'] ?> boş.</td>
+                                </tr>
+                            <?php else: ?>
+                                <tr>
+                                    <th>Ürün Adı</th>
+                                    <th>Ürün Kodu</th>
+                                    <th>Stok / Toplam</th>
+                                </tr>
+                                <?php foreach ($shelf[$child]['products'] as $product): ?>
+                                    <tr>
+                                        <td><?= $product['name'] ?></td>
+                                        <td><?= $product['fnsku'] ?></td>
+                                        <td><?= $product['shelf_count'] ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <tr>
+                        <td colspan="3"><h3><?= "{$s['name']} / {$s['type']}" ?><?= $s['parent_id'] ? " Raf: {$shelf[$s['parent_id']]['name']}" : "" ?></h3></td>
                     </tr>
                     <?php if (empty($s['products'])): ?>
                         <tr>
-                            <td colspan="3">Raf / Koli boş.</td>
+                            <td colspan="3"><?= $s['type'] ?> boş.</td>
                         </tr>
                     <?php else: ?>
+                        <tr>
+                            <th>Ürün Adı</th>
+                            <th>Ürün Kodu</th>
+                            <th>Stok / Toplam</th>
+                        </tr>
+                        <?php foreach ($s['products'] as $product): ?>
+                            <tr>
+                                <td><?= $product['name'] ?></td>
+                                <td><?= $product['fnsku'] ?></td>
+                                <td><?= $product['shelf_count'] ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+
+
+
+
+
+                    <?php if (empty($s['products'])): ?>
+                        <tr>
+                            <td colspan="3"><?= $s['type'] ?> boş.</td>
+                        </tr>
+                    <?php else: ?>
+                        <tr>
+                            <th>Ürün Adı</th>
+                            <th>Ürün Kodu</th>
+                            <th>Stok / Toplam</th>
+                        </tr>
                         <?php foreach ($s['products'] as $product): ?>
                             <tr>
                                 <td><?= $product['name'] ?></td>
