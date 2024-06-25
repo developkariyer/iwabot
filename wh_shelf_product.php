@@ -44,6 +44,10 @@ include '_header.php';
             <input type="text" id="manualBarcode" class="form-control" placeholder="Manuel Barkod Girin">
             <button class="btn btn-primary" id="manualSubmit">Submit</button>
         </div>
+        <div class="mt-3">
+            <button class="btn btn-success" id="openCamera">Kamerayı Aç</button>
+            <button class="btn btn-danger" id="closeCamera">Kamerayı Kapat</button>
+        </div>
     </div>
     <div class="d-grid gap-2 m-3 mt-4">
         <a href="./wh.php" class="btn btn-secondary btn-lg w-100">Depo Yönetim Ana Sayfa</a>
@@ -105,6 +109,8 @@ include '_header.php';
         const quantityInput = document.getElementById('quantity');
         const decrementButton = document.getElementById('decrementButton');
         const incrementButton = document.getElementById('incrementButton');
+        const openCameraButton = document.getElementById('openCamera');
+        const closeCameraButton = document.getElementById('closeCamera');
 
         let stream;
         let stock = 0; // Global variable to store stock
@@ -120,12 +126,12 @@ include '_header.php';
                 method: 'POST',
                 data: { 
                     barcode: detectedBarcode,
-                    shelf: '<?= $shelfId ?>'
+                    shelf: '<?= $shelfId ?>' // Send shelf value in the AJAX request
                 },
                 dataType: 'json',
                 success: function(response) {
                     productInfo.innerHTML = response.productInfo;
-                    stock = response.stock;
+                    stock = response.stock; // Store stock in the global variable
                     if (stock === 0) {
                         takeButton.disabled = true;
                     } else {
@@ -141,49 +147,51 @@ include '_header.php';
             });
         };
 
+        const openCamera = async () => {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                try {
+                    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                    video.srcObject = stream;
 
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            try {
-                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-                video.srcObject = stream;
+                    const barcodeDetector = new BarcodeDetector({ formats: ['code_128', 'ean_13', 'qr_code'] });
 
-                const barcodeDetector = new BarcodeDetector({ formats: ['code_128', 'ean_13', 'qr_code'] });
-
-                video.addEventListener('play', () => {
-                    const scanBarcode = async () => {
-                        if (video.readyState === video.HAVE_ENOUGH_DATA) {
-                            try {
-                                const barcodes = await barcodeDetector.detect(video);
-                                if (barcodes.length > 0) {
-                                    const detectedBarcode = barcodes[0].rawValue;
-                                    video.pause();
-                                    stream.getTracks().forEach(track => track.stop());
-                                    getProductInfo(detectedBarcode);
+                    video.addEventListener('play', () => {
+                        const scanBarcode = async () => {
+                            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                                try {
+                                    const barcodes = await barcodeDetector.detect(video);
+                                    if (barcodes.length > 0) {
+                                        const detectedBarcode = barcodes[0].rawValue;
+                                        video.pause();
+                                        stream.getTracks().forEach(track => track.stop());
+                                        getProductInfo(detectedBarcode);
+                                    }
+                                } catch (error) {
+                                    console.error('Barcode detection failed:', error);
                                 }
-                            } catch (error) {
-                                console.error('Barcode detection failed:', error);
                             }
-                        }
-                        requestAnimationFrame(scanBarcode);
-                    };
-                    scanBarcode();
-                });
-            } catch (error) {
-                console.error('Error accessing the camera:', error);
+                            requestAnimationFrame(scanBarcode);
+                        };
+                        scanBarcode();
+                    });
+                } catch (error) {
+                    console.error('Error accessing the camera:', error);
+                }
+            } else {
+                alert('getUserMedia is not supported by your browser');
             }
-        } else {
-            alert('getUserMedia is not supported by your browser');
-        }
+        };
+
+        const closeCamera = () => {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+            }
+        };
 
         backButton.addEventListener('click', async () => {
             confirmModal.hide();
-            try {
-                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-                video.srcObject = stream;
-                video.play();
-            } catch (error) {
-                console.error('Error restarting the camera:', error);
-            }
+            openCamera();
         });
 
         takeButton.addEventListener('click', () => {
@@ -226,6 +234,9 @@ include '_header.php';
                 takeButton.disabled = false;
             }
         });
+
+        openCameraButton.addEventListener('click', openCamera);
+        closeCameraButton.addEventListener('click', closeCamera);
     });
 </script>
 
@@ -233,3 +244,10 @@ include '_header.php';
 
 include '_footer.php';
 
+
+/*
+
+// get all products in shelf and show in a table
+$stmt = $GLOBALS['pdo']->prepare('SELECT * FROM wh_shelf_product WHERE shelf_id = :shelf_id');
+$stmt->execute(['shelf_id' => $shelfId]);
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);*/
