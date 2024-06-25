@@ -8,7 +8,8 @@ include '_header.php';
 ?>
 <div class="container mt-5">
     <div class="jumbotron text-center">
-        <h1>IWA Depo Yönetime hoş geldiniz, <span class="username"><?= $_SESSION['user_info']['name'] ?></span></h1>
+        <h1>IWA Depo Yönetim</h1>
+        <p><span class="username"><?= $_SESSION['user_info']['name'] ?></span></p>
         <p>Lütfen yapmak istediğiniz işlemi seçiniz.</p>
     </div>
     <div class="d-grid gap-2 m-3">
