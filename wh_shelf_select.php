@@ -13,7 +13,7 @@ include '_header.php';
 
 ?>
 <div class="container mt-5">
-    <div class="mt-4">
+    <div class="mt-4 m-3">
         <h2>Raf / Koli Seçin</h2>
         <form action="wh_shelf_product.php" method="POST">
             <div class="mb-3">
