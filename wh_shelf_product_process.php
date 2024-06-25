@@ -20,8 +20,8 @@ if (!$shelf = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
 if (
         !isset($_POST['barcode']) || 
-        !isset($_POST['stock']) || 
-        !is_numeric($_POST['stock']) ||
+        !isset($_POST['quantity']) || 
+        !is_numeric($_POST['quantity']) ||
         !isset($_POST['actionType']) ||
         !in_array($_POST['actionType'], ['take', 'put'])
     ) {
@@ -44,7 +44,7 @@ if ($_POST['actionType'] == 'take') {
     $stmt = $GLOBALS['pdo']->prepare('SELECT count(*) FROM wh_shelf_product WHERE product_id = :product_id AND shelf_id = :shelf_id');
     $stmt->execute(['product_id' => $product['id'], 'shelf_id' => $shelf['id']]);
     $stock = $stmt->fetchColumn();
-    if ($stock < $_POST['stock']) {
+    if ($stock < $_POST['quantity']) {
         error_log('Not enough stock');
         header('Location: wh_shelf_product.php?shelf='.urlencode($_POST['shelf']));
         exit;
@@ -54,11 +54,11 @@ if ($_POST['actionType'] == 'take') {
 if ($_POST['actionType'] == 'take') {
     error_log('Taking stock');
     $stmt = $GLOBALS['pdo']->prepare('DELETE FROM wh_shelf_product WHERE product_id = :product_id AND shelf_id = :shelf_id LIMIT :stock');
-    $stmt->execute(['product_id' => $product['id'], 'shelf_id' => $shelf['id'], 'stock' => $_POST['stock']]);
+    $stmt->execute(['product_id' => $product['id'], 'shelf_id' => $shelf['id'], 'quantity' => $_POST['quantity']]);
 } else {
     error_log('Putting stock');
     $stmt = $GLOBALS['pdo']->prepare('INSERT INTO wh_shelf_product (product_id, shelf_id) VALUES (:product_id, :shelf_id)');
-    for ($t=0;$t<$_POST['stock'];$t++) {
+    for ($t=0;$t<$_POST['quantity'];$t++) {
         $stmt->execute(['product_id' => $product['id'], 'shelf_id' => $shelf['id']]);
     }
 }
