@@ -22,8 +22,11 @@ include '_header.php';
     </div>
     <div class="row">
         <div class="col-4 d-flex justify-content-center">
-            <div class="m-3">
+        <div class="m-3">
                 <a href="iwalog.php" class="btn btn-primary">Kanal Arşivleri</a>
+            </div>
+            <div class="m-3">
+                <a href="wh.php" class="btn btn-primary">Depo Yönetim</a>
             </div>
         </div>
         <div class="col-4 d-flex flex-column    ">
