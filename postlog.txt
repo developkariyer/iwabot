@@ -1,0 +1,91 @@
+2024-06-06 22:01:21Array
+(
+    [id] => 12070125620
+    [kind] => todo_deleted
+    [details] => Array
+        (
+            [status_was] => trashed
+        )
+
+    [created_at] => 2024-06-07T01:01:20.699+03:00
+    [recording] => Array
+        (
+            [id] => 7390292749
+            [status] => deleted
+            [visible_to_clients] => 
+            [created_at] => 2024-05-13T00:08:13.744+03:00
+            [updated_at] => 2024-06-07T01:01:20.692+03:00
+            [title] => aadgdga
+            [inherits_status] => 
+            [type] => Todo
+            [url] => https://3.basecampapi.com/5615861/buckets/37362929/todos/7390292749.json
+            [app_url] => https://3.basecamp.com/5615861/buckets/37362929/todos/7390292749
+            [bookmark_url] => https://3.basecampapi.com/5615861/my/bookmarks/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaTVuYVdRNkx5OWlZek12VW1WamIzSmthVzVuTHpjek9UQXlPVEkzTkRrX1pYaHdhWEpsYzE5cGJnWTZCa1ZVIiwiZXhwIjpudWxsLCJwdXIiOiJyZWFkYWJsZSJ9fQ==--e22b9b5e286c2c70f16d4d4b29c684d21cc0af51.json
+            [subscription_url] => https://3.basecampapi.com/5615861/buckets/37362929/recordings/7390292749/subscription.json
+            [parent] => Array
+                (
+                    [id] => 7363600924
+                    [title] => Depo
+                    [type] => Todolist
+                    [url] => https://3.basecampapi.com/5615861/buckets/37362929/todolists/7363600924.json
+                    [app_url] => https://3.basecamp.com/5615861/buckets/37362929/todolists/7363600924
+                )
+
+            [bucket] => Array
+                (
+                    [id] => 37362929
+                    [name] => Wayfair
+                    [type] => Project
+                )
+
+            [creator] => Array
+                (
+                    [id] => 45917692
+                    [attachable_sgid] => eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588
+                    [name] => Umut
+                    [email_address] => iwa@kariyerfora.com
+                    [personable_type] => Tombstone
+                    [title] => Project Manager
+                    [bio] => 
+                    [location] => 
+                    [created_at] => 2024-04-26T20:13:29.863+03:00
+                    [updated_at] => 2024-05-13T11:51:24.278+03:00
+                    [admin] => 
+                    [owner] => 
+                    [client] => 
+                    [employee] => 
+                    [time_zone] => Europe/Moscow
+                    [avatar_url] => https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1
+                    [can_ping] => 1
+                    [can_manage_projects] => 
+                    [can_manage_people] => 
+                )
+
+            [content] => aadgdga
+        )
+
+    [creator] => Array
+        (
+            [id] => 45917692
+            [attachable_sgid] => eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWxuYVdRNkx5OWlZek12VUdWeWMyOXVMelExT1RFM05qa3lQMlY0Y0dseVpYTmZhVzRHT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImF0dGFjaGFibGUifX0=--43aac4a9a0513336ff7bef5036c5b8833b77a588
+            [name] => Umut
+            [email_address] => iwa@kariyerfora.com
+            [personable_type] => Tombstone
+            [title] => Project Manager
+            [bio] => 
+            [location] => 
+            [created_at] => 2024-04-26T20:13:29.863+03:00
+            [updated_at] => 2024-05-13T11:51:24.278+03:00
+            [admin] => 
+            [owner] => 
+            [client] => 
+            [employee] => 
+            [time_zone] => Europe/Moscow
+            [avatar_url] => https://bc3-production-assets-cdn.basecamp-static.com/5615861/people/BAhpBPylvAI=--53632c54488520c14583f6d27441a8fc9006db24/avatar?v=1
+            [can_ping] => 1
+            [can_manage_projects] => 
+            [can_manage_people] => 
+        )
+
+)
+
