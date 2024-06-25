@@ -17,6 +17,8 @@ if ($shelfId === 'add_new') {
         'parent_id' => $newShelfParent
     ]);
     $shelfId = $GLOBALS['pdo']->lastInsertId();
+    header('Location: wh_shelf_product.php?shelf='.$shelfId);
+    exit;
 }
 
 if (empty($shelfId)) {

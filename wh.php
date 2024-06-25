@@ -16,7 +16,7 @@ include '_header.php';
         <a href="wh_shelf_select.php" class="btn btn-primary btn-lg w-100">Sayım / Ürün Yerleştir</a>
     </div>
     <div class="d-grid gap-2 m-3 mt-4">
-        <a href="wh_" class="btn btn-primary btn-lg w-100">Güncel Depo Listesi</a>
+        <a href="wh_inventory.php" class="btn btn-primary btn-lg w-100">Güncel Depo Listesi</a>
     </div>
     <div class="d-grid gap-2 m-3 mt-4">
         <a href="./" class="btn btn-secondary btn-lg w-100">Ana Sayfa</a>
