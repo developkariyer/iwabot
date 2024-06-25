@@ -19,8 +19,30 @@ include '_header.php';
             <div class="mb-3">
                 <label for="shelf" class="form-label">Raf / Koli Seçin</label>
                 <select class="form-select" id="shelf" name="shelf" required>
+                    <option value="">Seçin</option>
+                    <option value="add_new">Yeni Raf / Koli Ekle</option>
                     <?php foreach ($shelf as $s): ?>
                         <option value="<?= $s['id'] ?>"><?= $s['name'] ?> (<?= $s['type'] ?><?= $s['parent_id'] ? ' / '.$shelf[$s['parent_id']]['name'] : '' ?>)</option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <!-- hide show fields for new raf/koli based on SELECT value -->
+            <div class="mb-3 d-none" id="newShelf">
+                <label for="newShelfName" class="form-label">Yeni Raf / Koli Adı</label>
+                <input type="text" class="form-control" id="newShelfName" name="newShelfName">
+                <label for="newShelfType" class="form-label">Tipi</label>
+                <select class="form-select" id="newShelfType" name="newShelfType">
+                    <option value="Raf">Raf</option>
+                    <option value="Koli (Açılmış)">Koli (Açılmış)</option>
+                    <option value="Koli (Kapalı)">Koli (Kapalı)</option>
+                </select>
+                <label for="newShelfParent" class="form-label">Koli ise Rafı</label>
+                <select class="form-select" id="newShelfParent" name="newShelfParent">
+                    <option value="">Yok</option>
+                    <?php foreach ($shelf as $s): ?>
+                        <?php if ($s['type'] == 'Raf'): ?>
+                            <option value="<?= $s['id'] ?>"><?= $s['name'] ?></option>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 </select>
             </div>
@@ -35,7 +57,22 @@ include '_header.php';
     </div>
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const shelfSelect = document.getElementById('shelf');
+        const newShelfDiv = document.getElementById('newShelf');
+
+        shelfSelect.addEventListener('change', function() {
+            if (this.value === 'add_new') {
+                newShelfDiv.classList.remove('d-none');
+            } else {
+                newShelfDiv.classList.add('d-none');
+            }
+        });
+    });
+</script>
 
 <?php
 
 include '_footer.php';
+
