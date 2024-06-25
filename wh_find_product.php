@@ -10,9 +10,6 @@ include '_header.php';
     <div class="mt-5">
         <h2>Barcode Scanner</h2>
         <video id="video" width="100%" height="400" autoplay></video>
-        <form id="barcodeForm" action="process_barcode.php" method="POST" class="d-none">
-            <input type="text" id="barcodeInput" name="barcode">
-        </form>
         <p>Scanned Code: <span id="barcode">Waiting...</span></p>
     </div>
     <div class="d-grid gap-2 m-3 mt-4">
@@ -27,11 +24,12 @@ include '_header.php';
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="confirmModalLabel">Barcode Detected</h5>
+                <h5 class="modal-title" id="confirmModalLabel">Product Information</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Barcode: <span id="modal-barcode"></span><br>
+                <div id="product-info">Loading...</div>
+                <p>Barcode: <span id="modal-barcode"></span></p>
                 Do you want to use this barcode?
             </div>
             <div class="modal-footer">
@@ -42,14 +40,19 @@ include '_header.php';
     </div>
 </div>
 
+<form id="barcodeForm" action="process_barcode.php" method="POST" class="d-none">
+    <input type="text" id="barcodeInput" name="barcode">
+</form>
 
 <script src="https://cdn.jsdelivr.net/npm/@undecaf/zbar-wasm@0.9.15/dist/index.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@undecaf/barcode-detector-polyfill@0.9.20/dist/index.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", async function () {
         const video = document.getElementById('video');
         const barcodeElement = document.getElementById('barcode');
         const modalBarcode = document.getElementById('modal-barcode');
+        const productInfo = document.getElementById('product-info');
         const barcodeInput = document.getElementById('barcodeInput');
         const barcodeForm = document.getElementById('barcodeForm');
         const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
@@ -76,7 +79,21 @@ include '_header.php';
                                     modalBarcode.innerText = detectedBarcode;
                                     video.pause();
                                     stream.getTracks().forEach(track => track.stop());
-                                    confirmModal.show();
+                                    
+                                    // Make AJAX call to get product info
+                                    $.ajax({
+                                        url: 'wh_product_info.php',
+                                        method: 'POST',
+                                        data: { barcode: detectedBarcode },
+                                        success: function(response) {
+                                            productInfo.innerHTML = response;
+                                            confirmModal.show();
+                                        },
+                                        error: function() {
+                                            productInfo.innerHTML = 'Failed to retrieve product information.';
+                                            confirmModal.show();
+                                        }
+                                    });
                                 }
                             } catch (error) {
                                 console.error('Barcode detection failed:', error);
@@ -95,7 +112,7 @@ include '_header.php';
 
         acceptButton.addEventListener('click', () => {
             barcodeInput.value = modalBarcode.innerText;
-            //barcodeForm.submit();
+            barcodeForm.submit();
         });
 
         rejectButton.addEventListener('click', async () => {
