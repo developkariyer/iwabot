@@ -13,15 +13,15 @@ include '_header.php';
         <p>Lütfen yapmak istediğiniz işlemi seçiniz.</p>
     </div>
     <div class="d-grid gap-2 m-3">
-        <a href="wh_find_product.php" class="btn btn-primary btn-lg w-100">Ürün Bul</a>
-        <a href="wh_" class="btn btn-primary btn-lg w-100">Kutu Bul</a>
+        <a href="wh_shelf_select.php" class="btn btn-primary btn-lg w-100">Sayım / Ürün Yerleştir</a>
+        <a href="wh_find_product.php" class="btn btn-primary btn-lg w-100">Ürün Nerede?</a>
+        <a href="wh_" class="btn btn-primary btn-lg w-100">Kutu Nerede?</a>
     </div>
     <div class="d-grid gap-2 m-3 mt-4">
         <a href="wh_" class="btn btn-primary btn-lg w-100">Raftan/Kutudan Ürün Al</a>
         <a href="wh_" class="btn btn-primary btn-lg w-100">Rafa/Kutuya Ürün Koy</a>
     </div>
     <div class="d-grid gap-2 m-3 mt-4">
-        <a href="wh_shelf_select.php" class="btn btn-primary btn-lg w-100">Sayım / Ürün Yerleştir</a>
         <a href="wh_" class="btn btn-primary btn-lg w-100"></a>
     </div>
     <div class="d-grid gap-2 m-3 mt-4">

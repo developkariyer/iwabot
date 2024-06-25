@@ -68,7 +68,11 @@ include '_header.php';
                     <input type="hidden" id="barcodeInput" name="barcode">
                     <input type="hidden" id="actionType" name="actionType">
                     <label for="quantity" class="form-label">İşlem Yapılacak Miktar</label>
-                    <input type="number" id="quantity" name="quantity" value="1" min="1" required inputmode="numeric">
+                    <div class="input-group">
+                        <button type="button" class="btn btn-outline-secondary" id="decrementButton">-</button>
+                        <input type="number" id="quantity" name="quantity" value="1" min="1" required inputmode="numeric" class="form-control text-center">
+                        <button type="button" class="btn btn-outline-secondary" id="incrementButton">+</button>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" id="backButton">Geri Dön</button>
@@ -98,6 +102,9 @@ include '_header.php';
         const putButton = document.getElementById('putButton');
         const manualSubmit = document.getElementById('manualSubmit');
         const manualBarcode = document.getElementById('manualBarcode');
+        const quantityInput = document.getElementById('quantity');
+        const decrementButton = document.getElementById('decrementButton');
+        const incrementButton = document.getElementById('incrementButton');
 
         let stream;
 
@@ -188,6 +195,16 @@ include '_header.php';
             if (manualBarcodeValue) {
                 getProductInfo(manualBarcodeValue);
             }
+        });
+
+        decrementButton.addEventListener('click', () => {
+            if (quantityInput.value > 1) {
+                quantityInput.value--;
+            }
+        });
+
+        incrementButton.addEventListener('click', () => {
+            quantityInput.value++;
         });
     });
 </script>
