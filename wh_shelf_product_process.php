@@ -53,8 +53,10 @@ if ($_POST['actionType'] == 'take') {
 
 if ($_POST['actionType'] == 'take') {
     error_log('Taking stock');
-    $stmt = $GLOBALS['pdo']->prepare('DELETE FROM wh_shelf_product WHERE product_id = :product_id AND shelf_id = :shelf_id LIMIT :quantity');
-    $stmt->execute(['product_id' => $product['id'], 'shelf_id' => $shelf['id'], 'quantity' => $_POST['quantity']]);
+    $stmt = $GLOBALS['pdo']->prepare('DELETE FROM wh_shelf_product WHERE product_id = :product_id AND shelf_id = :shelf_id LIMIT 1');
+    for ($t=0;$t<$_POST['quantity'];$t++) {
+        $stmt->execute(['product_id' => $product['id'], 'shelf_id' => $shelf['id']]);
+    }
 } else {
     error_log('Putting stock');
     $stmt = $GLOBALS['pdo']->prepare('INSERT INTO wh_shelf_product (product_id, shelf_id) VALUES (:product_id, :shelf_id)');
