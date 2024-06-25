@@ -120,12 +120,19 @@ include '_header.php';
                                         url: 'wh_product_info.php',
                                         method: 'POST',
                                         data: { barcode: detectedBarcode },
+                                        dataType: 'json',
                                         success: function(response) {
-                                            productInfo.innerHTML = response;
+                                            productInfo.innerHTML = response.productInfo;
+                                            if (response.stock === 0) {
+                                                takeButton.disabled = true;
+                                            } else {
+                                                takeButton.disabled = false;
+                                            }
                                             confirmModal.show();
                                         },
                                         error: function() {
                                             productInfo.innerHTML = 'Failed to retrieve product information.';
+                                            takeButton.disabled = true;
                                             confirmModal.show();
                                         }
                                     });
