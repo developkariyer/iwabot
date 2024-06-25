@@ -33,7 +33,12 @@ if (empty($shelfId)) {
 }
 
 // get all products in shelf and show in a table
-$stmt = $GLOBALS['pdo']->prepare('SELECT * FROM wh_shelf_product WHERE shelf_id = :shelf_id');
+$stmt = $GLOBALS['pdo']->prepare('SELECT wsp.product_id AS id, wp.name AS name, wp.fnsku AS fnsku, COUNT(*) AS shelf_count 
+FROM wh_shelf_product wsp 
+JOIN wh_product wp ON wp.id = wsp.product_id
+WHERE wsp.shelf_id = :shelf_id 
+GROUP BY wsp.product_id, wp.name, wp.fnsku');
+
 $stmt->execute(['shelf_id' => $shelfId]);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -58,6 +63,7 @@ include '_header.php';
                         <td><?= $product['id'] ?></td>
                         <td><?= $product['name'] ?></td>
                         <td><?= $product['fnsku'] ?></td>
+                        <td><?= $product['shelf_count'] ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
