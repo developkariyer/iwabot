@@ -67,12 +67,10 @@ $content .= '<a href="https://slack.com/openid/connect/authorize?response_type=c
 include('_header.php');
 ?>
 <div class="container">
-    <div class="jumbotron m-5 p-5">
-        <center>
+    <div class="jumbotron m-5 p-5 text-center">
         <h1>Welcome to IWA Bot, <span class="username"><?= $_SESSION['user_info']['name'] ?? '' ?></span></h1>
         <p>Click the button below to login with your Slack account.</p>
         <?php echo $content; ?>
-        </center>
     </div>
 </div>
 <?php
