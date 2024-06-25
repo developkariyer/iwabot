@@ -1,5 +1,6 @@
 <?php
 
+require_once('_login.php');
 require_once('_init.php');
 
 function getProductInfo($productCode) {
