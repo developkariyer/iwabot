@@ -21,7 +21,7 @@ include '_header.php';
         <a href="wh_" class="btn btn-primary btn-lg">Rafa/Kutuya Ürün Koy</a>
     </div>
     <div class="d-grid gap-2 m-3 mt-4">
-        <a href="wh_shelf_product.php" class="btn btn-primary btn-lg">Sayım / Ürün Yerleştir</a>
+        <a href="wh_shelf_select.php" class="btn btn-primary btn-lg">Sayım / Ürün Yerleştir</a>
         <a href="wh_" class="btn btn-primary btn-lg"></a>
     </div>
     <div class="d-grid gap-2 m-3 mt-4">
