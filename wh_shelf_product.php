@@ -48,22 +48,22 @@ include '_header.php';
 <div class="container mt-5">
     <div class="mt-5">
         <h2>Sayım / Ürün Yerleştir</h2>
-        <!-- Show shelf name and products in shelf using $products in a table -->
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>İsim</th>
                     <th>FNSKU</th>
+                    <th>Raf Adedi</th>
+                    <th>SEÇ</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($products as $product): ?>
                     <tr>
-                        <td><?= $product['id'] ?></td>
                         <td><?= $product['name'] ?></td>
                         <td><?= $product['fnsku'] ?></td>
                         <td><?= $product['shelf_count'] ?></td>
+                        <td><button class="btn btn-primary select-button" data-fnsku="<?= $product['fnsku'] ?>">Seç</button></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
@@ -72,7 +72,7 @@ include '_header.php';
             <video id="video" width="100%" height="400" autoplay></video>
             <p>Scanned Code: <span id="barcode">Waiting...</span></p>
         </div>
-        <div class="input-group mt-3">
+        <div class="input-group mt-4 m-3">
             <input type="text" id="manualBarcode" class="form-control" placeholder="Manuel Barkod Girin">
             <button class="btn btn-primary" id="manualSubmit">Submit</button>
             <button class="btn btn-success" id="openCamera">Kameradan Tara</button>
@@ -239,6 +239,13 @@ include '_header.php';
             if (manualBarcodeValue) {
                 getProductInfo(manualBarcodeValue);
             }
+        });
+
+        document.querySelectorAll('.select-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const fnsku = button.getAttribute('data-fnsku');
+                getProductInfo(fnsku);
+            });
         });
 
         decrementButton.addEventListener('click', () => {
