@@ -27,8 +27,8 @@ include '_header.php';
         <a href="wh_" class="btn btn-primary btn-lg">Güncel Depo Listesi</a>
     </div>
     <div class="d-grid gap-2 m-3 mt-4">
-        <a href="./" class="btn btn-secondary">Ana Sayfa</a>
-        <a href="./?logout=1" class="btn btn-danger">Logout</a>
+        <a href="./" class="btn btn-secondary btn-lg">Ana Sayfa</a>
+        <a href="./?logout=1" class="btn btn-danger btn-lg">Logout</a>
     </div>
     </div>
 </div>

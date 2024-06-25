@@ -19,23 +19,23 @@ include '_header.php';
         <p>Lütfen yapmak istediğiniz işlemi seçiniz.</p>
     </div>
     <div class="d-grid gap-2 m-3">
-        <a href="iwalog.php" class="btn btn-primary">Kanal Arşivleri</a>
-        <a href="wh.php" class="btn btn-primary">Depo Yönetim</a>
+        <a href="wh.php" class="btn btn-primary btn-lg">Depo Yönetim</a>
+        <a href="iwalog.php" class="btn btn-primary btn-lg">Kanal Arşivleri</a>
     </div>
     <div class="d-grid gap-2 m-3 mt-4">
-        <a href="iwaaudiourl.php" class="btn btn-primary">Audio URL Kütüphanesi</a>
-        <a href="iwainfluencers.php" class="btn btn-primary">Influencer Listesi</a>
+        <a href="iwaaudiourl.php" class="btn btn-primary btn-lg">Audio URL Kütüphanesi</a>
+        <a href="iwainfluencers.php" class="btn btn-primary btn-lg">Influencer Listesi</a>
     </div>
     <?php if (in_array($_SESSION['user_info']['sub'], $GLOBALS['slack']['admins'])): ?>
         <div class="d-grid gap-2 m-3 mt-4">
-            <a href="iwachannels.php" class="btn btn-success">Reload Channels</a>
-            <a href="iwausers.php" class="btn btn-success">Assing Users to Channels</a>
-            <a href="iwauserinfo.php" class="btn btn-success">Reload Users</a>
-            <a href="iwaemoji.php" class="btn btn-success">Reload Emojis</a>
+            <a href="iwachannels.php" class="btn btn-success btn-lg">Reload Channels</a>
+            <a href="iwausers.php" class="btn btn-success btn-lg">Assing Users to Channels</a>
+            <a href="iwauserinfo.php" class="btn btn-success btn-lg">Reload Users</a>
+            <a href="iwaemoji.php" class="btn btn-success btn-lg">Reload Emojis</a>
         </div>
     <?php endif; ?>
     <div class="d-grid gap-2 m-3 mt-4">
-        <a href="./?logout=1" class="btn btn-danger">Logout</a>
+        <a href="./?logout=1" class="btn btn-danger btn-lg">Logout</a>
     </div>
 </div>
 
