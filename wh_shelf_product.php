@@ -44,10 +44,18 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 include '_header.php';
 
+$stmt = $GLOBALS['pdo']->prepare('SELECT * FROM wh_shelf WHERE id = :id LIMIT 1');
+$stmt->execute(['id' => $shelfId]);
+$shelfDetails = $stmt->fetch(PDO::FETCH_ASSOC);
+if ($shelfDetails['parent_id']) {
+    $stmt->execute(['id' => $shelfDetails['parent_id']]);
+    $parentShelfDetails = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 ?>
 <div class="container mt-5">
     <div class="mt-5">
-        <h2>Sayım / Ürün Yerleştir</h2>
+        <h2><?= $shelfDetails['name'] ?> (<?= $shelfDetails['type'] ?>)<?=  empty($parentShelfDetails) ? '' : ' Raf: '.$parentShelfDetails['name'] ?></h2>
         <table class="table table-bordered">
             <thead>
                 <tr>
