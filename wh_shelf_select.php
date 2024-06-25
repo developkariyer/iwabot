@@ -19,7 +19,6 @@ include '_header.php';
             <div class="mb-3">
                 <label for="shelf" class="form-label">Raf / Koli Seçin</label>
                 <select class="form-select" id="shelf" name="shelf" required>
-                    <option value="">Seçin</option>
                     <option value="add_new">Yeni Raf / Koli Ekle</option>
                     <?php foreach ($shelf as $s): ?>
                         <option value="<?= $s['id'] ?>"><?= $s['name'] ?> (<?= $s['type'] ?><?= $s['parent_id'] ? ' / '.$shelf[$s['parent_id']]['name'] : '' ?>)</option>
