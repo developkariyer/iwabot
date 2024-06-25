@@ -55,7 +55,7 @@ if ($shelfDetails['parent_id']) {
 ?>
 <div class="container mt-5">
     <div class="mt-5">
-        <h2><?= $shelfDetails['name'] ?> (<?= $shelfDetails['type'] ?>)<?=  empty($parentShelfDetails) ? '' : ' Raf: '.$parentShelfDetails['name'] ?></h2>
+        <h2><?= $shelfDetails['name'] ?> / <?= $shelfDetails['type'] ?><?=  empty($parentShelfDetails) ? '' : ' Raf: '.$parentShelfDetails['name'] ?></h2>
         <table class="table table-bordered">
             <thead>
                 <tr>
