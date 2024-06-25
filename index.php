@@ -14,7 +14,7 @@ include '_header.php';
 
 ?>
 <div class="container mt-5">
-    <div class="jumbotron m-5 p-5 text-center">
+    <div class="jumbotron text-center">
         <h1>IWA Bot'a hoş geldiniz, <span class="username"><?= $_SESSION['user_info']['name'] ?></span></h1>
         <p>Lütfen yapmak istediğiniz işlemi seçiniz.</p>
     </div>
