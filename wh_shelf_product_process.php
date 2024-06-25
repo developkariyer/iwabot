@@ -25,7 +25,7 @@ if (
         !isset($_POST['actionType']) ||
         !in_array($_POST['actionType'], ['take', 'put'])
     ) {
-        error_log('Invalid post data');
+        error_log('Invalid post data: '.json_encode($_POST));
     header('Location: wh_shelf_product.php?shelf='.urlencode($_POST['shelf']));
     exit;
 }
