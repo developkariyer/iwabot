@@ -10,6 +10,9 @@ include '_header.php';
     <div class="mt-5">
         <h2>Barcode Scanner</h2>
         <video id="video" width="100%" height="400" autoplay></video>
+        <form id="barcodeForm" action="process_barcode.php" method="POST" class="d-none">
+            <input type="text" id="barcodeInput" name="barcode">
+        </form>
         <p>Scanned Code: <span id="barcode">Waiting...</span></p>
     </div>
     <div class="d-grid gap-2 m-3 mt-4">
@@ -39,9 +42,6 @@ include '_header.php';
     </div>
 </div>
 
-<form id="barcodeForm" action="process_barcode.php" method="POST" class="d-none">
-    <input type="text" id="barcodeInput" name="barcode">
-</form>
 
 <script src="https://cdn.jsdelivr.net/npm/@undecaf/zbar-wasm@0.9.15/dist/index.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@undecaf/barcode-detector-polyfill@0.9.20/dist/index.js"></script>
@@ -95,7 +95,7 @@ include '_header.php';
 
         acceptButton.addEventListener('click', () => {
             barcodeInput.value = modalBarcode.innerText;
-            barcodeForm.submit();
+            //barcodeForm.submit();
         });
 
         rejectButton.addEventListener('click', async () => {
