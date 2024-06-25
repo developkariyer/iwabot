@@ -31,8 +31,12 @@ include '_header.php';
         <a href="./" class="btn btn-secondary btn-lg">Ana Sayfa</a>
         <a href="./?logout=1" class="btn btn-danger btn-lg">Logout</a>
     </div>
-    </div>
-</div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@undecaf/zbar-wasm@0.9.15/dist/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@undecaf/barcode-detector-polyfill@0.9.20/dist/index.js"></script>
+    <video autoplay></video>
+    <p id="barcode">Waiting...</p>
 </div>
 <?php
 
