@@ -68,7 +68,7 @@ include '_header.php';
                     <input type="hidden" id="barcodeInput" name="barcode">
                     <input type="hidden" id="actionType" name="actionType">
                     <label for="quantity" class="form-label">İşlem Yapılacak Miktar</label>
-                    <input type="number" id="quantity" name="quantity" value="1" min="1" required>
+                    <input type="number" id="quantity" name="quantity" value="1" min="1" required inputmode="numeric">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" id="backButton">Geri Dön</button>
