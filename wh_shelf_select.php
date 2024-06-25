@@ -3,7 +3,7 @@
 require_once('_login.php');
 require_once('_init.php');
 
-$shelfs = $GLOBALS['pdo']->query('SELECT * FROM wh_shelf ORDER BY type, name ASC')->fetchAll(PDO::FETCH_ASSOC);
+$shelfs = $GLOBALS['pdo']->query('SELECT * FROM wh_shelf ORDER BY type DESC, name ASC')->fetchAll(PDO::FETCH_ASSOC);
 $shelf = [];
 foreach ($shelfs as $s) {
     $shelf[$s['id']] = $s;
