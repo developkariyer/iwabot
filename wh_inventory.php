@@ -75,9 +75,6 @@ include '_header.php';
                             <?php endif; ?>
                         <?php endforeach; ?>
                     <?php endif; ?>
-                    <tr>
-                        <td colspan="3"><h3><?= "{$s['name']} / {$s['type']}" ?><?= $s['parent_id'] ? " Raf: {$shelf[$s['parent_id']]['name']}" : "" ?></h3></td>
-                    </tr>
                     <?php if (empty($s['products'])): ?>
                         <tr>
                             <td colspan="3"><?= $s['type'] ?> boş.</td>
