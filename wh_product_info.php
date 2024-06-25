@@ -7,7 +7,7 @@ require_once('_init.php');
 function getProductInfo($barcode) {
     // Hypothetical product data for demonstration
     $productInfo = [
-        '1234567890123' => [
+        '8690793600321' => [
             'productInfo' => 'Product Name: Example Product<br>Description: This is an example product.<br>Price: $10.00',
             'stock' => 10
         ],
