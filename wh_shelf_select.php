@@ -13,7 +13,7 @@ include '_header.php';
 
 ?>
 <div class="container mt-5">
-    <div class="mt-4">
+    <div class="mt-4 m-3">
         <h2>Raf / Koli Seçin</h2>
         <form action="wh_shelf_product.php" method="POST">
             <div class="mb-3">
@@ -27,7 +27,7 @@ include '_header.php';
             <button type="submit" class="btn btn-primary w-100">Devam</button>
         </form>
     </div>
-    <div class="d-grid gap-2 mt-4">
+    <div class="d-grid gap-2 mt-4 m-3">
         <a href="./wh.php" class="btn btn-secondary btn-lg w-100">Depo Yönetim Ana Sayfa</a>
         <a href="./" class="btn btn-secondary btn-lg w-100">Ana Sayfa</a>
         <a href="./?logout=1" class="btn btn-danger btn-lg w-100">Logout</a>
