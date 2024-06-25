@@ -17,6 +17,7 @@ include '_header.php';
     </div>
     <div class="d-grid gap-2 m-3 mt-4">
         <a href="wh_" class="btn btn-primary btn-lg w-100">Güncel Depo Listesi</a>
+        <a href="wh_ios_test.php" class="btn btn-primary btn-lg w-100">IOS Test</a>
     </div>
     <div class="d-grid gap-2 m-3 mt-4">
         <a href="./" class="btn btn-secondary btn-lg w-100">Ana Sayfa</a>
