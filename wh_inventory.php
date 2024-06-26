@@ -71,10 +71,9 @@ function productRow($shelf)
         $retval .= "<a href='wh_shelf_product.php?shelf={$shelf['id']}&fnsku={$product['fnsku']}'>";
         $retval .= "{$product['name']}";
         $retval .= "</a> <small>{$product['fnsku']}, {$product['shelf_count']} / {$productCounts[$product['id']]}</small>";
-/*        $retval .= "<div style='float: right;'>";
-        $retval .= "<button class='btn btn-primary'>İşlem 1</button>";
-        $retval .= "<button class='btn btn-secondary'>İşlem 2</button>";
-        $retval .= "</div>";*/
+        $retval .= "<div style='float: right;'>";
+        $retval .= "<button class='btn btn-primary'>+/-</button>";
+        $retval .= "</div>";
         $retval .= "</li>";
     }
     $retval .= "</ul>";
