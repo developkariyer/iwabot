@@ -74,9 +74,6 @@ include '_header.php';
                     <h3>
                         <a href="wh_shelf_product.php?shelf=<?= $s['id'] ?>"><?= $s['name'] ?></a>
                         / <?= $s['type'] ?>
-                        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<?= $sIndex ?>" aria-expanded="false" aria-controls="collapse-<?= $sIndex ?>">
-                            Show Products
-                        </button>
                     </h3>
                     <ul>
                         <?php if (!empty($s['children'])): ?>
@@ -85,9 +82,7 @@ include '_header.php';
                                     <h4>
                                         <a href="wh_shelf_product.php?shelf=<?= $child ?>"><?= $shelf[$child]['name'] ?></a>
                                         / <?= $shelf[$child]['type'] ?>
-                                        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-child-<?= $childIndex ?>" aria-expanded="false" aria-controls="collapse-child-<?= $childIndex ?>">
-                                            Show Products
-                                        </button>
+                                        <button class="btn btn-link btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-child-<?= $childIndex ?>" aria-expanded="false" aria-controls="collapse-child-<?= $childIndex ?>">+</button>
                                     </h4>
                                     <?= productRow($shelf[$child], "child-$childIndex") ?>
                                 </li>
@@ -96,9 +91,7 @@ include '_header.php';
                         <li>
                             <h4>
                                 Raftaki Açık Ürünler
-                                <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-main-<?= $sIndex ?>" aria-expanded="false" aria-controls="collapse-main-<?= $sIndex ?>">
-                                    Show Products
-                                </button>
+                                <button class="btn btn-link btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-main-<?= $sIndex ?>" aria-expanded="false" aria-controls="collapse-main-<?= $sIndex ?>">+</button>
                             </h4>
                             <?= productRow($s, "main-$sIndex") ?>
                         </li>
