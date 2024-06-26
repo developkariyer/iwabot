@@ -38,42 +38,22 @@ foreach ($shelf as $key => $s) {
     }
 }
 
-/*
-                    <?php if (empty($s['products'])): ?>
-                        <p><?= $s['type'] ?> boş.</p>
-                    <?php else: ?>
-                        <ul>
-                            <?php foreach ($s['products'] as $product): ?>
-                                <?php if ($productId && $product['id'] != $productId) continue; ?>
-                                <li>
-                                    <?= "{$product['name']} (Kod: {$product['fnsku']}, Stok: {$product['shelf_count']} / Toplam: {$productCounts[$product['id']]})" ?>
-                                    <div style="float: right;">
-                                        <button class="btn btn-primary">İşlem 1</button>
-                                        <button class="btn btn-secondary">İşlem 2</button>
-                                    </div>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                    <?php endif; ?>
-
-*/
-
-function productRow($shelf)
+function productRow($shelf, $collapseId)
 {
     global $productCounts;
     if (empty($shelf['products'])) {
         return "<p>{$shelf['type']} boş.</p>";
     }
 
-    $retval = "<ul>";
+    $retval = "<ul class='collapse' id='collapse-$collapseId'>";
     foreach ($shelf['products'] as $product) {
         $retval .= "<li>";
         $retval .= "<a href='wh_shelf_product.php?shelf={$shelf['id']}&fnsku={$product['fnsku']}'>";
         $retval .= "{$product['name']}";
         $retval .= "</a> <small>{$product['fnsku']}, {$product['shelf_count']} / {$productCounts[$product['id']]}</small>";
-        $retval .= "<div style='float: right;'>";
-        $retval .= "<button class='btn btn-primary'>+/-</button>";
-        $retval .= "</div>";
+//        $retval .= "<div style='float: right;'>";
+//        $retval .= "<button class='btn btn-primary'>+/-</button>";
+//        $retval .= "</div>";
         $retval .= "</li>";
     }
     $retval .= "</ul>";
@@ -88,28 +68,39 @@ include '_header.php';
     <div class="mt-4 m-3">
         <h2>Depo Listesi</h2>
         <ul>
-            <?php foreach ($shelf as $s): ?>
+            <?php foreach ($shelf as $sIndex => $s): ?>
                 <?php if ($s['parent_id']) continue; ?>
                 <li>
                     <h3>
                         <a href="wh_shelf_product.php?shelf=<?= $s['id'] ?>"><?= $s['name'] ?></a>
                         / <?= $s['type'] ?>
+                        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<?= $sIndex ?>" aria-expanded="false" aria-controls="collapse-<?= $sIndex ?>">
+                            Show Products
+                        </button>
                     </h3>
                     <ul>
                         <?php if (!empty($s['children'])): ?>
-                            <?php foreach ($s['children'] as $child): ?>
+                            <?php foreach ($s['children'] as $childIndex => $child): ?>
                                 <li>
                                     <h4>
                                         <a href="wh_shelf_product.php?shelf=<?= $child ?>"><?= $shelf[$child]['name'] ?></a>
                                         / <?= $shelf[$child]['type'] ?>
+                                        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-child-<?= $childIndex ?>" aria-expanded="false" aria-controls="collapse-child-<?= $childIndex ?>">
+                                            Show Products
+                                        </button>
                                     </h4>
-                                    <?= productRow($shelf[$child]) ?>
+                                    <?= productRow($shelf[$child], "child-$childIndex") ?>
                                 </li>
                             <?php endforeach; ?>
                         <?php endif; ?>
                         <li>
-                            <h4>Raftaki Açık Ürünler</h4>
-                            <?= productRow($s) ?>
+                            <h4>
+                                Raftaki Açık Ürünler
+                                <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-main-<?= $sIndex ?>" aria-expanded="false" aria-controls="collapse-main-<?= $sIndex ?>">
+                                    Show Products
+                                </button>
+                            </h4>
+                            <?= productRow($s, "main-$sIndex") ?>
                         </li>
                     </ul>
                 </li>
