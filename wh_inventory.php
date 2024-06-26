@@ -91,19 +91,15 @@ include '_header.php';
                 <?php if ($s['parent_id']) continue; ?>
                 <li>
                     <h3>
-                        <a href="wh_shelf_product.php?shelf=<?= $s['id'] ?>">
-                            <?= $s['name'] ?><?= $s['parent_id'] ? " Raf: {$shelf[$s['parent_id']]['name']}" : "" ?>
-                        </a>
-                        <?= $s['type'] ?>
+                        <a href="wh_shelf_product.php?shelf=<?= $s['id'] ?>"><?= $s['name'] ?></a>
+                        / <?= $s['type'] ?>
                     </h3>
                     <ul>
                         <?php if (!empty($s['children'])): ?>
                             <?php foreach ($s['children'] as $child): ?>
                                 <li>
                                     <h4>
-                                        <a href="wh_shelf_product.php?shelf=<?= $child ?>">
-                                            <?= $shelf[$child]['name'] ?>
-                                        </a>
+                                        <a href="wh_shelf_product.php?shelf=<?= $child ?>"><?= $shelf[$child]['name'] ?></a>
                                         / <?= $shelf[$child]['type'] ?>
                                     </h4>
                                     <?= productRow($shelf[$child]) ?>
