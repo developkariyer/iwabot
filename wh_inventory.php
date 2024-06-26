@@ -71,18 +71,18 @@ include '_header.php';
                     <h3>
                         <a href="wh_shelf_product.php?shelf=<?= $s['id'] ?>"><?= $s['name'] ?></a>
                         / <?= $s['type'] ?>
-                        <span class="badge bg-primary float-end" data-bs-toggle="collapse" data-bs-target="#collapse-box<?= $s['id'] ?>" aria-expanded="false" aria-controls="collapse-child-<?= $childIndex ?>" style="cursor: pointer;"><?= count($s['children']) ?></span>
+                        <span class="badge bg-primary float-end" data-bs-toggle="collapse" data-bs-target="#collapse-box<?= $sIndex ?>" aria-expanded="false" aria-controls="collapse-box<?= $sIndex ?>" style="cursor: pointer;"><?= count($s['children']) ?></span>
                     </h3>
-                    <ul class='collapse' id='collapse-box<?= $s['id'] ?>'>
+                    <ul class='collapse' id='collapse-box<?= $sIndex ?>'>
                         <?php if (!empty($s['children'])): ?>
                             <?php foreach ($s['children'] as $childIndex => $child): ?>
                                 <li>
                                     <h4>
                                         <a href="wh_shelf_product.php?shelf=<?= $child ?>"><?= $shelf[$child]['name'] ?></a>
                                         / <?= $shelf[$child]['type'] ?>
-                                        <span class="badge bg-secondary float-end" data-bs-toggle="collapse" data-bs-target="#collapse-child-<?= $childIndex ?>" aria-expanded="false" aria-controls="collapse-child-<?= $childIndex ?>" style="cursor: pointer;"><?= count($shelf[$child]['products']) ?></span>
+                                        <span class="badge bg-secondary float-end" data-bs-toggle="collapse" data-bs-target="#collapse-child-<?= $child ?>" aria-expanded="false" aria-controls="collapse-child-<?= $child ?>" style="cursor: pointer;"><?= count($shelf[$child]['products']) ?></span>
                                     </h4>
-                                    <?= productRow($shelf[$child], "child-$childIndex") ?>
+                                    <?= productRow($shelf[$child], "child-$child") ?>
                                 </li>
                             <?php endforeach; ?>
                         <?php endif; ?>
