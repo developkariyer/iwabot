@@ -92,8 +92,9 @@ include '_header.php';
                 <li>
                     <h3>
                         <a href="wh_shelf_product.php?shelf=<?= $s['id'] ?>">
-                            <?= "{$s['name']} / {$s['type']}" ?><?= $s['parent_id'] ? " Raf: {$shelf[$s['parent_id']]['name']}" : "" ?>
+                            <?= $s['name'] ?><?= $s['parent_id'] ? " Raf: {$shelf[$s['parent_id']]['name']}" : "" ?>
                         </a>
+                        <?= $s['type'] ?>
                     </h3>
                     <ul>
                         <?php if (!empty($s['children'])): ?>
@@ -101,9 +102,9 @@ include '_header.php';
                                 <li>
                                     <h4>
                                         <a href="wh_shelf_product.php?shelf=<?= $child ?>">
-                                            Koli: <?= $shelf[$child]['name'] ?>
+                                            <?= $shelf[$child]['name'] ?>
                                         </a>
-                                        <?= $shelf[$child]['type'] ?>
+                                        / <?= $shelf[$child]['type'] ?>
                                     </h4>
                                     <?= productRow($shelf[$child]) ?>
                                 </li>
