@@ -68,7 +68,7 @@ function productRow($shelf)
     $retval = "<ul>";
     foreach ($shelf['products'] as $product) {
         $retval .= "<li>";
-        $retval .= "<a href='wh_shelf_product.php?shelf={$shelf['id']}&fnsku={$product['fnsku']}?'>";
+        $retval .= "<a href='wh_shelf_product.php?shelf={$shelf['id']}&fnsku={$product['fnsku']}'>";
         $retval .= "{$product['name']}";
         $retval .= "</a> <small>{$product['fnsku']}, {$product['shelf_count']} / {$productCounts[$product['id']]}</small>";
 /*        $retval .= "<div style='float: right;'>";
