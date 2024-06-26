@@ -95,8 +95,8 @@ include '_header.php';
                             <?= "{$s['name']} / {$s['type']}" ?><?= $s['parent_id'] ? " Raf: {$shelf[$s['parent_id']]['name']}" : "" ?>
                         </a>
                     </h3>
-                    <?php if (!empty($s['children'])): ?>
-                        <ul>
+                    <ul>
+                        <?php if (!empty($s['children'])): ?>
                             <?php foreach ($s['children'] as $child): ?>
                                 <li>
                                     <h4>
@@ -108,12 +108,12 @@ include '_header.php';
                                     <?= productRow($shelf[$child]) ?>
                                 </li>
                             <?php endforeach; ?>
-                        </ul>
-                    <?php endif; ?>
-                    <li>
-                        <h4>Raftaki Açık Ürünler</h4>
-                        <?= productRow($s) ?>
-                    </li>
+                        <?php endif; ?>
+                        <li>
+                            <h4>Raftaki Açık Ürünler</h4>
+                            <?= productRow($s) ?>
+                        </li>
+                    </ul>
                 </li>
             <?php endforeach; ?>
         </ul>
