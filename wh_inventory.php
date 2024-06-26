@@ -41,7 +41,15 @@ foreach ($shelf as $key => $s) {
 function productRow($shelf, $collapseId)
 {
     global $productCounts;
-    $retval = "<ul class='collapse' id='collapse-$collapseId'>";
+    $retval = "<li><h4><a href='wh_shelf_product.php?shelf={$shelf['id']}'>";
+    if ($shelf['type'] === 'Raf') {
+        $retval.="Raftaki Açık Ürünler</a>";
+    }
+    else {
+        $retval .= "{$shelf['name']}</a> / {$shelf['type']}";
+    }
+    $retval.="<span class='badge bg-secondary float-end' data-bs-toggle='collapse' data-bs-target='#collapse-$collapseId' aria-expanded='false' aria-controls='collapse-$collapseId' style='cursor: pointer;'>".count($shelf['products'])."</span>";
+    $retval.="</h4><ul class='collapse' id='collapse-$collapseId'>";
     if (empty($shelf['products'])) {
         $retval .= "<p>{$shelf['type']} boş.</p>";
     } else {
@@ -53,7 +61,7 @@ function productRow($shelf, $collapseId)
             $retval .= "</li>";
         }
     }
-    $retval .= "</ul>";
+    $retval .= "</ul></li>";
     return $retval;
 }
 
@@ -71,28 +79,17 @@ include '_header.php';
                     <h3>
                         <a href="wh_shelf_product.php?shelf=<?= $s['id'] ?>"><?= $s['name'] ?></a>
                         / <?= $s['type'] ?>
-                        <span class="badge bg-primary float-end" data-bs-toggle="collapse" data-bs-target="#collapse-box<?= $sIndex ?>" aria-expanded="false" aria-controls="collapse-box<?= $sIndex ?>" style="cursor: pointer;"><?= empty($s['children']) ? 0 : count($s['children']) ?></span>
+                        <span class="badge bg-primary float-end small" data-bs-toggle="collapse" data-bs-target="#collapse-box<?= $sIndex ?>" aria-expanded="false" aria-controls="collapse-box<?= $sIndex ?>" style="cursor: pointer;">
+                            <?= empty($s['children']) ? 0 : count($s['children']) ?> Koli
+                        </span>
                     </h3>
                     <ul class='collapse' id='collapse-box<?= $sIndex ?>'>
                         <?php if (!empty($s['children'])): ?>
                             <?php foreach ($s['children'] as $childIndex => $child): ?>
-                                <li>
-                                    <h4>
-                                        <a href="wh_shelf_product.php?shelf=<?= $child ?>"><?= $shelf[$child]['name'] ?></a>
-                                        / <?= $shelf[$child]['type'] ?>
-                                        <span class="badge bg-secondary float-end" data-bs-toggle="collapse" data-bs-target="#collapse-child-<?= $child ?>" aria-expanded="false" aria-controls="collapse-child-<?= $child ?>" style="cursor: pointer;"><?= count($shelf[$child]['products']) ?></span>
-                                    </h4>
-                                    <?= productRow($shelf[$child], "child-$child") ?>
-                                </li>
+                                <?= productRow($shelf[$child], "child-$child") ?>
                             <?php endforeach; ?>
                         <?php endif; ?>
-                        <li>
-                            <h4>
-                                Raftaki Açık Ürünler
-                                <span class="badge bg-secondary float-end" data-bs-toggle="collapse" data-bs-target="#collapse-main-<?= $sIndex ?>" aria-expanded="false" aria-controls="collapse-main-<?= $sIndex ?>" style="cursor: pointer;"><?= count($s['products']) ?></span>
-                            </h4>
-                            <?= productRow($s, "main-$sIndex") ?>
-                        </li>
+                        <?= productRow($s, "main-$sIndex") ?>
                     </ul>
                 </li>
             <?php endforeach; ?>
