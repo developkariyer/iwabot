@@ -49,7 +49,7 @@ function productRow($shelf, $collapseId)
             $retval .= "<li>";
             $retval .= "<a href='wh_shelf_product.php?shelf={$shelf['id']}&fnsku={$product['fnsku']}'>";
             $retval .= "{$product['name']}";
-            $retval .= "</a> <small><span style='white-space: nowrap;'>FNSKU: {$product['fnsku']}</span>, <span style='white-space: nowrap;'>{$product['shelf_count']} / {$productCounts[$product['id']]}</span></small>";
+            $retval .= "</a> <small><span style='white-space: nowrap;'>{$product['fnsku']}, {$product['shelf_count']}/{$productCounts[$product['id']]}</span></small>";
             $retval .= "</li>";
         }
     }
