@@ -110,10 +110,10 @@ include '_header.php';
                             <?php endforeach; ?>
                         </ul>
                     <?php endif; ?>
-                    <ul>
-                        Raftaki Açık Ürünler
+                    <li>
+                        <h4>Raftaki Açık Ürünler</h4>
                         <?= productRow($s) ?>
-                    </ul>
+                    </li>
                 </li>
             <?php endforeach; ?>
         </ul>
