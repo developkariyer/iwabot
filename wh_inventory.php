@@ -50,9 +50,6 @@ function productRow($shelf, $collapseId)
             $retval .= "<a href='wh_shelf_product.php?shelf={$shelf['id']}&fnsku={$product['fnsku']}'>";
             $retval .= "{$product['name']}";
             $retval .= "</a> <small>{$product['fnsku']}, {$product['shelf_count']} / {$productCounts[$product['id']]}</small>";
-    //        $retval .= "<div style='float: right;'>";
-    //        $retval .= "<button class='btn btn-primary'>+/-</button>";
-    //        $retval .= "</div>";
             $retval .= "</li>";
         }
     }
@@ -82,7 +79,7 @@ include '_header.php';
                                     <h4>
                                         <a href="wh_shelf_product.php?shelf=<?= $child ?>"><?= $shelf[$child]['name'] ?></a>
                                         / <?= $shelf[$child]['type'] ?>
-                                        <button class="btn btn-link btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-child-<?= $childIndex ?>" aria-expanded="false" aria-controls="collapse-child-<?= $childIndex ?>">+</button>
+                                        <span class="badge bg-secondary float-end" data-bs-toggle="collapse" data-bs-target="#collapse-child-<?= $childIndex ?>" aria-expanded="false" aria-controls="collapse-child-<?= $childIndex ?>" style="cursor: pointer;"><?= count($shelf[$child]['products']) ?></span>
                                     </h4>
                                     <?= productRow($shelf[$child], "child-$childIndex") ?>
                                 </li>
@@ -91,7 +88,7 @@ include '_header.php';
                         <li>
                             <h4>
                                 Raftaki Açık Ürünler
-                                <button class="btn btn-link btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-main-<?= $sIndex ?>" aria-expanded="false" aria-controls="collapse-main-<?= $sIndex ?>">+</button>
+                                <span class="badge bg-secondary float-end" data-bs-toggle="collapse" data-bs-target="#collapse-main-<?= $sIndex ?>" aria-expanded="false" aria-controls="collapse-main-<?= $sIndex ?>" style="cursor: pointer;"><?= count($s['products']) ?></span>
                             </h4>
                             <?= productRow($s, "main-$sIndex") ?>
                         </li>
