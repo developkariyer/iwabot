@@ -43,6 +43,8 @@ GROUP BY wsp.product_id, wp.name, wp.fnsku');
 $stmt->execute(['shelf_id' => $shelfId]);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+$fnsku = $_GET['fnsku'] ?? null;
+
 include '_header.php';
 
 $stmt = $GLOBALS['pdo']->prepare('SELECT * FROM wh_shelf WHERE id = :id LIMIT 1');
@@ -54,6 +56,9 @@ if ($shelfDetails['parent_id']) {
 }
 
 ?>
+<script>
+    const fnskuFromGet = <?= json_encode($fnsku) ?>;
+</script>
 <div class="container mt-5">
     <div class="mt-5">
         <h2><?= $shelfDetails['name'] ?> / <?= $shelfDetails['type'] ?><?=  empty($parentShelfDetails) ? '' : ' Raf: '.$parentShelfDetails['name'] ?></h2>
@@ -281,10 +286,14 @@ if ($shelfDetails['parent_id']) {
         });
 
         openCameraButton.addEventListener('click', openCamera);
+
+        // Check if fnskuFromGet is provided
+        if (fnskuFromGet) {
+            getProductInfo(fnskuFromGet);
+        }
     });
 </script>
 
 <?php
 
 include '_footer.php';
-

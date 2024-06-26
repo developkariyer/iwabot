@@ -19,7 +19,7 @@ foreach ($shelfs as $s) {
 
 $productCounts = [];
 
-foreach ($shelf as $key=>$s) {
+foreach ($shelf as $key => $s) {
     $stmt = $GLOBALS['pdo']->prepare('SELECT wsp.product_id AS id, wp.name AS name, wp.fnsku AS fnsku, COUNT(*) AS shelf_count 
     FROM wh_shelf_product wsp 
     JOIN wh_product wp ON wp.id = wsp.product_id
@@ -45,61 +45,55 @@ include '_header.php';
 <div class="container mt-5">
     <div class="mt-4 m-3">
         <h2>Depo Listesi</h2>
-        <table class="table table-striped">
-            <tbody>
-                <?php foreach ($shelf as $s): ?>
-                    <?php if ($s['parent_id']) continue; ?>
-                    <tr>
-                        <td colspan="3"><h3><a href="wh_shelf_product.php?shelf=<?= $s['id'] ?>"><?= "{$s['name']} / {$s['type']}" ?><?= $s['parent_id'] ? " Raf: {$shelf[$s['parent_id']]['name']}" : "" ?></a></h3></td>
-                    </tr>
+        <ul>
+            <?php foreach ($shelf as $s): ?>
+                <?php if ($s['parent_id']) continue; ?>
+                <li>
+                    <h3><a href="wh_shelf_product.php?shelf=<?= $s['id'] ?>"><?= "{$s['name']} / {$s['type']}" ?><?= $s['parent_id'] ? " Raf: {$shelf[$s['parent_id']]['name']}" : "" ?></a></h3>
                     <?php if (!empty($s['children'])): ?>
-                        <?php foreach ($s['children'] as $child): ?>
-                            <tr>
-                                <td colspan="3"><h4><a href = "wh_shelf_product.php?shelf=<?= $child ?>"><?= "{$shelf[$child]['name']} / {$shelf[$child]['type']}" ?></a></h4></td>
-                            </tr>
-                            <?php if (empty($shelf[$child]['products'])): ?>
-                                <tr>
-                                    <td colspan="3"><?= $shelf[$child]['type'] ?> boş.</td>
-                                </tr>
-                            <?php else: ?>
-                                <tr>
-                                    <th>Ürün Adı</th>
-                                    <th>Ürün Kodu</th>
-                                    <th>Stok / Toplam</th>
-                                </tr>
-                                <?php foreach ($shelf[$child]['products'] as $product): ?>
-                                    <?php if ($productId && $product['id'] != $productId) continue; ?>
-                                    <tr>
-                                        <td><?= $product['name'] ?></td>
-                                        <td><?= $product['fnsku'] ?></td>
-                                        <td><?= "{$product['shelf_count']} / {$productCounts[$product['id']]}" ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
+                        <ul>
+                            <?php foreach ($s['children'] as $child): ?>
+                                <li>
+                                    <h4><a href="wh_shelf_product.php?shelf=<?= $child ?>"><?= "{$shelf[$child]['name']} / {$shelf[$child]['type']}" ?></a></h4>
+                                    <?php if (empty($shelf[$child]['products'])): ?>
+                                        <p><?= $shelf[$child]['type'] ?> boş.</p>
+                                    <?php else: ?>
+                                        <ul>
+                                            <?php foreach ($shelf[$child]['products'] as $product): ?>
+                                                <?php if ($productId && $product['id'] != $productId) continue; ?>
+                                                <li>
+                                                    <?= "{$product['name']} (Kod: {$product['fnsku']}, Stok: {$product['shelf_count']} / Toplam: {$productCounts[$product['id']]})" ?>
+                                                    <div style="float: right;">
+                                                        <button class="btn btn-primary">İşlem 1</button>
+                                                        <button class="btn btn-secondary">İşlem 2</button>
+                                                    </div>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    <?php endif; ?>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
                     <?php endif; ?>
                     <?php if (empty($s['products'])): ?>
-                        <tr>
-                            <td colspan="3"><?= $s['type'] ?> boş.</td>
-                        </tr>
+                        <p><?= $s['type'] ?> boş.</p>
                     <?php else: ?>
-                        <tr>
-                            <th>Ürün Adı</th>
-                            <th>Ürün Kodu</th>
-                            <th>Stok / Toplam</th>
-                        </tr>
-                        <?php foreach ($s['products'] as $product): ?>
-                            <?php if ($productId && $product['id'] != $productId) continue; ?>
-                            <tr>
-                                <td><?= $product['name'] ?></td>
-                                <td><?= $product['fnsku'] ?></td>
-                                <td><?= "{$product['shelf_count']} / {$productCounts[$product['id']]}" ?></td>
-                            </tr>
-                        <?php endforeach; ?>
+                        <ul>
+                            <?php foreach ($s['products'] as $product): ?>
+                                <?php if ($productId && $product['id'] != $productId) continue; ?>
+                                <li>
+                                    <?= "{$product['name']} (Kod: {$product['fnsku']}, Stok: {$product['shelf_count']} / Toplam: {$productCounts[$product['id']]})" ?>
+                                    <div style="float: right;">
+                                        <button class="btn btn-primary">İşlem 1</button>
+                                        <button class="btn btn-secondary">İşlem 2</button>
+                                    </div>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
                     <?php endif; ?>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                </li>
+            <?php endforeach; ?>
+        </ul>
     </div>
     <div class="d-grid gap-2 mt-4 m-3">
         <a href="./wh.php" class="btn btn-secondary btn-lg w-100">Depo Yönetim Ana Sayfa</a>
