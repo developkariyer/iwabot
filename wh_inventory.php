@@ -41,20 +41,20 @@ foreach ($shelf as $key => $s) {
 function productRow($shelf, $collapseId)
 {
     global $productCounts;
-    if (empty($shelf['products'])) {
-        return "<p>{$shelf['type']} boş.</p>";
-    }
-
     $retval = "<ul class='collapse' id='collapse-$collapseId'>";
-    foreach ($shelf['products'] as $product) {
-        $retval .= "<li>";
-        $retval .= "<a href='wh_shelf_product.php?shelf={$shelf['id']}&fnsku={$product['fnsku']}'>";
-        $retval .= "{$product['name']}";
-        $retval .= "</a> <small>{$product['fnsku']}, {$product['shelf_count']} / {$productCounts[$product['id']]}</small>";
-//        $retval .= "<div style='float: right;'>";
-//        $retval .= "<button class='btn btn-primary'>+/-</button>";
-//        $retval .= "</div>";
-        $retval .= "</li>";
+    if (empty($shelf['products'])) {
+        $retval .= "<p>{$shelf['type']} boş.</p>";
+    } else {
+        foreach ($shelf['products'] as $product) {
+            $retval .= "<li>";
+            $retval .= "<a href='wh_shelf_product.php?shelf={$shelf['id']}&fnsku={$product['fnsku']}'>";
+            $retval .= "{$product['name']}";
+            $retval .= "</a> <small>{$product['fnsku']}, {$product['shelf_count']} / {$productCounts[$product['id']]}</small>";
+    //        $retval .= "<div style='float: right;'>";
+    //        $retval .= "<button class='btn btn-primary'>+/-</button>";
+    //        $retval .= "</div>";
+            $retval .= "</li>";
+        }
     }
     $retval .= "</ul>";
     return $retval;
