@@ -38,43 +38,7 @@ foreach ($shelf as $key => $s) {
     }
 }
 
-include '_header.php';
-
-?>
-
-<div class="container mt-5">
-    <div class="mt-4 m-3">
-        <h2>Depo Listesi</h2>
-        <ul>
-            <?php foreach ($shelf as $s): ?>
-                <?php if ($s['parent_id']) continue; ?>
-                <li>
-                    <h3><a href="wh_shelf_product.php?shelf=<?= $s['id'] ?>"><?= "{$s['name']} / {$s['type']}" ?><?= $s['parent_id'] ? " Raf: {$shelf[$s['parent_id']]['name']}" : "" ?></a></h3>
-                    <?php if (!empty($s['children'])): ?>
-                        <ul>
-                            <?php foreach ($s['children'] as $child): ?>
-                                <li>
-                                    <h4><a href="wh_shelf_product.php?shelf=<?= $child ?>"><?= "{$shelf[$child]['name']} / {$shelf[$child]['type']}" ?></a></h4>
-                                    <?php if (empty($shelf[$child]['products'])): ?>
-                                        <p><?= $shelf[$child]['type'] ?> boş.</p>
-                                    <?php else: ?>
-                                        <ul>
-                                            <?php foreach ($shelf[$child]['products'] as $product): ?>
-                                                <?php if ($productId && $product['id'] != $productId) continue; ?>
-                                                <li>
-                                                    <?= "{$product['name']} (Kod: {$product['fnsku']}, Stok: {$product['shelf_count']} / Toplam: {$productCounts[$product['id']]})" ?>
-                                                    <div style="float: right;">
-                                                        <button class="btn btn-primary">İşlem 1</button>
-                                                        <button class="btn btn-secondary">İşlem 2</button>
-                                                    </div>
-                                                </li>
-                                            <?php endforeach; ?>
-                                        </ul>
-                                    <?php endif; ?>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                    <?php endif; ?>
+/*
                     <?php if (empty($s['products'])): ?>
                         <p><?= $s['type'] ?> boş.</p>
                     <?php else: ?>
@@ -91,6 +55,61 @@ include '_header.php';
                             <?php endforeach; ?>
                         </ul>
                     <?php endif; ?>
+
+*/
+
+function productRow($shelf)
+{
+    global $productCounts;
+    if (empty($shelf['products'])) {
+        return "<p>{$shelf['type']} boş.</p>";
+    }
+
+    $retval = "<ul>";
+    foreach ($shelf['products'] as $product) {
+        $retval .= "<li>";
+        $retval .= "{$product['name']} (Kod: {$product['fnsku']}, Stok: {$product['shelf_count']} / Toplam: {$productCounts[$product['id']]})";
+        $retval .= "<div style='float: right;'>";
+        $retval .= "<button class='btn btn-primary'>İşlem 1</button>";
+        $retval .= "<button class='btn btn-secondary'>İşlem 2</button>";
+        $retval .= "</div>";
+        $retval .= "</li>";
+    }
+    $retval .= "</ul>";
+    return $retval;
+}
+
+include '_header.php';
+
+?>
+
+<div class="container mt-5">
+    <div class="mt-4 m-3">
+        <h2>Depo Listesi</h2>
+        <ul>
+            <?php foreach ($shelf as $s): ?>
+                <?php if ($s['parent_id']) continue; ?>
+                <li>
+                    <h3>
+                        <a href="wh_shelf_product.php?shelf=<?= $s['id'] ?>">
+                            <?= "{$s['name']} / {$s['type']}" ?><?= $s['parent_id'] ? " Raf: {$shelf[$s['parent_id']]['name']}" : "" ?>
+                        </a>
+                    </h3>
+                    <?php if (!empty($s['children'])): ?>
+                        <ul>
+                            <?php foreach ($s['children'] as $child): ?>
+                                <li>
+                                    <h4>
+                                        <a href="wh_shelf_product.php?shelf=<?= $child ?>">
+                                            <?= "{$shelf[$child]['name']} / {$shelf[$child]['type']}" ?>
+                                        </a>
+                                    </h4>
+                                    <?= productRow($shelf[$child]) ?>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
+                    <?= productRow($s) ?>
                 </li>
             <?php endforeach; ?>
         </ul>
