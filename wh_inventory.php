@@ -101,15 +101,19 @@ include '_header.php';
                                 <li>
                                     <h4>
                                         <a href="wh_shelf_product.php?shelf=<?= $child ?>">
-                                            <?= "{$shelf[$child]['name']} / {$shelf[$child]['type']}" ?>
+                                            Koli: <?= $shelf[$child]['name'] ?>
                                         </a>
+                                        <?= $shelf[$child]['type'] ?>
                                     </h4>
                                     <?= productRow($shelf[$child]) ?>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
                     <?php endif; ?>
-                    <?= productRow($s) ?>
+                    <ul>
+                        Raftaki Açık Ürünler
+                        <?= productRow($s) ?>
+                    </ul>
                 </li>
             <?php endforeach; ?>
         </ul>
