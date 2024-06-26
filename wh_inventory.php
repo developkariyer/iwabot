@@ -71,7 +71,7 @@ include '_header.php';
                     <h3>
                         <a href="wh_shelf_product.php?shelf=<?= $s['id'] ?>"><?= $s['name'] ?></a>
                         / <?= $s['type'] ?>
-                        <span class="badge bg-primary float-end" data-bs-toggle="collapse" data-bs-target="#collapse-box<?= $sIndex ?>" aria-expanded="false" aria-controls="collapse-box<?= $sIndex ?>" style="cursor: pointer;"><?= count($s['children']) ?></span>
+                        <span class="badge bg-primary float-end" data-bs-toggle="collapse" data-bs-target="#collapse-box<?= $sIndex ?>" aria-expanded="false" aria-controls="collapse-box<?= $sIndex ?>" style="cursor: pointer;"><?= empty($s['children']) ? 0 : count($s['children']) ?></span>
                     </h3>
                     <ul class='collapse' id='collapse-box<?= $sIndex ?>'>
                         <?php if (!empty($s['children'])): ?>
