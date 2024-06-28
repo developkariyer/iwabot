@@ -37,15 +37,11 @@ switch ($action) {
         break;
 
     case 'add_to_shelf':
-        $newShelf = StockShelf::getById($newShelfId, $GLOBALS['pdo']);
-        if ($newShelf && $quantity > 0) {
-            if ($product->putOnShelf($newShelf, $quantity)) {
-                addMessage('Ürün rafa eklendi', 'success');
-            } else {
-                addMessage('Ürün rafa eklenemedi', 'danger');
-            }
+        if ($quantity > 0) {
+            $product->putOnShelf($shelf, $quantity);
+            addMessage('Ürün rafa eklendi', 'success');
         } else {
-            addMessage("Tutarsız veri: $quantity, $newShelfId", 'danger');
+            addMessage("Tutarsız veri: $quantity", 'danger');
         }
         break;
 
