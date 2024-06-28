@@ -189,7 +189,9 @@ include '_header.php';
                             <select class="form-select" id="parentShelfSelect" name="parent_shelf_id">
                                 <option value="">Üst Raf Seçin...</option>
                                 <?php foreach ($shelfList as $shelf): ?>
-                                    <option value="<?= htmlspecialchars($shelf->id) ?>"><?= htmlspecialchars($shelf->name) ?></option>
+                                    <?php if (count($shelf->getChildren()) === 0): ?>
+                                        <option value="<?= htmlspecialchars($shelf->id) ?>"><?= htmlspecialchars($shelf->name) ?></option>
+                                    <?php endif; ?>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -226,11 +228,28 @@ include '_header.php';
         const newShelfSelect = document.getElementById('newShelfSelect');
         const moveToShelfButton = document.getElementById('moveToShelfButton');
         const newShelfFields = document.getElementById('newShelfFields');
+        const newShelfName = document.getElementById('newShelfName');
+        const newShelfType = document.getElementById('newShelfType');
+        const parentShelfSelect = document.getElementById('parentShelfSelect');
 
         const updateButtons = () => {
-            decrementBtn.disabled = quantityInput.value <= 0;
-            saveButton.disabled = shelfSelect.value === "" || quantityInput.value <= 0;
+            const quantityValid = quantityInput.value > 0;
+            const newShelfSelected = shelfSelect.value === 'new_shelf';
+            const newShelfNameValid = newShelfName.value.trim() !== '';
+            const newShelfTypeValid = newShelfType.value !== '';
+            const parentShelfSelected = parentShelfSelect.value !== '';
+
+            if (newShelfSelected) {
+                if (newShelfNameValid && (newShelfType.value === 'Raf' || (newShelfType.value !== 'Raf' && parentShelfSelected))) {
+                    saveButton.disabled = !quantityValid;
+                } else {
+                    saveButton.disabled = true;
+                }
+            } else {
+                saveButton.disabled = shelfSelect.value === "" || !quantityValid;
+            }
             moveToShelfButton.disabled = newShelfSelect.value === "";
+            decrementBtn.disabled = quantityInput.value <= 0;
         };
 
         decrementBtn.addEventListener('click', () => {
@@ -252,12 +271,21 @@ include '_header.php';
         shelfSelect.addEventListener('change', () => {
             if (shelfSelect.value === 'new_shelf') {
                 newShelfFields.classList.remove('d-none');
-                saveButton.disabled = false; // Enable save button as new shelf details need to be filled
+                newShelfName.required = true;
+                newShelfType.required = true;
+                parentShelfSelect.required = true;
             } else {
                 newShelfFields.classList.add('d-none');
+                newShelfName.required = false;
+                newShelfType.required = false;
+                parentShelfSelect.required = false;
             }
             updateButtons();
         });
+
+        newShelfName.addEventListener('input', updateButtons);
+        newShelfType.addEventListener('change', updateButtons);
+        parentShelfSelect.addEventListener('change', updateButtons);
 
         newShelfSelect.addEventListener('change', () => {
             updateButtons();
