@@ -49,22 +49,8 @@ include '_header.php';
         </div>
     </div>
 
-    <div class="row g-3 m-3 mt-5">
-        <div class="col-md-6">
-            <a href="wh.php" class="btn btn-secondary btn-lg rounded-pill w-100 py-3">Depo Ana Sayfa</a>
-        </div>
-        <div class="col-md-6">
-            <a href="./" class="btn btn-secondary btn-lg rounded-pill w-100 py-3">Ana Sayfa</a>
-        </div>
-    </div>
+    <?= wh_menu() ?>
 
-    <div class="row g-3 m-3 mt-5">
-        <div class="col-md-3">
-        </div>
-        <div class="col-md-6">
-            <a href="./?logout=1" class="btn btn-danger btn-lg rounded-pill w-100 py-3">Çıkış</a>
-        </div>
-    </div>
 </div>
 
 <?php
