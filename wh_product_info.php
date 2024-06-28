@@ -10,6 +10,8 @@ if ($productId) {
     $product = StockProduct::getById($productId, $GLOBALS['pdo']);
 }
 
+error_log("Product info: $productId");
+
 if (empty($product)) {
     die(json_encode([
         'productInfo' => 'Ürün bilgisi bulunamadı.',
