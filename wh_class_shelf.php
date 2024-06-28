@@ -166,15 +166,26 @@ class StockShelf extends AbstractStock
         if (($type === 'Raf' && $parentId) || ($type !== 'Raf' && !$parentId)) {
             return null;
         }
-        $shelf = new StockShelf(id:null, db:$db, parentId:$parentId);
-        error_log("Creating new shelf with name $name, type $type, parent $parentId");
-        $shelf->name = $name;
-        $shelf->type = $type;
-        if ($shelf->save()) {
-            return $shelf;
-        } else {
-            return null;
+
+        if ($type !== 'Raf') {
+            if (!$parentId) {
+                return null;
+            }
+            $parent = static::getById($parentId, $db);
+            if (!$parent) {
+                return null;
+            }
         }
+        if ($type === 'Raf') {
+            $parentId = null;
+        }
+
+        $stmt = $db->prepare("INSERT INTO wh_shelf (name, type, parent_id) VALUES (:name, :type, :parent_id)");
+        if ($stmt->execute(['name' => $name, 'type' => $type, 'parent_id' => $parentId])) {
+            $id = $db->lastInsertId();
+            return static::getById($id, $db);
+        }
+        return null;
     }
 
 }
