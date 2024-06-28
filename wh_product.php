@@ -9,7 +9,7 @@ require_once('wh_include.php');
 $productId = $_GET['product'] ?? '';
 
 if ($productId) {
-    $product = StockProduct::getById($productId, $GLOBALS['pdo']);
+    $product = StockProduct::getByFnsku($productId, $GLOBALS['pdo']);
 } else {
     $product = null;
 }
