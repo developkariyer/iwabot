@@ -129,9 +129,9 @@ include '_header.php';
                             <option value="">Raf seçin...</option>
                             <?php foreach ($shelfList as $shelf): ?>
                                 <optgroup label="<?= htmlspecialchars($shelf->name) ?>">
-                                    <option value="<?= htmlspecialchars($shelf->id) ?>">Rafa açık olarak koy</option>
+                                    <option value="<?= htmlspecialchars($shelf->id) ?>">Rafa açık koy (<?= $product->shelfCount($shelf) ?>)</option>
                                     <?php foreach ($shelf->getChildren() as $child): ?>
-                                        <option value="<?= htmlspecialchars($child->id) ?>"><?= htmlspecialchars($child->name) ?> / <?= htmlspecialchars($child->type) ?></option>
+                                        <option value="<?= htmlspecialchars($child->id) ?>"><?= htmlspecialchars($child->name) ?>/<?= htmlspecialchars($child->type) ?> (<?= $product->shelfCount($child) ?>)</option>
                                     <?php endforeach; ?>
                                 </optgroup>
                             <?php endforeach; ?>
@@ -162,9 +162,9 @@ include '_header.php';
                             <option value="">Raf seçin...</option>
                             <?php foreach ($shelfList as $shelf): ?>
                                 <optgroup label="<?= htmlspecialchars($shelf->name) ?>">
-                                    <option value="<?= htmlspecialchars($shelf->id) ?>">Rafa açık olarak koy</option>
+                                    <option value="<?= htmlspecialchars($shelf->id) ?>">Rafa açık koy (<?= $product->shelfCount($shelf) ?>)</option>
                                     <?php foreach ($shelf->getChildren() as $child): ?>
-                                        <option value="<?= htmlspecialchars($child->id) ?>"><?= htmlspecialchars($child->name) ?> / <?= htmlspecialchars($child->type) ?></option>
+                                        <option value="<?= htmlspecialchars($child->id) ?>"><?= htmlspecialchars($child->name) ?>/<?= htmlspecialchars($child->type) ?> (<?= $product->shelfCount($child) ?>)</option>
                                     <?php endforeach; ?>
                                 </optgroup>
                             <?php endforeach; ?>
