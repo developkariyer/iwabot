@@ -155,6 +155,7 @@ include '_header.php';
             <form action="wh_product_action.php" method="post">
                 <div class="modal-body">
                     <input type="hidden" name="product_id" value="<?= htmlspecialchars($product->id) ?>">
+                    <input type="hidden" name="action" value="add_to_shelf">
                     <div class="mb-3">
                         <label for="shelfSelect" class="form-label">Raf/Koli Seçin</label>
                         <select class="form-select" id="shelfSelect" name="shelf_id" required>

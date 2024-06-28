@@ -52,11 +52,8 @@ switch ($action) {
     case 'move_to_shelf':
         $newShelf = StockShelf::getById($newShelfId, $GLOBALS['pdo']);
         if ($newShelf) {
-            if ($product->moveBetweenShelves($shelf, $newShelf)) {
-                addMessage('Ürün raf taşındı', 'success');
-            } else {
-                addMessage('Ürün raf taşınamadı', 'danger');
-            }
+            $product->moveBetweenShelves($shelf, $newShelf);
+            addMessage('Ürün raf taşındı', 'success');
         } else {
             addMessage('Geçersiz raf', 'danger');
         }
