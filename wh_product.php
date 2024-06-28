@@ -124,7 +124,7 @@ include '_header.php';
                         <select class="form-select" id="shelfSelect" name="shelf_id" required>
                             <?php foreach ($shelfList as $shelf): ?>
                                 <optgroup label="<?= htmlspecialchars($shelf->name) ?>">
-                                    <option value="<?= htmlspecialchars($shelf->id) ?>"><?= htmlspecialchars($shelf->name) ?></option>
+                                    <option value="<?= htmlspecialchars($shelf->id) ?>">Rafa açık olarak koy</option>
                                     <?php foreach ($shelf->getChildren() as $child): ?>
                                         <option value="<?= htmlspecialchars($child->id) ?>"><?= htmlspecialchars($child->name) ?> / <?= htmlspecialchars($child->type) ?></option>
                                     <?php endforeach; ?>
