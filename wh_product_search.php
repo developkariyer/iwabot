@@ -4,8 +4,6 @@ require_once('_login.php');
 require_once('_init.php');
 require_once('wh_include.php');
 
-// get product list from wh_waiting_products
-
 $productList = $GLOBALS['pdo']->query("SELECT * FROM wh_sold")->fetchAll(PDO::FETCH_ASSOC);
 $products = [];
 foreach ($productList as $product) {
@@ -17,9 +15,6 @@ include '_header.php';
 
 ?>
 
-<script>
-    const fnskuFromGet = <?= json_encode($fnsku) ?>;
-</script>
 <div class="container mt-5">
     <div class="mt-5">
         <h2>Çıkış İçin Bekleyen Ürünler</h2>
@@ -35,7 +30,7 @@ include '_header.php';
                         <div class="accordion-body">
                             <p><?= $product->productInfo() ?></p>
                             <p>Adres</p>
-                            <button class="btn btn-success btn-lg rounded-pill w-100 py-3 mt-2" data-fnsku="<?= $product->fnsku ?>" onclick="event.stopPropagation();">Seç</button>
+                            <button class="btn btn-success btn-lg rounded-pill w-100 py-3 mt-2 select-button" data-fnsku="<?= $product->fnsku ?>" onclick="event.stopPropagation();">Seç</button>
                         </div>
                     </div>
                 </div>
@@ -64,27 +59,16 @@ include '_header.php';
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="confirmModalLabel"><?= $shelfDetails['name'] ?> / <?= $shelfDetails['type'] ?></h5>
+                <h5 class="modal-title" id="confirmModalLabel">Ürün Bilgisi</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="barcodeForm" action="wh_shelf_product_process.php" method="POST">
                 <div class="modal-body">
                     <div id="product-info">Loading...</div>
                     <p>Barcode: <span id="modal-barcode"></span></p>
-                    <input type="hidden" id="shelf" name="shelf" value="<?= $shelfId ?>">
-                    <input type="hidden" id="barcodeInput" name="barcode">
-                    <input type="hidden" id="actionType" name="actionType">
-                    <label for="quantity" class="form-label">İşlem Yapılacak Miktar</label>
-                    <div class="input-group">
-                        <button type="button" class="btn btn-outline-secondary" id="decrementButton">-</button>
-                        <input type="number" id="quantity" name="quantity" value="1" min="1" required inputmode="numeric" class="form-control text-center">
-                        <button type="button" class="btn btn-outline-secondary" id="incrementButton">+</button>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" id="backButton">Geri Dön</button>
-                    <button type="button" class="btn btn-primary" id="takeButton">Raftan Al</button>
-                    <button type="button" class="btn btn-primary" id="putButton">Rafa Koy</button>
+                    <a href="#" id="devamLink" class="btn btn-success">Devam</a>
                 </div>
             </form>    
         </div>
@@ -100,28 +84,19 @@ include '_header.php';
         const barcodeElement = document.getElementById('barcode');
         const modalBarcode = document.getElementById('modal-barcode');
         const productInfo = document.getElementById('product-info');
-        const barcodeInput = document.getElementById('barcodeInput');
-        const actionType = document.getElementById('actionType');
-        const barcodeForm = document.getElementById('barcodeForm');
         const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
         const backButton = document.getElementById('backButton');
-        const takeButton = document.getElementById('takeButton');
-        const putButton = document.getElementById('putButton');
+        const devamLink = document.getElementById('devamLink');
         const manualSubmit = document.getElementById('manualSubmit');
         const manualBarcode = document.getElementById('manualBarcode');
-        const quantityInput = document.getElementById('quantity');
-        const decrementButton = document.getElementById('decrementButton');
-        const incrementButton = document.getElementById('incrementButton');
         const openCameraButton = document.getElementById('openCamera');
         const cameraOpenDiv = document.getElementById('cameraOpenDiv');
 
         let stream;
-        let stock = 0; // Global variable to store stock
 
         const getProductInfo = (detectedBarcode) => {
             barcodeElement.innerText = detectedBarcode;
             modalBarcode.innerText = detectedBarcode;
-            barcodeInput.value = detectedBarcode;
 
             // Make AJAX call to get product info
             $.ajax({
@@ -134,17 +109,11 @@ include '_header.php';
                 dataType: 'json',
                 success: function(response) {
                     productInfo.innerHTML = response.productInfo;
-                    stock = response.stock; // Store stock in the global variable
-                    if (stock === 0) {
-                        takeButton.disabled = true;
-                    } else {
-                        takeButton.disabled = false;
-                    }
+                    devamLink.href = 'wh_product.php?product=' + response.productId; // Set product link
                     confirmModal.show();
                 },
                 error: function() {
                     productInfo.innerHTML = 'Failed to retrieve product information.';
-                    takeButton.disabled = true;
                     confirmModal.show();
                 }
             });
@@ -186,25 +155,8 @@ include '_header.php';
             }
         };
 
-        const closeCamera = () => {
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
-                video.srcObject = null;
-            }
-        };
-
         backButton.addEventListener('click', async () => {
             confirmModal.hide();
-        });
-
-        takeButton.addEventListener('click', () => {
-            actionType.value = 'take';
-            barcodeForm.submit();
-        });
-
-        putButton.addEventListener('click', () => {
-            actionType.value = 'put';
-            barcodeForm.submit();
         });
 
         manualSubmit.addEventListener('click', () => {
@@ -221,41 +173,8 @@ include '_header.php';
             });
         });
 
-        decrementButton.addEventListener('click', () => {
-            if (quantityInput.value > 1) {
-                quantityInput.value--;
-                if (quantityInput.value <= stock) {
-                    takeButton.disabled = false;
-                }
-            }
-        });
-
-        incrementButton.addEventListener('click', () => {
-            quantityInput.value++;
-            if (quantityInput.value > stock) {
-                takeButton.disabled = true;
-            }
-        });
-
-        quantityInput.addEventListener('input', () => {
-            if (quantityInput.value > stock) {
-                takeButton.disabled = true;
-            } else {
-                takeButton.disabled = false;
-            }
-        });
-
         openCameraButton.addEventListener('click', openCamera);
-
-        // Check if fnskuFromGet is provided
-        if (fnskuFromGet) {
-            getProductInfo(fnskuFromGet);
-        }
     });
 </script>
 
-
-
-<?php
-
-include '_footer.php';
+<?php include '_footer.php'; ?>
