@@ -35,7 +35,7 @@ include '_header.php';
                         <div class="accordion-body">
                             <p><?= $product->productInfo() ?></p>
                             <p>Adres</p>
-                            <button class="btn btn-primary select-button ms-3" data-fnsku="<?= $product->fnsku ?>" onclick="event.stopPropagation();">Seç</button>
+                            <button class="btn btn-primary select-button btn-lg rounded-pill w-100 py-3" data-fnsku="<?= $product->fnsku ?>" onclick="event.stopPropagation();">Seç</button>
                         </div>
                     </div>
                 </div>
