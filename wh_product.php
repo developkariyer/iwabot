@@ -26,7 +26,7 @@ include '_header.php';
     <div class="mt-5">
         <h2><?= $product->name ?></h2>
         <h5>Ürün Bilgileri</h5>
-        <p><?= $product->productInfo() ?></p>
+        <p><?= nl2br($product->productInfo()) ?></p>
         <h5>Ürünün Bulunduğu Yerler</h5>
         İşlem yapmak için lütfen aşağıdaki raf ve kolilerden birini seçin.
         <div class="g-3 m-3 mt-5">
