@@ -18,7 +18,7 @@ if (empty($product)) {
 
 $shelfId = $_GET['shelf'] ?? '';
 if ($shelfId) {
-    $shelf = StockShelf::getById($GLOBALS['pdo'], $shelfId);
+    $shelf = StockShelf::getById($shelfId, $GLOBALS['pdo']);
 } else {
     $shelf = null;
 }
