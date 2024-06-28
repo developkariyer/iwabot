@@ -4,7 +4,7 @@ require_once('_login.php');
 require_once('_init.php');
 require_once('wh_include.php');
 
-$productId = $_GET['product'] ?? '';
+$productId = $_POST['product'] ?? '';
 if ($productId) {
     error_log("Getting product info for $productId");
     $product = StockProduct::getById($productId, $GLOBALS['pdo']);
@@ -17,7 +17,7 @@ if (empty($product)) {
     ]));
 }
 
-$shelfId = $_GET['shelf'] ?? '';
+$shelfId = $_POST['shelf'] ?? '';
 if ($shelfId) {
     $shelf = StockShelf::getById($shelfId, $GLOBALS['pdo']);
 } else {
