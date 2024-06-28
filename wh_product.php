@@ -61,7 +61,22 @@ function createShelfOptions($product) {
     return $shelvesGrouped;
 }
 
+function createModalShelfOptions($shelfList) {
+    $shelvesGrouped = [];
+
+    foreach ($shelfList as $shelf) {
+        if ($shelf->parent_id === null) {
+            $shelvesGrouped[$shelf->name][] = $shelf;
+        } else {
+            $shelvesGrouped[$shelf->parent->name][] = $shelf;
+        }
+    }
+
+    return $shelvesGrouped;
+}
+
 $shelvesGrouped = createShelfOptions($product);
+$modalShelvesGrouped = createModalShelfOptions($shelfList);
 
 include '_header.php';
 
@@ -83,9 +98,9 @@ include '_header.php';
                         <?php foreach ($shelves as $shelf): ?>
                             <?php
                             if ($shelf->type === 'Raf') {
-                                $optionText = "Rafta açık {$product->shelfCount($shelf)} adet";
+                                $optionText = "Rafta açık {$product->shelfCount($shelf)} adet ürün";
                             } else {
-                                $optionText = "{$shelf->name} (" . ($shelf->type === 'Koli (Açılmış)' ? 'Açık' : 'Kapalı') . " {$product->shelfCount($shelf)} adet)";
+                                $optionText = "{$shelf->name} kutusunda " . ($shelf->type === 'Koli (Açılmış)' ? 'açık' : 'kapalı') . " {$product->shelfCount($shelf)} adet ürün";
                             }
                             ?>
                             <option value="wh_product_action.php?product=<?= urlencode($product->id) ?>&shelf=<?= urlencode($shelf->id) ?>">
@@ -122,11 +137,19 @@ include '_header.php';
                     <div class="mb-3">
                         <label for="shelfSelect" class="form-label">Raf/Koli Seçin</label>
                         <select class="form-select" id="shelfSelect" name="shelf_id" required>
-                            <?php foreach ($shelfList as $shelf): ?>
-                                <option value="<?= htmlspecialchars($shelf->id) ?>"><?= htmlspecialchars($shelf->name) ?> (<?= htmlspecialchars($shelf->type) ?>)</option>
-                                <?php foreach ($shelf->getChildren() as $child): ?>
-                                    <option value="<?= htmlspecialchars($child->id) ?>">-- <?= htmlspecialchars($child->name) ?> (<?= htmlspecialchars($child->type) ?>)</option>
-                                <?php endforeach; ?>
+                            <?php foreach ($modalShelvesGrouped as $groupName => $shelves): ?>
+                                <optgroup label="<?= htmlspecialchars($groupName) ?>">
+                                    <?php foreach ($shelves as $shelf): ?>
+                                        <?php
+                                        if ($shelf->parent_id === null) {
+                                            $optionText = "Rafta açık";
+                                        } else {
+                                            $optionText = "{$shelf->name} (" . ($shelf->type === 'Koli (Açılmış)' ? 'Koli (açık)' : 'Koli (kapalı)') . ")";
+                                        }
+                                        ?>
+                                        <option value="<?= htmlspecialchars($shelf->id) ?>"><?= htmlspecialchars($optionText) ?></option>
+                                    <?php endforeach; ?>
+                                </optgroup>
                             <?php endforeach; ?>
                         </select>
                     </div>
