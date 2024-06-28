@@ -31,7 +31,7 @@ include '_header.php';
         <p><?= $product->productInfo() ?></p>
         <h5>Ürünün Bulunduğu Yerler</h5>
         <?php foreach ($product->getShelves() as $shelf): ?>
-            <a href="wh_product_action.php?product=<?= $product->fnsku ?>&shelf=<?= $shelf->id ?>" class="btn btn-outline-primary rounded-pill w-100 py-3 btn-lg">
+            <a href="wh_product_action.php?product=<?= $product->fnsku ?>&shelf=<?= $shelf->id ?>" class="btn btn-outline-primary rounded-pill w-100 py-3 btn-lg m-3">
                 <?= $shelf->name ?> / <?= $shelf->type ?><?= $shelf->parent ? ' / '.$shelf->parent->name : '' ?>
                 <br>Raf Mevcudu: <?= $product->shelfCount($shelf) ?> adet
             </a>
