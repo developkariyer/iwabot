@@ -158,7 +158,7 @@ include '_header.php';
                     <input type="hidden" name="action" value="add_to_shelf">
                     <div class="mb-3">
                         <label for="shelfSelect" class="form-label">Raf/Koli Seçin</label>
-                        <select class="form-select" id="shelfSelect" name="shelf_id" required>
+                        <select class="form-select" id="shelfSelect" name="shelf_id">
                             <option value="">Raf seçin...</option>
                             <?php foreach ($shelfList as $shelf): ?>
                                 <optgroup label="<?= htmlspecialchars($shelf->name) ?>">
@@ -271,7 +271,6 @@ include '_header.php';
                 newShelfFields.classList.remove('d-none');
                 newShelfName.required = true;
                 newShelfType.required = true;
-                parentShelfSelect.required = true;
             } else {
                 newShelfFields.classList.add('d-none');
                 newShelfName.required = false;
