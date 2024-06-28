@@ -45,7 +45,7 @@ switch ($action) {
                 addMessage('Ürün rafa eklenemedi', 'danger');
             }
         } else {
-            addMessage('Tutarsız veri', 'danger');
+            addMessage("Tutarsız veri: $quantity, $newShelfId", 'danger');
         }
         break;
 
