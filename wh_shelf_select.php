@@ -27,7 +27,7 @@ include '_header.php';
                     <option value="">Seçiniz...</option>
                     <?php foreach ($shelves as $s): ?>
                         <option value="<?= $s->id ?>"><?= $s->name ?> (<?= $s->type ?><?= $s->parent ? ' / '.$s->parent->name : '' ?>)</option>
-                        <?php foreach ($s->children as $child): ?>
+                        <?php foreach ($s->getChildren() as $child): ?>
                             <option value="<?= $child->id ?>"><?= $child->name ?> (<?= $child->type ?>)</option>
                         <?php endforeach; ?>
                     <?php endforeach; ?>
