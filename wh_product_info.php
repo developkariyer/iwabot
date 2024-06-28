@@ -2,6 +2,7 @@
 
 require_once('_login.php');
 require_once('_init.php');
+require_once('wh_include.php');
 
 $productId = $_GET['product'] ?? '';
 if ($productId) {
