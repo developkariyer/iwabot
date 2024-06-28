@@ -28,9 +28,9 @@ include '_header.php';
                     </h2>
                     <div id="collapse<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $index ?>" data-bs-parent="#productAccordion">
                         <div class="accordion-body">
-                            <p><?= nl2br(htmlspecialchars($product->productInfo())) ?></p>
+                            <p><?= htmlspecialchars($product->productInfo()) ?></p>
                             <p>Adres</p>
-                            <button class="btn btn-outline-success btn-lg rounded-pill w-100 py-3 mt-2 select-button" data-fnsku="<?= htmlspecialchars($product->fnsku) ?>" data-product-id="<?= htmlspecialchars($product->id) ?>" onclick="event.stopPropagation();">Seç</button>
+                            <a href="wh_product.php?product=<?= urlencode($product->id) ?>" class="btn btn-outline-success btn-lg rounded-pill w-100 py-3 mt-2">Seç</a>
                         </div>
                     </div>
                 </div>
@@ -106,7 +106,7 @@ include '_header.php';
                 },
                 dataType: 'json',
                 success: function(response) {
-                    productInfo.innerHTML = response.productInfo.replace(/\n/g, '<br>');
+                    productInfo.innerHTML = response.productInfo.replace(/\n/g, '<br>'); // Convert newlines to <br>
                     devamLink.href = 'wh_product.php?product=' + response.productId; // Set product link using product ID
                     confirmModal.show();
                 },
@@ -173,10 +173,8 @@ include '_header.php';
 
         document.querySelectorAll('.select-button').forEach(button => {
             button.addEventListener('click', () => {
-                const fnsku = button.getAttribute('data-fnsku');
                 const productId = button.getAttribute('data-product-id');
-                getProductInfo(fnsku);
-                devamLink.href = 'wh_product.php?product=' + productId; // Set product link using product ID
+                window.location.href = 'wh_product.php?product=' + productId; // Directly navigate to wh_product.php
             });
         });
 
