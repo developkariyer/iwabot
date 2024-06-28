@@ -47,7 +47,7 @@ include '_header.php';
         <div class="col-md-3">
         </div>
         <div class="col-md-6">
-            <a href="#" class="btn btn-outline-primary btn-lg rounded-pill w-100 py-3">Ürünü Rafa Yerleştir</a>
+            <a href="#" id="put_to_shelf" class="btn btn-outline-primary btn-lg rounded-pill w-100 py-3">Ürünü Rafa Yerleştir</a>
         </div>
     </div>
 

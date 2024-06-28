@@ -26,9 +26,17 @@ if ($shelfId) {
     $shelf = null;
 }
 
-$stock = $shelf ? $product->shelfCount($shelf) : 0;
+$retval = [
+    'productId' => $product->id,
+    'productInfo' => $product->productInfo(),
+];
 
-echo json_encode([
-    'productInfo' => $product->productInfo()."<br>Raf Mevcudu: $stock",
-    'stock' => $stock,
-]);
+if ($shelf) {
+    $stock = $product->shelfCount($shelf);
+    $retval['productInfo'].= "<br>Raf Mevcudu: {$shelf->name} rafında $stock adet";
+    $retval['stock'] = $stock;
+} else {
+    $retval['stock'] = 0;
+}
+
+echo json_encode($retval);
