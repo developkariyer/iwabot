@@ -24,19 +24,11 @@ if ($shelfId) {
     $shelf = null;
 }
 
-function metricToImp($inp, $conv=0.393700787) {
-    return number_format($inp * $conv, 2);
-}
+
 
 $stock = $shelf ? $product->shelfCount($shelf) : 0;
 
 echo json_encode([
-    'productInfo' => "Ürün Adı: {$product->name}".
-                    "<br>Ürün Kodu: {$product->fnsku}".
-                    "<br>Kategori: {$product->category}".
-                    "<br>Ölçüler (metrik): {$product->dimension1}x{$product->dimension2}x{$product->dimension3}cm, {$product->weight}gr".
-                    "<br>Ölçüler (imperial): ".metricToImp($product->dimension1)."x".metricToImp($product->dimension2)."x".metricToImp($product->dimension3)."inch, ".metricToImp($product->weight,0.0352739619)."oz".
-                    "<br>Toplam Stok: {$product->getTotalStock()}".
-                    "<br>Raf Stok: {$stock}",
+    'productInfo' => $product->productInfo()."<br>Raf Mevcudu: $stock",
     'stock' => $stock,
 ]);

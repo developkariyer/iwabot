@@ -174,4 +174,14 @@ class StockProduct extends AbstractStock
         return $this->countArray[$shelf->id];
     }
 
+    public function productInfo() 
+    {
+        return "Ürün Adı: {$this->name}".
+                    "<br>Ürün Kodu: {$this->fnsku}".
+                    "<br>Kategori: {$this->category}".
+                    "<br>Ölçüler (metrik): {$this->dimension1}x{$this->dimension2}x{$this->dimension3}cm, {$this->weight}gr".
+                    "<br>Ölçüler (imperial): ".metricToImp($this->dimension1)."x".metricToImp($this->dimension2)."x".metricToImp($this->dimension3)."inch, ".metricToImp($this->weight,0.0352739619)."oz".
+                    "<br>Toplam Stok: {$this->getTotalStock()}";
+    }
+
 }

@@ -33,7 +33,8 @@ include '_header.php';
                     </h2>
                     <div id="collapse<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $index ?>" data-bs-parent="#productAccordion">
                         <div class="accordion-body">
-                            Adres
+                            <p><?= $product->productInfo() ?></p>
+                            <p>Adres</p>
                             <button class="btn btn-primary select-button ms-3" data-fnsku="<?= $product->fnsku ?>" onclick="event.stopPropagation();">Seç</button>
                         </div>
                     </div>

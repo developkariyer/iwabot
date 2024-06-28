@@ -24,3 +24,7 @@ function wh_menu() {
     </div>
 ';
 }
+
+function metricToImp($inp, $conv=0.393700787) {
+    return number_format($inp * $conv, 2);
+}
