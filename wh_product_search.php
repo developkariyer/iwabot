@@ -30,7 +30,7 @@ include '_header.php';
                         <div class="accordion-body">
                             <p><?= $product->productInfo() ?></p>
                             <p>Adres</p>
-                            <button class="btn btn-success btn-lg rounded-pill w-100 py-3 mt-2 select-button" data-fnsku="<?= $product->fnsku ?>" onclick="event.stopPropagation();">Seç</button>
+                            <button class="btn btn-success btn-lg rounded-pill w-100 py-3 mt-2 select-button" data-fnsku="<?= $product->fnsku ?>" data-product-id="<?= $product->fnsku ?>" onclick="event.stopPropagation();">Seç</button>
                         </div>
                     </div>
                 </div>
@@ -62,15 +62,14 @@ include '_header.php';
                 <h5 class="modal-title" id="confirmModalLabel">Ürün Bilgisi</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-                <div class="modal-body">
-                    <div id="product-info">Loading...</div>
-                    <p>Barcode: <span id="modal-barcode"></span></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="backButton">Geri Dön</button>
-                    <a href="#" id="devamLink" class="btn btn-success">Devam</a>
-                </div>
-            </form>    
+            <div class="modal-body">
+                <div id="product-info">Loading...</div>
+                <p>Barcode: <span id="modal-barcode"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="backButton">Geri Dön</button>
+                <a href="#" id="devamLink" class="btn btn-success">Devam</a>
+            </div>
         </div>
     </div>
 </div>
@@ -103,7 +102,7 @@ include '_header.php';
                 url: 'wh_product_info.php',
                 method: 'POST',
                 data: { 
-                    product: detectedBarcode,
+                    barcode: detectedBarcode,
                     shelf: '<?= $shelfId ?>' // Send shelf value in the AJAX request
                 },
                 dataType: 'json',
@@ -170,17 +169,16 @@ include '_header.php';
         // Trigger action on Enter key press in the manualBarcode input field
         manualBarcode.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
-                const manualBarcodeValue = manualBarcode.value.trim();
-                if (manualBarcodeValue) {
-                    getProductInfo(manualBarcodeValue);
-                }
+                manualSubmit.click();
             }
         });
 
         document.querySelectorAll('.select-button').forEach(button => {
             button.addEventListener('click', () => {
                 const fnsku = button.getAttribute('data-fnsku');
+                const productId = button.getAttribute('data-product-id');
                 getProductInfo(fnsku);
+                devamLink.href = 'wh_product.php?product=' + productId; // Set product link
             });
         });
 
