@@ -76,7 +76,7 @@ include '_header.php';
         İşlem yapmak için lütfen aşağıdaki raf ve kolilerden birini seçin.
         <div class="mb-3 mt-3">
             <label for="existingShelvesSelect" class="form-label">Raf/Koli Seçin</label>
-            <select class="form-select" id="existingShelvesSelect" onchange="location = this.value;">
+            <select class="form-select" id="existingShelvesSelect">
                 <option value="">Raf/Koli seçin...</option>
                 <?php foreach ($shelvesGrouped as $groupName => $shelves): ?>
                     <optgroup label="<?= htmlspecialchars($groupName) ?>">
@@ -88,7 +88,7 @@ include '_header.php';
                                 $optionText = "{$shelf->name} kutusunda " . ($shelf->type === 'Koli (Açılmış)' ? 'açık' : 'kapalı') . " {$product->shelfCount($shelf)} adet ürün";
                             }
                             ?>
-                            <option value="wh_product_action.php?product=<?= urlencode($product->id) ?>&shelf=<?= urlencode($shelf->id) ?>">
+                            <option value="<?= htmlspecialchars($shelf->id) ?>">
                                 <?= htmlspecialchars($optionText) ?>
                             </option>
                         <?php endforeach; ?>
@@ -108,7 +108,43 @@ include '_header.php';
     <?= wh_menu() ?>
 </div>
 
-<!-- Modal -->
+<!-- Modal for moving products -->
+<div class="modal fade" id="actionModal" tabindex="-1" aria-labelledby="actionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="actionModalLabel">Ürün İşlemleri</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="actionForm" action="wh_product_action.php" method="post">
+                    <input type="hidden" name="product_id" id="modalProductId">
+                    <input type="hidden" name="shelf_id" id="modalShelfId">
+                    <div class="mb-3">
+                        <button type="submit" name="action" value="send_to_sale" class="btn btn-success w-100 mb-2">Satışa Gönder</button>
+                    </div>
+                    <div class="mb-3">
+                        <label for="newShelfSelect" class="form-label">Yeni Raf/Koli Seçin</label>
+                        <select class="form-select" id="newShelfSelect" name="new_shelf_id" required>
+                            <option value="">Raf seçin...</option>
+                            <?php foreach ($shelfList as $shelf): ?>
+                                <optgroup label="<?= htmlspecialchars($shelf->name) ?>">
+                                    <option value="<?= htmlspecialchars($shelf->id) ?>">Rafa açık olarak koy</option>
+                                    <?php foreach ($shelf->getChildren() as $child): ?>
+                                        <option value="<?= htmlspecialchars($child->id) ?>"><?= htmlspecialchars($child->name) ?> / <?= htmlspecialchars($child->type) ?></option>
+                                    <?php endforeach; ?>
+                                </optgroup>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <button type="submit" name="action" value="move_to_shelf" class="btn btn-primary w-100">Başka Rafa Taşı</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for placing products on shelves -->
 <div class="modal fade" id="putToShelfModal" tabindex="-1" aria-labelledby="putToShelfModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -158,6 +194,10 @@ include '_header.php';
         const quantityInput = document.getElementById('quantityInput');
         const shelfSelect = document.getElementById('shelfSelect');
         const saveButton = document.getElementById('saveButton');
+        const existingShelvesSelect = document.getElementById('existingShelvesSelect');
+        const actionModal = new bootstrap.Modal(document.getElementById('actionModal'));
+        const modalProductId = document.getElementById('modalProductId');
+        const modalShelfId = document.getElementById('modalShelfId');
 
         const updateButtons = () => {
             decrementBtn.disabled = quantityInput.value <= 0;
@@ -182,6 +222,16 @@ include '_header.php';
 
         shelfSelect.addEventListener('change', () => {
             updateButtons();
+        });
+
+        // Handle selection of existing shelves
+        existingShelvesSelect.addEventListener('change', () => {
+            const selectedShelf = existingShelvesSelect.value;
+            if (selectedShelf) {
+                modalProductId.value = "<?= htmlspecialchars($product->id) ?>";
+                modalShelfId.value = selectedShelf;
+                actionModal.show();
+            }
         });
 
         // Initial button state
