@@ -6,7 +6,7 @@ require_once('wh_include.php');
 
 $productId = $_GET['product'] ?? '';
 if ($productId) {
-    $product = StockProduct::getById($GLOBALS['pdo'], $productId);
+    $product = StockProduct::getById($productId, $GLOBALS['pdo']);
 }
 
 if (empty($product)) {
