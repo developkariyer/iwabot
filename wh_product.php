@@ -125,7 +125,7 @@ include '_header.php';
                     </div>
                     <div class="mb-3">
                         <label for="newShelfSelect" class="form-label">Yeni Raf/Koli Seçin</label>
-                        <select class="form-select" id="newShelfSelect" name="new_shelf_id" required>
+                        <select class="form-select" id="newShelfSelect" name="new_shelf_id">
                             <option value="">Raf seçin...</option>
                             <?php foreach ($shelfList as $shelf): ?>
                                 <optgroup label="<?= htmlspecialchars($shelf->name) ?>">
@@ -137,7 +137,7 @@ include '_header.php';
                             <?php endforeach; ?>
                         </select>
                     </div>
-                    <button type="submit" name="action" value="move_to_shelf" class="btn btn-primary w-100">Başka Rafa Taşı</button>
+                    <button type="submit" name="action" value="move_to_shelf" class="btn btn-primary w-100" id="moveToShelfButton" disabled>Başka Rafa Taşı</button>
                 </form>
             </div>
         </div>
@@ -198,10 +198,13 @@ include '_header.php';
         const actionModal = new bootstrap.Modal(document.getElementById('actionModal'));
         const modalProductId = document.getElementById('modalProductId');
         const modalShelfId = document.getElementById('modalShelfId');
+        const newShelfSelect = document.getElementById('newShelfSelect');
+        const moveToShelfButton = document.getElementById('moveToShelfButton');
 
         const updateButtons = () => {
             decrementBtn.disabled = quantityInput.value <= 0;
             saveButton.disabled = shelfSelect.value === "" || quantityInput.value <= 0;
+            moveToShelfButton.disabled = newShelfSelect.value === "";
         };
 
         decrementBtn.addEventListener('click', () => {
@@ -221,6 +224,10 @@ include '_header.php';
         });
 
         shelfSelect.addEventListener('change', () => {
+            updateButtons();
+        });
+
+        newShelfSelect.addEventListener('change', () => {
             updateButtons();
         });
 
