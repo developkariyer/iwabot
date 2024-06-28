@@ -35,7 +35,7 @@ include '_header.php';
                         <div class="accordion-body">
                             <p><?= $product->productInfo() ?></p>
                             <p>Adres</p>
-                            <button class="btn btn-primary select-button btn-lg rounded-pill w-100 py-3" data-fnsku="<?= $product->fnsku ?>" onclick="event.stopPropagation();">Seç</button>
+                            <button class="btn btn-success select-button btn-lg rounded-pill w-100 py-3" data-fnsku="<?= $product->fnsku ?>" onclick="event.stopPropagation();">Seç</button>
                         </div>
                     </div>
                 </div>
@@ -47,8 +47,8 @@ include '_header.php';
         </div>
         <div class="input-group mt-4">
             <input type="text" id="manualBarcode" class="form-control" placeholder="Manuel Barkod Girin">
-            <button class="btn btn-primary" id="manualSubmit">Submit</button>
-            <button class="btn btn-success" id="openCamera">Kameradan Tara</button>
+            <button class="btn btn-primary btn-lg rounded-pill" id="manualSubmit">Submit</button>
+            <button class="btn btn-success btn-lg rounded-pill" id="openCamera">Kameradan Tara</button>
         </div>
     </div>
     <?= wh_menu() ?>
