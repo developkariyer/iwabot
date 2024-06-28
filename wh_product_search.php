@@ -22,7 +22,7 @@ include '_header.php';
             <?php foreach ($products as $index => $product): ?>
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="heading<?= $index ?>">
-                        <button class=" btn-success collapsed rounded-pill d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $index ?>" aria-expanded="false" aria-controls="collapse<?= $index ?>">
+                        <button class="accordion-button btn-success collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $index ?>" aria-expanded="false" aria-controls="collapse<?= $index ?>">
                             <span><?= $product->name ?> (<?= $product->fnsku ?>)</span>
                         </button>
                     </h2>
