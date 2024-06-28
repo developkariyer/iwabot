@@ -15,7 +15,7 @@ if ($productId) {
 }
 
 if (empty($product)) {
-    addMessage('Ürün bilgisi bulunamadı.', 'danger');
+    addMessage("Ürün bilgisi bulunamadı. ($productId)", 'danger');
     header('Location: wh_product_search.php');
     exit;
 }
