@@ -46,8 +46,8 @@ include '_header.php';
             <p>Scanned Code: <span id="barcode">Waiting...</span></p>
         </div>
         <div class="input-group mt-4">
-            <input type="text" id="manualBarcode" class="form-control" placeholder="Manuel Barkod Girin">
-            <button class="btn btn-primary btn-lg rounded-pill" id="manualSubmit">Gönder</button>
+            <input type="text" id="manualBarcode" class="form-control rounded-start" placeholder="Manuel Barkod Girin">
+            <button class="btn btn-primary btn-lg rounded-end" id="manualSubmit">Gönder</button>
         </div>
         <div class="mt-3">
             <button class="btn btn-success btn-lg rounded-pill w-100" id="openCamera">Kameradan Tara</button>
