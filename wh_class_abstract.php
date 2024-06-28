@@ -26,6 +26,7 @@ abstract class AbstractStock
      */
     protected function __construct($id, $db, $parentId = null, $lazy = false)
     {
+        error_log("Constructing " . static::class . " with ID " . $id . " and parent ID " . $parentId. " and db " . empty($db));
         $this->id = $id;
         $this->db = $db;
         $this->lazy = $lazy;
