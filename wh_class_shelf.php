@@ -165,4 +165,18 @@ class StockShelf extends AbstractStock
         $this->productsArray = [];
     }
 
+    public static function newShelf($db, $name, $type, $parentId = null)
+    {
+        $shelf = new StockShelf([
+            'name' => $name,
+            'type' => $type,
+            'parent_id' => $type !== 'Raf' ? $parentId : null
+        ]);
+        if ($shelf->save()) {
+            return $shelf;
+        } else {
+            return null;
+        }
+    }
+
 }

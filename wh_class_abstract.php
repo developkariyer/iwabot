@@ -69,6 +69,9 @@ abstract class AbstractStock
      */
     private function load()
     {
+        if (!$this->id) {
+            return;
+        }
         error_log("Lazy load " . static::class . " with ID " . $this->id . " and lazy " . $this->lazy);
         if ($this->lazy) {
             $stmt = $this->db->prepare("SELECT * FROM " . static::$tableName . " WHERE id = :id");
@@ -86,15 +89,15 @@ abstract class AbstractStock
      *
      * @throws Exception If the table name is not set.
      */
-    public function save() 
+    public function save(): bool
     {
         if (empty(static::$tableName)) {
             throw new Exception("Table name not set.");
         }
         if ($this->id) {
-            $this->update(static::$tableName, $this->cachedData);
+            return $this->update(static::$tableName, $this->cachedData);
         } else {
-            $this->insert(static::$tableName, $this->cachedData);
+            return $this->insert(static::$tableName, $this->cachedData);
         }
     }
 
@@ -103,12 +106,12 @@ abstract class AbstractStock
      *
      * @throws Exception If the table name is not set.
      */
-    public function delete()
+    public function delete(): bool
     {
         if (empty(static::$tableName)) {
             throw new Exception("Table name not set.");
         }
-        $this->db->prepare("DELETE FROM " . static::$tableName . " WHERE id = :id")->execute(['id' => $this->id]);
+        return $this->db->prepare("DELETE FROM " . static::$tableName . " WHERE id = :id")->execute(['id' => $this->id]);
     }
 
     /**
@@ -117,14 +120,14 @@ abstract class AbstractStock
      * @param string $table The table name.
      * @param array $fields The fields to update.
      */
-    protected function update($table, $fields)
+    protected function update($table, $fields): bool
     {
         $sql = "UPDATE {$table} SET ";
         $sql .= implode(',', array_map(function($field) {
             return "{$field} = :{$field}";
         }, array_keys($fields)));
         $sql .= " WHERE id = :id";
-        $this->db->prepare($sql)->execute(array_merge($fields, ['id' => $this->id]));
+        return $this->db->prepare($sql)->execute(array_merge($fields, ['id' => $this->id]));
     }
 
     /**
@@ -133,7 +136,7 @@ abstract class AbstractStock
      * @param string $table The table name.
      * @param array $fields The fields to insert.
      */
-    protected function insert($table, $fields)
+    protected function insert($table, $fields): bool
     {
         $sql = "INSERT INTO {$table} (";
         $sql .= implode(',', array_keys($fields));
@@ -142,8 +145,12 @@ abstract class AbstractStock
             return ":{$field}";
         }, array_keys($fields)));
         $sql .= ")";
-        $this->db->prepare($sql)->execute($fields);
-        $this->id = $this->db->lastInsertId();
+        if ($this->db->prepare($sql)->execute($fields)) {
+            $this->id = $this->db->lastInsertId();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

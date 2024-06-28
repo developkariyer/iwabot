@@ -37,6 +37,33 @@ switch ($action) {
         break;
 
     case 'add_to_shelf':
+        if ($shelfId === 'new_shelf') {
+            $newShelfName = $_POST['new_shelf_name'] ?? '';
+            $newShelfType = $_POST['new_shelf_type'] ?? '';
+            $parentShelfId = $_POST['parent_shelf_id'] ?? null;
+
+            if ($newShelfName && $newShelfType) {
+                $newShelf = new StockShelf([
+                    'name' => $newShelfName,
+                    'type' => $newShelfType,
+                    'parent_id' => $newShelfType !== 'Raf' ? $parentShelfId : null
+                ]);
+                if ($newShelf->save($GLOBALS['pdo'])) {
+                    $shelfId = $newShelf->id;
+                    $shelf = $newShelf; // Update the shelf variable to the newly created shelf
+                    addMessage('Yeni raf başarıyla oluşturuldu', 'success');
+                } else {
+                    addMessage('Yeni raf oluşturulamadı', 'danger');
+                    header("Location: $referrer");
+                    exit;
+                }
+            } else {
+                addMessage('Yeni raf oluşturmak için gerekli bilgiler eksik', 'danger');
+                header("Location: $referrer");
+                exit;
+            }
+        }
+
         if ($quantity > 0) {
             $product->putOnShelf($shelf, $quantity);
             addMessage('Ürün rafa eklendi', 'success');
@@ -61,3 +88,4 @@ switch ($action) {
 
 header("Location: $referrer");
 exit;
+?>
