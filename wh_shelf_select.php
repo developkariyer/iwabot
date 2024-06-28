@@ -39,10 +39,8 @@ include '_header.php';
                 <label for="newShelfParent" class="form-label">Koli ise Rafı</label>
                 <select class="form-select" id="newShelfParent" name="newShelfParent">
                     <option value="">Yok</option>
-                    <?php foreach ($shelf as $s): ?>
-                        <?php if ($s->type === 'Raf'): ?>
-                            <option value="<?= $s->id ?>"><?= $s->name ?></option>
-                        <?php endif; ?>
+                    <?php foreach ($shelves as $s): ?>
+                        <option value="<?= $s->id ?>"><?= $s->name ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
