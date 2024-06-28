@@ -20,6 +20,9 @@ include '_header.php';
                     <option value="">Seçiniz...</option>
                     <?php foreach ($shelves as $s): ?>
                         <option value="<?= $s->id ?>"><?= $s->name ?> (<?= $s->type ?><?= $s->parent ? ' / '.$s->parent->name : '' ?>)</option>
+                        <?php foreach ($s->children as $child): ?>
+                            <option value="<?= $child->id ?>"><?= $child->name ?> (<?= $child->type ?>)</option>
+                        <?php endforeach; ?>
                     <?php endforeach; ?>
                     <option value="add_new">Yeni Raf / Koli Ekle</option>
                 </select>
