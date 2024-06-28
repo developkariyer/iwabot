@@ -35,15 +35,26 @@ include '_header.php';
             <label for="existingShelvesSelect" class="form-label">Raf/Koli Seçin</label>
             <select class="form-select" id="existingShelvesSelect" onchange="location = this.value;">
                 <option value="">Raf/Koli seçin...</option>
-                <?php foreach ($product->getShelves() as $shelf): ?>
-                    <?php
-                        $shelfInfo = $shelf->type === 'Raf'
-                            ? "{$shelf->name} rafında {$product->shelfCount($shelf)} açık ürün"
-                            : "{$shelf->parent->name} rafında {$shelf->name} kolisinde {$product->shelfCount($shelf)} adet ürün. {$shelf->type}";
-                    ?>
-                    <option value="wh_product_action.php?product=<?= urlencode($product->id) ?>&shelf=<?= urlencode($shelf->id) ?>">
-                        <?= htmlspecialchars($shelfInfo) ?>
-                    </option>
+                <?php
+                $shelvesGrouped = [];
+                foreach ($product->getShelves() as $shelf) {
+                    $shelvesGrouped[$shelf->parent->name][] = $shelf;
+                }
+                foreach ($shelvesGrouped as $parentName => $shelves): ?>
+                    <optgroup label="<?= htmlspecialchars($parentName) ?>">
+                        <?php foreach ($shelves as $shelf): ?>
+                            <?php
+                            if ($shelf->type === 'Raf') {
+                                $optionText = "{$product->shelfCount($shelf)} adet rafta açık ürün";
+                            } else {
+                                $optionText = "{$shelf->name} kutusunda {$product->shelfCount($shelf)} adet " . ($shelf->type === 'Koli (Açılmış)' ? 'açık ürün' : 'kapalı ürün');
+                            }
+                            ?>
+                            <option value="wh_product_action.php?product=<?= urlencode($product->id) ?>&shelf=<?= urlencode($shelf->id) ?>">
+                                <?= htmlspecialchars($optionText) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </optgroup>
                 <?php endforeach; ?>
             </select>
         </div>
