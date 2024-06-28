@@ -44,7 +44,6 @@ abstract class AbstractStock
      */
     public static function getById($id, $db)
     {
-        error_log("Getting " . static::class . " by ID ".$id." and db " . (empty($db)? "empty" : "not empty"));
         if (empty(static::$tableName)) {
             return null;
         }
