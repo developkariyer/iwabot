@@ -16,7 +16,7 @@ class StockShelf extends AbstractStock
      */
     protected function getTransientFields()
     {
-        return ['parent', 'boxes', 'products'];
+        return ['parent', 'children', 'products'];
     }
 
     /**
