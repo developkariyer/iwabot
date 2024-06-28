@@ -28,7 +28,7 @@ include '_header.php';
                     </h2>
                     <div id="collapse<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $index ?>" data-bs-parent="#productAccordion">
                         <div class="accordion-body">
-                            <p><?= htmlspecialchars($product->productInfo()) ?></p>
+                            <p><?= nl2br(htmlspecialchars($product->productInfo())) ?></p>
                             <p>Adres</p>
                             <button class="btn btn-outline-success btn-lg rounded-pill w-100 py-3 mt-2 select-button" data-fnsku="<?= htmlspecialchars($product->fnsku) ?>" data-product-id="<?= htmlspecialchars($product->id) ?>" onclick="event.stopPropagation();">Seç</button>
                         </div>
