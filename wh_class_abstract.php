@@ -11,7 +11,7 @@ abstract class AbstractStock
     protected $cachedData = [];
     protected $transientData = [];
     protected $lazy = false;
-    protected $db;
+    protected PDO $db;
     public $parent = null;
 
     protected static $instances = [];
