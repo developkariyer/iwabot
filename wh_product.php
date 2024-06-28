@@ -7,7 +7,7 @@ require_once('wh_include.php');
 $productId = $_GET['product'] ?? '';
 
 if ($productId) {
-    $product = StockProduct::getByFnsku($productId, $GLOBALS['pdo']);
+    $product = StockProduct::getById($productId, $GLOBALS['pdo']);
 } else {
     $product = null;
 }
@@ -57,4 +57,3 @@ include '_header.php';
 <?php
 
 include '_footer.php';
-?>
