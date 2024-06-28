@@ -72,6 +72,7 @@ class StockShelf extends AbstractStock
      */
     public function getChildren()
     {
+        error_log("Getting children of shelf " . $this->id . " with db " . (empty($this->db)? "empty" : "not empty"));
         if (!empty($this->childrenArray)) {
             return $this->childrenArray;
         }
