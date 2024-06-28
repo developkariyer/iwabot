@@ -4,10 +4,10 @@ require_once('_login.php');
 require_once('_init.php');
 require_once('wh_include.php');
 
-$fnsku = $_GET['product'] ?? '';
-if ($fnsku) {
-    error_log("Getting product info for $fnsku");
-    $product = StockProduct::getByFnsku($fnsku, $GLOBALS['pdo']);
+$productId = $_GET['product'] ?? '';
+if ($productId) {
+    error_log("Getting product info for $productId");
+    $product = StockProduct::getById($productId, $GLOBALS['pdo']);
 }
 
 if (empty($product)) {
