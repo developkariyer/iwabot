@@ -4,8 +4,9 @@ require_once('_login.php');
 require_once('_init.php');
 require_once('wh_include.php');
 
-$productId = $_GET['product'] ?? '';
-if ($productId) {
+$fnsku = $_GET['product'] ?? '';
+if ($fnsku) {
+    error_log("Getting product info for $fnsku");
     $product = StockProduct::getByFnsku($productId, $GLOBALS['pdo']);
 }
 
@@ -29,7 +30,7 @@ function metricToImp($inp, $conv=0.393700787) {
 
 $stock = $shelf ? $product->shelfCount($shelf) : 0;
 
-return [
+echo [
     'productInfo' => "Ürün Adı: {$product->name}".
                     "<br>Ürün Kodu: {$product->fnsku}".
                     "<br>Kategori: {$product->category}".
