@@ -14,46 +14,46 @@ include '_header.php';
     </div>
 
     <div class="row g-3 m-3">
-        <div class="col-md-6">
+        <div class="col-6">
             <a href="wh_product_search.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Ürün Bul</a>
         </div>
-        <div class="col-md-6">
+        <div class="col-6">
             <a href="wh_shelf_search.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Koli/Raf Bul</a>
         </div>
     </div>
 
     <div class="row g-3 m-3 mt-5">
-        <div class="col-md-6">
+        <div class="col-6">
             <a href="wh_new_product.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Yeni Ürün</a>
         </div>
-        <div class="col-md-6">
+        <div class="col-6">
             <a href="wh_new_shelf.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Yeni Koli/Raf</a>
         </div>
     </div>
 
     <div class="row g-3 m-3 mt-5">
-        <div class="col-md-6">
+        <div class="col-6">
             <a href="wh_product_action.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Ürün Taşı</a>
         </div>
-        <div class="col-md-6">
+        <div class="col-6">
             <a href="wh_shelf_action.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Koli/Raf Taşı</a>
         </div>
     </div>
 
     <div class="row g-3 m-3 mt-5">
-        <div class="col-md-6">
+        <div class="col-6">
             <a href="wh_inventory.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Depo Envanteri</a>
         </div>
-        <div class="col-md-6">
+        <div class="col-6">
             <a href="wh_transfers.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Hareket Raporu</a>
         </div>
     </div>
 
     <div class="row g-3 m-3 mt-5">
-        <div class="col-md-6">
+        <div class="col-6">
             <a href="wh.php" class="btn btn-secondary btn-lg rounded-pill w-100 py-3">Depo Ana Sayfa</a>
         </div>
-        <div class="col-md-6">
+        <div class="col-6">
             <a href="./" class="btn btn-secondary btn-lg rounded-pill w-100 py-3">Ana Sayfa</a>
         </div>
     </div>
@@ -61,7 +61,7 @@ include '_header.php';
     <div class="row g-3 m-3 mt-5">
         <div class="col-md-3">
         </div>
-        <div class="col-md-6">
+        <div class="col-6">
             <a href="./?logout=1" class="btn btn-danger btn-lg rounded-pill w-100 py-3">Çıkış</a>
         </div>
     </div>
