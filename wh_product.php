@@ -71,6 +71,9 @@ function createModalShelfOptions($shelfList) {
             $shelvesGrouped[$shelf->parent->name][] = $shelf;
         }
     }
+    echo "<pre>";
+    print_r($shelvesGrouped);
+    exit;
 
     return $shelvesGrouped;
 }
