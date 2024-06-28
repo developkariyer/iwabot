@@ -166,11 +166,9 @@ class StockShelf extends AbstractStock
         if (($type === 'Raf' && $parentId) || ($type !== 'Raf' && !$parentId)) {
             return null;
         }
-        $shelf = new StockShelf([
-            'name' => $name,
-            'type' => $type,
-            'parent_id' => $type !== 'Raf' ? $parentId : null
-        ]);
+        $shelf = new StockShelf(null, $db, $parentId);
+        $shelf->name = $name;
+        $shelf->type = $type;
         if ($shelf->save()) {
             return $shelf;
         } else {
