@@ -43,6 +43,14 @@ include '_header.php';
             <?php endforeach; ?>
         </div>
     </div>
+    <div class="row g-3 m-3 mt-5">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
+            <a href="#" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Ürünü Rafa Yerleştir</a>
+        </div>
+    </div>
+
     <?= wh_menu() ?>
 </div>
 
