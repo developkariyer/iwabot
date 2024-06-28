@@ -29,7 +29,7 @@ if (!$product || !$shelf) {
 
 switch ($action) {
     case 'send_to_sale':
-        if ($product->removeFromShelf($shelf, $quantity)) {
+        if ($product->removeFromShelf($shelf, 1)) {
             addMessage('Ürün satışa gönderildi', 'success');
         } else {
             addMessage('Ürün satışa gönderilemedi', 'danger');
