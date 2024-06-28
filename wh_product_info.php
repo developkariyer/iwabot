@@ -3,7 +3,7 @@
 require_once('_login.php');
 require_once('_init.php');
 
-$productId = $_POST['product_id'] ?? '';
+$productId = $_GET['product'] ?? '';
 if ($productId) {
     $product = StockProduct::getById($GLOBALS['pdo'], $productId);
 }
@@ -15,7 +15,7 @@ if (empty($product)) {
     ]));
 }
 
-$shelfId = $_POST['shelf'] ?? '';
+$shelfId = $_GET['shelf'] ?? '';
 if ($shelfId) {
     $shelf = StockShelf::getById($GLOBALS['pdo'], $shelfId);
 } else {
