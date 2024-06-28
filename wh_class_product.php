@@ -128,6 +128,7 @@ class StockProduct extends AbstractStock
             throw $e;
         }
         $this->shelvesArray = [];
+        return true;
     }
 
     /**
@@ -155,8 +156,9 @@ class StockProduct extends AbstractStock
     public function moveBetweenShelves(StockShelf $fromShelf, StockShelf $toShelf)
     {
         if ($this->removeFromShelf($fromShelf)) {
-            $this->putOnShelf($toShelf);
+            return $this->putOnShelf($toShelf);
         }
+        return false;
     }
 
     /**

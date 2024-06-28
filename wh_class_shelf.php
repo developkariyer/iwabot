@@ -126,8 +126,7 @@ class StockShelf extends AbstractStock
     */
     public function putProduct(StockProduct $product, $count = 1)
     {
-        $product->putOnShelf($this, $count);
-        $this->productsArray = [];
+        return $product->putOnShelf($this, $count);
     }
 
     /**
@@ -137,8 +136,7 @@ class StockShelf extends AbstractStock
      */
     public function removeProduct(StockProduct $product)
     {
-        $product->removeFromShelf($this);
-        $this->productsArray = [];
+        return $product->removeFromShelf($this);
     }
 
     /**
@@ -149,8 +147,7 @@ class StockShelf extends AbstractStock
      */
     public function moveToAnotherShelf(StockProduct $product, StockShelf $shelf)
     {
-        $product->moveBetweenShelves($this, $shelf);
-        $this->productsArray = [];
+        return $product->moveBetweenShelves($this, $shelf);
     }
 
     /**
@@ -161,12 +158,14 @@ class StockShelf extends AbstractStock
      */
     public function moveToThisShelf(StockProduct $product, StockShelf $shelf)
     {
-        $product->moveBetweenShelves($shelf, $this);
-        $this->productsArray = [];
+        return $product->moveBetweenShelves($shelf, $this);
     }
 
     public static function newShelf($db, $name, $type, $parentId = null)
     {
+        if (($type === 'Raf' && $parentId) || ($type !== 'Raf' && !$parentId)) {
+            return null;
+        }
         $shelf = new StockShelf([
             'name' => $name,
             'type' => $type,

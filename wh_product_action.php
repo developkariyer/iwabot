@@ -21,7 +21,7 @@ $referrer = $_SERVER['HTTP_REFERER'] ?? 'wh_product.php';
 $product = StockProduct::getById($productId, $GLOBALS['pdo']);
 $shelf = StockShelf::getById($shelfId, $GLOBALS['pdo']);
 
-if (!$product || !$shelf) {
+if (!$product) {
     addMessage('Geçersiz veri', 'danger');
     header("Location: $referrer");
     exit;
@@ -29,10 +29,14 @@ if (!$product || !$shelf) {
 
 switch ($action) {
     case 'send_to_sale':
-        if ($product->removeFromShelf($shelf)) {
-            addMessage('Ürün satışa gönderildi', 'success');
+        if ($shelf) {
+            if ($product->removeFromShelf($shelf)) {
+                addMessage('Ürün satışa gönderildi', 'success');
+            } else {
+                addMessage('Ürün satışa gönderilemedi', 'danger');
+            }
         } else {
-            addMessage('Ürün satışa gönderilemedi', 'danger');
+            addMessage('Geçersiz raf', 'danger');
         }
         break;
 
@@ -43,40 +47,45 @@ switch ($action) {
             $parentShelfId = $_POST['parent_shelf_id'] ?? null;
 
             if ($newShelfName && $newShelfType) {
-                $newShelf = new StockShelf([
-                    'name' => $newShelfName,
-                    'type' => $newShelfType,
-                    'parent_id' => $newShelfType !== 'Raf' ? $parentShelfId : null
-                ]);
-                if ($newShelf->save($GLOBALS['pdo'])) {
-                    $shelfId = $newShelf->id;
-                    $shelf = $newShelf; // Update the shelf variable to the newly created shelf
+                $newShelf = StockShelf::newShelf($GLOBALS['db'], $newShelfName, $newShelfType, $parentShelfId);
+                if ($newShelf) {
                     addMessage('Yeni raf başarıyla oluşturuldu', 'success');
+                    $shelf = $newShelf;
                 } else {
                     addMessage('Yeni raf oluşturulamadı', 'danger');
-                    header("Location: $referrer");
-                    exit;
                 }
             } else {
                 addMessage('Yeni raf oluşturmak için gerekli bilgiler eksik', 'danger');
-                header("Location: $referrer");
-                exit;
             }
         }
 
-        if ($quantity > 0) {
-            $product->putOnShelf($shelf, $quantity);
-            addMessage('Ürün rafa eklendi', 'success');
+        if ($shelf) {
+            if ($quantity > 0) {
+                if ($product->putOnShelf($shelf, $quantity)) {
+                    addMessage('Ürün rafa eklendi', 'success');
+                } else {
+                    addMessage('Ürün rafa eklenemedi', 'danger');
+                }
+            } else {
+                addMessage("Tutarsız veri: $quantity", 'danger');
+            }
         } else {
-            addMessage("Tutarsız veri: $quantity", 'danger');
+            addMessage('Geçersiz raf', 'danger');
         }
         break;
 
     case 'move_to_shelf':
-        $newShelf = StockShelf::getById($newShelfId, $GLOBALS['pdo']);
-        if ($newShelf) {
-            $product->moveBetweenShelves($shelf, $newShelf);
-            addMessage('Ürün raf taşındı', 'success');
+        if ($shelf) {
+            $newShelf = StockShelf::getById($newShelfId, $GLOBALS['pdo']);
+            if ($newShelf) {
+                if ($product->moveBetweenShelves($shelf, $newShelf)) {
+                    addMessage('Ürün raf taşındı', 'success');
+                } else {
+                    addMessage('Ürün raf taşınamadı', 'danger');
+                }
+            } else {
+                addMessage('Geçersiz hedef raf', 'danger');
+            }
         } else {
             addMessage('Geçersiz raf', 'danger');
         }
