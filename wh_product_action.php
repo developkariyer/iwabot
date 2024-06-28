@@ -46,7 +46,7 @@ switch ($action) {
             $parentShelfId = $_POST['parent_shelf_id'] ?? null;
 
             if ($newShelfName && $newShelfType) {
-                $newShelf = StockShelf::newShelf($GLOBALS['db'], $newShelfName, $newShelfType, $parentShelfId);
+                $newShelf = StockShelf::newShelf($GLOBALS['pdo'], $newShelfName, $newShelfType, $parentShelfId);
                 if ($newShelf) {
                     addMessage('Yeni raf başarıyla oluşturuldu', 'success');
                     $shelf = $newShelf;
