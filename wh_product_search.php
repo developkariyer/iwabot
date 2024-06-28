@@ -23,26 +23,23 @@ include '_header.php';
 <div class="container mt-5">
     <div class="mt-5">
         <h2>Çıkış İçin Bekleyen Ürünler</h2>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>İsim</th>
-                    <th>FNSKU</th>
-                    <th>Adres</th>
-                    <th>SEÇ</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($products as $product): ?>
-                    <tr>
-                        <td><?= $product->name ?></td>
-                        <td><?= $product->fnsku ?></td>
-                        <td></td>
-                        <td><button class="btn btn-primary select-button" data-fnsku="<?= $product->fnsku ?>">Seç</button></td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+        <div class="accordion" id="productAccordion">
+            <?php foreach ($products as $index => $product): ?>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading<?= $index ?>">
+                        <button class="accordion-button collapsed rounded-pill d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $index ?>" aria-expanded="false" aria-controls="collapse<?= $index ?>">
+                            <span><?= $product->name ?> (<?= $product->fnsku ?>)</span>
+                            <button class="btn btn-primary select-button ms-3" data-fnsku="<?= $product->fnsku ?>" onclick="event.stopPropagation();">Seç</button>
+                        </button>
+                    </h2>
+                    <div id="collapse<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $index ?>" data-bs-parent="#productAccordion">
+                        <div class="accordion-body">
+                            Adres
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
         <div class="d-none" id="cameraOpenDiv">
             <video id="video" width="100%" height="400" autoplay></video>
             <p>Scanned Code: <span id="barcode">Waiting...</span></p>
