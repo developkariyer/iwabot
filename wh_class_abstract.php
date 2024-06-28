@@ -166,6 +166,10 @@ abstract class AbstractStock
      */
     public function setField($field, $value)
     {
+        if ($field === 'cachedData') {
+            $this->cachedData = $value;
+            return;
+        }
         if ($this->validateField($field, $value)) {
             $this->load();
             if (isset($this->cachedData[$field])) {
