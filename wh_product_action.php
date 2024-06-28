@@ -7,7 +7,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 require_once('_login.php');
 require_once('_init.php');
-require_once('_utils.php');
 require_once('wh_include.php');
 
 $productId = $_POST['product_id'] ?? '';
