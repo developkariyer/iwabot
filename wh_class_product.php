@@ -186,4 +186,12 @@ class StockProduct extends AbstractStock
                     "Toplam Stok: {$this->getTotalStock()}\n";
     }
 
+    public static function allProducts($db) {
+        $stmt = $db->prepare("SELECT id FROM wh_product ORDER BY fnsku");
+        $stmt->execute();
+        $products = [];
+        while ($productData = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $product = StockProduct::getById($productData['id'], $db);
+        }
+    }
 }

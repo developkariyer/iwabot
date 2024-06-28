@@ -11,6 +11,8 @@ foreach ($productList as $product) {
     $products[$p->id] = $p;
 }
 
+$allProducts = StockProduct::allProducts($GLOBALS['pdo']);
+
 include '_header.php';
 
 ?>
@@ -36,13 +38,21 @@ include '_header.php';
                 </div>
             <?php endforeach; ?>
         </div>
-        <div class="d-none" id="cameraOpenDiv">
-            <video id="video" width="100%" height="400" autoplay></video>
-            <p>Scanned Code: <span id="barcode">Waiting...</span></p>
-        </div>
         <div class="input-group mt-4">
             <input type="text" id="manualBarcode" class="form-control rounded-start" placeholder="Manuel Barkod Girin">
             <button class="btn btn-primary btn-lg rounded-end" id="manualSubmit">Gönder</button>
+        </div>
+        <div class="mt-5">
+            <select class="form-select select-button" aria-label="">
+                <option selected>Manuel Ürün Seçin</option>
+                <?php foreach ($allProducts as $product): ?>
+                    <option value="<?= $product->id ?>" data-product-id="<?= $product->id ?>"><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>)</option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="d-none" id="cameraOpenDiv">
+            <video id="video" width="100%" height="400" autoplay></video>
+            <p>Scanned Code: <span id="barcode">Waiting...</span></p>
         </div>
         <div class="row g-3 m-3 mt-5">
             <div class="col-md-3"></div>
