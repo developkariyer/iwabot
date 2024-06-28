@@ -181,9 +181,13 @@ class StockShelf extends AbstractStock
         }
 
         $stmt = $db->prepare("INSERT INTO wh_shelf (name, type, parent_id) VALUES (:name, :type, :parent_id)");
-        if ($stmt->execute(['name' => $name, 'type' => $type, 'parent_id' => $parentId])) {
-            $id = $db->lastInsertId();
-            return static::getById($id, $db);
+        try {
+            if ($stmt->execute(['name' => $name, 'type' => $type, 'parent_id' => $parentId])) {
+                $id = $db->lastInsertId();
+                return static::getById($id, $db);
+            }
+        } catch (Exception $e) {
+            return null;
         }
         return null;
     }
