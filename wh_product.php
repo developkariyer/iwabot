@@ -27,11 +27,10 @@ include '_header.php';
 <div class="container mt-5">
     <div class="mt-5">
         <h2><?= $product->name ?></h2>
+        <h5>Ürün Bilgilersi</h5>
         <p><?= $product->productInfo() ?></p>
-        <p>Toplam Stok: <?= $product->getTotalStock() ?></p>
-
-        <h3>Ürünün Bulunduğu Yerler</h3>
-        <?php foreach ($product->shelves as $shelf): ?>
+        <h5>Ürünün Bulunduğu Yerler</h5>
+        <?php foreach ($product->getShelves() as $shelf): ?>
             <a href="wh_product_action.php?product=<?= $product->fnsku ?>&shelf=<?= $shelf->id ?>" class="btn btn-outline-primary rounded-pill w-100 py-3"></a>
         <?php endforeach; ?>
     </div>
