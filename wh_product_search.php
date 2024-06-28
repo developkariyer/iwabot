@@ -52,7 +52,7 @@ include '_header.php';
         <div class="row">
             <div class="col-md-3"></div>
             <div class="mt-3 col-md-6">
-                <button class="btn btn-success btn-lg rounded-pill w-100" id="openCamera">Kameradan Tara</button>
+                <button class="btn btn-success btn-lg rounded-pill w-100 py-3" id="openCamera">Kameradan Tara</button>
             </div>
         </div>
     </div>
