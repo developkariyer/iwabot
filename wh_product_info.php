@@ -26,8 +26,6 @@ if ($shelfId) {
     $shelf = null;
 }
 
-
-
 $stock = $shelf ? $product->shelfCount($shelf) : 0;
 
 echo json_encode([
