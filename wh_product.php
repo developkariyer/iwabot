@@ -142,8 +142,10 @@ include '_header.php';
                                     <?php foreach ($shelves as $shelf): ?>
                                         <?php
                                         if ($shelf->parent_id === null) {
+                                            // Root shelf (Rafta açık)
                                             $optionText = "Rafta açık";
                                         } else {
+                                            // Child shelf (Koli type)
                                             $optionText = "{$shelf->name} (" . ($shelf->type === 'Koli (Açılmış)' ? 'Koli (açık)' : 'Koli (kapalı)') . ")";
                                         }
                                         ?>
