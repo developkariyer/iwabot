@@ -103,8 +103,8 @@ include '_header.php';
                 url: 'wh_product_info.php',
                 method: 'POST',
                 data: { 
-                    product: detectedBarcode,
-                    shelf: '<?= $shelfId ?? "" ?>' // Send shelf value in the AJAX request
+                    barcode: detectedBarcode,
+                    shelf: '<?= $shelfId ?>' // Send shelf value in the AJAX request
                 },
                 dataType: 'json',
                 success: function(response) {
@@ -157,12 +157,23 @@ include '_header.php';
 
         backButton.addEventListener('click', async () => {
             confirmModal.hide();
+            openCamera(); // Reopen the camera when "Geri Dön" is clicked
         });
 
         manualSubmit.addEventListener('click', () => {
             const manualBarcodeValue = manualBarcode.value.trim();
             if (manualBarcodeValue) {
                 getProductInfo(manualBarcodeValue);
+            }
+        });
+
+        // Trigger action on Enter key press in the manualBarcode input field
+        manualBarcode.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                const manualBarcodeValue = manualBarcode.value.trim();
+                if (manualBarcodeValue) {
+                    getProductInfo(manualBarcodeValue);
+                }
             }
         });
 
