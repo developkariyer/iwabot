@@ -168,7 +168,33 @@ include '_header.php';
                                     <?php endforeach; ?>
                                 </optgroup>
                             <?php endforeach; ?>
+                            <option value="new_shelf">Yeni Raf Ekle</option>
                         </select>
+                    </div>
+                    <div id="newShelfFields" class="d-none">
+                        <div class="mb-3">
+                            <label for="newShelfName" class="form-label">Yeni Raf Adı</label>
+                            <input type="text" class="form-control" id="newShelfName" name="new_shelf_name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="newShelfType" class="form-label">Yeni Raf Türü</label>
+                            <select class="form-select" id="newShelfType" name="new_shelf_type">
+                                <option value="Raf">Raf</option>
+                                <option value="Koli (Açılmış)">Koli (Açılmış)</option>
+                                <option value="Koli (Kapalı)">Koli (Kapalı)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="parentShelfSelect" class="form-label">Üst Raf Seçin</label>
+                            <select class="form-select" id="parentShelfSelect" name="parent_shelf_id">
+                                <option value="">Üst Raf Seçin...</option>
+                                <?php foreach ($shelfList as $shelf): ?>
+                                    <?php if (count($shelf->getChildren()) === 0): ?>
+                                        <option value="<?= htmlspecialchars($shelf->id) ?>"><?= htmlspecialchars($shelf->name) ?></option>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="quantityInput" class="form-label">Miktar</label>
@@ -201,6 +227,7 @@ include '_header.php';
         const modalShelfId = document.getElementById('modalShelfId');
         const newShelfSelect = document.getElementById('newShelfSelect');
         const moveToShelfButton = document.getElementById('moveToShelfButton');
+        const newShelfFields = document.getElementById('newShelfFields');
 
         const updateButtons = () => {
             decrementBtn.disabled = quantityInput.value <= 0;
@@ -225,6 +252,12 @@ include '_header.php';
         });
 
         shelfSelect.addEventListener('change', () => {
+            if (shelfSelect.value === 'new_shelf') {
+                newShelfFields.classList.remove('d-none');
+                saveButton.disabled = false; // Enable save button as new shelf details need to be filled
+            } else {
+                newShelfFields.classList.add('d-none');
+            }
             updateButtons();
         });
 

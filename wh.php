@@ -46,7 +46,7 @@ include '_header.php';
             <a href="wh_new_product.php" class="disabled btn btn-primary btn-lg rounded-pill w-100 py-3">Yeni Ürün</a>
         </div>
         <div class="col-md-6">
-            <a href="wh_new_shelf.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Yeni Koli/Raf</a>
+            <a href="wh_new_sale.php" class="disabled btn btn-primary btn-lg rounded-pill w-100 py-3">Yeni Sipariş</a>
         </div>
     </div>
 
