@@ -43,10 +43,10 @@ include '_header.php';
             <button class="btn btn-primary btn-lg rounded-end" id="manualSubmit">Gönder</button>
         </div>
         <div class="mt-5">
-            <select class="form-select select-button" aria-label="">
+            <select class="form-select select-butto" aria-label="">
                 <option selected>Manuel Ürün Seçin</option>
                 <?php foreach ($allProducts as $product): ?>
-                    <option value="<?= $product->id ?>" data-product-id="<?= $product->id ?>"><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>)</option>
+                    <option value="<?= $product->id ?>" data-product-id="<?= $product->id ?>"><?= htmlspecialchars($product->fnsku) ?></option>
                 <?php endforeach; ?>
             </select>
         </div>

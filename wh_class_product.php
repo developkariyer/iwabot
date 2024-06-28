@@ -187,11 +187,12 @@ class StockProduct extends AbstractStock
     }
 
     public static function allProducts($db) {
-        $stmt = $db->prepare("SELECT id FROM wh_product ORDER BY fnsku");
+        $stmt = $db->prepare("SELECT id, fnsku FROM wh_product ORDER BY fnsku");
         $stmt->execute();
         $products = [];
         while ($productData = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $product = StockProduct::getById($productData['id'], $db);
         }
+        return $products;
     }
 }
