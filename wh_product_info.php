@@ -23,7 +23,7 @@ if ($shelfId) {
     $shelf = null;
 }
 
-function conv($inp, $conv=0.393700787) {
+function metricToImp($inp, $conv=0.393700787) {
     return number_format($inp * conv, 2);
 }
 
@@ -34,7 +34,7 @@ return [
                     "<br>Ürün Kodu: {$product->fnsku}".
                     "<br>Kategori: {$product->category}".
                     "<br>Ölçüler (metrik): {$product->dimension1}x{$product->dimension2}x{$product->dimension3}cm, {$product->weight}gr".
-                    "<br>Ölçüler (imperial): ".conv($product->dimension1)."x".conv($product->dimension2)."x".conv($product->dimension3)."inch, ".conv($product->weight,0.0352739619)."oz".
+                    "<br>Ölçüler (imperial): ".metricToImp($product->dimension1)."x".metricToImp($product->dimension2)."x".metricToImp($product->dimension3)."inch, ".metricToImp($product->weight,0.0352739619)."oz".
                     "<br>Toplam Stok: {$product->getTotalStock()}".
                     "<br>Raf Stok: {$stock}",
     'stock' => $stock,
