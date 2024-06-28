@@ -20,7 +20,7 @@ include '_header.php';
                     <?php foreach ($shelves as $s): ?>
                         <option value="<?= $s->id ?>"><?= $s->name ?> (<?= $s->type ?><?= $s->parent ? ' / '.$s->parent->name : '' ?>)</option>
                         <?php foreach ($s->getChildren() as $child): ?>
-                            <option value="<?= $child->id ?>" style="padding-left: 30px;"><?= $child->name ?> (<?= $child->type ?>)</option>
+                            <option value="<?= $child->id ?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $child->name ?> (<?= $child->type ?>)</option>
                         <?php endforeach; ?>
                     <?php endforeach; ?>
                     <option value="add_new">Yeni Raf / Koli Ekle</option>
