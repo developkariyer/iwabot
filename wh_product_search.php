@@ -103,8 +103,8 @@ include '_header.php';
                 url: 'wh_product_info.php',
                 method: 'POST',
                 data: { 
-                    barcode: detectedBarcode,
-                    shelf: '<?= $shelfId ?>' // Send shelf value in the AJAX request
+                    product: detectedBarcode,
+                    shelf: '<?= $shelfId ?? "" ?>' // Send shelf value in the AJAX request
                 },
                 dataType: 'json',
                 success: function(response) {
