@@ -6,10 +6,12 @@ require_once('wh_include.php');
 
 $shelfs = StockShelf::allShelves($GLOBALS['pdo']);
 
-include '_header.php';
+echo "<pre>";
 
 print_r($shelfs);
 exit;
+
+include '_header.php';
 
 ?>
 <div class="container mt-5">
