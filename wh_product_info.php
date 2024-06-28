@@ -7,7 +7,7 @@ require_once('wh_include.php');
 $fnsku = $_GET['product'] ?? '';
 if ($fnsku) {
     error_log("Getting product info for $fnsku");
-    $product = StockProduct::getByFnsku($productId, $GLOBALS['pdo']);
+    $product = StockProduct::getByFnsku($fnsku, $GLOBALS['pdo']);
 }
 
 if (empty($product)) {
