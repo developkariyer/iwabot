@@ -122,6 +122,7 @@ include '_header.php';
                     <div class="mb-3">
                         <label for="shelfSelect" class="form-label">Raf/Koli Seçin</label>
                         <select class="form-select" id="shelfSelect" name="shelf_id" required>
+                            <option value="">Raf seçin...</option>
                             <?php foreach ($shelfList as $shelf): ?>
                                 <optgroup label="<?= htmlspecialchars($shelf->name) ?>">
                                     <option value="<?= htmlspecialchars($shelf->id) ?>">Rafa açık olarak koy</option>
@@ -143,7 +144,7 @@ include '_header.php';
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
-                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                    <button type="submit" id="saveButton" class="btn btn-primary" disabled>Kaydet</button>
                 </div>
             </form>
         </div>
@@ -155,9 +156,12 @@ include '_header.php';
         const decrementBtn = document.getElementById('decrementBtn');
         const incrementBtn = document.getElementById('incrementBtn');
         const quantityInput = document.getElementById('quantityInput');
+        const shelfSelect = document.getElementById('shelfSelect');
+        const saveButton = document.getElementById('saveButton');
 
         const updateButtons = () => {
             decrementBtn.disabled = quantityInput.value <= 0;
+            saveButton.disabled = shelfSelect.value === "" || quantityInput.value <= 0;
         };
 
         decrementBtn.addEventListener('click', () => {
@@ -173,6 +177,10 @@ include '_header.php';
         });
 
         quantityInput.addEventListener('input', () => {
+            updateButtons();
+        });
+
+        shelfSelect.addEventListener('change', () => {
             updateButtons();
         });
 
