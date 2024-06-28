@@ -83,9 +83,9 @@ include '_header.php';
                         <?php foreach ($shelves as $shelf): ?>
                             <?php
                             if ($shelf->type === 'Raf') {
-                                $optionText = "Rafta açık {$product->shelfCount($shelf)} adet ürün";
+                                $optionText = "Rafta açık {$product->shelfCount($shelf)} adet";
                             } else {
-                                $optionText = "{$shelf->name} kutusunda " . ($shelf->type === 'Koli (Açılmış)' ? 'açık' : 'kapalı') . " {$product->shelfCount($shelf)} adet ürün";
+                                $optionText = "{$shelf->name} (" . ($shelf->type === 'Koli (Açılmış)' ? 'Açık' : 'Kapalı') . " {$product->shelfCount($shelf)} adet)";
                             }
                             ?>
                             <option value="wh_product_action.php?product=<?= urlencode($product->id) ?>&shelf=<?= urlencode($shelf->id) ?>">
