@@ -167,6 +167,7 @@ class StockShelf extends AbstractStock
             return null;
         }
         $shelf = new StockShelf(id:null, db:$db, parentId:$parentId);
+        error_log("Creating new shelf with name $name, type $type, parent $parentId");
         $shelf->name = $name;
         $shelf->type = $type;
         if ($shelf->save()) {
