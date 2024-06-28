@@ -102,7 +102,7 @@ include '_header.php';
                 url: 'wh_product_info.php',
                 method: 'POST',
                 data: { 
-                    barcode: detectedBarcode,
+                    product: detectedBarcode,
                 },
                 dataType: 'json',
                 success: function(response) {
