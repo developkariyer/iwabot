@@ -2,12 +2,9 @@
 
 require_once('_login.php');
 require_once('_init.php');
+require_once('wh_include.php');
 
-$shelfs = $GLOBALS['pdo']->query('SELECT * FROM wh_shelf ORDER BY type DESC, name ASC')->fetchAll(PDO::FETCH_ASSOC);
-$shelf = [];
-foreach ($shelfs as $s) {
-    $shelf[$s['id']] = $s;
-}
+$shelfs = StockShelf::allShelves($GLOBALS['pdo']);
 
 include '_header.php';
 
@@ -20,8 +17,8 @@ include '_header.php';
                 <label for="shelf" class="form-label">Raf / Koli Seçin</label>
                 <select class="form-select" id="shelf" name="shelf" required>
                     <option value="">Seçiniz...</option>
-                    <?php foreach ($shelf as $s): ?>
-                        <option value="<?= $s['id'] ?>"><?= $s['name'] ?> (<?= $s['type'] ?><?= $s['parent_id'] ? ' / '.$shelf[$s['parent_id']]['name'] : '' ?>)</option>
+                    <?php foreach ($shelves as $s): ?>
+                        <option value="<?= $s->id ?>"><?= $s->name ?> (<?= $s->type ?><?= $s->parent ? ' / '.$s->parent->name : '' ?>)</option>
                     <?php endforeach; ?>
                     <option value="add_new">Yeni Raf / Koli Ekle</option>
                 </select>
@@ -40,8 +37,8 @@ include '_header.php';
                 <select class="form-select" id="newShelfParent" name="newShelfParent">
                     <option value="">Yok</option>
                     <?php foreach ($shelf as $s): ?>
-                        <?php if ($s['type'] == 'Raf'): ?>
-                            <option value="<?= $s['id'] ?>"><?= $s['name'] ?></option>
+                        <?php if ($s->type === 'Raf'): ?>
+                            <option value="<?= $s->id ?>"><?= $s->name ?></option>
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </select>
