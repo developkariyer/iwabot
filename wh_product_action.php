@@ -63,7 +63,7 @@ switch ($action) {
         break;
 
     default:
-        addMessage('Geçersiz işlem', 'danger');
+        addMessage("Geçersiz işlem: $action", 'danger');
 }
 
 header("Location: $referrer");
