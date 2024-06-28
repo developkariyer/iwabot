@@ -80,7 +80,11 @@ include '_header.php';
                     </div>
                     <div class="mb-3">
                         <label for="quantityInput" class="form-label">Miktar</label>
-                        <input type="number" class="form-control" id="quantityInput" name="quantity" min="1" required>
+                        <div class="input-group">
+                            <button type="button" class="btn btn-outline-secondary" id="decrementBtn">-</button>
+                            <input type="number" class="form-control text-center" id="quantityInput" name="quantity" min="0" value="0" required>
+                            <button type="button" class="btn btn-outline-secondary" id="incrementBtn">+</button>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -92,7 +96,38 @@ include '_header.php';
     </div>
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const decrementBtn = document.getElementById('decrementBtn');
+        const incrementBtn = document.getElementById('incrementBtn');
+        const quantityInput = document.getElementById('quantityInput');
+
+        const updateButtons = () => {
+            decrementBtn.disabled = quantityInput.value <= 0;
+        };
+
+        decrementBtn.addEventListener('click', () => {
+            if (quantityInput.value > 0) {
+                quantityInput.value = parseInt(quantityInput.value) - 1;
+                updateButtons();
+            }
+        });
+
+        incrementBtn.addEventListener('click', () => {
+            quantityInput.value = parseInt(quantityInput.value) + 1;
+            updateButtons();
+        });
+
+        quantityInput.addEventListener('input', () => {
+            updateButtons();
+        });
+
+        // Initial button state
+        updateButtons();
+    });
+</script>
+
 <?php
 
 include '_footer.php';
-?>
+
