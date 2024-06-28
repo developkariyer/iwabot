@@ -103,7 +103,6 @@ include '_header.php';
                 method: 'POST',
                 data: { 
                     barcode: detectedBarcode,
-                    shelf: '<?= $shelfId ?>' // Send shelf value in the AJAX request
                 },
                 dataType: 'json',
                 success: function(response) {
