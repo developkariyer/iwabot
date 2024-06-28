@@ -189,9 +189,7 @@ include '_header.php';
                             <select class="form-select" id="parentShelfSelect" name="parent_shelf_id">
                                 <option value="">Üst Raf Seçin...</option>
                                 <?php foreach ($shelfList as $shelf): ?>
-                                    <?php if (count($shelf->getChildren()) === 0): ?>
-                                        <option value="<?= htmlspecialchars($shelf->id) ?>"><?= htmlspecialchars($shelf->name) ?></option>
-                                    <?php endif; ?>
+                                    <option value="<?= htmlspecialchars($shelf->id) ?>"><?= htmlspecialchars($shelf->name) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
