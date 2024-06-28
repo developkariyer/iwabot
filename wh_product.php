@@ -31,8 +31,13 @@ include '_header.php';
         <div class="g-3 m-3 mt-5">
             <?php foreach ($product->getShelves() as $shelf): ?>
                 <a href="wh_product_action.php?product=<?= $product->fnsku ?>&shelf=<?= $shelf->id ?>" class="btn btn-outline-primary rounded-pill w-100 py-3">
-                    <?= $shelf->name ?> / <?= $shelf->type ?><?= $shelf->parent ? ' / '.$shelf->parent->name : '' ?>
-                    <br>Raf Mevcudu: <?= $product->shelfCount($shelf) ?> adet
+                    <?php
+                        if ($shelf->type === 'Raf') {
+                            echo "{$shelf->name} rafında {$product->shelfCount($shelf)} açık ürün";
+                        } else {
+                            echo "{$shelf->parent->name} rafında {$shelf->name} kolisinde {$product->shelfCount($shelf)} adet. {$shelf->type}";
+                        }
+                    ?>
                 </a>
             <?php endforeach; ?>
         </div>
