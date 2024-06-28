@@ -33,7 +33,7 @@ $retval = [
 
 if ($shelf) {
     $stock = $product->shelfCount($shelf);
-    $retval['productInfo'].= "<br>Raf Mevcudu: {$shelf->name} rafında $stock adet";
+    $retval['productInfo'].= "Raf Mevcudu: {$shelf->name} rafında $stock adet\n";
     $retval['stock'] = $stock;
 } else {
     $retval['stock'] = 0;

@@ -176,12 +176,12 @@ class StockProduct extends AbstractStock
 
     public function productInfo() 
     {
-        return "Ürün Adı: {$this->name}".
-                    "<br>Ürün Kodu: {$this->fnsku}".
-                    "<br>Kategori: {$this->category}".
-                    "<br>Ölçüler (metrik): {$this->dimension1}x{$this->dimension2}x{$this->dimension3}cm, {$this->weight}gr".
-                    "<br>Ölçüler (imperial): ".metricToImp($this->dimension1)."x".metricToImp($this->dimension2)."x".metricToImp($this->dimension3)."inch, ".metricToImp($this->weight,0.0352739619)."oz".
-                    "<br>Toplam Stok: {$this->getTotalStock()}";
+        return "Ürün Adı: {$this->name}\n".
+                    "Ürün Kodu: {$this->fnsku}\n".
+                    "Kategori: {$this->category}\n".
+                    "Ölçüler (metrik): {$this->dimension1}x{$this->dimension2}x{$this->dimension3}cm, {$this->weight}gr\n".
+                    "Ölçüler (imperial): ".metricToImp($this->dimension1)."x".metricToImp($this->dimension2)."x".metricToImp($this->dimension3)."inch, ".metricToImp($this->weight,0.0352739619)."oz\n".
+                    "Toplam Stok: {$this->getTotalStock()}\n";
     }
 
 }

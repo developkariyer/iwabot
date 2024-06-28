@@ -106,7 +106,7 @@ include '_header.php';
                 },
                 dataType: 'json',
                 success: function(response) {
-                    productInfo.innerHTML = response.productInfo;
+                    productInfo.innerHTML = response.productInfo.replace(/\n/g, '<br>');
                     devamLink.href = 'wh_product.php?product=' + response.productId; // Set product link using product ID
                     confirmModal.show();
                 },
