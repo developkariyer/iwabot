@@ -8,6 +8,9 @@ $shelfs = StockShelf::allShelves($GLOBALS['pdo']);
 
 include '_header.php';
 
+print_r($shelfs);
+exit;
+
 ?>
 <div class="container mt-5">
     <div class="mt-4 m-3">
