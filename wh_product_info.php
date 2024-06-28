@@ -30,7 +30,7 @@ function metricToImp($inp, $conv=0.393700787) {
 
 $stock = $shelf ? $product->shelfCount($shelf) : 0;
 
-echo [
+echo json_encode([
     'productInfo' => "Ürün Adı: {$product->name}".
                     "<br>Ürün Kodu: {$product->fnsku}".
                     "<br>Kategori: {$product->category}".
@@ -39,4 +39,4 @@ echo [
                     "<br>Toplam Stok: {$product->getTotalStock()}".
                     "<br>Raf Stok: {$stock}",
     'stock' => $stock,
-];
+]);
