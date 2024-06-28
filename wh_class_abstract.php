@@ -6,15 +6,15 @@
  */
 abstract class AbstractStock 
 {
-    private $id = null;
+    public $id = null;
     protected static $tableName = '';
-    private $cachedData = [];
-    private $transientData = [];
-    private $lazy = false;
-    private $db;
+    protected $cachedData = [];
+    protected $transientData = [];
+    protected $lazy = false;
+    protected $db;
     public $parent = null;
 
-    private static $instances = [];
+    protected static $instances = [];
 
     /**
      * Constructor to initialize a stock item.
