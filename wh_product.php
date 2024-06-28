@@ -20,6 +20,49 @@ if (empty($product)) {
 
 $shelfList = StockShelf::allShelves($GLOBALS['pdo']);
 
+function createShelfOptions($product) {
+    $shelves = $product->getShelves();
+    
+    // Separate and sort shelves
+    $openShelves = [];
+    $boxedShelves = [];
+    
+    foreach ($shelves as $shelf) {
+        if ($shelf->type === 'Raf') {
+            $openShelves[] = $shelf;
+        } else {
+            $boxedShelves[] = $shelf;
+        }
+    }
+
+    // Sort shelves
+    usort($openShelves, function($a, $b) use ($product) {
+        return $product->shelfCount($a) - $product->shelfCount($b);
+    });
+
+    usort($boxedShelves, function($a, $b) use ($product) {
+        if ($a->type === $b->type) {
+            return $product->shelfCount($a) - $product->shelfCount($b);
+        }
+        return $a->type === 'Koli (Açılmış)' ? -1 : 1;
+    });
+
+    $shelvesGrouped = [];
+
+    foreach ($openShelves as $shelf) {
+        $shelvesGrouped[$shelf->name][] = $shelf;
+    }
+
+    foreach ($boxedShelves as $shelf) {
+        $parentName = $shelf->parent->name;
+        $shelvesGrouped[$parentName][] = $shelf;
+    }
+
+    return $shelvesGrouped;
+}
+
+$shelvesGrouped = createShelfOptions($product);
+
 include '_header.php';
 
 ?>
@@ -35,13 +78,7 @@ include '_header.php';
             <label for="existingShelvesSelect" class="form-label">Raf/Koli Seçin</label>
             <select class="form-select" id="existingShelvesSelect" onchange="location = this.value;">
                 <option value="">Raf/Koli seçin...</option>
-                <?php
-                $shelvesGrouped = [];
-                foreach ($product->getShelves() as $shelf) {
-                    $parentName = $shelf->type === 'Raf' ? $shelf->name : $shelf->parent->name;
-                    $shelvesGrouped[$parentName][] = $shelf;
-                }
-                foreach ($shelvesGrouped as $groupName => $shelves): ?>
+                <?php foreach ($shelvesGrouped as $groupName => $shelves): ?>
                     <optgroup label="<?= htmlspecialchars($groupName) ?>">
                         <?php foreach ($shelves as $shelf): ?>
                             <?php
