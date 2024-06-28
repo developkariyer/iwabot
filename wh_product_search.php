@@ -46,7 +46,7 @@ include '_header.php';
             <select class="form-select manual-select" id="manualSelect" aria-label="">
                 <option selected>Manuel Ürün Seçin</option>
                 <?php foreach ($allProducts as $product): ?>
-                    <option value="<?= $product->id ?>" data-product-id="<?= $product->id ?>"><?= htmlspecialchars($product->fnsku) ?></option>
+                    <option value="<?= $product->fnsku ?>" data-product-id="<?= $product->id ?>"><?= htmlspecialchars($product->fnsku) ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
