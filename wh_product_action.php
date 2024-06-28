@@ -29,7 +29,7 @@ if (!$product || !$shelf) {
 
 switch ($action) {
     case 'send_to_sale':
-        if ($product->removeFromShelf($shelf, 1)) {
+        if ($product->removeFromShelf($shelf)) {
             addMessage('Ürün satışa gönderildi', 'success');
         } else {
             addMessage('Ürün satışa gönderilemedi', 'danger');
@@ -52,7 +52,7 @@ switch ($action) {
     case 'move_to_shelf':
         $newShelf = StockShelf::getById($newShelfId, $GLOBALS['pdo']);
         if ($newShelf) {
-            if ($product->moveBetweenShelves($shelf, $newShelf, $quantity)) {
+            if ($product->moveBetweenShelves($shelf, $newShelf)) {
                 addMessage('Ürün raf taşındı', 'success');
             } else {
                 addMessage('Ürün raf taşınamadı', 'danger');
