@@ -85,7 +85,7 @@ include '_header.php';
                             if ($shelf->type === 'Raf') {
                                 $optionText = "Rafta açık {$product->shelfCount($shelf)} adet ürün";
                             } else {
-                                $optionText = "{$shelf->name} kutusunda " . ($shelf->type === 'Koli (Açılmış)' ? 'açık' : 'kapalı') . " {$product->shelfCount($shelf)} adet ürün";
+                                $optionText = "{$shelf->name} " . ($shelf->type === 'Koli (Açılmış)' ? 'açık' : 'kapalı') . " {$product->shelfCount($shelf)} adet ürün";
                             }
                             ?>
                             <option value="<?= htmlspecialchars($shelf->id) ?>">
