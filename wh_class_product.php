@@ -138,8 +138,7 @@ class StockProduct extends AbstractStock
      */
     public function removeFromShelf(StockShelf $shelf): bool
     {
-        $this->getShelves();
-        if (isset($this->shelves[$shelf->id])) {
+        if ($this->shelfCount($shelf)) {
             $stmt = $this->db->prepare("DELETE FROM wh_shelf_product WHERE product_id = :product_id AND shelf_id = :shelf_id LIMIT 1");
             $this->shelvesArray = [];
             return $stmt->execute(['product_id' => $this->id, 'shelf_id' => $shelf->id]);
