@@ -24,15 +24,6 @@ include '_header.php';
 
     <div class="row g-3 m-3 mt-5">
         <div class="col-md-6">
-            <a href="wh_new_product.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Yeni Ürün</a>
-        </div>
-        <div class="col-md-6">
-            <a href="wh_new_shelf.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Yeni Koli/Raf</a>
-        </div>
-    </div>
-
-    <div class="row g-3 m-3 mt-5">
-        <div class="col-md-6">
             <a href="wh_product_action.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Ürün Taşı</a>
         </div>
         <div class="col-md-6">
@@ -46,6 +37,15 @@ include '_header.php';
         </div>
         <div class="col-md-6">
             <a href="wh_transfers.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Hareket Raporu</a>
+        </div>
+    </div>
+
+    <div class="row g-3 m-3 mt-5">
+        <div class="col-md-6">
+            <a href="wh_new_product.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Yeni Ürün</a>
+        </div>
+        <div class="col-md-6">
+            <a href="wh_new_shelf.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Yeni Koli/Raf</a>
         </div>
     </div>
 

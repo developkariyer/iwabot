@@ -7,6 +7,7 @@ class StockProduct extends AbstractStock
 {
     protected static $tableName = 'wh_product';
     private $shelvesArray = [];
+    private $countArray = [];
 
     /**
      * Get the list of transient fields.
@@ -15,7 +16,7 @@ class StockProduct extends AbstractStock
      */
     protected function getTransientFields()
     {
-        return ['shelfCount', 'totalStock'];
+        return ['totalStock'];
     }
     
     /**
@@ -85,7 +86,7 @@ class StockProduct extends AbstractStock
         while ($shelfData = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $shelf = new StockShelf($shelfData['id'], $this->db, $shelfData['parent_id']);
             $shelf->cachedData = $shelfData;
-            $shelf->count = $shelfData['shelf_count'];
+            $this->shelvesArray[$shelfData['id']] = $shelfData['shelf_count'];
             $shelves[$shelfData['shelf_id']] = $shelf;
         }
         $this->shelvesArray = $shelves;
@@ -156,6 +157,21 @@ class StockProduct extends AbstractStock
         if ($this->removeFromShelf($fromShelf)) {
             $this->putOnShelf($toShelf);
         }
+    }
+
+    /**
+     * Get product count in shelf
+     * 
+     * @param StockShelf $shelf The shelf
+     */
+    public function shelfCount(StockShelf $shelf)
+    {
+        if (empty($this->countArray[$shelf->id])) {
+            $stmt = $this->db->prepare("SELECT COUNT(*) FROM wh_shelf_product WHERE product_id = :product_id AND shelf_id = :shelf_id");
+            $stmt->execute(['product_id' => $this->id, 'shelf_id' => $shelf->id]);
+            $this->countArray[$shelf->id] = $stmt->fetchColumn();
+        }
+        return $this->countArray[$shelf->id];
     }
 
 }
