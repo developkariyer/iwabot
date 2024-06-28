@@ -38,16 +38,17 @@ include '_header.php';
                 <?php
                 $shelvesGrouped = [];
                 foreach ($product->getShelves() as $shelf) {
-                    $shelvesGrouped[$shelf->parent->name][] = $shelf;
+                    $parentName = $shelf->type === 'Raf' ? $shelf->name : $shelf->parent->name;
+                    $shelvesGrouped[$parentName][] = $shelf;
                 }
-                foreach ($shelvesGrouped as $parentName => $shelves): ?>
-                    <optgroup label="<?= htmlspecialchars($parentName) ?>">
+                foreach ($shelvesGrouped as $groupName => $shelves): ?>
+                    <optgroup label="<?= htmlspecialchars($groupName) ?>">
                         <?php foreach ($shelves as $shelf): ?>
                             <?php
                             if ($shelf->type === 'Raf') {
-                                $optionText = "{$product->shelfCount($shelf)} adet rafta açık ürün";
+                                $optionText = "Rafta açık {$product->shelfCount($shelf)} adet ürün";
                             } else {
-                                $optionText = "{$shelf->name} kutusunda {$product->shelfCount($shelf)} adet " . ($shelf->type === 'Koli (Açılmış)' ? 'açık ürün' : 'kapalı ürün');
+                                $optionText = "{$shelf->name} kutusunda " . ($shelf->type === 'Koli (Açılmış)' ? 'açık' : 'kapalı') . " {$product->shelfCount($shelf)} adet ürün";
                             }
                             ?>
                             <option value="wh_product_action.php?product=<?= urlencode($product->id) ?>&shelf=<?= urlencode($shelf->id) ?>">
