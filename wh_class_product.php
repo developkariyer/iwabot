@@ -192,6 +192,9 @@ class StockProduct extends AbstractStock
         $products = [];
         while ($productData = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $product = StockProduct::getById($productData['id'], $db);
+            if ($product) {
+                $products[$productData['id']] = $product;
+            }
         }
         return $products;
     }
