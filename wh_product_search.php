@@ -43,7 +43,7 @@ include '_header.php';
             <button class="btn btn-primary btn-lg rounded-end" id="manualSubmit">Gönder</button>
         </div>
         <div class="mt-5">
-            <select class="form-select select-butto" aria-label="">
+            <select class="form-select manual-select" id="manualSelect" aria-label="">
                 <option selected>Manuel Ürün Seçin</option>
                 <?php foreach ($allProducts as $product): ?>
                     <option value="<?= $product->id ?>" data-product-id="<?= $product->id ?>"><?= htmlspecialchars($product->fnsku) ?></option>
@@ -100,6 +100,7 @@ include '_header.php';
         const manualBarcode = document.getElementById('manualBarcode');
         const openCameraButton = document.getElementById('openCamera');
         const cameraOpenDiv = document.getElementById('cameraOpenDiv');
+        const manualSelect = document.getElementById('manualSelect');
 
         let stream;
 
@@ -186,6 +187,13 @@ include '_header.php';
                 const productId = button.getAttribute('data-product-id');
                 window.location.href = 'wh_product.php?product=' + productId; // Directly navigate to wh_product.php
             });
+        });
+
+        manualSelect.addEventListener('change', () => {
+            const productId = manualSelect.value;
+            if (productId) {
+                getProductInfo(productId); // Trigger the modal with product information
+            }
         });
 
         openCameraButton.addEventListener('click', openCamera);
