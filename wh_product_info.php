@@ -24,7 +24,7 @@ if ($shelfId) {
 }
 
 function metricToImp($inp, $conv=0.393700787) {
-    return number_format($inp * conv, 2);
+    return number_format($inp * $conv, 2);
 }
 
 $stock = $shelf ? $product->shelfCount($shelf) : 0;
