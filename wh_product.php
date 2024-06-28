@@ -31,18 +31,21 @@ include '_header.php';
         <p><?= nl2br(htmlspecialchars($product->productInfo())) ?></p>
         <h5>Ürünün Bulunduğu Yerler</h5>
         İşlem yapmak için lütfen aşağıdaki raf ve kolilerden birini seçin.
-        <div class="g-3 m-3 mt-5">
-            <?php foreach ($product->getShelves() as $shelf): ?>
-                <a href="wh_product_action.php?product=<?= urlencode($product->id) ?>&shelf=<?= urlencode($shelf->id) ?>" class="btn btn-outline-primary rounded-pill w-100 btn-lg py-3 m-1">
+        <div class="mb-3 mt-3">
+            <label for="existingShelvesSelect" class="form-label">Raf/Koli Seçin</label>
+            <select class="form-select" id="existingShelvesSelect" onchange="location = this.value;">
+                <option value="">Raf/Koli seçin...</option>
+                <?php foreach ($product->getShelves() as $shelf): ?>
                     <?php
-                        if ($shelf->type === 'Raf') {
-                            echo "{$shelf->name} rafında {$product->shelfCount($shelf)} açık ürün";
-                        } else {
-                            echo "{$shelf->parent->name} rafında {$shelf->name} kolisinde {$product->shelfCount($shelf)} adet ürün. {$shelf->type}";
-                        }
+                        $shelfInfo = $shelf->type === 'Raf'
+                            ? "{$shelf->name} rafında {$product->shelfCount($shelf)} açık ürün"
+                            : "{$shelf->parent->name} rafında {$shelf->name} kolisinde {$product->shelfCount($shelf)} adet ürün. {$shelf->type}";
                     ?>
-                </a>
-            <?php endforeach; ?>
+                    <option value="wh_product_action.php?product=<?= urlencode($product->id) ?>&shelf=<?= urlencode($shelf->id) ?>">
+                        <?= htmlspecialchars($shelfInfo) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
         </div>
     </div>
     <div class="row g-3 m-3 mt-5">
@@ -130,4 +133,4 @@ include '_header.php';
 <?php
 
 include '_footer.php';
-
+?>
