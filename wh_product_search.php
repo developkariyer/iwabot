@@ -49,7 +49,7 @@ include '_header.php';
             <input type="text" id="manualBarcode" class="form-control rounded-start" placeholder="Manuel Barkod Girin">
             <button class="btn btn-primary btn-lg rounded-end" id="manualSubmit">Gönder</button>
         </div>
-        <div class="row">
+        <div class="row g-3 m-3 mt-5">
             <div class="col-md-3"></div>
             <div class="mt-3 col-md-6">
                 <button class="btn btn-success btn-lg rounded-pill w-100 py-3" id="openCamera">Kameradan Tara</button>
