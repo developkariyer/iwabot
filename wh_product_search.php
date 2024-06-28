@@ -29,12 +29,12 @@ include '_header.php';
                     <h2 class="accordion-header" id="heading<?= $index ?>">
                         <button class="accordion-button collapsed rounded-pill d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $index ?>" aria-expanded="false" aria-controls="collapse<?= $index ?>">
                             <span><?= $product->name ?> (<?= $product->fnsku ?>)</span>
-                            <button class="btn btn-primary select-button ms-3" data-fnsku="<?= $product->fnsku ?>" onclick="event.stopPropagation();">Seç</button>
                         </button>
                     </h2>
                     <div id="collapse<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $index ?>" data-bs-parent="#productAccordion">
                         <div class="accordion-body">
                             Adres
+                            <button class="btn btn-primary select-button ms-3" data-fnsku="<?= $product->fnsku ?>" onclick="event.stopPropagation();">Seç</button>
                         </div>
                     </div>
                 </div>
