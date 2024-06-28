@@ -4,12 +4,8 @@ require_once('_login.php');
 require_once('_init.php');
 require_once('wh_include.php');
 
-$shelfs = StockShelf::allShelves($GLOBALS['pdo']);
+$shelves = StockShelf::allShelves($GLOBALS['pdo']);
 
-echo "<pre>";
-
-print_r($shelfs);
-exit;
 
 include '_header.php';
 
