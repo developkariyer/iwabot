@@ -30,7 +30,7 @@ include '_header.php';
                         <div class="accordion-body">
                             <p><?= $product->productInfo() ?></p>
                             <p>Adres</p>
-                            <button class="btn btn-success btn-lg rounded-pill w-100 py-3 mt-2 select-button" data-fnsku="<?= $product->fnsku ?>" data-product-id="<?= $product->fnsku ?>" onclick="event.stopPropagation();">Seç</button>
+                            <button class="btn btn-success btn-lg rounded-pill w-100 py-3 mt-2 select-button" data-fnsku="<?= $product->fnsku ?>" data-product-id="<?= $product->id ?>" onclick="event.stopPropagation();">Seç</button>
                         </div>
                     </div>
                 </div>
@@ -107,7 +107,7 @@ include '_header.php';
                 dataType: 'json',
                 success: function(response) {
                     productInfo.innerHTML = response.productInfo;
-                    devamLink.href = 'wh_product.php?product=' + response.productId; // Set product link
+                    devamLink.href = 'wh_product.php?product=' + detectedBarcode; // Set product link
                     confirmModal.show();
                 },
                 error: function() {
@@ -155,7 +155,7 @@ include '_header.php';
 
         backButton.addEventListener('click', async () => {
             confirmModal.hide();
-            openCamera(); // Reopen the camera when "Geri Dön" is clicked
+            openCamera();
         });
 
         manualSubmit.addEventListener('click', () => {
@@ -165,7 +165,6 @@ include '_header.php';
             }
         });
 
-        // Trigger action on Enter key press in the manualBarcode input field
         manualBarcode.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
                 manualSubmit.click();
