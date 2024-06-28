@@ -7,7 +7,7 @@ require_once('wh_include.php');
 $productId = $_POST['product'] ?? '';
 if ($productId) {
     error_log("Getting product info for $productId");
-    $product = StockProduct::getById($productId, $GLOBALS['pdo']);
+    $product = StockProduct::getByFnsku($productId, $GLOBALS['pdo']);
 }
 
 error_log("Product info: $productId");
