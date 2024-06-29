@@ -4,8 +4,8 @@ require_once('_login.php');
 require_once('_init.php');
 require_once('wh_include.php');
 
-$shelfList = StockShelf::getAll($GLOBALS['pdo']);
-$productList = StockProduct::getAll($GLOBALS['pdo']);
+$shelfList = StockShelf::allShelves($GLOBALS['pdo']);
+$productList = StockProduct::allProducts($GLOBALS['pdo']);
 
 function dumpProducts($shelf) {
     $retval = '';
