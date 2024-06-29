@@ -111,7 +111,6 @@ class StockShelf extends AbstractStock
         while ($productData = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $product = new StockProduct($productData['id'], $this->db);
             $product->cachedData = $productData;
-            $product->shelfCount = $productData['shelf_count'];
             $products[$productData['product_id']] = $product;
         }
         $this->productsArray = $products;
