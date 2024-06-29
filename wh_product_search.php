@@ -43,7 +43,7 @@ include '_header.php';
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="heading<?= $index ?>">
                         <button class="accordion-button btn-success collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $index ?>" aria-expanded="false" aria-controls="collapse<?= $index ?>">
-                            <span><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>)</span>
+                            <span><strong><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>)</strong></span>
                         </button>
                     </h2>
                     <div id="collapse<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $index ?>" data-bs-parent="#productAccordion">
