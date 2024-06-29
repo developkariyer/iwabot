@@ -21,12 +21,22 @@ include '_header.php';
     <div class="mt-5">
         <h2>Ürün Arama</h2>
         <p>
-            Bu bölümde üzerinde işlem yapmak istediğiniz ürünü seçebilirsiniz.<br>
-            Hemen altta <strong>Çıkış İçin Bekleyen Ürünler</strong> başlığı altında etiketi gönderilmiş, kargo bekleyen ürünler listelenmektedir.<br>
-            Onun altındaki kutuda FNSKU/Barkod numarasını elle veya bilgisayara bağlı barkod okuyucu ile girerek ürün arayabilirsiniz.<br>
-            Dilerseniz stok numarası olan tüm ürünler içinden seçim yaparak ilerleyebilirsiniz.<br>
-            Son olarak da, Android telefon ile kullanıyorsanız, kameranız ile barkod okutmayı tercih edebilirsiniz.
+            Bu bölümde, aşağıdaki 4 yöntemden birini kullanarak üzerinde işlem (rafa/koliye koy, raf/koli arası taşı, satışa gönder) yapmak istediğiniz ürünü seçmelisiniz:
         </p>
+        <ul>
+            <li>
+                <strong>Çıkış İçin Bekleyen Ürünler</strong> başlığına bastığınızda etiketi gönderilmiş, kargo bekleyen ürünler listelenmektedir.
+            </li>
+            <li>
+                <strong>Manuel Barkod Girin</strong> kutusunda FNSKU/Barkod numarasını elle veya bilgisayara bağlı barkod okuyucu ile girerek ürün arayabilirsiniz.
+            </li>
+            <li>
+                <strong>Manuel Ürün Seçin</strong> kısmında dilerseniz stok numarası olan tüm ürünler içinden seçim yaparak ilerleyebilirsiniz.
+            </li>
+            <li>
+                Android telefon ile kullanıyorsanız, <strong>Kameradan Tara</strong> diyerek kameranız ile barkod okutmayı tercih edebilirsiniz.
+            </li>
+        </ul>
         <h4 data-bs-toggle="collapse" data-bs-target="#productAccordion" aria-expanded="true" aria-controls="productAccordion">Çıkış İçin Bekleyen Ürünler (<?= count($products) ?> adet)</h4>
         <div class="accordion collapse collapse" id="productAccordion">
             <?php foreach ($products as $index => $product): ?>
