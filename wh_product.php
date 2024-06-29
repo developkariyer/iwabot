@@ -88,7 +88,7 @@ include '_header.php';
                                 $optionText = "{$shelf->name} " . ($shelf->type === 'Koli (Açılmış)' ? 'açık' : 'kapalı') . " {$product->shelfCount($shelf)} adet ürün";
                             }
                             ?>
-                            <option value="<?= htmlspecialchars($shelf->id) ?>">
+                            <option value="<?= htmlspecialchars($shelf->id) ?>" data-shelf-name="<?= htmlspecialchars($shelf->name) ?>">
                                 <?= htmlspecialchars($optionText) ?>
                             </option>
                         <?php endforeach; ?>
@@ -117,6 +117,8 @@ include '_header.php';
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <p><?= nl2br(htmlspecialchars($product->productInfo())) ?></p>
+                <p>Mevcut Raf: <span id="currentShelfName"></span></p>
                 <form id="actionForm" action="wh_product_action.php" method="post">
                     <input type="hidden" name="product_id" id="modalProductId">
                     <input type="hidden" name="shelf_id" id="modalShelfId">
@@ -229,6 +231,7 @@ include '_header.php';
         const newShelfName = document.getElementById('newShelfName');
         const newShelfType = document.getElementById('newShelfType');
         const parentShelfSelect = document.getElementById('parentShelfSelect');
+        const currentShelfName = document.getElementById('currentShelfName');
 
         const updateButtons = () => {
             const quantityValid = quantityInput.value > 0;
@@ -291,9 +294,11 @@ include '_header.php';
         // Handle selection of existing shelves
         existingShelvesSelect.addEventListener('change', () => {
             const selectedShelf = existingShelvesSelect.value;
+            const selectedShelfName = existingShelvesSelect.options[existingShelvesSelect.selectedIndex].dataset.shelfName;
             if (selectedShelf) {
                 modalProductId.value = "<?= htmlspecialchars($product->id) ?>";
                 modalShelfId.value = selectedShelf;
+                currentShelfName.textContent = selectedShelfName; // Set shelf name in modal
                 actionModal.show();
             }
         });
