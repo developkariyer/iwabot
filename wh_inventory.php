@@ -44,6 +44,17 @@ include '_header.php';
             <?php endforeach; ?>
         </ul>
         <h2>Depo Envanteri (Ürüne Göre)</h2>
+        <ul>
+            <?php foreach ($productList as $product): ?>
+                <li>
+                    <strong><?= htmlspecialchars($product->name) ?></strong>
+                    <ul>
+                        <?php foreach ($product->getShelves() as $shelf): ?>
+                            <li><?= htmlspecialchars($shelf->name) ?>: <?= htmlspecialchars($product->shelfCount($shelf)) ?> adet</li>
+                        <?php endforeach; ?>
+                    </ul>
+                </li>
+            <?php endforeach; ?>
     </div>
     <?= wh_menu() ?>
 </div>
