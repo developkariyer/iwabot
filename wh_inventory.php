@@ -10,34 +10,46 @@ $productList = StockProduct::allProducts($GLOBALS['pdo']);
 function dumpProducts($shelf) {
     $retval = '';
     foreach ($shelf->getProducts() as $product) {
-        $retval.= '<ul><li>' . $product->name . ': ' . $product->shelfCount($shelf) . ' adet</li></ul>';
+        $retval .= '<li>' . htmlspecialchars($product->name) . ': ' . htmlspecialchars($product->shelfCount($shelf)) . ' adet</li>';
     }
     return $retval;
 }
 
-
 include '_header.php';
 
 ?>
+
 <div class="container mt-5">
     <div class="mt-5">
         <h2>Depo Envanteri (Rafa Göre)</h2>
-        <?php foreach ($shelfList as $shelf): ?>
-            <h3><?= $shelf->name ?></h3>
-            <h5>Rafta Açık</h5>
-            <?= dumpProducts($shelf) ?>
-            <?php foreach ($shelf->getChildren() as $child): ?>
-                <h5><?= $child->name ?>/<?= $child->type ?></h5>
-                <?= dumpProducts($child) ?>
+        <ul>
+            <?php foreach ($shelfList as $shelf): ?>
+                <li>
+                    <strong><?= htmlspecialchars($shelf->name) ?></strong>
+                    <ul>
+                        <li>Rafta Açık
+                            <ul>
+                                <?= dumpProducts($shelf) ?>
+                            </ul>
+                        </li>
+                        <?php foreach ($shelf->getChildren() as $child): ?>
+                            <li><?= htmlspecialchars($child->name) ?>/<?= htmlspecialchars($child->type) ?>
+                                <ul>
+                                    <?= dumpProducts($child) ?>
+                                </ul>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </li>
             <?php endforeach; ?>
-        <?php endforeach; ?>
+        </ul>
         <h2>Depo Envanteri (Ürüne Göre)</h2>
-
-
+    </div>
     <?= wh_menu() ?>
 </div>
-
 
 <?php
 
 include '_footer.php';
+
+?>
