@@ -34,7 +34,7 @@ include '_header.php';
 -->
     <div class="row g-3 m-3 mt-5">
         <div class="col-md-6">
-            <a href="wh_inventory.php" class="disabled btn btn-primary btn-lg rounded-pill w-100 py-3">Depo Envanteri</a>
+            <a href="wh_inventory.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Depo Envanteri</a>
         </div>
         <div class="col-md-6">
             <a href="wh_transfers.php" class="disabled btn btn-primary btn-lg rounded-pill w-100 py-3">Hareket Raporu</a>
