@@ -27,8 +27,8 @@ include '_header.php';
             Dilerseniz stok numarası olan tüm ürünler içinden seçim yaparak ilerleyebilirsiniz.<br>
             Son olarak da, Android telefon ile kullanıyorsanız, kameranız ile barkod okutmayı tercih edebilirsiniz.
         </p>
-        <h4 data-bs-toggle="collapse" data-bs-target="#productAccordion" aria-expanded="true" aria-controls="productAccordion">Çıkış İçin Bekleyen Ürünler</h4>
-        <div class="accordion collapse show" id="productAccordion">
+        <h4 data-bs-toggle="collapse" data-bs-target="#productAccordion" aria-expanded="true" aria-controls="productAccordion">Çıkış İçin Bekleyen Ürünler (<?= count($products) ?> adet)</h4>
+        <div class="accordion collapse collapse" id="productAccordion">
             <?php foreach ($products as $index => $product): ?>
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="heading<?= $index ?>">
