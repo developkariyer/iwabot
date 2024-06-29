@@ -6,8 +6,8 @@
 class StockProduct extends AbstractStock
 {
     protected static $tableName = 'wh_product';
-    private $shelvesArray = [];
-    private $countArray = [];
+    protected $shelvesArray = [];
+    protected $countArray = [];
 
     /**
      * Get the list of transient fields.
