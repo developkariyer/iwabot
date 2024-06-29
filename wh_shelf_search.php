@@ -4,14 +4,7 @@ require_once('_login.php');
 require_once('_init.php');
 require_once('wh_include.php');
 
-$productList = $GLOBALS['pdo']->query("SELECT * FROM wh_sold")->fetchAll(PDO::FETCH_ASSOC);
-$products = [];
-foreach ($productList as $product) {
-    $p = StockProduct::getById($product['product_id'], $GLOBALS['pdo']);
-    $products[$p->id] = $p;
-}
-
-$allProducts = StockProduct::allProducts($GLOBALS['pdo']);
+$shelfList = StockShelf::allShelves($GLOBALS['pdo']);
 
 include '_header.php';
 
@@ -19,16 +12,8 @@ include '_header.php';
 
 <div class="container mt-5">
     <div class="mt-5">
-        <h2>Ürün Arama</h2>
-        <p>
-            Bu bölümde üzerinde işlem yapmak istediğiniz ürünü seçebilirsiniz.<br>
-            Hemen altta <strong>Çıkış İçin Bekleyen Ürünler</strong> başlığı altında etiketi gönderilmiş, kargo bekleyen ürünler listelenmektedir.<br>
-            Onun altındaki kutuda FNSKU/Barkod numarasını elle veya bilgisayara bağlı barkod okuyucu ile girerek ürün arayabilirsiniz.<br>
-            Dilerseniz stok numarası olan tüm ürünler içinden seçim yaparak ilerleyebilirsiniz.<br>
-            Son olarak da, Android telefon ile kullanıyorsanız, kameranız ile barkod okutmayı tercih edebilirsiniz.
-        </p>
-        <h4 data-bs-toggle="collapse" data-bs-target="#productAccordion" aria-expanded="true" aria-controls="productAccordion">Çıkış İçin Bekleyen Ürünler</h4>
-        <div class="accordion collapse show" id="productAccordion">
+        <h2>Çıkış İçin Bekleyen Ürünler</h2>
+        <div class="accordion" id="productAccordion">
             <?php foreach ($products as $index => $product): ?>
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="heading<?= $index ?>">
