@@ -10,7 +10,7 @@ $productList = StockProduct::allProducts($GLOBALS['pdo']);
 function dumpProducts($shelf) {
     $retval = '';
     foreach ($shelf->getProducts() as $product) {
-        $retval .= '<li>' . htmlspecialchars($product->name) . ': ' . htmlspecialchars($product->shelfCount($shelf)) . ' adet</li>';
+        $retval .= '<li>' . htmlspecialchars($product->name) . ' ('.htmlspecialchars($product->fnsku).') : ' . htmlspecialchars($product->shelfCount($shelf)) . ' adet</li>';
     }
     return $retval;
 }
@@ -47,10 +47,10 @@ include '_header.php';
         <ul>
             <?php foreach ($productList as $product): ?>
                 <li>
-                    <strong><?= htmlspecialchars($product->name) ?></strong>
+                    <strong><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>)</strong>
                     <ul>
                         <?php foreach ($product->getShelves() as $shelf): ?>
-                            <li><?= htmlspecialchars($shelf->name) ?>: <?= htmlspecialchars($product->shelfCount($shelf)) ?> adet</li>
+                            <li><?= htmlspecialchars($shelf->name) ?>/<?= htmlspecialchars($shelf->type) ?>: <?= htmlspecialchars($product->shelfCount($shelf)) ?> adet</li>
                         <?php endforeach; ?>
                     </ul>
                 </li>
