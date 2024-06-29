@@ -37,7 +37,7 @@ include '_header.php';
                 Android telefon ile kullanıyorsanız, <strong>Kameradan Tara</strong> diyerek kameranız ile barkod okutmayı tercih edebilirsiniz.
             </li>
         </ul>
-        <h4 data-bs-toggle="collapse" data-bs-target="#productAccordion" aria-expanded="true" aria-controls="productAccordion">Çıkış İçin Bekleyen Ürünler <small>(<?= count($products) ?> adet) <i>Görmek için basınız</i></small></h4>
+        <h4 class="bg-outline-primary" data-bs-toggle="collapse" data-bs-target="#productAccordion" aria-expanded="true" aria-controls="productAccordion">Çıkış İçin Bekleyen Ürünler <small>(<?= count($products) ?> adet) <i>Görmek için basınız</i></small></h4>
         <div class="accordion collapse collapse" id="productAccordion">
             <?php foreach ($products as $index => $product): ?>
                 <div class="accordion-item">
