@@ -31,13 +31,17 @@ foreach ($boxcsv as $line) {
         continue;
     }
     $data = explode(',', $line);
-    $raf = explode('-', $data[0]);
-    echo "Raf: $raf[0], Koli: $data[0], Ürün: $data[1], Adet: $data[2] ...";
-    if (!isset($boxes[$raf[0]])) {
-        $boxes[$raf[0]] = StockShelf::newShelf($GLOBALS['pdo'], "Gemi-$raf[0]", 'Raf');
+    $raf = explode('-', $data[0])[0];
+    echo "Raf: $raf, Koli: $data[0], Ürün: $data[1], Adet: $data[2] ...";
+    if (!isset($boxes[$raf])) {
+        $boxes[$raf] = StockShelf::newShelf($GLOBALS['pdo'], "Gemi-$raf", 'Raf');
+        if (!$boxes[$raf]) {
+            echo "failed to create shelf\n";
+            continue;
+        }
     }
     for ($t=0;$t<$data[2];$t++) {
-        $$boxes[$raf[0]]->putProduct($data[1]);
+        $boxes[$raf]->putProduct($data[1]);
     }        
     echo "done\n";
 }
