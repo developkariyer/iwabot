@@ -250,6 +250,32 @@ abstract class AbstractStock
         return [];
     }
 
+    private function logAction(array $args) {
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1];
+        $method = $backtrace['function'];
+        $parameters = $this->getMethodParameters($method, $args);
+        $user = $_SESSION['user_id'] ?? 'unknown';
+        $stmt = $this->db->prepare('INSERT INTO log (user_id, operation) VALUES (?, ?)');
+        $stmt->execute([$user, json_encode([
+            'object' => __CLASS__,
+            'id' => $this->id,
+            'method' => $method,
+            'parameters' => $parameters,
+        ])]);
+    }
+
+    private function getMethodParameters($method, $args) {
+        $reflector = new ReflectionMethod($this, $method);
+        $params = $reflector->getParameters();
+        $parameters = [];
+
+        foreach ($params as $index => $param) {
+            $parameters[$param->name] = $args[$index];
+        }
+
+        return $parameters;
+    }
+
     /**
      * Validate a field value.
      *

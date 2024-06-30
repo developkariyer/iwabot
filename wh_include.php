@@ -28,3 +28,4 @@ function wh_menu() {
 function metricToImp($inp, $conv=0.393700787) {
     return number_format($inp * $conv, 2);
 }
+
