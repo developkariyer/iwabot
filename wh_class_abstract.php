@@ -255,7 +255,7 @@ abstract class AbstractStock
         $method = $backtrace['function'];
         $parameters = $this->getMethodParameters($method, $args);
         $user = $_SESSION['user_id'] ?? 'unknown';
-        $stmt = $this->db->prepare('INSERT INTO log (user_id, operation) VALUES (?, ?)');
+        $stmt = $this->db->prepare('INSERT INTO wh_log (user_id, operation) VALUES (?, ?)');
         $stmt->execute([$user, json_encode([
             'object' => __CLASS__,
             'id' => $this->id,
