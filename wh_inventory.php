@@ -30,10 +30,15 @@ include '_header.php';
                     </button>
                     <div id="shelf<?= $index ?>" class="collapse">
                         <ul class="list-unstyled ms-4">
-                            <li>Rafta Açık
-                                <ul class="list-unstyled ms-4">
-                                    <?= dumpProducts($shelf) ?>
-                                </ul>
+                            <li>
+                                <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#openShelf<?= $index ?>" aria-expanded="false" aria-controls="openShelf<?= $index ?>">
+                                    Rafta Açık
+                                </button>
+                                <div id="openShelf<?= $index ?>" class="collapse">
+                                    <ul class="list-unstyled ms-4">
+                                        <?= dumpProducts($shelf) ?>
+                                    </ul>
+                                </div>
                             </li>
                             <?php foreach ($shelf->getChildren() as $childIndex => $child): ?>
                                 <li>
