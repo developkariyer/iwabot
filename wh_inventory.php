@@ -22,7 +22,7 @@ include '_header.php';
 <div class="container mt-5">
     <div class="mt-5">
         <h2>Depo Envanteri (Rafa Göre)</h2>
-        <ul class="list-unstyled">
+        <ul>
             <?php foreach ($shelfList as $index => $shelf): ?>
                 <?php if (count($shelf->getProducts()) > 0): ?>
                     <li>
@@ -30,13 +30,13 @@ include '_header.php';
                             <strong><?= htmlspecialchars($shelf->name) ?></strong>
                         </button>
                         <div id="shelf<?= $index ?>" class="collapse">
-                            <ul class="list-unstyled ms-4">
+                            <ul>
                                 <li>
                                     <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#openShelf<?= $index ?>" aria-expanded="false" aria-controls="openShelf<?= $index ?>">
                                         Rafta Açık (<?= count($shelf->getProducts()) ?>)
                                     </button>
                                     <div id="openShelf<?= $index ?>" class="collapse">
-                                        <ul class="list-unstyled ms-4">
+                                        <ul>
                                             <?= dumpProducts($shelf) ?>
                                         </ul>
                                     </div>
@@ -48,7 +48,7 @@ include '_header.php';
                                                 <?= htmlspecialchars($child->name) ?>/<?= htmlspecialchars($child->type) ?> (<?= count($child->getProducts()) ?>)
                                             </button>
                                             <div id="child<?= $index ?>_<?= $childIndex ?>" class="collapse">
-                                                <ul class="list-unstyled ms-4">
+                                                <ul>
                                                     <?= dumpProducts($child) ?>
                                                 </ul>
                                             </div>
@@ -63,20 +63,20 @@ include '_header.php';
         </ul>
         
         <h2>Depo Envanteri (Ürüne Göre)</h2>
-        <ul class="list-unstyled">
+        <ul>
             <?php foreach ($productList as $productIndex => $product): ?>
                 <?php 
                 $totalAmount = array_reduce($product->getShelves(), function($carry, $shelf) use ($product) {
                     return $carry + $product->shelfCount($shelf);
-                }, 0); 
+                }, 0);
                 ?>
                 <?php if ($totalAmount > 0): ?>
                     <li>
                         <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#product<?= $productIndex ?>" aria-expanded="false" aria-controls="product<?= $productIndex ?>">
-                            <strong><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>) (<?= $totalAmount ?> adet)</strong>
+                            <strong><?= htmlspecialchars($product->name) ?></strong> (<?= htmlspecialchars($product->fnsku) ?>) (<?= $totalAmount ?> adet)
                         </button>
                         <div id="product<?= $productIndex ?>" class="collapse">
-                            <ul class="list-unstyled ms-4">
+                            <ul>
                                 <?php foreach ($product->getShelves() as $shelf): ?>
                                     <?php $shelfCount = $product->shelfCount($shelf); ?>
                                     <?php if ($shelfCount > 0): ?>
