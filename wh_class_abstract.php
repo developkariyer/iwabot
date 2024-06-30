@@ -250,7 +250,7 @@ abstract class AbstractStock
         return [];
     }
 
-    private function logAction(array $args) {
+    protected function logAction(array $args) {
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1];
         $method = $backtrace['function'];
         $parameters = $this->getMethodParameters($method, $args);
