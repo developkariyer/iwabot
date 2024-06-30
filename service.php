@@ -21,9 +21,11 @@ $boxcsv = file_get_contents('koliler.txt');
 $boxcsv = explode("\n", $boxcsv);
 echo "done\n";
 
+$boxes = [];
+
 foreach ($boxcsv as $line) {
-    echo "Processing $line...";
     $line = trim($line);
+    echo "Processing $line...";
     if (empty($line)) {
         echo "empty!\n";
         continue;
@@ -31,13 +33,12 @@ foreach ($boxcsv as $line) {
     $data = explode(',', $line);
     $raf = explode('-', $data[0]);
     echo "Raf: $raf[0], Koli: $data[0], Ürün: $data[1], Adet: $data[2] ...";
-    $box = StockShelf::newShelf($GLOBALS['pdo'], $data[0], 'Koli (Kapalı)', $raf[0]);
-    if ($box) {
-        $boxObj = StockShelf::getById($box, $GLOBALS['pdo']);
-        for ($t=0;$t<$data[2];$t++) {
-            $boxObj->putProduct($data[1]);
-        }        
+    if (!isset($boxes[$raf])) {
+        $boxes[$raf] = StockShelf::newShelf($GLOBALS['pdo'], "Gemi-$raf", 'Raf');
     }
+    for ($t=0;$t<$data[2];$t++) {
+        $$boxes[$raf]->putProduct($data[1]);
+    }        
     echo "done\n";
 }
 
