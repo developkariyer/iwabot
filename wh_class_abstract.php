@@ -257,7 +257,7 @@ abstract class AbstractStock
         $user = $_SESSION['user_id'] ?? 'unknown';
         $stmt = $this->db->prepare('INSERT INTO wh_log (user_id, operation) VALUES (?, ?)');
         $stmt->execute([$user, json_encode([
-            'object' => __CLASS__,
+            'object' => get_called_class(),
             'id' => $this->id,
             'method' => $method,
             'parameters' => $parameters,
