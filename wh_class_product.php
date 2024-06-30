@@ -114,9 +114,9 @@ class StockProduct extends AbstractStock
      * 
      * @param int $shelfId The shelf ID.
      */
-    public function putOnShelf(StockShelf $shelf, $count = 1)
+    public function putOnShelf(StockShelf $shelf, $count = 1, bool $log = true)
     {
-        $this->logAction(func_get_args());
+        if ($log) $this->logAction(func_get_args());
         $this->db->beginTransaction();
         try {
             $stmt = $this->db->prepare("INSERT INTO wh_shelf_product (product_id, shelf_id) VALUES (:product_id, :shelf_id)");
@@ -138,9 +138,9 @@ class StockProduct extends AbstractStock
      * @param int $shelfId The shelf ID.
      * @return bool True if successful, false otherwise.
      */
-    public function removeFromShelf(StockShelf $shelf): bool
+    public function removeFromShelf(StockShelf $shelf, bool $log = true): bool
     {
-        $this->logAction(func_get_args());
+        if ($log) $this->logAction(func_get_args());
         if ($this->shelfCount($shelf)) {
             $stmt = $this->db->prepare("DELETE FROM wh_shelf_product WHERE product_id = :product_id AND shelf_id = :shelf_id LIMIT 1");
             $this->shelvesArray = [];
@@ -157,8 +157,9 @@ class StockProduct extends AbstractStock
      */
     public function moveBetweenShelves(StockShelf $fromShelf, StockShelf $toShelf)
     {
-        if ($this->removeFromShelf($fromShelf)) {
-            return $this->putOnShelf($toShelf);
+        $this->logAction(func_get_args());
+        if ($this->removeFromShelf($fromShelf, log:false)) {
+            return $this->putOnShelf($toShelf, log:false);
         }
         return false;
     }
