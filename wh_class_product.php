@@ -157,7 +157,6 @@ class StockProduct extends AbstractStock
      */
     public function moveBetweenShelves(StockShelf $fromShelf, StockShelf $toShelf)
     {
-        $this->logAction(func_get_args());
         if ($this->removeFromShelf($fromShelf)) {
             return $this->putOnShelf($toShelf);
         }
