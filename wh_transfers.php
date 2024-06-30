@@ -38,7 +38,7 @@ include '_header.php';
     <?php foreach ($logactions as $log): ?>
         <li>
             <?= date('d.m.Y H:i:s', strtotime($log['created_at'])) ?>:
-            <?= $log['user'] ?> tarafından
+            <strong><?= username($log['user_id']) ?></strong> (<?= $log['user_id'] ?>) tarafından
             <?= logdecode($log) ?>
         </li>
     <?php endforeach; ?>
