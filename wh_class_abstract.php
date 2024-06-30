@@ -72,7 +72,6 @@ abstract class AbstractStock
         if (!$this->id) {
             return;
         }
-        error_log("Lazy load " . static::class . " with ID " . $this->id . " and lazy " . $this->lazy);
         if ($this->lazy) {
             $stmt = $this->db->prepare("SELECT * FROM " . static::$tableName . " WHERE id = :id");
             $stmt->execute(['id' => $this->id]);
@@ -161,7 +160,6 @@ abstract class AbstractStock
      */
     protected function getField($field)
     {
-        error_log("Getting cachedData field " . $field . " from " . static::class . " with ID " . $this->id);
         $this->load();
         return $this->cachedData[$field] ?? null;
     }
@@ -199,7 +197,6 @@ abstract class AbstractStock
      */
     public function __get($field)
     {
-        error_log("Magic getter for " . $field . " from " . static::class . " with ID " . $this->id);
         if (array_key_exists($field, $this->transientData)) {
             if (isset($this->transientData[$field])) {
                 return $this->transientData[$field];
@@ -221,7 +218,6 @@ abstract class AbstractStock
      */
     public function __set($field, $value)
     {
-        error_log("Magic setter for " . $field . " from " . static::class . " with ID " . $this->id);
         if (in_array($field, $this->getTransientFields())) {
             $this->transientData[$field] = $value;
         } else {

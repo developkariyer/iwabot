@@ -70,8 +70,8 @@ include '_header.php';
                 ?>
                 <?php if ($totalAmount > 0): ?>
                     <li>
-                        <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#product<?= $productIndex ?>" aria-expanded="false" aria-controls="product<?= $productIndex ?>">
-                            <strong><?= htmlspecialchars($product->name) ?></strong><br>(<?= htmlspecialchars($product->fnsku) ?>) (<?= $totalAmount ?> adet)
+                        <button class="btn btn-link text-start w-100" data-bs-toggle="collapse" data-bs-target="#product<?= $productIndex ?>" aria-expanded="false" aria-controls="product<?= $productIndex ?>">
+                            <strong><?= htmlspecialchars($product->name) ?></strong> (<?= htmlspecialchars($product->fnsku) ?>) (<?= $totalAmount ?> adet)
                         </button>
                         <div id="product<?= $productIndex ?>" class="collapse">
                             <ul>
