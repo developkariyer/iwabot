@@ -49,7 +49,7 @@ foreach ($boxcsv as $line) {
         $boxes[$data[0]] = StockShelf::getByName($data[0], $GLOBALS['pdo']);
         if (!$boxes[$data[0]]) {
             echo "creating box...";
-            $boxes[$data[0]] = StockShelf::newShelf(db:$GLOBALS['pdo'], name:$data[0], type:'Koli', parent_id:$boxes[$raf]->id);
+            $boxes[$data[0]] = StockShelf::newShelf(db:$GLOBALS['pdo'], name:$data[0], type:'Koli', parentId:$boxes[$raf]->id);
         } else echo "box found...";
         if (!$boxes[$data[0]]) {
             echo "failed to create box\n";
