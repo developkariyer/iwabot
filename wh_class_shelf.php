@@ -183,4 +183,18 @@ class StockShelf extends AbstractStock
         return null;
     }
 
+    public static function getByName($name, $db)
+    {
+        $stmt = $db->prepare("SELECT * FROM " . static::$tableName . " WHERE name = :name");
+        $stmt->execute(['name' => $name]);
+        if ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $instance = new static($data['id'], $db);
+            $instance->cachedData = $data;
+            return $instance;
+        } else {
+            return null;
+        }
+    }
+
+
 }

@@ -34,7 +34,7 @@ foreach ($boxcsv as $line) {
     $raf = explode('-', $data[0])[0];
     echo "Raf: $raf, Koli: $data[0], Ürün: $data[1], Adet: $data[2] ...";
     if (!isset($boxes[$raf])) {
-        $boxes[$raf] = StockShelf::getById($raf, $GLOBALS['pdo']);
+        $boxes[$raf] = StockShelf::getByName("Gemi-$raf", $GLOBALS['pdo']);
         if (!$boxes[$raf]) {
             echo "creating shelf...";
             $boxes[$raf] = StockShelf::newShelf(db:$GLOBALS['pdo'], name:"Gemi-$raf", type:'Raf');
@@ -44,6 +44,19 @@ foreach ($boxcsv as $line) {
             continue;
         }
     }
+
+    if (!isset($boxes[$data[0]])) {
+        $boxes[$data[0]] = StockShelf::getByName($data[0], $GLOBALS['pdo']);
+        if (!$boxes[$data[0]]) {
+            echo "creating box...";
+            $boxes[$data[0]] = StockShelf::newShelf(db:$GLOBALS['pdo'], name:$data[0], type:'Koli', parent:$boxes[$raf]->id);
+        } else echo "box found...";
+        if (!$boxes[$data[0]]) {
+            echo "failed to create box\n";
+            continue;
+        }
+    }
+
     $flag=true;
     for ($t=0;$t<$data[2];$t++) {
         $product = StockProduct::getByFnsku($data[1], $GLOBALS['pdo']);
@@ -59,7 +72,7 @@ foreach ($boxcsv as $line) {
 
     for ($t=0;$t<$data[2];$t++) {
         $product = StockProduct::getByFnsku($data[1], $GLOBALS['pdo']);
-        $product->putOnShelf($boxes[$raf], log:false);
+        $product->putOnShelf($boxes[$data[0]], log:false);
     }
     echo "done\n";
 }
