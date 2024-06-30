@@ -47,7 +47,7 @@ foreach ($boxcsv as $line) {
     for ($t=0;$t<$data[2];$t++) {
         $product = StockProduct::getByFnsku($data[1], $GLOBALS['pdo']);
         if ($product) {
-            $product->putOnShelf($boxes[$raf], 1);
+            $product->putOnShelf($boxes[$raf], log:false);
         } else {
             echo "product not found\n";
             continue;
