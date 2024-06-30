@@ -54,6 +54,7 @@ foreach ($boxcsv as $line) {
         }
     }        
     echo "done\n";
+    sleep(1);
 }
 
 
