@@ -28,8 +28,9 @@ foreach ($boxcsv as $line) {
     $raf = explode('-', $data[0]);
     $box = StockShelf::newShelf($GLOBALS['pdo'], $data[0], 'Koli (Kapalı)', $raf[0]);
     if ($box) {
+        $boxObj = StockShelf::getById($box, $GLOBALS['pdo']);
         for ($t=0;$t<$data[2];$t++) {
-            $box->putProduct($data[1]);
+            $boxObj->putProduct($data[1]);
         }        
     }
 }
