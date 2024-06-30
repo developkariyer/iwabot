@@ -4,6 +4,8 @@ if (php_sapi_name() !== 'cli') {
     die('Hello World!');
 }
 
+exit;
+
 require_once ('_init.php');
 
 
