@@ -8,6 +8,7 @@ $logactions = $GLOBALS['pdo']->query('SELECT * FROM wh_log ORDER BY created_at D
 
 function logdecode($log) {
     $operation = json_decode($log['operation'], true);
+    $log = json_encode($log);
 
     $object = $operation['object']::getById($operation['id'], $GLOBALS['pdo']);
     switch ($operation['method']) {
