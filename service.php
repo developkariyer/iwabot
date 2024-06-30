@@ -44,17 +44,24 @@ foreach ($boxcsv as $line) {
             continue;
         }
     }
+    $flag=true;
     for ($t=0;$t<$data[2];$t++) {
         $product = StockProduct::getByFnsku($data[1], $GLOBALS['pdo']);
-        if ($product) {
-            $product->putOnShelf($boxes[$raf], log:false);
-            echo "+";
-        } else {
-            echo "-";
+        if (!$product) {
+            $flag=false;
+            break;
         }
-    }        
+    }
+    if (!$flag) {
+        echo "missing products in box!\n";
+        continue;
+    }
+
+    for ($t=0;$t<$data[2];$t++) {
+        $product = StockProduct::getByFnsku($data[1], $GLOBALS['pdo']);
+        $product->putOnShelf($boxes[$raf], log:false);
+    }
     echo "done\n";
-    sleep(1);
 }
 
 
