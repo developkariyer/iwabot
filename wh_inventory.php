@@ -24,41 +24,39 @@ include '_header.php';
         <h2>Depo Envanteri (Rafa Göre)</h2>
         <ul>
             <?php foreach ($shelfList as $index => $shelf): ?>
-                <?php if (count($shelf->getProducts()) > 0): ?>
-                    <li>
-                        <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#shelf<?= $index ?>" aria-expanded="false" aria-controls="shelf<?= $index ?>">
-                            <strong><?= htmlspecialchars($shelf->name) ?></strong>
-                        </button>
-                        <div id="shelf<?= $index ?>" class="collapse">
-                            <ul>
-                                <li>
-                                    <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#openShelf<?= $index ?>" aria-expanded="false" aria-controls="openShelf<?= $index ?>">
-                                        Rafta Açık (<?= count($shelf->getProducts()) ?>)
-                                    </button>
-                                    <div id="openShelf<?= $index ?>" class="collapse">
-                                        <ul>
-                                            <?= dumpProducts($shelf) ?>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <?php foreach ($shelf->getChildren() as $childIndex => $child): ?>
-                                    <?php if (count($child->getProducts()) > 0): ?>
-                                        <li>
-                                            <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#child<?= $index ?>_<?= $childIndex ?>" aria-expanded="false" aria-controls="child<?= $index ?>_<?= $childIndex ?>">
-                                                <?= htmlspecialchars($child->name) ?>/<?= htmlspecialchars($child->type) ?> (<?= count($child->getProducts()) ?>)
-                                            </button>
-                                            <div id="child<?= $index ?>_<?= $childIndex ?>" class="collapse">
-                                                <ul>
-                                                    <?= dumpProducts($child) ?>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                            </ul>
-                        </div>
-                    </li>
-                <?php endif; ?>
+                <li>
+                    <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#shelf<?= $index ?>" aria-expanded="false" aria-controls="shelf<?= $index ?>">
+                        <strong><?= htmlspecialchars($shelf->name) ?></strong>
+                    </button>
+                    <div id="shelf<?= $index ?>" class="collapse">
+                        <ul>
+                            <li>
+                                <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#openShelf<?= $index ?>" aria-expanded="false" aria-controls="openShelf<?= $index ?>">
+                                    Rafta Açık (<?= count($shelf->getProducts()) ?>)
+                                </button>
+                                <div id="openShelf<?= $index ?>" class="collapse">
+                                    <ul>
+                                        <?= dumpProducts($shelf) ?>
+                                    </ul>
+                                </div>
+                            </li>
+                            <?php foreach ($shelf->getChildren() as $childIndex => $child): ?>
+                                <?php if (count($child->getProducts()) > 0): ?>
+                                    <li>
+                                        <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#child<?= $index ?>_<?= $childIndex ?>" aria-expanded="false" aria-controls="child<?= $index ?>_<?= $childIndex ?>">
+                                            <?= htmlspecialchars($child->name) ?>/<?= htmlspecialchars($child->type) ?> (<?= count($child->getProducts()) ?>)
+                                        </button>
+                                        <div id="child<?= $index ?>_<?= $childIndex ?>" class="collapse">
+                                            <ul>
+                                                <?= dumpProducts($child) ?>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                </li>
             <?php endforeach; ?>
         </ul>
         
