@@ -32,7 +32,7 @@ include '_header.php';
                         <ul class="list-unstyled ms-4">
                             <li>
                                 <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#openShelf<?= $index ?>" aria-expanded="false" aria-controls="openShelf<?= $index ?>">
-                                    Rafta Açık
+                                    Rafta Açık (<?= count($shelf->getProducts()) ?>)
                                 </button>
                                 <div id="openShelf<?= $index ?>" class="collapse">
                                     <ul class="list-unstyled ms-4">
@@ -43,7 +43,7 @@ include '_header.php';
                             <?php foreach ($shelf->getChildren() as $childIndex => $child): ?>
                                 <li>
                                     <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#child<?= $index ?>_<?= $childIndex ?>" aria-expanded="false" aria-controls="child<?= $index ?>_<?= $childIndex ?>">
-                                        <?= htmlspecialchars($child->name) ?>/<?= htmlspecialchars($child->type) ?>
+                                        <?= htmlspecialchars($child->name) ?>/<?= htmlspecialchars($child->type) ?> (<?= count($child->getProducts()) ?>)
                                     </button>
                                     <div id="child<?= $index ?>_<?= $childIndex ?>" class="collapse">
                                         <ul class="list-unstyled ms-4">
@@ -60,9 +60,12 @@ include '_header.php';
         <h2>Depo Envanteri (Ürüne Göre)</h2>
         <ul class="list-unstyled">
             <?php foreach ($productList as $productIndex => $product): ?>
+                <?php $totalAmount = array_reduce($product->getShelves(), function($carry, $shelf) use ($product) {
+                    return $carry + $product->shelfCount($shelf);
+                }, 0); ?>
                 <li>
                     <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#product<?= $productIndex ?>" aria-expanded="false" aria-controls="product<?= $productIndex ?>">
-                        <strong><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>)</strong>
+                        <strong><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>) (<?= $totalAmount ?> adet)</strong>
                     </button>
                     <div id="product<?= $productIndex ?>" class="collapse">
                         <ul class="list-unstyled ms-4">
