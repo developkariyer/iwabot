@@ -63,7 +63,7 @@ include '_header.php';
         </ul>
         
         <h2>Depo Envanteri (Ürüne Göre)</h2>
-        <ul>
+        <ul class="list-unstyled">
             <?php foreach ($productList as $productIndex => $product): ?>
                 <?php 
                 $totalAmount = array_reduce($product->getShelves(), function($carry, $shelf) use ($product) {
