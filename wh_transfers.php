@@ -13,16 +13,16 @@ function logdecode($log) {
     switch ($operation['method']) {
         case 'putOnShelf':
             $shelf = StockShelf::getById($operation['parameters']['shelf']['id'], $GLOBALS['pdo']);
-            return "{$object->name} ({$object->fnsku}) ürününden {$operation['parameters']['count']} adet {$shelf->name} rafına konuldu.";
+            return "<strong>{$object->name}</strong> ({$object->fnsku}) ürününden <strong>{$operation['parameters']['count']}</strong> adet <strong>{$shelf->name}</strong> rafına konuldu.<br><small>{$log}</small>";
         case 'removeFromShelf':
             $shelf = StockShelf::getById($operation['parameters']['shelf']['id'], $GLOBALS['pdo']);
-            return "{$object->name} ({$object->fnsku})ürünü {$shelf->name} rafından alındı.";
+            return "<strong>{$object->name}</strong> ({$object->fnsku}) ürünü <strong>{$shelf->name}</strong> rafından alındı.<br><small>{$log}</small>";
         case 'moveBetweenShelves':
             $fromShelf = StockShelf::getById($operation['parameters']['fromShelf']['id'], $GLOBALS['pdo']);
             $toShelf = StockShelf::getById($operation['parameters']['toShelf']['id'], $GLOBALS['pdo']);
-            return "{$object->name} ({$object->fnsku}) ürünü {$fromShelf->name} rafından {$toShelf->name} rafına taşındı.";
+            return "<strong>{$object->name}</strong> ({$object->fnsku}) ürünü <strong>{$fromShelf->name}</strong> rafından <strong>{$toShelf->name}</strong> rafına taşındı.<br><small>{$log}</small>";
         case 'newShelf':
-            return "{$object['name']} isimli yeni raf oluşturuldu.";
+            return "<strong>{$object['name']}</strong> isimli yeni raf oluşturuldu.<br><small>{$log}</small>";
         default:
             return "Bilinmeyen işlem";
     }
