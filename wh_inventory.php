@@ -22,39 +22,53 @@ include '_header.php';
 <div class="container mt-5">
     <div class="mt-5">
         <h2>Depo Envanteri (Rafa Göre)</h2>
-        <ul>
-            <?php foreach ($shelfList as $shelf): ?>
+        <ul class="list-unstyled">
+            <?php foreach ($shelfList as $index => $shelf): ?>
                 <li>
-                    <strong><?= htmlspecialchars($shelf->name) ?></strong>
-                    <ul>
-                        <li>Rafta Açık
-                            <ul>
-                                <?= dumpProducts($shelf) ?>
-                            </ul>
-                        </li>
-                        <?php foreach ($shelf->getChildren() as $child): ?>
-                            <li><?= htmlspecialchars($child->name) ?>/<?= htmlspecialchars($child->type) ?>
-                                <ul>
-                                    <?= dumpProducts($child) ?>
+                    <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#shelf<?= $index ?>" aria-expanded="false" aria-controls="shelf<?= $index ?>">
+                        <strong><?= htmlspecialchars($shelf->name) ?></strong>
+                    </button>
+                    <div id="shelf<?= $index ?>" class="collapse">
+                        <ul class="list-unstyled ms-4">
+                            <li>Rafta Açık
+                                <ul class="list-unstyled ms-4">
+                                    <?= dumpProducts($shelf) ?>
                                 </ul>
                             </li>
-                        <?php endforeach; ?>
-                    </ul>
+                            <?php foreach ($shelf->getChildren() as $childIndex => $child): ?>
+                                <li>
+                                    <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#child<?= $index ?>_<?= $childIndex ?>" aria-expanded="false" aria-controls="child<?= $index ?>_<?= $childIndex ?>">
+                                        <?= htmlspecialchars($child->name) ?>/<?= htmlspecialchars($child->type) ?>
+                                    </button>
+                                    <div id="child<?= $index ?>_<?= $childIndex ?>" class="collapse">
+                                        <ul class="list-unstyled ms-4">
+                                            <?= dumpProducts($child) ?>
+                                        </ul>
+                                    </div>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
                 </li>
             <?php endforeach; ?>
         </ul>
         <h2>Depo Envanteri (Ürüne Göre)</h2>
-        <ul>
-            <?php foreach ($productList as $product): ?>
+        <ul class="list-unstyled">
+            <?php foreach ($productList as $productIndex => $product): ?>
                 <li>
-                    <strong><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>)</strong>
-                    <ul>
-                        <?php foreach ($product->getShelves() as $shelf): ?>
-                            <li><?= htmlspecialchars($shelf->name) ?>/<?= htmlspecialchars($shelf->type) ?>: <?= htmlspecialchars($product->shelfCount($shelf)) ?> adet</li>
-                        <?php endforeach; ?>
-                    </ul>
+                    <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#product<?= $productIndex ?>" aria-expanded="false" aria-controls="product<?= $productIndex ?>">
+                        <strong><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>)</strong>
+                    </button>
+                    <div id="product<?= $productIndex ?>" class="collapse">
+                        <ul class="list-unstyled ms-4">
+                            <?php foreach ($product->getShelves() as $shelf): ?>
+                                <li><?= htmlspecialchars($shelf->name) ?>/<?= htmlspecialchars($shelf->type) ?>: <?= htmlspecialchars($product->shelfCount($shelf)) ?> adet</li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
                 </li>
             <?php endforeach; ?>
+        </ul>
     </div>
     <?= wh_menu() ?>
 </div>
