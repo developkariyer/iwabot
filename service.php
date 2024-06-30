@@ -16,7 +16,7 @@ require_once ('_init.php');
 
 require_once('wh_include.php');
 
-$boxcsv = file_get_contents('koliler.csv');
+$boxcsv = file_get_contents('koliler.txt');
 $boxcsv = explode("\n", $boxcsv);
 
 foreach ($boxcsv as $line) {
