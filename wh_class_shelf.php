@@ -162,7 +162,6 @@ class StockShelf extends AbstractStock
 
     public static function newShelf($db, $name, $type, $parentId = null)
     {
-        $this->logAction(func_get_args());
         if (($type === 'Raf' && $parentId) || ($type !== 'Raf' && !$parentId)) {
             return null;
         }
