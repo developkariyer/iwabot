@@ -125,7 +125,6 @@ class StockShelf extends AbstractStock
     */
     public function putProduct(StockProduct $product, $count = 1)
     {
-        $this->logAction(func_get_args());
         return $product->putOnShelf($this, $count);
     }
 
@@ -136,7 +135,6 @@ class StockShelf extends AbstractStock
      */
     public function removeProduct(StockProduct $product)
     {
-        $this->logAction(func_get_args());
         return $product->removeFromShelf($this);
     }
 
@@ -148,7 +146,6 @@ class StockShelf extends AbstractStock
      */
     public function moveToAnotherShelf(StockProduct $product, StockShelf $shelf)
     {
-        $this->logAction(func_get_args());
         return $product->moveBetweenShelves($this, $shelf);
     }
 
@@ -160,7 +157,6 @@ class StockShelf extends AbstractStock
      */
     public function moveToThisShelf(StockProduct $product, StockShelf $shelf)
     {
-        $this->logAction(func_get_args());
         return $product->moveBetweenShelves($shelf, $this);
     }
 
