@@ -166,27 +166,19 @@ class StockShelf extends AbstractStock
             return null;
         }
 
-        if ($type !== 'Raf') {
-            if (!$parentId) {
-                return null;
-            }
+        if ($type === 'Raf') {
+            $parentId = null;
+        } else {
             $parent = static::getById($parentId, $db);
             if (!$parent) {
                 return null;
             }
         }
-        if ($type === 'Raf') {
-            $parentId = null;
-        }
 
         $stmt = $db->prepare("INSERT INTO wh_shelf (name, type, parent_id) VALUES (:name, :type, :parent_id)");
-        try {
-            if ($stmt->execute(['name' => $name, 'type' => $type, 'parent_id' => $parentId])) {
-                $id = $db->lastInsertId();
-                return static::getById($id, $db);
-            }
-        } catch (Exception $e) {
-            return null;
+        if ($stmt->execute(['name' => $name, 'type' => $type, 'parent_id' => $parentId])) {
+            $id = $db->lastInsertId();
+            return static::getById($id, $db);
         }
         return null;
     }
