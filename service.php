@@ -16,16 +16,21 @@ require_once ('_init.php');
 
 require_once('wh_include.php');
 
+echo "Reading koliler.txt...";
 $boxcsv = file_get_contents('koliler.txt');
 $boxcsv = explode("\n", $boxcsv);
+echo "done\n";
 
 foreach ($boxcsv as $line) {
+    echo "Processing $line...";
     $line = trim($line);
     if (empty($line)) {
+        echo "empty!\n";
         continue;
     }
     $data = explode(',', $line);
     $raf = explode('-', $data[0]);
+    echo "Raf: $raf[0], Koli: $data[0], Ürün: $data[1], Adet: $data[2] ...";
     $box = StockShelf::newShelf($GLOBALS['pdo'], $data[0], 'Koli (Kapalı)', $raf[0]);
     if ($box) {
         $boxObj = StockShelf::getById($box, $GLOBALS['pdo']);
@@ -33,6 +38,7 @@ foreach ($boxcsv as $line) {
             $boxObj->putProduct($data[1]);
         }        
     }
+    echo "done\n";
 }
 
 
