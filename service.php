@@ -6,17 +6,33 @@ if (php_sapi_name() !== 'cli') {
 
 require_once ('_init.php');
 
+
 //$response = openProjectApiGet('/api/v3/queries/242');
 //$response = openProjectApiGet('/api/v3/projects/36/work_packages', ['columns' => 'id']);
 //$response = openProjectApiGet('/api/v3/projects/36/work_packages?columns%5B%5D=id&columns%5B%5D=category&columns%5B%5D=dueDate&columns%5B%5D=subject&columns%5B%5D=type&columns%5B%5D=status&columns%5B%5D=assignee&columns%5B%5D=author&columns%5B%5D=percentageDone&filters=%5B%7B%22status%22%3A%7B%22operator%22%3A%22o%22%2C%22values%22%3A%5B%5D%7D%7D%5D&groupBy=assigned_to&includeSubprojects=true&offset=1&pageSize=50&showHierarchies=false&showSums=false&sortBy=%5B%5B%22id%22%2C%22asc%22%5D%5D');
-
-$response = openProjectApiGet('/api/v3/users', ['pageSize' => 200]);
-
-
-print_r($response);
+//$response = openProjectApiGet('/api/v3/users', ['pageSize' => 200]);
+//print_r($response);
 
 
+require_once('wh_include.php');
 
+$boxcsv = file_get_contents('koliler.csv');
+$boxcsv = explode("\n", $boxcsv);
+
+foreach ($boxcsv as $line) {
+    $line = trim($line);
+    if (empty($line)) {
+        continue;
+    }
+    $data = explode(',', $line);
+    $raf = explode('-', $data[0]);
+    $box = StockShelf::newShelf($GLOBALS['pdo'], $data[0], 'Koli (Kapalı)', $raf[0]);
+    if ($box) {
+        for ($t=0;$t<$data[2];$t++) {
+            $box->putProduct($data[1]);
+        }        
+    }
+}
 
 
 
