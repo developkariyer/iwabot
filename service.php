@@ -34,7 +34,11 @@ foreach ($boxcsv as $line) {
     $raf = explode('-', $data[0])[0];
     echo "Raf: $raf, Koli: $data[0], Ürün: $data[1], Adet: $data[2] ...";
     if (!isset($boxes[$raf])) {
-        $boxes[$raf] = StockShelf::newShelf($GLOBALS['pdo'], "Gemi-$raf", 'Raf');
+        $boxes[$raf] = StockShelf::getById($raf, $GLOBALS['pdo']);
+        if (!$boxes[$raf]) {
+            echo "creating shelf...";
+            $boxes[$raf] = StockShelf::newShelf($GLOBALS['pdo'], "Gemi-$raf", 'Raf');
+        } else echo "shelf found...";
         if (!$boxes[$raf]) {
             echo "failed to create shelf\n";
             continue;
