@@ -23,8 +23,13 @@ include '_header.php';
                     </h2>
                     <div id="collapse<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $index ?>" data-bs-parent="#shelfAccordion">
                         <div class="accordion-body">
-                            <p>Raf içerikleri</p>
-                            <a href="wh_shelf.php?shelf=<?= urlencode($shelf->id) ?>" class="btn btn-outline-success btn-lg w-100 py-2 mt-2">Seç</a>
+                            <?php foreach ($shelf->getChildren() as $childIndex => $child): ?>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <strong><?= htmlspecialchars($child->name) ?> / <?= htmlspecialchars($child->type) ?></strong> (<?= count($child->getProducts()) ?> ürün)
+                                    <p>Ürün Listesi</p>
+                                    <a href="wh_shelf.php?shelf=<?= urlencode($child->id) ?>" class="btn btn-outline-success btn-lg w-100 py-2 mt-2">Seç</a>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 </div>
