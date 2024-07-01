@@ -70,7 +70,7 @@ include '_header.php';
                         <button type="button" class="btn btn-danger" id="deleteShelfButton">Koli Sil</button>
                     </div>
                     <div class="mb-3">
-                        <label for="shelfSelect" class="form-label">Raf</label>
+                        <label for="shelfSelect" class="form-label">Yeni Taşınacağı Raf</label>
                         <select class="form-select" id="shelfSelect" name="new_shelf_id">
                             <option value="">Raf seçin...</option>
                             <?php foreach ($shelfList as $shelf): ?>
