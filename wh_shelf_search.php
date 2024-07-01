@@ -34,7 +34,7 @@ include '_header.php';
                                         <div id="childCollapse<?= $index ?>_<?= $childIndex ?>" class="accordion-collapse collapse" aria-labelledby="childHeading<?= $index ?>_<?= $childIndex ?>" data-bs-parent="#childAccordion<?= $index ?>">
                                             <div class="accordion-body">
                                                 <p>Ürün Listesi</p>
-                                                <button type="button" class="btn btn-outline-success btn-lg w-100 py-2 mt-2 select-shelf-btn" data-shelf-id="<?= htmlspecialchars($child->id) ?>" data-bs-toggle="modal" data-bs-target="#shelfSelectModal">Seç</button>
+                                                <button type="button" class="btn btn-outline-success btn-lg w-100 py-2 mt-2 select-shelf-btn" data-shelf-id="<?= htmlspecialchars($child->id) ?>" data-shelf-name="<?= htmlspecialchars($child->name) ?>" data-bs-toggle="modal" data-bs-target="#shelfSelectModal">Seç</button>
                                             </div>
                                         </div>
                                     </div>
@@ -60,10 +60,13 @@ include '_header.php';
             <div class="modal-body">
                 <form id="shelfSelectForm" action="wh_move_shelf.php" method="post">
                     <input type="hidden" id="selectedShelfId" name="selected_shelf_id">
+                    <div class="d-flex justify-content-between mb-3">
+                        <button type="button" class="btn btn-danger" id="deleteShelfButton">Koli Sil</button>
+                    </div>
                     <div class="mb-3">
-                        <label for="shelfSelect" class="form-label">Raf/Koli</label>
+                        <label for="shelfSelect" class="form-label">Raf</label>
                         <select class="form-select" id="shelfSelect" name="shelf_id" required>
-                            <option value="">Raf/Koli seçin...</option>
+                            <option value="">Raf seçin...</option>
                             <?php foreach ($shelfList as $shelf): ?>
                                 <option value="<?= htmlspecialchars($shelf->id) ?>"><?= htmlspecialchars($shelf->name) ?></option>
                             <?php endforeach; ?>
@@ -71,7 +74,7 @@ include '_header.php';
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Geri Dön</button>
-                        <button type="submit" class="btn btn-primary">Rafa Taşı</button>
+                        <button type="submit" class="btn btn-primary" id="moveButton" disabled>Taşı</button>
                     </div>
                 </form>
             </div>
@@ -81,11 +84,45 @@ include '_header.php';
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+    const shelfSelect = document.getElementById('shelfSelect');
+    const moveButton = document.getElementById('moveButton');
+    const modalTitle = document.getElementById('shelfSelectModalLabel');
+    const deleteShelfButton = document.getElementById('deleteShelfButton');
+    
     document.querySelectorAll('.select-shelf-btn').forEach(button => {
         button.addEventListener('click', function() {
             const shelfId = this.getAttribute('data-shelf-id');
+            const shelfName = this.getAttribute('data-shelf-name');
             document.getElementById('selectedShelfId').value = shelfId;
+            modalTitle.textContent = `${shelfName} Numaralı Koli`;
         });
+    });
+
+    shelfSelect.addEventListener('change', function() {
+        moveButton.disabled = !this.value;
+    });
+
+    deleteShelfButton.addEventListener('click', function() {
+        const shelfId = document.getElementById('selectedShelfId').value;
+        if (confirm("Bu koliyi silmek istediğinizden emin misiniz?")) {
+            fetch('wh_delete_shelf.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ shelf_id: shelfId })
+            }).then(response => response.json()).then(data => {
+                if (data.success) {
+                    alert('Koli başarıyla silindi.');
+                    location.reload();
+                } else {
+                    alert('Koli silinemedi.');
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+                alert('Bir hata oluştu.');
+            });
+        }
     });
 });
 </script>
