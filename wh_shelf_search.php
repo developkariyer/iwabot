@@ -23,13 +23,23 @@ include '_header.php';
                     </h2>
                     <div id="collapse<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $index ?>" data-bs-parent="#shelfAccordion">
                         <div class="accordion-body">
-                            <?php foreach ($shelf->getChildren() as $childIndex => $child): ?>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <strong><?= htmlspecialchars($child->name) ?> / <?= htmlspecialchars($child->type) ?></strong> (<?= count($child->getProducts()) ?> ürün)
-                                    <p>Ürün Listesi</p>
-                                    <a href="wh_shelf.php?shelf=<?= urlencode($child->id) ?>" class="btn btn-outline-success btn-lg w-100 py-2 mt-2">Seç</a>
-                                </div>
-                            <?php endforeach; ?>
+                            <div class="accordion" id="childAccordion<?= $index ?>">
+                                <?php foreach ($shelf->getChildren() as $childIndex => $child): ?>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="childHeading<?= $index ?>_<?= $childIndex ?>">
+                                            <button class="accordion-button collapsed d-flex justify-content-between align-items-center text-start" type="button" data-bs-toggle="collapse" data-bs-target="#childCollapse<?= $index ?>_<?= $childIndex ?>" aria-expanded="false" aria-controls="childCollapse<?= $index ?>_<?= $childIndex ?>">
+                                                <strong><?= htmlspecialchars($child->name) ?> / <?= htmlspecialchars($child->type) ?></strong> (<?= count($child->getProducts()) ?> ürün)
+                                            </button>
+                                        </h2>
+                                        <div id="childCollapse<?= $index ?>_<?= $childIndex ?>" class="accordion-collapse collapse" aria-labelledby="childHeading<?= $index ?>_<?= $childIndex ?>" data-bs-parent="#childAccordion<?= $index ?>">
+                                            <div class="accordion-body">
+                                                <p>Ürün Listesi</p>
+                                                <a href="wh_shelf.php?shelf=<?= urlencode($child->id) ?>" class="btn btn-outline-success btn-lg w-100 py-2 mt-2">Seç</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
                     </div>
                 </div>
