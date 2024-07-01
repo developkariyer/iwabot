@@ -63,7 +63,7 @@ include '_header.php';
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="shelfSelectForm" action="wh_action.php" method="post">
+                <form id="shelfSelectForm" action="wh_shelf_action.php" method="post">
                     <input type="hidden" id="selectedShelfId" name="shelf_id">
                     <input type="hidden" name="action" id="actionInput">
                     <div class="d-flex justify-content-between mb-3">
