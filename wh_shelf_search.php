@@ -33,7 +33,7 @@ include '_header.php';
                                         </h2>
                                         <div id="childCollapse<?= $index ?>_<?= $childIndex ?>" class="accordion-collapse collapse" aria-labelledby="childHeading<?= $index ?>_<?= $childIndex ?>" data-bs-parent="#childAccordion<?= $index ?>">
                                             <div class="accordion-body">
-                                                <h4>Kutudaki Ürünler</h4>
+                                                <h4>Kolideki Ürünler</h4>
                                                 <ul>
                                                     <?php foreach ($child->getProducts() as $product): ?>
                                                         <li><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>) : <?= htmlspecialchars($product->shelfCount($child)) ?> adet</li>
@@ -63,14 +63,15 @@ include '_header.php';
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="shelfSelectForm" action="wh_move_shelf.php" method="post">
-                    <input type="hidden" id="selectedShelfId" name="selected_shelf_id">
+                <form id="shelfSelectForm" action="wh_action.php" method="post">
+                    <input type="hidden" id="selectedShelfId" name="shelf_id">
+                    <input type="hidden" name="action" id="actionInput">
                     <div class="d-flex justify-content-between mb-3">
                         <button type="button" class="btn btn-danger" id="deleteShelfButton">Koli Sil</button>
                     </div>
                     <div class="mb-3">
                         <label for="shelfSelect" class="form-label">Raf</label>
-                        <select class="form-select" id="shelfSelect" name="shelf_id" required>
+                        <select class="form-select" id="shelfSelect" name="new_shelf_id">
                             <option value="">Raf seçin...</option>
                             <?php foreach ($shelfList as $shelf): ?>
                                 <option value="<?= htmlspecialchars($shelf->id) ?>"><?= htmlspecialchars($shelf->name) ?></option>
@@ -93,6 +94,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const moveButton = document.getElementById('moveButton');
     const modalTitle = document.getElementById('shelfSelectModalLabel');
     const deleteShelfButton = document.getElementById('deleteShelfButton');
+    const actionInput = document.getElementById('actionInput');
     
     document.querySelectorAll('.select-shelf-btn').forEach(button => {
         button.addEventListener('click', function() {
@@ -108,26 +110,12 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     deleteShelfButton.addEventListener('click', function() {
-        const shelfId = document.getElementById('selectedShelfId').value;
-        if (confirm("Bu koliyi silmek istediğinizden emin misiniz?")) {
-            fetch('wh_delete_shelf.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ shelf_id: shelfId })
-            }).then(response => response.json()).then(data => {
-                if (data.success) {
-                    alert('Koli başarıyla silindi.');
-                    location.reload();
-                } else {
-                    alert('Koli silinemedi.');
-                }
-            }).catch(error => {
-                console.error('Error:', error);
-                alert('Bir hata oluştu.');
-            });
-        }
+        document.getElementById('actionInput').value = 'delete_shelf';
+        document.getElementById('shelfSelectForm').submit();
+    });
+
+    moveButton.addEventListener('click', function() {
+        document.getElementById('actionInput').value = 'move_box_to_shelf';
     });
 });
 </script>
