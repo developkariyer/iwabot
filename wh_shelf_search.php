@@ -33,7 +33,12 @@ include '_header.php';
                                         </h2>
                                         <div id="childCollapse<?= $index ?>_<?= $childIndex ?>" class="accordion-collapse collapse" aria-labelledby="childHeading<?= $index ?>_<?= $childIndex ?>" data-bs-parent="#childAccordion<?= $index ?>">
                                             <div class="accordion-body">
-                                                <p>Ürün Listesi</p>
+                                                <h4>Kutudaki Ürünler</h4>
+                                                <ul>
+                                                    <?php foreach ($child->getProducts() as $product): ?>
+                                                        <li><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>) : <?= htmlspecialchars($product->shelfCount($child)) ?> adet</li>
+                                                    <?php endforeach; ?>
+                                                </ul>
                                                 <button type="button" class="btn btn-outline-success btn-lg w-100 py-2 mt-2 select-shelf-btn" data-shelf-id="<?= htmlspecialchars($child->id) ?>" data-shelf-name="<?= htmlspecialchars($child->name) ?>" data-bs-toggle="modal" data-bs-target="#shelfSelectModal">Seç</button>
                                             </div>
                                         </div>
