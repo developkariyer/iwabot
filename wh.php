@@ -19,7 +19,7 @@ include '_header.php';
             <a href="wh_product_search.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Ürün Bul</a>
         </div>
         <div class="col-md-6">
-            <a href="wh_shelf_search.php" class="disabled btn btn-primary btn-lg rounded-pill w-100 py-3">Koli/Raf Bul</a>
+            <a href="wh_shelf_search.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Koli/Raf Bul</a>
         </div>
     </div>
 <!--
