@@ -13,6 +13,11 @@ include '_header.php';
 <div class="container mt-5">
     <div class="mt-5">
         <h2>Raflar ve Koliler</h2>
+        <p>
+            Bu bölümde depodaki raflar ve koliler listelenmektedir.
+            İlgili rafta bulunan koli seçildikten sonra istenilen rafa taşınmakta veya
+            koli boş ise silinebilmektedir.
+        </p>
         <div class="accordion" id="shelfAccordion">
             <?php foreach ($shelfList as $index => $shelf): ?>
                 <div class="accordion-item">

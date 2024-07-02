@@ -38,6 +38,9 @@ include '_header.php';
 
 <div class="container mt-5">
     <h2>Depo Hareketleri</h2>
+    <p>
+        Bu bölümde ürün ve kolilerin depo içi ve depo dışı hareket kayıtları yer almaktadır.
+    </p>
     <?php foreach ($logactions as $log): ?>
         <li>
             <?= date('d.m.Y H:i:s', strtotime($log['created_at'])) ?>:

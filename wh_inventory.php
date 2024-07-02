@@ -21,7 +21,15 @@ include '_header.php';
 
 <div class="container mt-5">
     <div class="mt-5">
-        <h2>Depo Envanteri (Rafa Göre)</h2>
+        <h2>Depo Envanteri</h2>
+        <p>
+            Bu sayfada depoda yer alan tüm raf, koli ve ürünlerin dökümü yapılmaktadır.<br>
+            İlk kısımda raflar listelenmekte, raf üzerine tıklandığında o rafta açık bulunan ürünler 
+            ile raftaki kolilerde yer alan ürünler listelenmektedir.<br>
+            İkinci kısımda ise depoda stoğu olan ürünler listelenmekte ve bu ürünlerin nerelerde olduğu ürün
+            üzerine tıklanınca görülebilmektedir.
+        </p>
+        <h3>Depo Envanteri (Rafa Göre)</h3>
         <ul>
             <?php foreach ($shelfList as $index => $shelf): ?>
                 <li>
@@ -60,7 +68,7 @@ include '_header.php';
             <?php endforeach; ?>
         </ul>
         
-        <h2>Depo Envanteri (Ürüne Göre)</h2>
+        <h3>Depo Envanteri (Ürüne Göre)</h3>
         <ul>
             <?php foreach ($productList as $productIndex => $product): ?>
                 <?php 

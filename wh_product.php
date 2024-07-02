@@ -70,6 +70,14 @@ include '_header.php';
 <div class="container mt-5">
     <div class="mt-5">
         <h2><?= htmlspecialchars($product->name) ?></h2>
+        <p>
+            Bu sayfada <?= htmlspecialchars($product->name) ?> ile ilgili işlemleri yapabilirsiniz.
+            Hemen altta ürünün künye bilgileri ve hangi raf/kolilerde yer aldığı gösterilmektedir.
+            Buradan dilediğiniz raf/koliyi seçip ürünün satış çıkışını yapabilir veya başka raf/koliye 
+            taşıyabilirsiniz.<br>
+            <strong>Ürünü Rafa Yerleştir</strong> seçeneği ile ürünün depoya ilk girişini veya
+            sayım düzeltmesini gerçekleştirebilirsiniz.
+        </p>        
         <h5>Ürün Bilgileri</h5>
         <p><?= nl2br(htmlspecialchars($product->productInfo())) ?></p>
         <h5>Ürünün Bulunduğu Yerler</h5>
