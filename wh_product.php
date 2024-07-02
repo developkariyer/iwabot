@@ -124,7 +124,7 @@ include '_header.php';
                     <input type="hidden" name="shelf_id" id="modalShelfId">
                     <div class="mb-3">
                         <button type="submit" name="action" value="send_to_sale" class="btn btn-success w-100 mb-2" id="sendToSaleButton">Satışa Gönder</button>
-                        </div>
+                    </div>
                     <div class="mb-3">
                         <label for="newShelfSelect" class="form-label">Yeni Raf/Koli Seçin</label>
                         <select class="form-select" id="newShelfSelect" name="new_shelf_id">
@@ -261,6 +261,7 @@ include '_header.php';
 
         actionForm.addEventListener('submit', (event) => {
             sendToSaleButton.disabled = true;
+            actionForm.submit();
         });
 
         decrementBtn.addEventListener('click', () => {
