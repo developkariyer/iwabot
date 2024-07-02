@@ -42,7 +42,7 @@ include '_header.php';
         <li>
             <?= date('d.m.Y H:i:s', strtotime($log['created_at'])) ?>:
             <strong><?= username($log['user_id']) ?></strong> (<?= $log['user_id'] ?>) tarafından
-            <?= logdecode($log) ?><?= json_encode($log) ?>
+            <?= logdecode($log) ?>
         </li>
     <?php endforeach; ?>
 
