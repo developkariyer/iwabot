@@ -14,7 +14,7 @@ class StockProduct extends AbstractStock
      *
      * @return array The list of transient fields.
      */
-    protected function getTransientFields()
+    protected function getTransientFields(): array
     {
         return ['totalStock'];
     }
@@ -26,7 +26,7 @@ class StockProduct extends AbstractStock
      * @param mixed $value The field value.
      * @return bool True if valid, false otherwise.
      */
-    protected function validateField($field, $value)
+    protected function validateField($field, $value): bool
     {
         switch ($field) {
             case 'name':
@@ -50,17 +50,23 @@ class StockProduct extends AbstractStock
      * @param string $fnsku The FNSKU.
      * @param PDO $db The database connection.
      * @return static|null The product instance or null if not found.
+     * @throws Exception If a database error occurs.
      */
-    public static function getByFnsku($fnsku, $db)
+    public static function getByFnsku(string $fnsku, PDO $db)
     {
-        $stmt = $db->prepare("SELECT * FROM " . static::$tableName . " WHERE fnsku = :fnsku");
-        $stmt->execute(['fnsku' => $fnsku]);
-        if ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $instance = new static($data['id'], $db);
-            $instance->cachedData = $data;
-            return $instance;
-        } else {
-            return null;
+        try {
+            $stmt = $db->prepare("SELECT * FROM " . static::$tableName . " WHERE fnsku = :fnsku");
+            $stmt->execute(['fnsku' => $fnsku]);
+            if ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $instance = new static($data['id'], $db);
+                $instance->cachedData = $data;
+                return $instance;
+            } else {
+                return null;
+            }
+        } catch (PDOException $e) {
+            error_log("Database error in getByFnsku: " . $e->getMessage());
+            throw new Exception("Failed to retrieve product by FNSKU.");
         }
     }
 
@@ -68,53 +74,69 @@ class StockProduct extends AbstractStock
      * Get the shelves containing this product.
      *
      * @return array The list of shelves.
+     * @throws Exception If a database error occurs.
      */
-    public function getShelves()
+    public function getShelves(): array
     {
         if (!empty($this->shelvesArray)) {
             return $this->shelvesArray;
         }
-        $stmt = $this->db->prepare("
-            SELECT s.*, sp.shelf_id, COUNT(sp.shelf_id) as shelf_count
-            FROM wh_shelf_product sp
-            JOIN wh_shelf s ON s.id = sp.shelf_id
-            WHERE sp.product_id = :product_id
-            GROUP BY sp.shelf_id
-        ");
-        $stmt->execute(['product_id' => $this->id]);
-        $shelves = [];
-        while ($shelfData = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $shelf = new StockShelf($shelfData['id'], $this->db, $shelfData['parent_id']);
-            $shelf->cachedData = $shelfData;
-            $this->shelvesArray[$shelfData['id']] = $shelfData['shelf_count'];
-            $shelves[$shelfData['shelf_id']] = $shelf;
+        try {
+            $stmt = $this->db->prepare("
+                SELECT s.*, sp.shelf_id, COUNT(sp.shelf_id) as shelf_count
+                FROM wh_shelf_product sp
+                JOIN wh_shelf s ON s.id = sp.shelf_id
+                WHERE sp.product_id = :product_id
+                GROUP BY sp.shelf_id
+            ");
+            $stmt->execute(['product_id' => $this->id]);
+            $shelves = [];
+            while ($shelfData = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $shelf = new StockShelf($shelfData['id'], $this->db, $shelfData['parent_id']);
+                $shelf->cachedData = $shelfData;
+                $this->shelvesArray[$shelfData['id']] = $shelfData['shelf_count'];
+                $shelves[$shelfData['shelf_id']] = $shelf;
+            }
+            $this->shelvesArray = $shelves;
+            return $shelves;
+        } catch (PDOException $e) {
+            error_log("Database error in getShelves: " . $e->getMessage());
+            throw new Exception("Failed to retrieve shelves containing the product.");
         }
-        $this->shelvesArray = $shelves;
-        return $shelves;
     }
 
     /**
      * Get the total count of this product across all shelves.
      *
      * @return int The total count.
+     * @throws Exception If a database error occurs.
      */
-    public function getTotalStock()
+    public function getTotalStock(): int
     {
-        if ($this->totalStock) {
+        if (isset($this->totalStock)) {
             return $this->totalStock;
         }
-        $stmt = $this->db->prepare("SELECT COUNT(*) FROM wh_shelf_product WHERE product_id = :product_id");
-        $stmt->execute(['product_id' => $this->id]);
-        $this->totalStock = $stmt->fetchColumn();
-        return $this->totalStock;
+        try {
+            $stmt = $this->db->prepare("SELECT COUNT(*) FROM wh_shelf_product WHERE product_id = :product_id");
+            $stmt->execute(['product_id' => $this->id]);
+            $this->totalStock = (int) $stmt->fetchColumn();
+            return $this->totalStock;
+        } catch (PDOException $e) {
+            error_log("Database error in getTotalStock: " . $e->getMessage());
+            throw new Exception("Failed to retrieve total stock.");
+        }
     }
 
     /**
      * Put product on a shelf.
      * 
-     * @param int $shelfId The shelf ID.
+     * @param StockShelf $shelf The shelf object.
+     * @param int $count The number of products to put on the shelf.
+     * @param bool $log Whether to log the action.
+     * @return bool True if successful, false otherwise.
+     * @throws Exception If a database error occurs.
      */
-    public function putOnShelf(StockShelf $shelf, $count = 1, bool $log = true)
+    public function putOnShelf(StockShelf $shelf, int $count = 1, bool $log = true): bool
     {
         if ($log) $this->logAction(func_get_args());
         $this->db->beginTransaction();
@@ -124,38 +146,48 @@ class StockProduct extends AbstractStock
                 $stmt->execute(['product_id' => $this->id, 'shelf_id' => $shelf->id]);
             }
             $this->db->commit();
+            $this->shelvesArray = []; // Invalidate cached shelves
+            return true;
         } catch (Exception $e) {
             $this->db->rollBack();
-            throw $e;
+            error_log("Error in putOnShelf: " . $e->getMessage());
+            throw new Exception("Failed to put product on shelf.");
         }
-        $this->shelvesArray = [];
-        return true;
     }
 
     /**
      * Remove product from a shelf.
      * 
-     * @param int $shelfId The shelf ID.
+     * @param StockShelf $shelf The shelf object.
+     * @param bool $log Whether to log the action.
      * @return bool True if successful, false otherwise.
+     * @throws Exception If a database error occurs.
      */
     public function removeFromShelf(StockShelf $shelf, bool $log = true): bool
     {
         if ($log) $this->logAction(func_get_args());
         if ($this->shelfCount($shelf)) {
-            $stmt = $this->db->prepare("DELETE FROM wh_shelf_product WHERE product_id = :product_id AND shelf_id = :shelf_id LIMIT 1");
-            $this->shelvesArray = [];
-            return $stmt->execute(['product_id' => $this->id, 'shelf_id' => $shelf->id]);
+            try {
+                $stmt = $this->db->prepare("DELETE FROM wh_shelf_product WHERE product_id = :product_id AND shelf_id = :shelf_id LIMIT 1");
+                $this->shelvesArray = []; // Invalidate cached shelves
+                return $stmt->execute(['product_id' => $this->id, 'shelf_id' => $shelf->id]);
+            } catch (PDOException $e) {
+                error_log("Database error in removeFromShelf: " . $e->getMessage());
+                throw new Exception("Failed to remove product from shelf.");
+            }
         }
         return false;
     }
 
     /**
-     * Move product from one shelf to another
+     * Move product from one shelf to another.
      * 
-     * @param int $fromShelfId The source shelf ID.
-     * @param int $toShelfId The destination shelf ID.
+     * @param StockShelf $fromShelf The source shelf object.
+     * @param StockShelf $toShelf The destination shelf object.
+     * @return bool True if successful, false otherwise.
+     * @throws Exception If a database error occurs.
      */
-    public function moveBetweenShelves(StockShelf $fromShelf, StockShelf $toShelf)
+    public function moveBetweenShelves(StockShelf $fromShelf, StockShelf $toShelf): bool
     {
         $this->logAction(func_get_args());
         if ($this->removeFromShelf($fromShelf, log:false)) {
@@ -165,21 +197,33 @@ class StockProduct extends AbstractStock
     }
 
     /**
-     * Get product count in shelf
+     * Get product count in a shelf.
      * 
-     * @param StockShelf $shelf The shelf
+     * @param StockShelf $shelf The shelf object.
+     * @return int The count of the product in the specified shelf.
+     * @throws Exception If a database error occurs.
      */
-    public function shelfCount(StockShelf $shelf)
+    public function shelfCount(StockShelf $shelf): int
     {
         if (empty($this->countArray[$shelf->id])) {
-            $stmt = $this->db->prepare("SELECT COUNT(*) FROM wh_shelf_product WHERE product_id = :product_id AND shelf_id = :shelf_id");
-            $stmt->execute(['product_id' => $this->id, 'shelf_id' => $shelf->id]);
-            $this->countArray[$shelf->id] = $stmt->fetchColumn();
+            try {
+                $stmt = $this->db->prepare("SELECT COUNT(*) FROM wh_shelf_product WHERE product_id = :product_id AND shelf_id = :shelf_id");
+                $stmt->execute(['product_id' => $this->id, 'shelf_id' => $shelf->id]);
+                $this->countArray[$shelf->id] = (int) $stmt->fetchColumn();
+            } catch (PDOException $e) {
+                error_log("Database error in shelfCount: " . $e->getMessage());
+                throw new Exception("Failed to retrieve shelf count.");
+            }
         }
         return $this->countArray[$shelf->id];
     }
 
-    public function productInfo() 
+    /**
+     * Get product information as a formatted string.
+     * 
+     * @return string The product information.
+     */
+    public function productInfo(): string
     {
         return "Ürün Adı: {$this->name}\n".
                     "Ürün Kodu: {$this->fnsku}\n".
@@ -189,16 +233,29 @@ class StockProduct extends AbstractStock
                     "Toplam Stok: {$this->getTotalStock()}\n";
     }
 
-    public static function allProducts($db) {
-        $stmt = $db->prepare("SELECT id, fnsku FROM wh_product ORDER BY fnsku");
-        $stmt->execute();
-        $products = [];
-        while ($productData = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $product = StockProduct::getById($productData['id'], $db);
-            if ($product) {
-                $products[$productData['id']] = $product;
+    /**
+     * Get all products.
+     * 
+     * @param PDO $db The database connection.
+     * @return array The list of all products.
+     * @throws Exception If a database error occurs.
+     */
+    public static function allProducts(PDO $db): array
+    {
+        try {
+            $stmt = $db->prepare("SELECT id, fnsku FROM wh_product ORDER BY fnsku");
+            $stmt->execute();
+            $products = [];
+            while ($productData = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $product = StockProduct::getById($productData['id'], $db);
+                if ($product) {
+                    $products[$productData['id']] = $product;
+                }
             }
+            return $products;
+        } catch (PDOException $e) {
+            error_log("Database error in allProducts: " . $e->getMessage());
+            throw new Exception("Failed to retrieve all products.");
         }
-        return $products;
     }
 }
