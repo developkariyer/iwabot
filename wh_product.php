@@ -255,11 +255,11 @@ include '_header.php';
             decrementBtn.disabled = quantityInput.value <= 0;
         };
 
-        sendToSaleButton.addEventListener('click', function() {
+        sendToSaleButton.addEventListener('click', () => {
             sendToSaleButton.disabled = true;
         });
 
-        actionForm.addEventListener('submit', function(event) {
+        actionForm.addEventListener('submit', () {
             sendToSaleButton.disabled = true;
         });
 
