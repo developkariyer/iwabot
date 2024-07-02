@@ -254,11 +254,11 @@ include '_header.php';
             moveToShelfButton.disabled = newShelfSelect.value === "";
             decrementBtn.disabled = quantityInput.value <= 0;
         };
-
+/*
         sendToSaleButton.addEventListener('click', () => {
             sendToSaleButton.disabled = true;
         });
-
+*/
         decrementBtn.addEventListener('click', () => {
             if (quantityInput.value > 0) {
                 quantityInput.value = parseInt(quantityInput.value) - 1;
