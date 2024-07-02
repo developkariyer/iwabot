@@ -170,6 +170,7 @@ include '_header.php';
                         <label for="shelfSelect" class="form-label">Raf/Koli Seçin</label>
                         <select class="form-select" id="shelfSelect" name="shelf_id">
                             <option value="">Raf seçin...</option>
+                            <option value="new_shelf">Yeni Raf Ekle</option>
                             <?php foreach ($shelfList as $shelf): ?>
                                 <optgroup label="<?= htmlspecialchars($shelf->name) ?>">
                                     <option value="<?= htmlspecialchars($shelf->id) ?>">Rafa açık koy (<?= $product->shelfCount($shelf) ?>)</option>
@@ -178,7 +179,6 @@ include '_header.php';
                                     <?php endforeach; ?>
                                 </optgroup>
                             <?php endforeach; ?>
-                            <option value="new_shelf">Yeni Raf Ekle</option>
                         </select>
                     </div>
                     <div id="newShelfFields" class="d-none">
