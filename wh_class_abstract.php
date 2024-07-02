@@ -247,30 +247,36 @@ abstract class AbstractStock
     }
 
     protected function logAction(array $args) {
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1];
-        $method = $backtrace['function'];
-        $parameters = $this->getMethodParameters($method, $args);
-        $user = $_SESSION['user_id'] ?? 'unknown';
-        $stmt = $this->db->prepare('INSERT INTO wh_log (user_id, operation) VALUES (?, ?)');
-        $stmt->execute([$user, json_encode([
-            'object' => get_called_class(),
-            'id' => $this->id,
-            'method' => $method,
-            'parameters' => $parameters,
-        ])]);
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+    
+        if (isset($backtrace[1])) {
+            $method = $backtrace[1]['function'];
+            $parameters = $this->getMethodParameters($method, $args);
+            $user = $_SESSION['user_id'] ?? 'unknown';
+            $stmt = $this->db->prepare('INSERT INTO wh_log (user_id, operation) VALUES (?, ?)');
+            $stmt->execute([$user, json_encode([
+                'object' => get_called_class(),
+                'id' => $this->id,
+                'method' => $method,
+                'parameters' => $parameters,
+            ])]);
+        } else {
+            error_log("logAction called without expected backtrace frame. Backtrace: " . json_encode($backtrace));
+        }
     }
-
+    
     private function getMethodParameters($method, $args) {
         $reflector = new ReflectionMethod($this, $method);
         $params = $reflector->getParameters();
         $parameters = [];
-
+    
         foreach ($params as $index => $param) {
             $parameters[$param->name] = $args[$index];
         }
-
+    
         return $parameters;
     }
+    
 
     /**
      * Validate a field value.
