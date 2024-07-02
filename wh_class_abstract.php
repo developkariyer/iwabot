@@ -26,46 +26,59 @@ abstract class AbstractStock
      */
     protected function __construct($id, $db, $parentId = null, $lazy = false)
     {
-        $this->id = $id;
-        $this->db = $db;
-        $this->lazy = $lazy;
-        if ($parentId) {
-            $this->parent = static::getById($parentId, $db);
+        try {
+            $this->id = $id;
+            $this->db = $db;
+            $this->lazy = $lazy;
+            if ($parentId) {
+                $this->parent = static::getById($parentId, $db);
+            }
+        } catch (Exception $e) {
+            error_log("Error initializing stock item: " . $e->getMessage());
+            throw new Exception("Failed to initialize stock item.");
         }
     }
-
+    
     /**
      * Get a stock item by ID.
      *
      * @param int $id The ID of the stock item.
      * @param PDO $db The database connection.
      * @return static|null The stock item instance or null if not found.
+     * @throws Exception If the table name is not set or if a database error occurs.
      */
     public static function getById($id, $db)
     {
         if (empty(static::$tableName)) {
-            return null;
+            throw new Exception("Table name not set.");
         }
-
+    
         if (isset(self::$instances[static::class][$id])) {
             return self::$instances[static::class][$id];
         }
-
-        $stmt = $db->prepare("SELECT * FROM " . static::$tableName . " WHERE id = :id");
-        $stmt->execute(['id' => $id]);
-        if ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $parentId = $data['parent_id'] ?? null;
-            $instance = new static($id, $db, $parentId);
-            $instance->cachedData = $data;
-            self::$instances[static::class][$id] = $instance;
-            return $instance;
-        } else {
-            return null;
+    
+        try {
+            $stmt = $db->prepare("SELECT * FROM " . static::$tableName . " WHERE id = :id");
+            $stmt->execute(['id' => $id]);
+            if ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $parentId = $data['parent_id'] ?? null;
+                $instance = new static($id, $db, $parentId);
+                $instance->cachedData = $data;
+                self::$instances[static::class][$id] = $instance;
+                return $instance;
+            } else {
+                return null;
+            }
+        } catch (PDOException $e) {
+            error_log("Database error in getById: " . $e->getMessage());
+            throw new Exception("Failed to retrieve stock item.");
         }
     }
-
+    
     /**
      * Load the stock item data from the database.
+     *
+     * @throws Exception If the database query fails.
      */
     private function load()
     {
@@ -73,36 +86,67 @@ abstract class AbstractStock
             return;
         }
         if ($this->lazy) {
+            $this->fetchDataFromDatabase();
+            $this->initializeParent();
+            $this->lazy = false;
+        }
+    }
+
+    /**
+     * Fetch data from the database for the stock item.
+     *
+     * @throws Exception If the database query fails.
+     */
+    private function fetchDataFromDatabase()
+    {
+        try {
             $stmt = $this->db->prepare("SELECT * FROM " . static::$tableName . " WHERE id = :id");
             $stmt->execute(['id' => $this->id]);
             $this->cachedData = $stmt->fetch(PDO::FETCH_ASSOC);
-            if (isset($this->cachedData['parent_id']) && $this->cachedData['parent_id']) {
-                $this->parent = static::getById($this->cachedData['parent_id'], $this->db);
-            }
-            $this->lazy = false;
+        } catch (PDOException $e) {
+            error_log("Database error in fetchDataFromDatabase: " . $e->getMessage());
+            throw new Exception("Failed to fetch stock item data.");
+        }
+    }
+
+    /**
+     * Initialize the parent stock item if it exists.
+     *
+     * @throws Exception If the database query fails.
+     */
+    private function initializeParent()
+    {
+        if (isset($this->cachedData['parent_id']) && $this->cachedData['parent_id']) {
+            $this->parent = static::getById($this->cachedData['parent_id'], $this->db);
         }
     }
 
     /**
      * Save the stock item to the database.
      *
-     * @throws Exception If the table name is not set.
+     * @throws Exception If the table name is not set or if a database error occurs.
      */
     public function save(): bool
     {
         if (empty(static::$tableName)) {
             throw new Exception("Table name not set.");
         }
-        if ($this->id) {
-            return $this->update(static::$tableName, $this->cachedData);
-        } else {
-            return $this->insert(static::$tableName, $this->cachedData);
+        try {
+            if ($this->id) {
+                return $this->update(static::$tableName, $this->cachedData);
+            } else {
+                return $this->insert(static::$tableName, $this->cachedData);
+            }
+        } catch (PDOException $e) {
+            error_log("Database error in save: " . $e->getMessage());
+            throw new Exception("Failed to save stock item.");
         }
     }
 
     /**
      * Delete the stock item from the database.
      *
+     * @return bool True on success, false on failure.
      * @throws Exception If the table name is not set.
      */
     public function delete(): bool
@@ -118,6 +162,7 @@ abstract class AbstractStock
      *
      * @param string $table The table name.
      * @param array $fields The fields to update.
+     * @return bool True on success, false on failure.
      */
     protected function update($table, $fields): bool
     {
@@ -134,6 +179,7 @@ abstract class AbstractStock
      *
      * @param string $table The table name.
      * @param array $fields The fields to insert.
+     * @return bool True on success, false on failure.
      */
     protected function insert($table, $fields): bool
     {
@@ -180,7 +226,7 @@ abstract class AbstractStock
         if ($this->validateField($field, $value)) {
             $this->load();
             if (isset($this->cachedData[$field])) {
-                $this->cachedData[$field] = $value;
+                $this->cachedData[$field] = htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); // Sanitize input
             } else {
                 throw new Exception("Invalid field {$field}");
             }
@@ -246,9 +292,15 @@ abstract class AbstractStock
         return [];
     }
 
-    protected function logAction(array $args) {
+    /**
+     * Log an action performed on the stock item.
+     *
+     * @param array $args The method arguments.
+     */
+    protected function logAction(array $args)
+    {
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-    
+
         if (isset($backtrace[1])) {
             $method = $backtrace[1]['function'];
             $parameters = $this->getMethodParameters($method, $args);
@@ -264,12 +316,20 @@ abstract class AbstractStock
             error_log("logAction called without expected backtrace frame. Backtrace: " . json_encode($backtrace));
         }
     }
-    
-    private function getMethodParameters($method, $args) {
+
+    /**
+     * Get the parameters of a method.
+     *
+     * @param string $method The method name.
+     * @param array $args The method arguments.
+     * @return array The parameters.
+     */
+    private function getMethodParameters($method, $args)
+    {
         $reflector = new ReflectionMethod($this, $method);
         $params = $reflector->getParameters();
         $parameters = [];
-    
+
         foreach ($params as $index => $param) {
             if (array_key_exists($index, $args)) {
                 $parameters[$param->name] = $args[$index];
@@ -277,10 +337,9 @@ abstract class AbstractStock
                 $parameters[$param->name] = null; // or handle the missing argument as needed
             }
         }
-    
+
         return $parameters;
     }
-    
 
     /**
      * Validate a field value.
@@ -291,4 +350,3 @@ abstract class AbstractStock
      */
     abstract protected function validateField($field, $value);
 }
-
