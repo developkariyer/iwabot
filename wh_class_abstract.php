@@ -271,7 +271,11 @@ abstract class AbstractStock
         $parameters = [];
     
         foreach ($params as $index => $param) {
-            $parameters[$param->name] = $args[$index];
+            if (array_key_exists($index, $args)) {
+                $parameters[$param->name] = $args[$index];
+            } else {
+                $parameters[$param->name] = null; // or handle the missing argument as needed
+            }
         }
     
         return $parameters;
