@@ -11,6 +11,8 @@ function logdecode($log) {
     $log = json_encode($log);
 
     $object = $operation['object']::getById($operation['id'], $GLOBALS['pdo']);
+    // log object class type
+    error_log(get_class($object));
     if (empty($object)) {
         error_log("Bilinmeyen nesne:".$log);
     }
