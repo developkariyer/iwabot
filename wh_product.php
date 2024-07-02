@@ -259,7 +259,7 @@ include '_header.php';
             sendToSaleButton.disabled = true;
         });
 
-        actionForm.addEventListener('submit', () {
+        actionForm.addEventListener('submit', (event) {
             sendToSaleButton.disabled = true;
         });
 
