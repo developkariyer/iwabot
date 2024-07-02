@@ -39,7 +39,7 @@ include '_header.php';
                                                         <li><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>) : <?= htmlspecialchars($product->shelfCount($child)) ?> adet</li>
                                                     <?php endforeach; ?>
                                                 </ul>
-                                                <button type="button" class="btn btn-outline-success btn-lg w-100 py-2 mt-2 select-shelf-btn" data-shelf-id="<?= htmlspecialchars($child->id) ?>" data-shelf-name="<?= htmlspecialchars($child->name) ?>" data-bs-toggle="modal" data-bs-target="#shelfSelectModal">Seç</button>
+                                                <button type="button" class="btn btn-outline-success btn-lg w-100 py-2 mt-2 select-shelf-btn" data-parent-id="<?= htmlspecialchars($shelf->id) ?>" data-shelf-id="<?= htmlspecialchars($child->id) ?>" data-shelf-name="<?= htmlspecialchars($child->name) ?>" data-bs-toggle="modal" data-bs-target="#shelfSelectModal">Seç</button>
                                             </div>
                                         </div>
                                     </div>
@@ -74,7 +74,7 @@ include '_header.php';
                         <select class="form-select" id="shelfSelect" name="new_shelf_id">
                             <option value="">Raf seçin...</option>
                             <?php foreach ($shelfList as $shelf): ?>
-                                <option value="<?= htmlspecialchars($shelf->id) ?>"><?= htmlspecialchars($shelf->name) ?></option>
+                                <option id="ShelfSelect<?= htmlspecialchars($shelf->id) ?>" value="<?= htmlspecialchars($shelf->id) ?>"><?= htmlspecialchars($shelf->name) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -100,6 +100,8 @@ document.addEventListener("DOMContentLoaded", function() {
         button.addEventListener('click', function() {
             const shelfId = this.getAttribute('data-shelf-id');
             const shelfName = this.getAttribute('data-shelf-name');
+            const parentShelfId = this.getAttribute('data-parent-id');
+            document.getElementById('ShelfSelect'+parentShelfId).remove();
             document.getElementById('selectedShelfId').value = shelfId;
             modalTitle.textContent = `${shelfName} Numaralı Koli`;
         });
