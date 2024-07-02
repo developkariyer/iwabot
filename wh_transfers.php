@@ -24,6 +24,9 @@ function logdecode($log) {
             return "<strong>{$object->name}</strong> ({$object->fnsku}) ürünü <strong>{$fromShelf->name}</strong> rafından <strong>{$toShelf->name}</strong> rafına taşındı.";
         case 'newShelf':
             return "<strong>{$object['name']}</strong> isimli yeni raf oluşturuldu.";
+        case 'moveBoxToShelf':
+            $toShelf = StockShelf::getById($operation['parameters']['shelf']['id'], $GLOBALS['pdo']);
+            return "<strong>{$object->name}</strong> kutusu <strong>{$toShelf->name}</strong> rafına taşındı.";
         default:
             return "Bilinmeyen işlem";
     }
