@@ -195,8 +195,9 @@ class StockShelf extends AbstractStock
         }
     }
 
-    public function moveBoxToShelf(StockShelf $shelf)
+    public function moveBoxToShelf(StockShelf $shelf, $log = true)
     {
+        if ($log) $this->logAction(func_get_args());
         $stmt = $this->db->prepare("UPDATE wh_shelf SET parent_id = :parent_id WHERE id = :id");
         return $stmt->execute(['parent_id' => $this->id, 'id' => $shelf->id]);
     }
