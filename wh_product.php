@@ -232,6 +232,8 @@ include '_header.php';
         const newShelfType = document.getElementById('newShelfType');
         const parentShelfSelect = document.getElementById('parentShelfSelect');
         const currentShelfName = document.getElementById('currentShelfName');
+        const sendToSaleButton = document.getElementById('sendToSaleButton');
+        const actionForm = document.getElementById('actionForm');
 
         const updateButtons = () => {
             const quantityValid = quantityInput.value > 0;
@@ -252,6 +254,14 @@ include '_header.php';
             moveToShelfButton.disabled = newShelfSelect.value === "";
             decrementBtn.disabled = quantityInput.value <= 0;
         };
+
+        sendToSaleButton.addEventListener('click', function() {
+            sendToSaleButton.disabled = true;
+        });
+
+        actionForm.addEventListener('submit', function(event) {
+            sendToSaleButton.disabled = true;
+        });
 
         decrementBtn.addEventListener('click', () => {
             if (quantityInput.value > 0) {
