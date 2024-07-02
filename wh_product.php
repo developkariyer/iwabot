@@ -259,11 +259,6 @@ include '_header.php';
             sendToSaleButton.disabled = true;
         });
 
-        actionForm.addEventListener('submit', (event) => {
-            sendToSaleButton.disabled = true;
-            actionForm.submit();
-        });
-
         decrementBtn.addEventListener('click', () => {
             if (quantityInput.value > 0) {
                 quantityInput.value = parseInt(quantityInput.value) - 1;
