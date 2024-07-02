@@ -11,6 +11,9 @@ function logdecode($log) {
     $log = json_encode($log);
 
     $object = $operation['object']::getById($operation['id'], $GLOBALS['pdo']);
+    if (empty($object)) {
+        error_log("Bilinmeyen nesne:".$log);
+    }
     switch ($operation['method']) {
         case 'putOnShelf':
             $shelf = StockShelf::getById($operation['parameters']['shelf']['id'], $GLOBALS['pdo']);
