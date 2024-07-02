@@ -155,7 +155,7 @@ include '_header.php';
                     stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
                     video.srcObject = stream;
 
-                    const barcodeDetector = new BarcodeDetector({ formats: ['code_128', 'ean_13', 'qr_code'] });
+                    const barcodeDetector = new BarcodeDetector({ formats: ['code_128', 'ean_13'] });
 
                     video.addEventListener('play', () => {
                         const scanBarcode = async () => {
@@ -186,7 +186,9 @@ include '_header.php';
 
         backButton.addEventListener('click', async () => {
             confirmModal.hide();
-            openCamera();
+            if (!cameraOpenDiv.classList.contains('d-none')) {
+                openCamera();
+            }
         });
 
         manualSubmit.addEventListener('click', () => {

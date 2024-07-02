@@ -202,5 +202,4 @@ class StockShelf extends AbstractStock
         return $stmt->execute(['parent_id' => $this->id, 'id' => $shelf->id]);
     }
 
-
 }
