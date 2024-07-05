@@ -4,8 +4,8 @@ if (php_sapi_name() !== 'cli') {
     die('Hello World!');
 }
 
-use WarehouseContainer;
-use WarehouseProduct;
+require_once('WarehouseProduct.php');
+require_once('WarehouseContainer.php');
 
 require_once ('../_init.php');
 
