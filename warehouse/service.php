@@ -4,6 +4,12 @@ if (php_sapi_name() !== 'cli') {
     die('Hello World!');
 }
 
+function cik() {
+    echo "Exiting...\n";
+    $GLOBALS['pdo']->rollBack();
+    exit;
+}
+
 require_once('WarehouseAbstract.php');
 require_once('WarehouseProduct.php');
 require_once('WarehouseContainer.php');
@@ -22,6 +28,8 @@ $boxcsv = explode("\n", $boxcsv);
 echo "done\n";
 
 $raflar = [];
+
+$GLOBALS['pdo']->beginTransaction();
 
 foreach ($boxcsv as $line) {
     $line = trim($line);
@@ -54,7 +62,7 @@ foreach ($boxcsv as $line) {
         } else echo "shelf found...";
         if (!$raflar[$raf]) {
             echo "failed to create shelf\n";
-            exit;
+            cik();
         }
     }
     if (!isset($raflar[$koli])) {
@@ -65,7 +73,7 @@ foreach ($boxcsv as $line) {
         } else echo "box found...";
         if (!$raflar[$koli]) {
             echo "failed to create box\n";
-            exit;
+            cik();
         }
     }
     if (!isset($urunler[$urun])) {
@@ -82,12 +90,12 @@ foreach ($boxcsv as $line) {
             echo ".";
         } else {
             echo "failed to place product in box\n";
-            exit;
+            cik();
         }
     }
     echo "done\n";
 }
-
+$GLOBALS['pdo']->commit();
 
 
 
