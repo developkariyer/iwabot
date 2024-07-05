@@ -244,7 +244,7 @@ abstract class WarehouseAbstract
     {
         $data['id'] = $this->id;
         $data['class'] = get_called_class();
-        $data['user'] = $_SESSION['user']['id'];
+        $data['user'] = $_SESSION['user_id'] ?? 'U047D6QF19D';
         $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_log (action, data) VALUES (:action, :data)");
         return $stmt->execute(['action' => $action, 'data' => json_encode($data)]);
     }
