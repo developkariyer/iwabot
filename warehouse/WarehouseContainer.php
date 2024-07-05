@@ -31,12 +31,13 @@ class WarehouseContainer extends WarehouseAbstract
     {
         switch ($field) {
             case 'name':
-            case 'warehouse':
                 return is_string($value) && strlen($value) <= 255;
             case 'type':
                 return in_array($value, ['Gemi', 'Raf', 'Koli']);
             case 'parent_id':
                 return is_null($value) || is_numeric($value);
+            case 'warehouse':
+                return is_null($value) || ( is_string($value) && strlen($value) <= 100 );
             default:
                 if (in_array($field, static::getDbFields())) {
                     throw new Exception("Field known but no validation rule set");
