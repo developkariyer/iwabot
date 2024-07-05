@@ -2,9 +2,10 @@
 
 require_once('../_login.php');
 require_once('../_init.php');
-//require_once('wh_class_abstract.php');
-//require_once('WarehouseContainer.php');
-//require_once('warehouse_class_product.php');
+
+require_once('WarehouseAbstract.php');
+require_once('WarehouseProduct.php');
+require_once('WarehouseContainer.php');
 
 function wh_menu() {
     return '    <div class="row g-3 m-3 mt-5">
