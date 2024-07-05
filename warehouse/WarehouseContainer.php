@@ -1,11 +1,11 @@
 <?php
 
-namespace warehouse;
 
 use Exception;
 use PDO;
-use warehouse\WarehouseProduct;
-use warehouse\WarehouseAbstract;
+
+require_once('WarehouseAbstract.php');
+require_once('WarehouseProduct.php');
 
 class WarehouseContainer extends WarehouseAbstract
 {
