@@ -13,14 +13,7 @@ abstract class WarehouseAbstract
     {
         error_log('Constructing '.get_called_class().' with id '.$id);
         $this->id = $id;
-        if (isset($data['created_at'])) {
-            unset($data['created_at']);
-        }
-        foreach ($data as $field=>$value) {
-            if ($this->validateField($field, $value)) {
-                $this->dbValues[$field] = $value;
-            }
-        }
+        $this->setDbValues($data);
         if ($id) {
             static::addInstance($id, $this);
         }
@@ -160,6 +153,9 @@ abstract class WarehouseAbstract
         $this->dbValues=[];
         if (isset($data['created_at'])) {
             unset($data['created_at']);
+        }
+        if (isset($data['updated_at'])) {
+            unset($data['updated_at']);
         }
         foreach ($data as $field=>$value) {
             if ($this->validateField($field, $value)) {
