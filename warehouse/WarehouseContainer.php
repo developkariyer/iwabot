@@ -29,6 +29,7 @@ class WarehouseContainer extends WarehouseAbstract
 
     protected static function validateField($field, $value)
     {
+        error_log('WarehouseContainer: Validating field '.$field.' with value '.$value);
         switch ($field) {
             case 'name':
                 return is_string($value) && strlen($value) <= 255;

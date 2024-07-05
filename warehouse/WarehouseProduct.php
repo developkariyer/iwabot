@@ -24,6 +24,7 @@ class WarehouseProduct extends WarehouseAbstract
 
     protected static function validateField($field, $value)
     {
+        error_log('WarehouseProduct: Validating field '.$field.' with value '.$value);
         switch ($field) {
             case 'name':
                 return is_string($value) && strlen($value) <= 255 && !empty($value);
