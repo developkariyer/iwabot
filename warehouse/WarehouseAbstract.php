@@ -233,7 +233,7 @@ abstract class WarehouseAbstract
             $stmt = $GLOBALS['pdo']->prepare("SHOW COLUMNS FROM " . $class::getTableName());
             $stmt->execute();
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                if ($row['Field'] === 'id') {
+                if (in_array($row['Field'], ['id', 'created_at', 'updated_at'])) {
                     continue;
                 }
                 $class::$dbFields[] = $row['Field'];
