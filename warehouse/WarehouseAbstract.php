@@ -129,8 +129,10 @@ abstract class WarehouseAbstract
         if ($stmt->execute($values)) {
             $this->id = $GLOBALS['pdo']->lastInsertId();
             static::addInstance($this->id, $this);
+            error_log('Inserted '.get_called_class().' with id '.$this->id);
             return true;
         }
+        error_log('Failed to insert '.get_called_class());
         return false;
     }
 
@@ -146,6 +148,7 @@ abstract class WarehouseAbstract
                 return false;
             }
         }
+        error_log('Validation passed');
         return true;
     }
 
