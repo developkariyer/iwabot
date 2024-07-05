@@ -5,7 +5,7 @@ abstract class WarehouseAbstract
 {
     protected static $productJoinTableName = 'warehouse_container_product';
 
-    protected $id = null;
+    public $id = null;
     protected $dbValues = [];
     static protected $instances = [];
 
