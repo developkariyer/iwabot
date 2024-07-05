@@ -251,6 +251,16 @@ abstract class WarehouseAbstract
         return $stmt->execute(['action' => $action, 'data' => json_encode($data)]);
     }
 
+    public static function addNew($data)
+    {
+        $instance = new static(null, $data);
+        if ($instance->save()) {
+            $instance->logAction('addNew', $data);
+            return $instance;
+        }
+        return null;
+    }
+
     abstract protected static function getCustomMethods();
     abstract public static function getTableName();
     abstract protected static function validateField($field, $value);

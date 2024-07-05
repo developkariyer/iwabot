@@ -11,41 +11,17 @@ include '../_header.php';
         <p><span class="username"><?= $_SESSION['user_info']['name'] ?></span></p>
         <p>Lütfen yapmak istediğiniz işlemi seçiniz.</p>
     </div>
-
     <div class="row g-3 m-3">
-        <div class="col-md-6">
-            <a href="wh_product_search.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Ürün Bul</a>
-        </div>
-        <div class="col-md-6">
-            <a href="wh_shelf_search.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Koli/Raf Bul</a>
-        </div>
+        <?= button('product.php', 'Ürün İşlem') ?>
+        <?= button('container.php', 'Koli/Raf İşlem') ?>
     </div>
-<!--
     <div class="row g-3 m-3 mt-5">
-        <div class="col-md-6">
-            <a href="wh_product_action.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Ürün Taşı</a>
-        </div>
-        <div class="col-md-6">
-            <a href="wh_shelf_action.php" class="disabled btn btn-primary btn-lg rounded-pill w-100 py-3">Koli/Raf Taşı</a>
-        </div>
+        <?= button('inventory.php', 'Depo Envanteri') ?>
+        <?= button('transfers.php', 'Hareket Raporu') ?>
     </div>
--->
     <div class="row g-3 m-3 mt-5">
-        <div class="col-md-6">
-            <a href="wh_inventory.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Depo Envanteri</a>
-        </div>
-        <div class="col-md-6">
-            <a href="wh_transfers.php" class="btn btn-primary btn-lg rounded-pill w-100 py-3">Hareket Raporu</a>
-        </div>
-    </div>
-
-    <div class="row g-3 m-3 mt-5">
-        <div class="col-md-6">
-            <a href="wh_new_product.php" class="disabled btn btn-primary btn-lg rounded-pill w-100 py-3">Yeni Ürün</a>
-        </div>
-        <div class="col-md-6">
-            <a href="wh_new_sale.php" class="disabled btn btn-primary btn-lg rounded-pill w-100 py-3">Yeni Sipariş</a>
-        </div>
+        <?= button('wh_new_transfer.php', 'Yeni Sipariş') ?>
+        <?= button('wh_new_transfer.php', 'Sipariş Sil') ?>
     </div>
 
     <?= wh_menu() ?>

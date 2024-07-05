@@ -75,16 +75,6 @@ class WarehouseProduct extends WarehouseAbstract
         return $this->containers;
     }
 
-    public static function addNew($data)
-    {
-        $product = new WarehouseProduct(null, $data);
-        if ($product->save()) {
-            $product->logAction('addNew', $data);
-            return $product;
-        }
-        return null;
-    }
-
     public function placeInContainer($container, $count = 1)
     {
         if ($container instanceof WarehouseContainer && !empty($this->id)) {

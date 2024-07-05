@@ -201,13 +201,4 @@ class WarehouseContainer extends WarehouseAbstract
         return $containers;
     }
 
-    public static function addNew($data)
-    {
-        $container = new self(null, $data);
-        if ($container->save()) {
-            $container->logAction('addNew', $data);
-            return $container;
-        }
-        return null;
-    }
 }
