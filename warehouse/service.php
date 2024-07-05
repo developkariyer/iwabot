@@ -15,12 +15,12 @@ require_once('WarehouseProduct.php');
 require_once('WarehouseContainer.php');
 
 require_once ('../_init.php');
-
+/*
 echo "Flushing tables...\n";
 $GLOBALS['pdo']->query('TRUNCATE warehouse_container_product');
 $GLOBALS['pdo']->query('TRUNCATE warehouse_container');
 $GLOBALS['pdo']->query('TRUNCATE warehouse_log');
-
+*/
 
 echo "Reading koliler...";
 $boxcsv = file_get_contents('koliler.csv');
