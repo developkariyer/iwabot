@@ -13,6 +13,9 @@ abstract class WarehouseAbstract
     {
         error_log('Constructing '.get_called_class().' with id '.$id);
         $this->id = $id;
+        if (isset($data['created_at'])) {
+            unset($data['created_at']);
+        }
         foreach ($data as $field=>$value) {
             if ($this->validateField($field, $value)) {
                 $this->dbValues[$field] = $value;
@@ -155,6 +158,9 @@ abstract class WarehouseAbstract
     protected function setDbValues($data)
     {
         $this->dbValues=[];
+        if (isset($data['created_at'])) {
+            unset($data['created_at']);
+        }
         foreach ($data as $field=>$value) {
             if ($this->validateField($field, $value)) {
                 $this->dbValues[$field] = $value;
