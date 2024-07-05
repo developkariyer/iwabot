@@ -1,8 +1,5 @@
 <?php
 
-use Exception;
-use PDO;
-
 require_once('WarehouseAbstract.php');
 require_once('WarehouseContainer.php');
 

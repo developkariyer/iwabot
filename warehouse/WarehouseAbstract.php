@@ -1,8 +1,5 @@
 <?php
 
-namespace warehouse;
-use Exception;
-use PDO;
 
 abstract class WarehouseAbstract 
 {
