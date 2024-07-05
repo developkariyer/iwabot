@@ -48,7 +48,7 @@ foreach ($boxcsv as $line) {
         } else echo "shelf found...";
         if (!$raflar[$raf]) {
             echo "failed to create shelf\n";
-            continue;
+            exit;
         }
     }
     if (!isset($raflar[$koli])) {
@@ -59,7 +59,7 @@ foreach ($boxcsv as $line) {
         } else echo "box found...";
         if (!$raflar[$koli]) {
             echo "failed to create box\n";
-            continue;
+            exit;
         }
     }
     if (!isset($urunler[$urun])) {
@@ -72,8 +72,12 @@ foreach ($boxcsv as $line) {
     }
 
     for ($t=0;$t<$adet;$t++) {
-        $urunler[$urun]->placeInContainer($raflar[$koli]);
-        echo ".";
+        if ($urunler[$urun]->placeInContainer($raflar[$koli])) {
+            echo ".";
+        } else {
+            echo "failed to place product in box\n";
+            exit;
+        }
     }
     echo "done\n";
 }
