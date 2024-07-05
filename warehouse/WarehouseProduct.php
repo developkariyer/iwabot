@@ -63,7 +63,7 @@ class WarehouseProduct extends WarehouseAbstract
             return [];
         }
         if (empty($this->containers)) {
-            $stmt = $GLOBALS['db']->prepare("SELECT container_id FROM " . WarehouseAbstract::$productJoinTableName . " WHERE product_id = :product_id");
+            $stmt = $GLOBALS['pdo']->prepare("SELECT container_id FROM " . WarehouseAbstract::$productJoinTableName . " WHERE product_id = :product_id");
             $stmt->execute(['product_id' => $this->id]);
             $containers = [];
             while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -87,7 +87,7 @@ class WarehouseProduct extends WarehouseAbstract
     public function placeInContainer($container, $count = 1)
     {
         if ($container instanceof WarehouseContainer && !empty($this->id)) {
-            $stmt = $GLOBALS['db']->prepare("INSERT INTO " . WarehouseAbstract::$productJoinTableName . " (product_id, container_id) VALUES (:product_id, :container_id)");
+            $stmt = $GLOBALS['pdo']->prepare("INSERT INTO " . WarehouseAbstract::$productJoinTableName . " (product_id, container_id) VALUES (:product_id, :container_id)");
             $retval = 0;
             for ($i = 0; $i < $count; $i++) {
                 if ($stmt->execute(['product_id' => $this->id, 'container_id' => $container->id])) {
@@ -106,7 +106,7 @@ class WarehouseProduct extends WarehouseAbstract
     {
         if ($container instanceof WarehouseContainer && !empty($this->id) && $count>0) {
             $sql = "DELETE FROM " . WarehouseAbstract::$productJoinTableName . " WHERE container_id = :container_id AND product_id = :product_id LIMIT :count";
-            $stmt = $GLOBALS['db']->prepare($sql);
+            $stmt = $GLOBALS['pdo']->prepare($sql);
             $stmt->bindParam(':container_id', $container->id, PDO::PARAM_INT);
             $stmt->bindParam(':product_id', $this->id, PDO::PARAM_INT);
             $stmt->bindParam(':count', $count, PDO::PARAM_INT);
@@ -132,7 +132,7 @@ class WarehouseProduct extends WarehouseAbstract
 
     private function getInContainerCountFromDb($container)
     {
-        $stmt = $GLOBALS['db']->prepare("SELECT count(*) as count FROM " . WarehouseAbstract::$productJoinTableName . " WHERE product_id = :product_id AND container_id = :container_id");
+        $stmt = $GLOBALS['pdo']->prepare("SELECT count(*) as count FROM " . WarehouseAbstract::$productJoinTableName . " WHERE product_id = :product_id AND container_id = :container_id");
         $stmt->execute(['product_id' => $this->id, 'container_id' => $container->id]);
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         return $data['count'];
@@ -151,7 +151,7 @@ class WarehouseProduct extends WarehouseAbstract
     public function getTotalCount()
     {
         if (empty($this->totalCount)) {
-            $stmt = $GLOBALS['db']->prepare("SELECT count(*) as count FROM " . WarehouseAbstract::$productJoinTableName . " WHERE product_id = :product_id");
+            $stmt = $GLOBALS['pdo']->prepare("SELECT count(*) as count FROM " . WarehouseAbstract::$productJoinTableName . " WHERE product_id = :product_id");
             $stmt->execute(['product_id' => $this->id]);
             $data = $stmt->fetch(PDO::FETCH_ASSOC);
             $this->totalCount = $data['count'];

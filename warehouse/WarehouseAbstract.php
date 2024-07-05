@@ -65,7 +65,7 @@ abstract class WarehouseAbstract
         if ($check && !in_array($field, static::getDBFields())) {
             throw new Exception("Field not found in database fields");
         }
-        $stmt = $GLOBALS['db']->prepare("SELECT * FROM " . static::getTableName() . " WHERE " . $field . " = :" . $field);
+        $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName() . " WHERE " . $field . " = :" . $field);
         $stmt->execute([$field => $value]);
         if ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $instance = static::getInstance($data['id']);
@@ -99,7 +99,7 @@ abstract class WarehouseAbstract
             $set[] = $field . ' = :' . $field;
         }
         $values['id'] = $this->id;
-        $stmt = $GLOBALS['db']->prepare("UPDATE " . static::getTableName() . " SET " . implode(', ', $set) . " WHERE id = :id");
+        $stmt = $GLOBALS['pdo']->prepare("UPDATE " . static::getTableName() . " SET " . implode(', ', $set) . " WHERE id = :id");
         return $stmt->execute($values);    
     }
 
@@ -115,9 +115,9 @@ abstract class WarehouseAbstract
             $set[] = $field;
             $values[$field] = $this->$field;
         }
-        $stmt = $GLOBALS['db']->prepare("INSERT INTO " . static::getTableName() . " (" . implode(', ', $set) . ") VALUES (:" . implode(', :', $set) . ")");
+        $stmt = $GLOBALS['pdo']->prepare("INSERT INTO " . static::getTableName() . " (" . implode(', ', $set) . ") VALUES (:" . implode(', :', $set) . ")");
         if ($stmt->execute($values)) {
-            $this->id = $GLOBALS['db']->lastInsertId();
+            $this->id = $GLOBALS['pdo']->lastInsertId();
             static::addInstance($this->id, $this);
             return true;
         }
@@ -159,7 +159,7 @@ abstract class WarehouseAbstract
         if (empty($this->id)) {
             return null;
         }
-        $stmt = $GLOBALS['db']->prepare("SELECT * FROM " . static::getTableName() . " WHERE id = :id");
+        $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName() . " WHERE id = :id");
         $stmt->execute(['id' => $this->id]);
         if ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $this->setDbValues($data);
@@ -201,7 +201,7 @@ abstract class WarehouseAbstract
     public function delete()
     {
         if ($this->canDelete()) {
-            $stmt = $GLOBALS['db']->prepare("DELETE FROM " . static::getTableName() . " WHERE id = ? LIMIT 1");
+            $stmt = $GLOBALS['pdo']->prepare("DELETE FROM " . static::getTableName() . " WHERE id = ? LIMIT 1");
             return $stmt->execute([$this->id]);
         }
         throw new Exception("Cannot delete object");
@@ -212,7 +212,7 @@ abstract class WarehouseAbstract
         $class = get_called_class();
         if (empty($class::$dbFields)) {
             $class::$dbFields = [];
-            $stmt = $GLOBALS['db']->prepare("SHOW COLUMNS FROM " . $class::getTableName());
+            $stmt = $GLOBALS['pdo']->prepare("SHOW COLUMNS FROM " . $class::getTableName());
             $stmt->execute();
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 if ($row['Field'] === 'id') {
@@ -229,7 +229,7 @@ abstract class WarehouseAbstract
         $data['id'] = $this->id;
         $data['class'] = get_called_class();
         $data['user'] = $_SESSION['user']['id'];
-        $stmt = $GLOBALS['db']->prepare("INSERT INTO warehouse_log (action, data) VALUES (:action, :data)");
+        $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_log (action, data) VALUES (:action, :data)");
         return $stmt->execute(['action' => $action, 'data' => json_encode($data)]);
     }
 

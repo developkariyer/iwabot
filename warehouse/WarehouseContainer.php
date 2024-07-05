@@ -65,7 +65,7 @@ class WarehouseContainer extends WarehouseAbstract
             return [];
         }
         if (empty($this->children)) {
-            $stmt = $GLOBALS['db']->prepare("SELECT * FROM " . static::getTableName() . " WHERE parent_id = ?");
+            $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName() . " WHERE parent_id = ?");
             $stmt->execute([$this->id]);
             while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $instance = static::getInstance($data['id']);
@@ -145,7 +145,7 @@ class WarehouseContainer extends WarehouseAbstract
     public static function getWarehouses()
     {
         if (empty(static::$warehouses)) {
-            $stmt = $GLOBALS['db']->prepare("SELECT DISTINCT warehouse FROM " . static::getTableName() . " ORDER BY warehouse ASC");
+            $stmt = $GLOBALS['pdo']->prepare("SELECT DISTINCT warehouse FROM " . static::getTableName() . " ORDER BY warehouse ASC");
             $stmt->execute();
             static::$warehouses = [];
             while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -186,7 +186,7 @@ class WarehouseContainer extends WarehouseAbstract
                 $params['warehouse'] = $warehouse;
             }
         }
-        $stmt = $GLOBALS['db']->prepare($sql);
+        $stmt = $GLOBALS['pdo']->prepare($sql);
         $stmt->execute($params);
         $containers = [];
         while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
