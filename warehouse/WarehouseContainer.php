@@ -18,7 +18,7 @@ class WarehouseContainer extends WarehouseAbstract
         return 'warehouse_container';
     }
 
-    protected function getCustomMethods()
+    protected static function getCustomMethods()
     {
         return [
             'children' => 'getChildren',
