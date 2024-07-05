@@ -4,6 +4,7 @@ if (php_sapi_name() !== 'cli') {
     die('Hello World!');
 }
 
+require_once('WarehouseAbstract.php');
 require_once('WarehouseProduct.php');
 require_once('WarehouseContainer.php');
 
