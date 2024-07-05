@@ -40,7 +40,7 @@ foreach ($boxcsv as $line) {
     $urun = $data[1];
     $adet = $data[2];
 
-    echo "Raf: $raf, Koli: $koli, Ürün: $urun, Adet: $adet ...";
+    echo "********Raf: $raf, Koli: $koli, Ürün: $urun, Adet: $adet ...\n";
 
     if (!($adet>0)) {
         echo "invalid quantity!\n";

@@ -25,7 +25,7 @@ abstract class WarehouseAbstract
 
     protected static function addInstance($id, $instance)
     {
-        error_log('Adding instance of '.get_called_class().' with id '.$id);
+        error_log('Adding instance cache of '.get_called_class().' with id '.$id);
         $class = get_called_class();
         if (!isset(static::$instances[$class])) {
             static::$instances[$class] = [];
@@ -35,7 +35,7 @@ abstract class WarehouseAbstract
 
     protected static function getInstance($id, $class=null)
     {
-        error_log('Getting instance of '.get_called_class().' with id '.$id);
+        error_log('Getting instance cache of '.get_called_class().' with id '.$id);
         if (is_null($class)) {
             $class = get_called_class();
         }
