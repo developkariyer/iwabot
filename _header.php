@@ -49,23 +49,16 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .select2-container{
-            .select2-selection{
-                height: 37px!important;
-            }
-            .select2-selection__rendered{
-                margin-top: 4px!important;
-            }
-            .select2-selection__arrow{
-                margin-top: 4px;
-            }
-            .select2-selection--single{
-                border: 1px solid #ced4da!important;
-            }
-            *:focus{
-                outline: none;
-            } 
-        }        
+        .select2-container .select2-selection--single {
+            height: auto!important;
+            padding: 5px 0;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: normal!important;
+        }
+        .select2-container .select2-selection--single .select2-selection__rendered {
+            white-space: normal!important;
+        }      
 
     </style>
 </head>
