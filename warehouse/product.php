@@ -12,7 +12,7 @@ include '../_header.php';
         <p>İşlem yapmak istediğiniz ürünü seçiniz. Depo Ana Menü için <a href="./">buraya basınız.</a></p>
     </div>
 
-    <h4 style="cursor: pointer; color: #007bff; padding: 10px; border: 1px solid #007bff; border-radius: 5px; display: inline-block;" data-bs-toggle="collapse" data-bs-target="#productAccordion" aria-expanded="true" aria-controls="productAccordion">
+    <h4 data-bs-toggle="collapse" data-bs-target="#productAccordion" aria-expanded="true" aria-controls="productAccordion">
         Çıkış İçin Bekleyen Ürünler <small>(<?= count(WarehouseProduct::getUnfulfilledProducts()) ?> adet) <i>Görmek için basınız</i></small>
     </h4>
     <div class="accordion collapse" id="productAccordion">
