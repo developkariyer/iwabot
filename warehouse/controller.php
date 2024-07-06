@@ -230,7 +230,7 @@ function handleFulfil() {
     $container = WarehouseContainer::getById(getPostValue('container_id'));
     $soldItem = getPostValue('soldItem');
     if (!$product || !$container || empty($soldItem) || !in_array($soldItem, WarehouseProduct::getUnfulfilledProducts())) {
-        addMessage('fulfil: Geçersiz parametre!');
+        addMessage("fulfil: Geçersiz parametre:".json_encode([$product, $container, $soldItem]));
         return;
     }
     if ($product->fulfil($soldItem, $container)) {
