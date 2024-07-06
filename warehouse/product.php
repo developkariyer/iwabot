@@ -119,7 +119,7 @@ $(document).ready(function() {
 $(document).ready(function() {
     $('#customActionForm').on('submit', function(event) {
         var action = $(document.activeElement).val(); // Get the value of the clicked button
-        var containerId = $('[name="container_id"]').val();
+        var containerId = $('#dynamic_container_list').val();
         var newContainerId = $('[name="new_container_id"]').val();
         var valid = true;
         
