@@ -69,14 +69,14 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     <?php foreach ($unfulfilledProducts as $index => $product): ?>
-        const selectElement = document.getElementById('Select<?= $index ?>Product<?= $product['product']->id ?>');
-        const submitButton = document.getElementById('Submit<?= $index ?>Product<?= $product['product']->id ?>');
+        const select<?= $index ?>Element = document.getElementById('Select<?= $index ?>Product<?= $product['product']->id ?>');
+        const submit<?= $index ?>Button = document.getElementById('Submit<?= $index ?>Product<?= $product['product']->id ?>');
 
         selectElement.addEventListener('change', function () {
-            if (selectElement.value) {
-                submitButton.disabled = false;
+            if (select<?= $index ?>Element.value) {
+                submit<?= $index ?>Button.disabled = false;
             } else {
-                submitButton.disabled = true;
+                submit<?= $index ?>Button.disabled = true;
             }
         });
     <?php endforeach; ?>
