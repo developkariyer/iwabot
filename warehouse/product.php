@@ -38,7 +38,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                                         <input type="hidden" name="action" value="fulfil">
                                         <input type="hidden" name="sold_id" value="<?= $product['id'] ?>">
                                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                                        <select id="Select<?= $index ?>Product<?= $product['product']->id ?>" name="container_id" class="form-select btn-outline-success rounded-pill w-100 py-3">
+                                        <select id="Select<?= $index ?>Product<?= $product['product']->id ?>" name="container_id" class="form-select btn-outline-success rounded-pill w-100 py-3" required>
                                             <option value="">Raf/Koli Seçin</option>
                                             <?= containerOptGrouped($product['product']) ?>
                                         </select>
@@ -78,23 +78,6 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
 
     <?= wh_menu() ?>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    <?php foreach ($unfulfilledProducts as $index => $product): ?>
-        const select<?= $index ?>Element = document.getElementById('Select<?= $index ?>Product<?= $product['product']->id ?>');
-        const submit<?= $index ?>Button = document.getElementById('Submit<?= $index ?>Product<?= $product['product']->id ?>');
-
-        select<?= $index ?>Element.addEventListener('change', function () {
-            if (select<?= $index ?>Element.value) {
-                submit<?= $index ?>Button.disabled = false;
-            } else {
-                submit<?= $index ?>Button.disabled = true;
-            }
-        });
-    <?php endforeach; ?>
-});
-</script>
 
 <?php
 
