@@ -49,6 +49,12 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        .select2-container .select2-choice {
+            display: block!important;
+            height: 36px!important;
+            white-space: nowrap!important;
+            line-height: 26px!important;
+        }
     </style>
 </head>
 <body>
