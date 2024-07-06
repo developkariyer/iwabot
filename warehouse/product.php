@@ -65,7 +65,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                 <div class="accordion-body p-0 w-100">
                     <?= productSelect() ?>
                     <div id="selectedProduct">
-                        <div class="p3">
+                        <div class="p-3">
                             <p>Ürün Bilgileri</p>
                         </div>
                         <!-- First Accordion -->
