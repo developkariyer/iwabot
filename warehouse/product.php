@@ -38,11 +38,11 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                                         <input type="hidden" name="action" value="fulfil">
                                         <input type="hidden" name="sold_id" value="<?= $product['id'] ?>">
                                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                                        <select id="SelectProduct<?= $product['product']->id ?>" name="container_id" class="form-select btn-outline-success rounded-pill w-100 py-3">
+                                        <select id="Select<?= $index ?>Product<?= $product['product']->id ?>" name="container_id" class="form-select btn-outline-success rounded-pill w-100 py-3">
                                             <option value="">Raf/Koli Seçin</option>
                                             <?= containerOptGrouped($product['product']) ?>
                                         </select>
-                                        <button id="SubmitProduct<?= $product['product']->id ?>" type="submit" class="btn btn-success btn-lg rounded-pill w-100 py-3 mt-2" disabled>Ürün Çıkışı Yap</button>
+                                        <button id="Submit<?= $index ?>Product<?= $product['product']->id ?>" type="submit" class="btn btn-success btn-lg rounded-pill w-100 py-3 mt-2" disabled>Ürün Çıkışı Yap</button>
                                     </form>
                                 </div>
                             </div>
@@ -69,8 +69,8 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     <?php foreach ($unfulfilledProducts as $index => $product): ?>
-        const selectElement = document.getElementById('SelectProduct<?= $product['product']->id ?>');
-        const submitButton = document.getElementById('SubmitProduct<?= $product['product']->id ?>');
+        const selectElement = document.getElementById('Select<?= $index ?>Product<?= $product['product']->id ?>');
+        const submitButton = document.getElementById('Submit<?= $index ?>Product<?= $product['product']->id ?>');
 
         selectElement.addEventListener('change', function () {
             if (selectElement.value) {
