@@ -101,7 +101,7 @@ function containerOptGrouped($product = null) {
                 $icon = '📤'; //\u{1F4E4}
                 $html .= "$icon {$container->name} rafında açık";
             } else {
-                $html .= $container->name.' gemisinde bilinmiyor! (HATA!)'.$container->type;
+                $html .= $container->name.' gemisinde bilinmiyor! (HATA!)'.$container->type.' '.$container->parent->id;
             }
             if ($product instanceof WarehouseProduct) {
                 $html .= '('.$product->getInContainerCount($container).')';
