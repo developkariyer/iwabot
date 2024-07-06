@@ -40,7 +40,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                                         <select id="SelectProduct<?= $product['product']->id ?>" name="container_id" class="form-select btn-outline-success rounded-pill w-100 py-3">
                                             <option value="">Raf/Koli Seçin</option>
-                                            <?= containerOptGrouped($product['product']->getContainers()) ?>
+                                            <?= containerOptGrouped($product['product']) ?>
                                         </select>
                                         <button id="SubmitProduct<?= $product['product']->id ?>" type="submit" class="btn btn-success btn-lg rounded-pill w-100 py-3 mt-2" disabled>Ürün Çıkışı Yap</button>
                                     </form>
