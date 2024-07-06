@@ -80,9 +80,9 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                                 <?= containerOptGrouped() ?>
                             </select>
                             <input type="number" name="count" class="form-control btn-outline-success rounded-pill w-100 py-3" placeholder="Ürün Adedi">
-                            <button name="action" value="remove_from_container" type="submit" class="btn btn-primary rounded-pill w-100 py-3 mt-2">Depo Çıkışı Yap</button>
-                            <button name="action" value="move_to_container" type="submit" class="btn btn-primary rounded-pill w-100 py-3 mt-2">Depo İçinde Taşı</button>
-                            <button name="action" value="place_in_container" type="submit" class="btn btn-primary rounded-pill w-100 py-3 mt-2">Depo Girişi Yap</button>
+                            <button name="action" value="remove_from_container" type="submit" class="btn btn-primary rounded-pill w-100 py-2 mt-1">Depo Çıkışı Yap</button>
+                            <button name="action" value="move_to_container" type="submit" class="btn btn-primary rounded-pill w-100 py-2 mt-1">Depo İçinde Taşı</button>
+                            <button name="action" value="place_in_container" type="submit" class="btn btn-primary rounded-pill w-100 py-2 mt-1">Depo Girişi Yap</button>
                         </form>
                     </div>
                 </div>
