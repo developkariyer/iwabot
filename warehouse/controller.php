@@ -120,7 +120,7 @@ function handleMoveToContainer() {
     $new_container = WarehouseContainer::getById(getPostValue('new_container_id'));
     $count = getPostValue('count');
     if (!$product || !$old_container || !$new_container || !is_numeric($count) || $count < 1) {
-        addMessage('move_to_container: Geçersiz parametre: '.getPostValue('product_id').'/'.getPostValue('container_id').'/'.getPostValue('new_container_id')).'/'.getPostValue('count');
+        addMessage('move_to_container: Geçersiz parametre: '.getPostValue('product_id').'/'.getPostValue('container_id').'/'.getPostValue('new_container_id').'/'.getPostValue('count'));
         return;
     }
     if ($product->moveToContainer($old_container, $new_container)) {
