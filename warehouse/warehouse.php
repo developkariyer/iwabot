@@ -39,3 +39,18 @@ function metricToImp($inp, $conv=0.393700787) {
     return number_format($inp * $conv, 2);
 }
 
+function productInfo($product) {
+    if (!$product instanceof WarehouseProduct) {
+        return "Ürün bilgisi alınamadı: Geçersiz ürün";
+    }
+    return "
+    <b>Ürün Adı:</b> {$product->name}<br>
+    <b>FNSKU:</b> {$product->fnsku}<br>
+    <b>Kategori:</b> {$product->category}<br>
+    <b>IWASKU:</b> {$product->iwasku}<br>
+    <b>Özellikler (metrik):</b><br>{$product->dimension1}x{$product->dimension2}x{$product->dimension3}cm, {$product->weight}gr<br>
+    <b>Özellikler (imperyal):</b><br>".metricToImp($product->dimension1)."x".metricToImp($product->dimension2)."x".metricToImp($product->dimension3)."in, ".metricToImp($product->weight, 0.00220462)."lbs<br>
+    <b>Toplam Depo Stoğu:</b> {$product->getTotalCount()} adet";
+    //    <b>Seri Numarası:</b> {$product->serial_number}<br>
+
+}

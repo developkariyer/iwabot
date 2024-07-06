@@ -31,7 +31,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                             </h2>
                             <div id="collapse<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $index ?>" data-bs-parent="#productAccordion">
                                 <div class="accordion-body">
-                                    <p><?= nl2br(htmlspecialchars($product['product']->getProductInfo())) ?></p>
+                                    <p><?= productInfo($product['product']) ?></p>
                                     <p><?= nl2br(htmlspecialchars($product['description'])) ?></p>
                                     <a href="wh_product.php?product=<?= urlencode($product['product']->id) ?>" class="btn btn-outline-success btn-lg rounded-pill w-100 py-3 mt-2">Seç</a>
                                 </div>

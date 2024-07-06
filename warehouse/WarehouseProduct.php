@@ -104,19 +104,6 @@ class WarehouseProduct extends WarehouseAbstract
         return $this->totalCount;
     }
 
-    public function getProductInfo()
-    {
-        $retval = "Ürün Adı: {$this->name}\n";
-        $retval .= "FNSKU: {$this->fnsku}\n";
-        $retval .= "Kategori: {$this->category}\n";
-        $retval .= "IWASKU: {$this->iwasku}\n";
-        //$retval .= "Seri Numarası: {$this->serial_number}\n";
-        $retval .= "Özellikler (metrik): {$this->dimension1}x{$this->dimension2}x{$this->dimension3}cm, {$this->weight}gr \n";
-        $retval .= "Özellikler (imperyal): ".metricToImp($this->dimension1)."x".metricToImp($this->dimension2)."x".metricToImp($this->dimension3)."in, ".metricToImp($this->weight, 0.00220462)."lbs \n";
-        $retval .= "Toplam Depo Stoğu: {$this->getTotalCount()} adet";
-        return $retval;
-    }
-
     public function getAsArray()
     {
         $retval = parent::getAsArray();
