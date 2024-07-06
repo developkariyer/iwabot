@@ -229,8 +229,19 @@ function handleFulfil() {
     $product = WarehouseProduct::getById(getPostValue('product_id'));
     $container = WarehouseContainer::getById(getPostValue('container_id'));
     $soldItem = getPostValue('sold_id');
-    if (!$product || !$container || empty($soldItem) || isset(WarehouseProduct::getUnfulfilledProducts()[$soldItem])) {
-        addMessage("fulfil: Geçersiz parametre:".json_encode([$product, $container, $soldItem, WarehouseProduct::getUnfulfilledProducts()]));
+    if (!$product || !$container || empty($soldItem) || !isset(WarehouseProduct::getUnfulfilledProducts()[$soldItem])) {
+        if (!$product) {
+            addMessage("fulfil: Ürün bilgisi bulunamadı");
+        }
+        if (!$container) {
+            addMessage("fulfil: Konteyner bilgisi bulunamadı");
+        }
+        if (empty($soldItem)) {
+            addMessage("fulfil: Satış bilgisi bulunamadı");
+        }
+        if (!isset(WarehouseProduct::getUnfulfilledProducts()[$soldItem])) {
+            addMessage("fulfil: Bu ürün işlem bekleyenlerde yok");
+        }
         return;
     }
     if ($product->fulfil($soldItem, $container)) {
