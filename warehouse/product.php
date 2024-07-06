@@ -31,15 +31,17 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                             </h2>
                             <div id="collapse<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $index ?>" data-bs-parent="#productAccordion">
                                 <div class="accordion-body">
-                                    <p>
-                                        <?= productInfo($product['product']) ?>
-                                        <b>Çıkış Yapılacak Raf/Koli Seçin:</b><br>
-                                        <?php foreach ($product['product']->getContainers() as $container): ?>
-                                            <li><b><?= $container->type ?></b> <?= $container->name ?>: <?= $product['product']->getInContainerCount($container) ?> adet</li>
-                                        <?php endforeach; ?>
-                                    </p>
+                                    <p><?= productInfo($product['product']) ?></p>
                                     <p><b>Açıklama</b><br><?= nl2br(htmlspecialchars($product['description'])) ?></p>
-                                    <a href="wh_product.php?product=<?= urlencode($product['product']->id) ?>" class="btn btn-outline-success btn-lg rounded-pill w-100 py-3 mt-2">Seç</a>
+                                    <form action="controller.php" method="post">
+                                        <input type="hidden" name="action" value="fulfil">
+                                        <input type="hidden" name="sold_id" value="<?= $product['id'] ?>">
+                                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                                        <input type="select" name="container_id">
+                                            <option value="">Raf/Koli Seçin</option>
+                                            <?= containerOptGrouped($product['product']->getContainers()) ?>
+                                        <button type="submit" class="btn btn-success btn-lg rounded-pill w-100 py-3 mt-2">Ürün Çıkışı Yap</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

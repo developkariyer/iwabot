@@ -52,5 +52,37 @@ function productInfo($product) {
     <b>Özellikler (imperyal):</b><br>".metricToImp($product->dimension1)."x".metricToImp($product->dimension2)."x".metricToImp($product->dimension3)."in, ".metricToImp($product->weight, 0.00220462)."lbs<br>
     <b>Toplam Depo Stoğu:</b> {$product->getTotalCount()} adet<br>";
     //    <b>Seri Numarası:</b> {$product->serial_number}<br>
+}
 
+function containerOptGrouped($containers) {
+    if (!is_array($containers)) {
+        throw new Exception('containerOptGrouped fonksiyonuna dizi verisi gönderilmelidir.');
+    }
+    $raflar = [];
+    foreach($containers as $container) {
+        if ($container->type == 'Raf' || $container->type == 'Gemi') {
+            if (!isset($raflar[$container->name])) {
+                $raflar[$container->name] = [];
+            }
+        } else {
+            if ($container->getParent()) {
+                if (!isset($raflar[$container->getParent()->name])) {
+                    $raflar[$container->getParent()->name] = [];
+                }
+                $raflar[$container->getParent()->name][] = $container;
+            } else {
+                throw new Exception('Rafı veya gemisi olmayan bir Koli var: '.$container->name);
+            }            
+        }
+    }
+    ksort($raflar);
+    $html = '';
+    foreach($raflar as $raflar_name => $raflar_containers) {
+        $html .= '<optgroup label="'.$raflar_name.'">';
+        foreach($raflar_containers as $container) {
+            $html .= '<option value="'.$container->id.'">'.$container->name.'</option>';
+        }
+        $html .= '</optgroup>';
+    }
+    return $html;
 }
