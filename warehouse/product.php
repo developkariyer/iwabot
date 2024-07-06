@@ -57,7 +57,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
         <!-- Second Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain2">
-                <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion2" aria-expanded="true" aria-controls="productAccordion2">
+                <button class="accordion-button bg-outline-primary text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion2" aria-expanded="true" aria-controls="productAccordion2">
                     <span><strong>Kendiniz Ürün Seçin</strong></span>
                 </button>
             </h2>
