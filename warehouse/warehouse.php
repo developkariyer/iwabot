@@ -120,8 +120,7 @@ function productSelect() {
         }
         $options[$product->category][] = '<option value="'.$product->id.'">'.$product->name.' ('.$product->fnsku.')</option>';
     }
-    $html = '<label for="product_id" class="form-label w-100">Ürün Seçin</label>';
-    $html .= '<select name="product_id" class="select2-select form-select w-100" required style="width: 100%">';
+    $html = '<select name="product_id" class="select2-select form-select w-100" required style="width: 100%">';
     $html .= '<option value="">Ürün Seçin</option>';
     foreach($options as $category => $products) {
         $html .= '<optgroup label="'.$category.'">';
