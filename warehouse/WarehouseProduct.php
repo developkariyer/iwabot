@@ -124,8 +124,8 @@ class WarehouseProduct extends WarehouseAbstract
                 static::$unfulfilled[$data['id']] = $data;
                 static::$unfulfilled[$data['id']]['product'] = $product;
             }
-        return static::$unfulfilled;
         }
+        return static::$unfulfilled;
     }
 
     public function fulfil($sold_id, $container)
