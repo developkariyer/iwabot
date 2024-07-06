@@ -58,7 +58,7 @@ class WarehouseProduct extends WarehouseAbstract
         return true;
     }
 
-    private function getContainers()
+    public function getContainers()
     {
         if (empty($this->id)) {
             return [];
