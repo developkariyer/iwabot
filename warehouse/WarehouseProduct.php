@@ -128,7 +128,7 @@ class WarehouseProduct extends WarehouseAbstract
     {
         if (empty(static::$unfulfilled)) {
             static::$unfulfilled =[];
-            $stmt = $GLOBALS['pdo']->query("SELECT * FROM warehouse_sold WHERE s.fulfilled = FALSE ORDER BY product_id ASC");
+            $stmt = $GLOBALS['pdo']->query("SELECT * FROM warehouse_sold WHERE fulfilled = FALSE ORDER BY product_id ASC");
             while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $product = static::getById($data['product_id']);
                 if (!$product) {
