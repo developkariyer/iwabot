@@ -49,13 +49,24 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .select2-selection__rendered {
-line-height: 32px !important;
-}
+        .select2-container{
+            .select2-selection{
+                height: 37px!important;
+            }
+            .select2-selection__rendered{
+                margin-top: 4px!important;
+            }
+            .select2-selection__arrow{
+                margin-top: 4px;
+            }
+            .select2-selection--single{
+                border: 1px solid #ced4da!important;
+            }
+            *:focus{
+                outline: none;
+            } 
+        }        
 
-.select2-selection {
-height: 34px !important;
-}
     </style>
 </head>
 <body>
