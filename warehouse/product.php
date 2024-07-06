@@ -66,6 +66,10 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
             <div id="productAccordion2" class="accordion-collapse collapse" aria-labelledby="headingMain" data-bs-parent="#mainAccordion2">
                 <div class="accordion-body p-0 w-100">
                     <?= productSelect() ?>
+                    <div id="selectedProduct">
+                        <h2><span id="product_name"></span> (<span id="product_fnsku"></span>)</h2>
+
+                    </div>
                 </div>
             </div>
         </div>
