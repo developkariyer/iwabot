@@ -12,7 +12,6 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
         <h1>Ürün İşlemleri</h1>
         <p>İşlem yapmak istediğiniz ürünü seçiniz. Depo Ana Menü için <a href="./">buraya basınız.</a></p>
     </div>
-
     <div class="accordion mb-3" id="mainAccordion">
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain">
@@ -55,25 +54,84 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
             </div>
         </div>
     </div>
-
     <div class="accordion mb-3" id="mainAccordion2">
         <div class="accordion-item">
-            <h2 class="accordion-header" id="headingMain">
+            <h2 class="accordion-header" id="headingMain2">
                 <button class="accordion-button bg-secondary text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion2" aria-expanded="true" aria-controls="productAccordion2">
                     <span><strong>Kendiniz Ürün Seçin</strong></span>
                 </button>
             </h2>
-            <div id="productAccordion2" class="accordion-collapse collapse" aria-labelledby="headingMain" data-bs-parent="#mainAccordion2">
+            <div id="productAccordion2" class="accordion-collapse collapse" aria-labelledby="headingMain2" data-bs-parent="#mainAccordion2">
                 <div class="accordion-body p-0 w-100">
                     <?= productSelect() ?>
                     <div id="selectedProduct">
-                        <h2><span id="product_name"></span> (<span id="product_fnsku"></span>)</h2>
+
+                        <!-- First Accordion -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingFirst">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFirst" aria-expanded="false" aria-controls="collapseFirst">
+                                    <span><strong>Action 1</strong></span>
+                                </button>
+                            </h2>
+                            <div id="collapseFirst" class="accordion-collapse collapse" aria-labelledby="headingFirst" data-bs-parent="#selectedProduct">
+                                <div class="accordion-body">
+                                    <form action="controller.php" method="post">
+                                        <!-- Your form fields for Action 1 -->
+                                        <input type="hidden" name="action" value="action1">
+                                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                                        <!-- Add other form fields as needed -->
+                                        <button type="submit" class="btn btn-primary">Submit Action 1</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Second Accordion -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingSecond">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSecond" aria-expanded="false" aria-controls="collapseSecond">
+                                    <span><strong>Action 2</strong></span>
+                                </button>
+                            </h2>
+                            <div id="collapseSecond" class="accordion-collapse collapse" aria-labelledby="headingSecond" data-bs-parent="#selectedProduct">
+                                <div class="accordion-body">
+                                    <form action="controller.php" method="post">
+                                        <!-- Your form fields for Action 2 -->
+                                        <input type="hidden" name="action" value="action2">
+                                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                                        <!-- Add other form fields as needed -->
+                                        <button type="submit" class="btn btn-primary">Submit Action 2</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Third Accordion -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThird">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThird" aria-expanded="false" aria-controls="collapseThird">
+                                    <span><strong>Action 3</strong></span>
+                                </button>
+                            </h2>
+                            <div id="collapseThird" class="accordion-collapse collapse" aria-labelledby="headingThird" data-bs-parent="#selectedProduct">
+                                <div class="accordion-body">
+                                    <form action="controller.php" method="post">
+                                        <!-- Your form fields for Action 3 -->
+                                        <input type="hidden" name="action" value="action3">
+                                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                                        <!-- Add other form fields as needed -->
+                                        <button type="submit" class="btn btn-primary">Submit Action 3</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 
 
     <?= wh_menu() ?>
