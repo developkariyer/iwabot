@@ -128,21 +128,30 @@ class WarehouseProduct extends WarehouseAbstract
         }
     }
 
-    public function fulfil($sold_id)
+    public function fulfil($sold_id, $container)
     {
+        if (!($container instanceof WarehouseContainer) || empty($container->id)) {
+            throw new Exception("Invalid container");
+        }
+        if (!$this->getInContainerCount($container)) {
+            throw new Exception("{$this->fnsku} kodlu ürün {$container->name} isimli raf/kolide bulunamadı");
+        }
         if (empty(static::$unfulfilled)) {
             static::getUnfulfilledProducts();
         }
         if (isset(static::$unfulfilled[$sold_id])) {
-            $stmt = $GLOBALS['pdo']->prepare("UPDATE warehouse_sold SET fulfilled = TRUE WHERE id = :id");
-            if ($stmt->execute(['id' => $sold_id])) {
-                $this->logAction('fulfil', ['sold_id' => $sold_id]);
-                return true;
+            if ($this->removeFromContainer($container)) {
+                $stmt = $GLOBALS['pdo']->prepare("UPDATE warehouse_sold SET fulfilled = TRUE WHERE id = :id");
+                if ($stmt->execute(['id' => $sold_id])) {
+                    $this->logAction('fulfil', ['sold_id' => $sold_id]);
+                    return true;
+                }
+            } else {
+                throw new Exception("{$this->fnsku} kodlu ürünü {$container->name} isimli raf/koliden çıkartırken bir hata oluştu.");
             }
         } else {
-            throw new Exception("Sold item not found");
+            throw new Exception("{$this->fnsku} kodlu ürünle ilgili satış kaydı bulunamadı.");
         }
-        return false;
     }
 
     public function addSoldItem($description)
@@ -190,7 +199,7 @@ class WarehouseProduct extends WarehouseAbstract
                 return $count;
             }
         }
-        return false;
+        return 0;
     }
 
     public function moveToContainer($oldContainer, $newContainer, $count = 1)

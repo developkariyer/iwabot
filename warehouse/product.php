@@ -34,6 +34,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                                     <p><?= productInfo($product['product']) ?></p>
                                     <p><b>Açıklama</b><br><?= nl2br(htmlspecialchars($product['description'])) ?></p>
                                     <form action="controller.php" method="post">
+                                        <input type="hidden" name="product_id" value="<?= $product['product']->id ?>">
                                         <input type="hidden" name="action" value="fulfil">
                                         <input type="hidden" name="sold_id" value="<?= $product['id'] ?>">
                                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">

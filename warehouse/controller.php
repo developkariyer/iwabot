@@ -48,6 +48,9 @@ switch($action) {
     case 'delete_product':
         handleDeleteProduct();
         break;
+    case 'fulfil':
+        handleFulfil();
+        break;
     case 'product_info':
         handleProductInfo();
         break;
@@ -219,6 +222,21 @@ function handleDeleteProduct() {
         addMessage("$product->name silindi");
     } else {
         addMessage("$product->name silinemedi");
+    }
+}
+
+function handleFulfil() {
+    $product = WarehouseProduct::getById(getPostValue('product_id'));
+    $container = WarehouseContainer::getById(getPostValue('container_id'));
+    $soldItem = getPostValue('soldItem');
+    if (!$product || !$container || empty($soldItem) || !in_array($soldItem, WarehouseProduct::getUnfulfilledProducts())) {
+        addMessage('fulfil: Geçersiz parametre!');
+        return;
+    }
+    if ($product->fulfil($soldItem, $container)) {
+        addMessage("$product->name için sipariş çıkışı yapıldı");
+    } else {
+        addMessage("$product->name için sipariş çıkışı yapılamadı");
     }
 }
 
