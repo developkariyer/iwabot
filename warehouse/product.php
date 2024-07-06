@@ -133,7 +133,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
 
     <?= wh_menu() ?>
 </div>
-<script>
+<script defer>
 $(document).ready(function() {
     $('#product_select').on('change', function() {
         var productId = $(this).val();
