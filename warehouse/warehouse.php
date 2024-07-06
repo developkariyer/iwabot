@@ -54,11 +54,12 @@ function productInfo($product) {
     //    <b>Seri Numarası:</b> {$product->serial_number}<br>
 }
 
-function containerOptGrouped($product) {
-    if (!$product instanceof WarehouseProduct) {
-        throw new Exception('containerOptGrouped fonksiyonuna geçersiz bir ürün nesnesi gönderildi.');
+function containerOptGrouped($product = null) {
+    if ($product instanceof WarehouseProduct) {
+        $containers = $product->getContainers();
+    } else {
+        $containers = WarehouseContainer::getAll();
     }
-    $containers = $product->getContainers();
     $raflar = [];
     foreach($containers as $container) {
         if ($container->type == 'Raf' || $container->type == 'Gemi') {
@@ -102,7 +103,9 @@ function containerOptGrouped($product) {
             } else {
                 $html .= $container->name.' gemisinde bilinmiyor! (HATA!)';
             }
-            $html .= '('.$product->getInContainerCount($container).')';
+            if ($product instanceof WarehouseProduct) {
+                $html .= '('.$product->getInContainerCount($container).')';
+            }
             $html .= '</option>';
         }
         $html .= '</optgroup>';

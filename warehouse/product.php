@@ -82,6 +82,10 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                                         <input type="hidden" name="action" value="action1">
                                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                                         <!-- Add other form fields as needed -->
+                                        <select name="container_id" class="form-select btn-outline-success rounded-pill w-100 py-3" required>
+                                            <option value="">Raf/Koli Seçin</option>
+                                            <?= containerOptGrouped() ?>
+                                        </select>
                                         <button type="submit" class="btn btn-primary">Submit Action 1</button>
                                     </form>
                                 </div>
@@ -139,12 +143,11 @@ $(document).ready(function() {
         var productId = $(this).val();
         if (productId) {
             $('#selectedProduct').removeClass('d-none');
-            /*
             // Make the AJAX request
             $.ajax({
-                url: 'your_api_endpoint.php', // Replace with your actual endpoint
-                method: 'GET',
-                data: { product_id: productId },
+                url: 'controller.php',
+                method: 'POST',
+                data: { product_id: productId , action: 'product_info', csrf_token: '<?= $_SESSION['csrf_token'] ?>'},
                 success: function(response) {
                     // Assuming the response is a JSON object with product information
                     var product = response.product;
@@ -161,7 +164,7 @@ $(document).ready(function() {
                 error: function(xhr, status, error) {
                     console.error('Error fetching product information:', error);
                 }
-            });*/
+            });
         } else {
             // Hide the product_info div and clear hidden fields
             $('#selectedProduct').addClass('d-none');

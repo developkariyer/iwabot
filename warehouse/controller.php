@@ -266,6 +266,8 @@ function handleProductInfo() {
     if ($container) {
         $retval['container'] = $container->name;
         $retval['stock'] = $product->getInContainerCount($container);
+    } else {
+        $retval['container'] = containerOptGrouped($product);
     }
     die(json_encode($retval));
 }
