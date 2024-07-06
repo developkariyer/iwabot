@@ -51,7 +51,7 @@
         }
         .select2-container .select2-selection--single {
             height: auto!important;
-            padding: 5px 0;
+            padding: 7px 0;
         }
         .select2-container--default .select2-selection--single .select2-selection__rendered {
             line-height: normal!important;
