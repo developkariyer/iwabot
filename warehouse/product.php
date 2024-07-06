@@ -12,8 +12,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
         <h1>Ürün İşlemleri</h1>
         <p>İşlem yapmak istediğiniz ürünü seçiniz. Depo Ana Menü için <a href="./">buraya basınız.</a></p>
     </div>
-
-    <button class="btn btn-primary mb-3" data-bs-toggle="collapse" data-bs-target="#productAccordion" aria-expanded="true" aria-controls="productAccordion">
+    <button class="btn btn-primary btn-lg rounded-pill w-100 py-3 mb-3" data-bs-toggle="collapse" data-bs-target="#productAccordion" aria-expanded="true" aria-controls="productAccordion">
         Çıkış İçin Bekleyen Ürünler <small>(<?= count($unfulfilledProducts) ?> adet) <i>Görmek için basınız</i></small>
     </button>
     <div class="accordion collapse" id="productAccordion">
