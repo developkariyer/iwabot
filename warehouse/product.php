@@ -25,11 +25,11 @@ include '../_header.php';
         <?= button('product.php', 'Ürün İşlem') ?>
         <?= button('container.php', 'Koli/Raf İşlem') ?>
     </div>
-    <div class="row g-3 m-1 mt-5">
+    <div class="row g-3 m-1 mt-1">
         <?= button('inventory.php', 'Depo Envanteri') ?>
         <?= button('transfers.php', 'Hareket Raporu') ?>
     </div>
-    <div class="row g-3 m-1 mt-5">
+    <div class="row g-3 m-1 mt-1">
         <?= button('order.php', 'Yeni Sipariş') ?>
         <?= button('order.php', 'Sipariş Sil') ?>
     </div>
