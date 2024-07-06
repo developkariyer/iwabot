@@ -49,11 +49,13 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .select2-container .select2-choice {
-            display: block!important;
-            height: 66px!important;
-            white-space: nowrap!important;
-            line-height: 56px!important;
+        .select2-container .select2-choice, .select2-result-label {
+            font-size: 1.5em;
+            height: 41px; 
+            overflow: auto;
+        }
+        .select2-arrow, .select2-chosen {
+            padding-top: 6px;
         }
     </style>
 </head>
