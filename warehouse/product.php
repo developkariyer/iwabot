@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const select<?= $index ?>Element = document.getElementById('Select<?= $index ?>Product<?= $product['product']->id ?>');
         const submit<?= $index ?>Button = document.getElementById('Submit<?= $index ?>Product<?= $product['product']->id ?>');
 
-        selectElement.addEventListener('change', function () {
+        select<?= $index ?>Element.addEventListener('change', function () {
             if (select<?= $index ?>Element.value) {
                 submit<?= $index ?>Button.disabled = false;
             } else {
