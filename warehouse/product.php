@@ -57,7 +57,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
     <div class="accordion mb-3" id="mainAccordion2">
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain2">
-                <button class="accordion-button bg-secondary text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion2" aria-expanded="true" aria-controls="productAccordion2">
+                <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion2" aria-expanded="true" aria-controls="productAccordion2">
                     <span><strong>Kendiniz Ürün Seçin</strong></span>
                 </button>
             </h2>
@@ -71,7 +71,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                         <!-- First Accordion -->
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingFirst">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFirst" aria-expanded="false" aria-controls="collapseFirst">
+                                <button class="accordion-button bg-secondary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFirst" aria-expanded="false" aria-controls="collapseFirst">
                                     <span><strong>Action 1</strong></span>
                                 </button>
                             </h2>
