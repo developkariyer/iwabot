@@ -60,6 +60,9 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
         </div>
     </div>
 
+    <h4>Ürün Seçin</h4>
+    <?= productSelect() ?>
+
     <?= wh_menu() ?>
 </div>
 

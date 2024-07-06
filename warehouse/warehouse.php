@@ -109,3 +109,13 @@ function containerOptGrouped($product) {
     }
     return $html;
 }
+
+function productSelect() {
+    $GLOBALS['footer_script'] = '$(document).ready(function(){$(\'.select2-select\').select2();});';
+    return '<select name="product_id" class="select2-select form-select btn-outline-success rounded-pill w-100 py-3" required>
+    <option value="">Ürün Seçin</option>
+    <?php foreach (WarehouseProduct::getAll() as $product): ?>
+        <option value="<?= $product->id ?>"><?= $product->name ?> (<?= $product->fnsku ?>)</option>
+    <?php endforeach; ?>
+    </select>';
+}
