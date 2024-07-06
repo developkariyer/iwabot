@@ -183,7 +183,7 @@ abstract class WarehouseAbstract
             $methodName = $methods[$field];
             return $this->$methodName();
         }
-        throw new Exception("Field not defined in class");
+        throw new Exception("Field $field not defined in class ".get_called_class());
     }
 
     public function __set($field, $value)
