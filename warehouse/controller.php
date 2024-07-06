@@ -9,6 +9,7 @@ require_once('warehouse.php');
 
 $action = $_POST['action'] ?? null;
 $token = $_POST['csrf_token'] ?? null;
+$return_url = $_POST['return_url'] ?? './';
 
 if (empty($action) || empty($token) || !isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $token)) {
     addMessage('Geçersiz işlem!');
@@ -60,45 +61,6 @@ switch($action) {
 header("Location: $return_url");
 exit;
 
-function getPostValue($key, $default = null, $filter = []) {
-    $retval = $_POST[$key] ?? $default;
-    if (is_array($filter)) {
-        foreach ($filter as $f) {
-            switch ($f) {
-                case 'int':
-                    $retval = intval($retval);
-                    break;
-                case 'float':
-                    $retval = floatval($retval);
-                    break;
-                case 'string':
-                    $retval = strval($retval);
-                    break;
-                case 'array':
-                    $retval = (array)$retval;
-                    break;
-                case 'bool':
-                    $retval = boolval($retval);
-                    break;
-                case 'html':
-                    $retval = htmlspecialchars($retval);
-                    break;
-                case 'trim':
-                    $retval = trim($retval);
-                    break;
-                case 'strip':
-                    $retval = strip_tags($retval);
-                    break;
-                case 'notnull':
-                    if (is_null($retval)) {
-                        $retval = $default;
-                    }
-                    break;
-            }
-        }
-    }
-    return $retval;
-}
 
 function handleAddProduct() {
     $product = WarehouseProduct::addNew([
@@ -284,4 +246,45 @@ function handleContainerInfo() {
         ]));
     }
     die(json_encode($container->getAsArray()));
+}
+
+
+function getPostValue($key, $default = null, $filter = []) {
+    $retval = $_POST[$key] ?? $default;
+    if (is_array($filter)) {
+        foreach ($filter as $f) {
+            switch ($f) {
+                case 'int':
+                    $retval = intval($retval);
+                    break;
+                case 'float':
+                    $retval = floatval($retval);
+                    break;
+                case 'string':
+                    $retval = strval($retval);
+                    break;
+                case 'array':
+                    $retval = (array)$retval;
+                    break;
+                case 'bool':
+                    $retval = boolval($retval);
+                    break;
+                case 'html':
+                    $retval = htmlspecialchars($retval);
+                    break;
+                case 'trim':
+                    $retval = trim($retval);
+                    break;
+                case 'strip':
+                    $retval = strip_tags($retval);
+                    break;
+                case 'notnull':
+                    if (is_null($retval)) {
+                        $retval = $default;
+                    }
+                    break;
+            }
+        }
+    }
+    return $retval;
 }

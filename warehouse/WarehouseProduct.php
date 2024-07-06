@@ -9,6 +9,7 @@ class WarehouseProduct extends WarehouseAbstract
     protected static $dbFields = [];
     public $inContainerCount = [];
     private $totalCount = 0;
+    private static $unfulfilled = [];
 
     public static function getTableName()
     {
@@ -103,11 +104,71 @@ class WarehouseProduct extends WarehouseAbstract
         return $this->totalCount;
     }
 
+    public function getProductInfo()
+    {
+        $retval = "Ürün Adı: {$this->name}\n";
+        $retval .= "FNSKU: {$this->fnsku}\n";
+        $retval .= "Kategori: {$this->category}\n";
+        $retval .= "IWASKU: {$this->iwasku}\n";
+        //$retval .= "Seri Numarası: {$this->serial_number}\n";
+        $retval .= "Özellikler (metrik): {$this->dimension1}x{$this->dimension2}x{$this->dimension3}cm, {$this->weight}gr \n";
+        $retval .= "Özellikler (imperyal): ".metricToImp($this->dimension1)."x".metricToImp($this->dimension2)."x".metricToImp($this->dimension3)."in, ".metricToImp($this->weight, 0.00220462)."lbs \n";
+        $retval .= "Toplam Depo Stoğu: {$this->getTotalCount()} adet";
+        return $retval;
+    }
+
     public function getAsArray()
     {
         $retval = parent::getAsArray();
         $retval['total'] = $this->getTotalCount();
         return $retval;
+    }
+
+    public static function getUnfulfilledProducts()
+    {
+        if (empty(static::$unfulfilled)) {
+            static::$unfulfilled =[];
+            $stmt = $GLOBALS['pdo']->query("SELECT * FROM warehouse_sold WHERE s.fulfilled = FALSE ORDER BY product_id ASC");
+            while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $product = static::getById($data['product_id']);
+                if (!$product) {
+                    continue;
+                }
+                static::$unfulfilled[$data['id']] = $data;
+                static::$unfulfilled[$data['id']]['product'] = $product;
+            }
+        return static::$unfulfilled;
+        }
+    }
+
+    public function fulfil($sold_id)
+    {
+        if (empty(static::$unfulfilled)) {
+            static::getUnfulfilledProducts();
+        }
+        if (isset(static::$unfulfilled[$sold_id])) {
+            $stmt = $GLOBALS['pdo']->prepare("UPDATE warehouse_sold SET fulfilled = TRUE WHERE id = :id");
+            if ($stmt->execute(['id' => $sold_id])) {
+                $this->logAction('fulfil', ['sold_id' => $sold_id]);
+                return true;
+            }
+        } else {
+            throw new Exception("Sold item not found");
+        }
+        return false;
+    }
+
+    public function addSoldItem($description)
+    {
+        if (empty($description) || !is_string($description)) {
+            throw new Exception("Invalid description. Must be a valid string");
+        }
+        $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_sold (product_id, description) VALUES (:product_id, :description)");
+        if ($stmt->execute(['product_id' => $this->id, 'description' => $description])) {
+            $this->logAction('addSoldItem', ['description' => $description]);
+            return true;
+        }
+        return false;
     }
 
     public function placeInContainer($container, $count = 1)

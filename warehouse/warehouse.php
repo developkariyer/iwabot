@@ -26,10 +26,10 @@ function wh_menu() {
     '</div><div class="row g-3 m-1 mt-1">'.
         button('order.php', 'Yeni Sipariş').
         button('order.php', 'Sipariş Sil').
-    '</div><div class="row g-3 m-3 mt-5">'.
+    '</div><div class="row g-3 m-1 mt-1">'.
         button('./', 'Depo Ana Sayfa', 'secondary').
         button('../', 'Ana Sayfa', 'secondary').
-    '</div><div class="row g-3 m-3 mt-5">'.
+    '</div><div class="row g-3 m-1 mt-1">'.
         '<div class="col-md-3"></div>'.
         button('../?logout=1', 'Çıkış', 'danger').
     '</div>';
@@ -38,3 +38,4 @@ function wh_menu() {
 function metricToImp($inp, $conv=0.393700787) {
     return number_format($inp * $conv, 2);
 }
+

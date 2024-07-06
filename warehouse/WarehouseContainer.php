@@ -213,6 +213,21 @@ class WarehouseContainer extends WarehouseAbstract
             }
             return false;
         }
-        throw new Exception("Parent must be an instance of WarehouseContainer");
+        throw new Exception("Üst raf WarehouseContainer sınıfından olmalı");
     }
+
+    public static function addNew($data)
+    {
+        if (!empty($data['parent_id'])) {
+            $parent = static::getById($data['parent_id']);
+            if (!$parent) {
+                throw new Exception("Verilen üst raf tanınmıyor: ".$data['parent_id']);
+            }
+            if ($parent->type !== 'Raf') {
+                throw new Exception("Verilen üst birim Raf tipinde olmalı");
+            }
+        }
+        return parent::addNew($data);
+    }
+
 }
