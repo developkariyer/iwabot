@@ -4,6 +4,8 @@ require_once('warehouse.php');
 
 include '../_header.php';
 
+$GLOBALS['footer_script'] = '$(document).ready(function(){$(\'.select2-select\').select2();});';
+
 ?>
 
 <div class="container mt-5">
@@ -27,11 +29,7 @@ include '../_header.php';
 
     <?= wh_menu() ?>
 </div>
-<script>
-    $(document).ready(function() {
-        $('.select2-select').select2();
-    });
-</script>
+
 <?php
 
 include '../_footer.php';
