@@ -41,7 +41,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                                             <option value="">Raf/Koli Seçin</option>
                                             <?= containerOptGrouped($product['product']) ?>
                                         </select>
-                                        <button id="Submit<?= $index ?>Product<?= $product['product']->id ?>" type="submit" class="btn btn-success btn-lg rounded-pill w-100 py-3 mt-2">Ürün Çıkışı Yap</button>
+                                        <button id="Submit<?= $index ?>Product<?= $product['product']->id ?>" type="submit" class="btn btn-success rounded-pill w-100 py-3 mt-2">Ürün Çıkışı Yap</button>
                                     </form>
                                 </div>
                             </div>
@@ -64,15 +64,15 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
             <div id="productAccordion2" class="accordion-collapse collapse" aria-labelledby="headingMain2" data-bs-parent="#mainAccordion2">
                 <div class="accordion-body p-0 w-100">
                     <?= productSelect() ?>
-                    <div id="selectedProduct">
-                        <div class="p-3">
+                    <div id="selectedProduct" class="d-non">
+                        <div class="p-3" id="product_info">
                             <p>Ürün Bilgileri</p>
                         </div>
                         <!-- First Accordion -->
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingFirst">
-                                <button class="accordion-button bg-outline-secondary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFirst" aria-expanded="false" aria-controls="collapseFirst">
-                                    <span><strong>Action 1</strong></span>
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFirst" aria-expanded="false" aria-controls="collapseFirst">
+                                    <span><strong>Depoya Giriş Yapın</strong></span>
                                 </button>
                             </h2>
                             <div id="collapseFirst" class="accordion-collapse collapse" aria-labelledby="headingFirst" data-bs-parent="#selectedProduct">
@@ -92,7 +92,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingSecond">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSecond" aria-expanded="false" aria-controls="collapseSecond">
-                                    <span><strong>Action 2</strong></span>
+                                    <span><strong>Depo İçinde Taşıyın</strong></span>
                                 </button>
                             </h2>
                             <div id="collapseSecond" class="accordion-collapse collapse" aria-labelledby="headingSecond" data-bs-parent="#selectedProduct">
@@ -112,7 +112,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingThird">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThird" aria-expanded="false" aria-controls="collapseThird">
-                                    <span><strong>Action 3</strong></span>
+                                    <span><strong>Depodan Çıkış Yapın</strong></span>
                                 </button>
                             </h2>
                             <div id="collapseThird" class="accordion-collapse collapse" aria-labelledby="headingThird" data-bs-parent="#selectedProduct">
