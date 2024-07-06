@@ -1,5 +1,11 @@
 <?php
 
+//TODO: barkod okuyucu ile okunan ürünlerin işlenmesi
+//TODO: koli taşıma/ekleme/silme/düzenleme
+//TODO: ürün ekleme/silme/düzenleme
+//TODO: envanter listesi
+//TODO: envanter hareketleri analizi
+
 require_once('warehouse.php');
 
 include '../_header.php';
@@ -122,6 +128,12 @@ $(document).ready(function() {
         var action = $(document.activeElement).val(); // Get the value of the clicked button
         var containerId = $('#dynamic_container_list').val();
         var newContainerId = $('[name="new_container_id"]').val();
+        var count = $('[name="count"]').val();
+        if (count < 1) {
+            alert('Ürün adedi 1\'den küçük olamaz.');
+            event.preventDefault();
+            return;
+        }
         var valid = true;
         
         if (action === 'remove_from_container' && !containerId) {
