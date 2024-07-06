@@ -49,18 +49,28 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                         </div>
                     <?php endforeach; ?>
                     <?php if (empty($unfulfilledProducts) || count($unfulfilledProducts) == 0): ?>
-                        <div class="accordion-item">
-                            <div class="accordion-body">
-                                <p>Çıkış için bekleyen ürün bulunmamaktadır.</p>
-                            </div>
-                        </div>
+                        <p>Çıkış için bekleyen ürün bulunmamaktadır.</p>
                     <?php endif; ?>
                 </div>
             </div>
         </div>
     </div>
 
-    <?= productSelect() ?>
+    <div class="accordion mb-3" id="mainAccordion2">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingMain">
+                <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion2" aria-expanded="true" aria-controls="productAccordion2">
+                    <span><strong>Çıkış İçin Bekleyen Ürünler (<?= count($unfulfilledProducts) ?> adet)</strong></span>
+                </button>
+            </h2>
+            <div id="productAccordion2" class="accordion-collapse collapse" aria-labelledby="headingMain" data-bs-parent="#mainAccordion2">
+                <div class="accordion-body p-0">
+                    <?= productSelect() ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <?= wh_menu() ?>
 </div>
