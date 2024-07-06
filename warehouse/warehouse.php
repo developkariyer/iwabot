@@ -111,7 +111,7 @@ function containerOptGrouped($product) {
 }
 
 function productSelect() {
-    $GLOBALS['footer_script'] = '$(document).ready(function(){$(\'.select2-select\').select2(theme: "classic");});';
+    $GLOBALS['footer_script'] = '$(document).ready(function(){$(\'.select2-select\').select2({theme: "classic"});});';
 
     $options = [];
     foreach (WarehouseProduct::getAll() as $product) {
