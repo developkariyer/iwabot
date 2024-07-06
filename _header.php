@@ -50,12 +50,12 @@
             text-overflow: ellipsis;
         }
         .select2-container .select2-choice, .select2-result-label {
-            font-size: 1.5em;
-            height: 41px; 
-            overflow: auto;
+            font-size: 2em!important;
+            height: 45px!important; 
+            overflow: auto!important;
         }
         .select2-arrow, .select2-chosen {
-            padding-top: 6px;
+            padding-top: 26px!important;
         }
     </style>
 </head>
