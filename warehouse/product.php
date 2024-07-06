@@ -13,7 +13,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
         <p>İşlem yapmak istediğiniz ürünü seçiniz. Depo Ana Menü için <a href="./">buraya basınız.</a></p>
     </div>
 
-    <div class="accordion" id="mainAccordion">
+    <div class="accordion mb-3" id="mainAccordion">
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain">
                 <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion" aria-expanded="true" aria-controls="productAccordion">
