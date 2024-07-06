@@ -65,11 +65,11 @@ function containerOptGrouped($containers) {
                 $raflar[$container->name] = [];
             }
         } else {
-            if ($container->getParent()) {
-                if (!isset($raflar[$container->getParent()->name])) {
-                    $raflar[$container->getParent()->name] = [];
+            if ($container->parent) {
+                if (!isset($raflar[$container->parent->name])) {
+                    $raflar[$container->parent->name] = [];
                 }
-                $raflar[$container->getParent()->name][] = $container;
+                $raflar[$container->parent->name][] = $container;
             } else {
                 throw new Exception('Rafı veya gemisi olmayan bir Koli var: '.$container->name);
             }            
