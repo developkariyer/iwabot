@@ -127,7 +127,9 @@ class WarehouseProduct extends WarehouseAbstract
         }
         return static::$unfulfilled;
     }
-
+    
+    /* ACTION METHODS BELOW */
+    
     public function fulfil($sold_id, $container)
     {
         if (!($container instanceof WarehouseContainer) || empty($container->id)) {

@@ -51,6 +51,9 @@ switch($action) {
     case 'fulfil':
         handleFulfil();
         break;
+    case 'add_sold_item':
+        handleAddSoldItem();
+        break;
     case 'product_info':
         handleProductInfo();
         break;
@@ -238,6 +241,17 @@ function handleFulfil() {
     } else {
         addMessage("$product->name için sipariş çıkışı yapılamadı");
     }
+}
+
+function handleAddSoldItem() {
+    $product = WarehouseProduct::getById(getPostValue('product_id'));
+    $description = getPostValue('description');
+    if (!$product || empty($description) || !is_string($description)) {
+        addMessage('add_new_sale: Geçersiz parametre!');
+        return;
+    }
+    $product->addUnfulfilledSale($description);
+    addMessage("$product->name için yeni satış eklendi");
 }
 
 function handleProductInfo() {
