@@ -71,7 +71,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                         <form id="customActionForm" action="controller.php" method="post">
                             <input type="hidden" name="product_id" id="hidden_product_id">
                             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                            <select name="container_id" class="form-select btn-outline-success rounded-pill w-100 py-3">
+                            <select id="dynamic_container_list" name="container_id" class="form-select btn-outline-success rounded-pill w-100 py-3">
                                 <option value="">Mevcut Raf/Koli Seçin</option>
                                 <!-- dynamically loaded option values -->
                             </select>
@@ -97,21 +97,20 @@ $(document).ready(function() {
     $('#product_select').on('change', function() {
         var productId = $(this).val();
         if (productId) {
-            $('#selectedProduct').removeClass('d-none');
-            // Make the AJAX request
             $.ajax({
                 url: 'controller.php',
                 method: 'POST',
                 data: { product_id: productId , action: 'product_info', csrf_token: '<?= $_SESSION['csrf_token'] ?>'},
                 success: function(response) {
                     $('#product_info').html(response.info);
+                    $('#selectedProduct').removeClass('d-none');
+                    $('#dynamic_container_list').html('<option value="">Mevcut Raf/Koli Seçin</option>' + response.container);
                 },
                 error: function(xhr, status, error) {
                     console.error('Error fetching product information:', error);
                 }
             });
         } else {
-            // Hide the product_info div and clear hidden fields
             $('#selectedProduct').addClass('d-none');
         }
     });
