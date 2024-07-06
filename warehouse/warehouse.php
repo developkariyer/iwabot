@@ -120,8 +120,6 @@ function productSelect() {
         }
         $options[$product->category][] = '<option value="'.$product->id.'">'.$product->name.' ('.$product->fnsku.')</option>';
     }
-
-
     $html = '<select name="product_id" class="select2-select form-select btn-outline-success rounded-pill w-100 py-3" required>';
     $html .= '<option value="">Ürün Seçin</option>';
     foreach($options as $category => $products) {
