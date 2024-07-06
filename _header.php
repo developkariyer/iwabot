@@ -51,9 +51,9 @@
         }
         .select2-container .select2-choice {
             display: block!important;
-            height: 36px!important;
+            height: 66px!important;
             white-space: nowrap!important;
-            line-height: 26px!important;
+            line-height: 56px!important;
         }
     </style>
 </head>
