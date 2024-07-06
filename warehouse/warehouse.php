@@ -43,8 +43,7 @@ function productInfo($product) {
     if (!$product instanceof WarehouseProduct) {
         return "Ürün bilgisi alınamadı: Geçersiz ürün";
     }
-    return "
-    <b>Ürün Adı:</b> {$product->name}<br>
+    return "<b>Ürün Adı:</b> {$product->name}<br>
     <b>FNSKU:</b> {$product->fnsku}<br>
     <b>Kategori:</b> {$product->category}<br>
     <b>IWASKU:</b> {$product->iwasku}<br>
