@@ -37,11 +37,11 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                                         <input type="hidden" name="action" value="fulfil">
                                         <input type="hidden" name="sold_id" value="<?= $product['id'] ?>">
                                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                                        <select name="container_id" class="form-select btn-outline-success rounded-pill w-100 py-3">
+                                        <select id="SelectProduct<?= $product['product']->id ?>" name="container_id" class="form-select btn-outline-success rounded-pill w-100 py-3">
                                             <option value="">Raf/Koli Seçin</option>
                                             <?= containerOptGrouped($product['product']->getContainers()) ?>
                                         </select>
-                                        <button type="submit" class="btn btn-success btn-lg rounded-pill w-100 py-3 mt-2">Ürün Çıkışı Yap</button>
+                                        <button id="SubmitProduct<?= $product['product']->id ?>" type="submit" class="btn btn-success btn-lg rounded-pill w-100 py-3 mt-2" disabled>Ürün Çıkışı Yap</button>
                                     </form>
                                 </div>
                             </div>
@@ -61,6 +61,23 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
 
     <?= wh_menu() ?>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    <?php foreach ($unfulfilledProducts as $index => $product): ?>
+        const selectElement = document.getElementById('SelectProduct<?= $product['product']->id ?>');
+        const submitButton = document.getElementById('SubmitProduct<?= $product['product']->id ?>');
+
+        selectElement.addEventListener('change', function () {
+            if (selectElement.value) {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+        });
+    <?php endforeach; ?>
+});
+</script>
 
 <?php
 
