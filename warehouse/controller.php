@@ -9,7 +9,7 @@ require_once('warehouse.php');
 
 $action = $_POST['action'] ?? null;
 $token = $_POST['csrf_token'] ?? null;
-$return_url = $_SERVER['referer'] ?? './';
+$return_url = $_SERVER['HTTP_REFERER'] ?? './';
 
 if (empty($action) || empty($token) || !isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $token)) {
     addMessage('Geçersiz işlem!');
@@ -230,7 +230,7 @@ function handleFulfil() {
     $container = WarehouseContainer::getById(getPostValue('container_id'));
     $soldItem = getPostValue('sold_id');
     if (!$product || !$container || empty($soldItem) || !in_array($soldItem, WarehouseProduct::getUnfulfilledProducts())) {
-        addMessage("fulfil: Geçersiz parametre:".json_encode([$product, $container, $soldItem]));
+        addMessage("fulfil: Geçersiz parametre:".json_encode([$product, $container, $soldItem, WarehouseProduct::getUnfulfilledProducts()]));
         return;
     }
     if ($product->fulfil($soldItem, $container)) {
