@@ -73,9 +73,9 @@ function containerOptGrouped($containers) {
         } else {
             if ($container->parent) {
                 if ($container->parent->type === 'Gemi') {
-                    $icon = '📦'; //\u{1F4E6}
+                    $icon = '🚢'; //\u{1F6A2}
                 } else {
-                    $icon = '📦'; //\u{1F4E6}
+                    $icon = '🗄️'; // \u{1F5C4}
                 }
                 if (!isset($raflar["$icon {$container->parent->name}"])) {
                     $raflar["$icon {$container->parent->name}"] = [];
