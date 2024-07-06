@@ -71,7 +71,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                         <!-- First Accordion -->
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingFirst">
-                                <button class="accordion-button bg-secondary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFirst" aria-expanded="false" aria-controls="collapseFirst">
+                                <button class="accordion-button bg-outline-secondary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFirst" aria-expanded="false" aria-controls="collapseFirst">
                                     <span><strong>Action 1</strong></span>
                                 </button>
                             </h2>
