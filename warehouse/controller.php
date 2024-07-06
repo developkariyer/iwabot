@@ -1,15 +1,15 @@
 <?php
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+require_once('warehouse.php');
+
+$action = $_POST['action'] ?? $_GET['action'] ?? null;
+$token = $_POST['csrf_token'] ?? $_GET['csrf_token'] ?? null;
+$return_url = $_SERVER['HTTP_REFERER'] ?? './';
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST' && in_array($action, ['add_product', 'add_container', 'set_parent', 'move_to_container', 'remove_from_container', 'place_in_container', 'update_container', 'update_product', 'delete_container', 'delete_product', 'fulfil', 'add_sold_item'])) {
     header('Location: ./');
     exit;
 }
-
-require_once('warehouse.php');
-
-$action = $_POST['action'] ?? null;
-$token = $_POST['csrf_token'] ?? null;
-$return_url = $_SERVER['HTTP_REFERER'] ?? './';
 
 if (empty($action) || empty($token) || !isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $token)) {
     addMessage('Geçersiz işlem!');
@@ -116,7 +116,7 @@ function handleSetParent() {
 
 function handleMoveToContainer() {
     $product = WarehouseProduct::getById(getPostValue('product_id'));
-    $old_container = WarehouseContainer::getById(getPostValue('old_container_id'));
+    $old_container = WarehouseContainer::getById(getPostValue('container_id'));
     $new_container = WarehouseContainer::getById(getPostValue('new_container_id'));
     if (!$product || !$old_container || !$new_container) {
         addMessage('move_to_container: Geçersiz parametre!');
@@ -149,7 +149,7 @@ function handleRemoveFromContainer() {
 
 function handlePlaceInContainer() {
     $product = WarehouseProduct::getById(getPostValue('product_id'));
-    $container = WarehouseContainer::getById(getPostValue('container_id'));
+    $container = WarehouseContainer::getById(getPostValue('new_container_id'));
     if (!$product || !$container || !getPostValue('count')) {
         addMessage('place_in_container: Geçersiz parametre!');
         return;
@@ -284,7 +284,7 @@ function handleContainerInfo() {
 
 
 function getPostValue($key, $default = null, $filter = []) {
-    $retval = $_POST[$key] ?? $default;
+    $retval = $_POST[$key] ?? $_GET[$key] ?? $default;
     if (is_array($filter)) {
         foreach ($filter as $f) {
             switch ($f) {

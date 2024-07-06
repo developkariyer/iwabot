@@ -68,67 +68,22 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                         <div class="p-3" id="product_info">
                             <p>Ürün Bilgileri</p>
                         </div>
-                        <!-- First Nested Accordion -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingFirst">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFirst" aria-expanded="false" aria-controls="collapseFirst">
-                                    <span><strong>Depoya Giriş Yapın</strong></span>
-                                </button>
-                            </h2>
-                            <div id="collapseFirst" class="accordion-collapse collapse" aria-labelledby="headingFirst" data-bs-parent="#selectedProduct">
-                                <div class="accordion-body">
-                                    <form action="controller.php" method="post">
-                                        <!-- Your form fields for Action 1 -->
-                                        <input type="hidden" name="action" value="action1">
-                                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                                        <!-- Add other form fields as needed -->
-                                        <select name="container_id" class="form-select btn-outline-success rounded-pill w-100 py-3" required>
-                                            <option value="">Raf/Koli Seçin</option>
-                                            <?= containerOptGrouped() ?>
-                                        </select>
-                                        <button type="submit" class="btn btn-primary">Submit Action 1</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Second Nested Accordion -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingSecond">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSecond" aria-expanded="false" aria-controls="collapseSecond">
-                                    <span><strong>Depo İçinde Taşıyın</strong></span>
-                                </button>
-                            </h2>
-                            <div id="collapseSecond" class="accordion-collapse collapse" aria-labelledby="headingSecond" data-bs-parent="#selectedProduct">
-                                <div class="accordion-body">
-                                    <form action="controller.php" method="post">
-                                        <!-- Your form fields for Action 2 -->
-                                        <input type="hidden" name="action" value="action2">
-                                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                                        <!-- Add other form fields as needed -->
-                                        <button type="submit" class="btn btn-primary">Submit Action 2</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Third Nested Accordion -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingThird">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThird" aria-expanded="false" aria-controls="collapseThird">
-                                    <span><strong>Depodan Çıkış Yapın</strong></span>
-                                </button>
-                            </h2>
-                            <div id="collapseThird" class="accordion-collapse collapse" aria-labelledby="headingThird" data-bs-parent="#selectedProduct">
-                                <div class="accordion-body">
-                                    <form action="controller.php" method="post">
-                                        <!-- Your form fields for Action 3 -->
-                                        <input type="hidden" name="action" value="action3">
-                                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                                        <!-- Add other form fields as needed -->
-                                        <button type="submit" class="btn btn-primary">Submit Action 3</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                        <form id="customActionForm" action="controller.php" method="post">
+                            <input type="hidden" name="product_id" id="hidden_product_id">
+                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                            <select name="container_id" class="form-select btn-outline-success rounded-pill w-100 py-3">
+                                <option value="">Mevcut Raf/Koli Seçin</option>
+                                <!-- dynamically loaded option values -->
+                            </select>
+                            <select name="new_container_id" class="form-select btn-outline-success rounded-pill w-100 py-3">
+                                <option value="">Yeni Raf/Koli Seçin</option>
+                                <?= containerOptGrouped() ?>
+                            </select>
+                            <input type="number" name="count" class="form-control btn-outline-success rounded-pill w-100 py-3" placeholder="Ürün Adedi">
+                            <button name="action" value="remove_from_container" type="submit" class="btn btn-primary rounded-pill w-100 py-3 mt-2">Depo Çıkışı Yap</button>
+                            <button name="action" value="move_to_container" type="submit" class="btn btn-primary rounded-pill w-100 py-3 mt-2">Depo İçinde Taşı</button>
+                            <button name="action" value="place_in_container" type="submit" class="btn btn-primary rounded-pill w-100 py-3 mt-2">Depo Girişi Yap</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -171,6 +126,31 @@ $(document).ready(function() {
         }
     });
 });
+
+$(document).ready(function() {
+    $('#customActionForm').on('submit', function(event) {
+        var action = $(document.activeElement).val(); // Get the value of the clicked button
+        var containerId = $('[name="container_id"]').val();
+        var newContainerId = $('[name="new_container_id"]').val();
+        var valid = true;
+        
+        if (action === 'remove_from_container' && !containerId) {
+            valid = false;
+            alert('Ürünün olduğu raf/kolilerden birini seçin.');
+        } else if (action === 'move_to_container' && (!containerId || !newContainerId)) {
+            valid = false;
+            alert('Hem mevcut hem de yeni raf/koliyi seçin.');
+        } else if (action === 'place_in_container' && !newContainerId) {
+            valid = false;
+            alert('Ürünün yerleştirileceği raf/koliyi seçin.');
+        }
+
+        if (!valid) {
+            event.preventDefault(); // Prevent the form from submitting if validation fails
+        }
+    });
+});
+
 </script>
 
 <?php
