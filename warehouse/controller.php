@@ -255,6 +255,7 @@ function handleAddSoldItem() {
 }
 
 function handleProductInfo() {
+    header('Content-Type: application/json');
     $product = WarehouseProduct::getById(getPostValue('product_id'));
     $container = WarehouseContainer::getById(getPostValue('container_id'));
     if (!$product) {
@@ -273,6 +274,7 @@ function handleProductInfo() {
 }
 
 function handleContainerInfo() {
+    header('Content-Type: application/json');
     $container = WarehouseContainer::getById(getPostValue('container_id'));
     if (!$container) {
         die(json_encode([
