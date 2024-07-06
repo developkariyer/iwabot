@@ -259,7 +259,7 @@ abstract class WarehouseAbstract
     public static function getAll()
     {
         if (empty(static::$allObjects)) {
-            $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName());
+            $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName(). " ORDER BY name");
             $stmt->execute();
             $objects = [];
             while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
