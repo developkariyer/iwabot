@@ -42,7 +42,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                                             <option value="">Raf/Koli Seçin</option>
                                             <?= containerOptGrouped($product['product']) ?>
                                         </select>
-                                        <button id="Submit<?= $index ?>Product<?= $product['product']->id ?>" type="submit" class="btn btn-success btn-lg rounded-pill w-100 py-3 mt-2" disabled>Ürün Çıkışı Yap</button>
+                                        <button id="Submit<?= $index ?>Product<?= $product['product']->id ?>" type="submit" class="btn btn-success btn-lg rounded-pill w-100 py-3 mt-2">Ürün Çıkışı Yap</button>
                                     </form>
                                 </div>
                             </div>
