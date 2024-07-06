@@ -270,6 +270,7 @@ function handleProductInfo() {
     } else {
         $retval['container'] = containerOptGrouped($product);
     }
+    $retval['info'] = productInfo($product);
     die(json_encode($retval));
 }
 
