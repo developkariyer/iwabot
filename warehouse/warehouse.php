@@ -113,10 +113,21 @@ function containerOptGrouped($product) {
 function productSelect() {
     $GLOBALS['footer_script'] = '$(document).ready(function(){$(\'.select2-select\').select2();});';
 
+    $options = [];
+    foreach (WarehouseProduct::getAll() as $product) {
+        if (!isset($options[$product->category])) {
+            $options[$product->category] = [];
+        }
+        $options[$product->category][] = '<option value="'.$product->id.'">'.$product->name.' ('.$product->fnsku.')</option>';
+    }
+
+
     $html = '<select name="product_id" class="select2-select form-select btn-outline-success rounded-pill w-100 py-3" required>';
     $html .= '<option value="">Ürün Seçin</option>';
-    foreach (WarehouseProduct::getAll() as $product) {
-        $html .= '<option value="'.$product->id.'">'.$product->name.' ('.$product->fnsku.')</option>';
+    foreach($options as $category => $products) {
+        $html .= '<optgroup label="'.$category.'">';
+        $html .= implode('', $products);
+        $html .= '</optgroup>';
     }
     $html .= '</select>';
     return $html;

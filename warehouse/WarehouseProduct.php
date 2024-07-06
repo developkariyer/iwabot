@@ -10,6 +10,8 @@ class WarehouseProduct extends WarehouseAbstract
     public $inContainerCount = [];
     private $totalCount = 0;
     private static $unfulfilled = [];
+    protected static $allObjects = [];
+
 
     public static function getTableName()
     {
@@ -129,7 +131,7 @@ class WarehouseProduct extends WarehouseAbstract
     }
     
     /* ACTION METHODS BELOW */
-    
+
     public function fulfil($sold_id, $container)
     {
         if (!($container instanceof WarehouseContainer) || empty($container->id)) {

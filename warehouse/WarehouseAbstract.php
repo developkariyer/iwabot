@@ -8,6 +8,8 @@ abstract class WarehouseAbstract
     public $id = null;
     protected $dbValues = [];
     static protected $instances = [];
+    protected static $allObjects = [];
+
 
     public function __construct($id = null, $data = [])
     {
@@ -256,17 +258,20 @@ abstract class WarehouseAbstract
 
     public static function getAll()
     {
-        $retval = [];
-        $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName() ." ORDER BY name");
-        $stmt->execute();
-        while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $instance = static::getInstance($data['id']);
-            if (!$instance) {
-                $instance = new static($data['id'], $data);
+        if (empty(static::$allObjects)) {
+            $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName());
+            $stmt->execute();
+            $objects = [];
+            while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $instance = static::getInstance($data['id']);
+                if (!$instance) {
+                    $instance = new static($data['id'], $data);
+                }
+                $objects[] = $instance;
             }
-            $retval[] = $instance;
+            static::$allObjects = $objects;
         }
-        return $retval;
+        return static::$allObjects;
     }
 
     abstract protected static function getCustomMethods();

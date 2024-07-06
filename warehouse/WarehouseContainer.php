@@ -12,6 +12,7 @@ class WarehouseContainer extends WarehouseAbstract
     protected static $warehouses = [];
     protected static $parentContainers = [];
     private $totalCount = 0;
+    protected static $allObjects = [];
 
     public static function getTableName()
     {
