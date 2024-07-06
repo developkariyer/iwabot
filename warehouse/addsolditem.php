@@ -15,7 +15,7 @@ include '../_header.php';
     <form action = "controller.php" method = "post">
         <input type="hidden" name="action" value="add_sold_item">
         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-        <select name="product_id" class="form-select btn-outline-success rounded-pill w-100 py-3" required>
+        <select name="product_id" class="select2-select form-select btn-outline-success rounded-pill w-100 py-3" required>
             <option value="">Ürün Seçin</option>
             <?php foreach (WarehouseProduct::getAll() as $product): ?>
                 <option value="<?= $product->id ?>"><?= $product->name ?> (<?= $product->fnsku ?>)</option>
@@ -29,7 +29,7 @@ include '../_header.php';
 </div>
 <script>
     $(document).ready(function() {
-        $('.form-select').select2();
+        $('.select2-select').select2();
     });
 </script>
 <?php
