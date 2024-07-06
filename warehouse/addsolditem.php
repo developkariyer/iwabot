@@ -22,10 +22,16 @@ include '../_header.php';
             <?php endforeach; ?>
         </select>
         <input type="text" name="description" class="form-control btn-outline-success rounded-pill w-100 py-3 mt-2" placeholder="Açıklama" required>
+        <button id="submitbutton" type="submit" class="btn btn-success btn-lg rounded-pill w-100 py-3 mt-2">Yeni Çıkış Kaydı Ekle</button>
     </form>
 
     <?= wh_menu() ?>
 </div>
+<script>
+    $(document).ready(function() {
+        $('.form-select').select2();
+    });
+</script>
 <?php
 
 include '../_footer.php';
