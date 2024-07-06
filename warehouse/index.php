@@ -11,21 +11,8 @@ include '../_header.php';
         <p><span class="username"><?= $_SESSION['user_info']['name'] ?></span></p>
         <p>Lütfen yapmak istediğiniz işlemi seçiniz.</p>
     </div>
-    <div class="row g-3 m-3">
-        <?= button('product.php', 'Ürün İşlem') ?>
-        <?= button('container.php', 'Koli/Raf İşlem') ?>
-    </div>
-    <div class="row g-3 m-3 mt-5">
-        <?= button('inventory.php', 'Depo Envanteri') ?>
-        <?= button('transfers.php', 'Hareket Raporu') ?>
-    </div>
-    <div class="row g-3 m-3 mt-5">
-        <?= button('order.php', 'Yeni Sipariş') ?>
-        <?= button('order.php', 'Sipariş Sil') ?>
-    </div>
 
     <?= wh_menu() ?>
-
 </div>
 
 <?php
