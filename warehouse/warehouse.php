@@ -93,15 +93,14 @@ function containerOptGrouped($product = null) {
     foreach($raflar as $raflar_name => $raflar_containers) {
         $html .= '<optgroup label="'.$raflar_name.'">';
         foreach($raflar_containers as $container) {
-            $html .= '<option value="'.$container->id.'">';
             if ($container->type === 'Koli') {
                 $icon = '📦'; //\u{1F4E6}
-                $html .= "$icon {$container->name} ({$container->parent->name})";
+                $html .= "<option value='{$container->id}'>$icon {$container->name} ({$container->parent->name})";
             } elseif ($container->type === 'Raf') {
                 $icon = '📤'; //\u{1F4E4}
-                $html .= "$icon {$container->name} rafında açık";
+                $html .= "<option value='{$container->id}'>$icon {$container->name} rafında açık";
             } else {
-                $html .= $container->name.' gemisinde bilinmiyor! (HATA!)'.$container->type.' '.$container->parent->id;
+                continue;
             }
             if ($product instanceof WarehouseProduct) {
                 $html .= '('.$product->getInContainerCount($container).')';
