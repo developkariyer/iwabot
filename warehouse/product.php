@@ -104,6 +104,7 @@ $(document).ready(function() {
                 success: function(response) {
                     $('#product_info').html(response.info);
                     $('#selectedProduct').removeClass('d-none');
+                    $('#hidden_product_id').val(response.id);
                     $('#dynamic_container_list').html('<option value="">Mevcut Raf/Koli Seçin</option>' + response.container);
                 },
                 error: function(xhr, status, error) {
