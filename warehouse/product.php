@@ -13,6 +13,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
         <p>İşlem yapmak istediğiniz ürünü seçiniz. Depo Ana Menü için <a href="./">buraya basınız.</a></p>
     </div>
     <div class="accordion mb-3" id="mainAccordion">
+        <!-- First Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain">
                 <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion" aria-expanded="true" aria-controls="productAccordion">
@@ -53,22 +54,21 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                 </div>
             </div>
         </div>
-    </div>
-    <div class="accordion mb-3" id="mainAccordion2">
+        <!-- Second Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain2">
                 <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion2" aria-expanded="true" aria-controls="productAccordion2">
                     <span><strong>Kendiniz Ürün Seçin</strong></span>
                 </button>
             </h2>
-            <div id="productAccordion2" class="accordion-collapse collapse" aria-labelledby="headingMain2" data-bs-parent="#mainAccordion2">
+            <div id="productAccordion2" class="accordion-collapse collapse" aria-labelledby="headingMain2" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-0 w-100">
                     <?= productSelect() ?>
-                    <div id="selectedProduct" class="d-non">
+                    <div id="selectedProduct" class="d-none">
                         <div class="p-3" id="product_info">
                             <p>Ürün Bilgileri</p>
                         </div>
-                        <!-- First Accordion -->
+                        <!-- First Nested Accordion -->
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingFirst">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFirst" aria-expanded="false" aria-controls="collapseFirst">
@@ -87,8 +87,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Second Accordion -->
+                        <!-- Second Nested Accordion -->
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingSecond">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSecond" aria-expanded="false" aria-controls="collapseSecond">
@@ -107,8 +106,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Third Accordion -->
+                        <!-- Third Nested Accordion -->
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingThird">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThird" aria-expanded="false" aria-controls="collapseThird">
@@ -127,13 +125,11 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 
 
     <?= wh_menu() ?>
