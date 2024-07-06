@@ -16,7 +16,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
     <div class="accordion" id="mainAccordion">
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain">
-                <button class="accordion-button bg-success text-white collapsed w-100 py-3 !d-flex !justify-content-center !align-items-center" data-bs-toggle="collapse" data-bs-target="#productAccordion" aria-expanded="true" aria-controls="productAccordion">
+                <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion" aria-expanded="true" aria-controls="productAccordion">
                     Çıkış İçin Bekleyen Ürünler (<?= count($unfulfilledProducts) ?> adet)
                 </button>
             </h2>
