@@ -48,6 +48,10 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        form select optgroup {
+            font-weight: bold;
+            background-color: burlywood;
+        }
     </style>
 </head>
 <body>

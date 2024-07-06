@@ -94,7 +94,7 @@ function containerOptGrouped($containers) {
             $html .= '<option value="'.$container->id.'">';
             if ($container->type === 'Koli') {
                 $icon = '📦'; //\u{1F4E6}
-                $html .= "$icon {$container->name} ({$container->parent->name} rafında/gemisinde)";
+                $html .= "$icon {$container->name} ({$container->parent->name})";
             } elseif ($container->type === 'Raf') {
                 $html .= $container->name.' rafında açık';
             } else {
