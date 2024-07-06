@@ -96,6 +96,7 @@ function containerOptGrouped($containers) {
                 $icon = '📦'; //\u{1F4E6}
                 $html .= "$icon {$container->name} ({$container->parent->name})";
             } elseif ($container->type === 'Raf') {
+                $icon = '📤'; //\u{1F4E4}
                 $html .= $container->name.' rafında açık';
             } else {
                 $html .= $container->name.' gemisinde bilinmiyor! (HATA!)';
