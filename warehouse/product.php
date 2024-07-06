@@ -144,7 +144,7 @@ $(document).ready(function() {
         if (productId) {
             $('#selectedProduct').removeClass('d-none');
             // Make the AJAX request
-            $.ajax({
+/*            $.ajax({
                 url: 'controller.php',
                 method: 'POST',
                 data: { product_id: productId , action: 'product_info', csrf_token: '<?= $_SESSION['csrf_token'] ?>'},
@@ -164,7 +164,7 @@ $(document).ready(function() {
                 error: function(xhr, status, error) {
                     console.error('Error fetching product information:', error);
                 }
-            });
+            });*/
         } else {
             // Hide the product_info div and clear hidden fields
             $('#selectedProduct').addClass('d-none');
