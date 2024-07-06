@@ -17,7 +17,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain">
                 <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion" aria-expanded="true" aria-controls="productAccordion">
-                    Çıkış İçin Bekleyen Ürünler (<?= count($unfulfilledProducts) ?> adet)
+                    <span><strong>Çıkış İçin Bekleyen Ürünler (<?= count($unfulfilledProducts) ?> adet)</strong></span>
                 </button>
             </h2>
             <div id="productAccordion" class="accordion-collapse collapse" aria-labelledby="headingMain" data-bs-parent="#mainAccordion">
@@ -32,7 +32,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                             <div id="collapse<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $index ?>" data-bs-parent="#productAccordion">
                                 <div class="accordion-body">
                                     <p><?= productInfo($product['product']) ?></p>
-                                    <p><?= nl2br(htmlspecialchars($product['description'])) ?></p>
+                                    <p><b>Açıklama</b><br><?= nl2br(htmlspecialchars($product['description'])) ?></p>
                                     <a href="wh_product.php?product=<?= urlencode($product['product']->id) ?>" class="btn btn-outline-success btn-lg rounded-pill w-100 py-3 mt-2">Seç</a>
                                 </div>
                             </div>
