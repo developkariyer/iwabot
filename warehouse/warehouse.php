@@ -64,6 +64,7 @@ function containerOptGrouped($containers) {
             if (!isset($raflar[$container->name])) {
                 $raflar[$container->name] = [];
             }
+            $raflar[$container->name][] = $container;
         } else {
             if ($container->parent) {
                 if (!isset($raflar[$container->parent->name])) {
@@ -80,7 +81,13 @@ function containerOptGrouped($containers) {
     foreach($raflar as $raflar_name => $raflar_containers) {
         $html .= '<optgroup label="'.$raflar_name.'">';
         foreach($raflar_containers as $container) {
-            $html .= '<option value="'.$container->id.'">'.$container->name.'</option>';
+            $html .= '<option value="'.$container->id.'">';
+            if ($container->type === 'Raf' || $container->type === 'Gemi') {
+                $html .= 'Rafta açık';
+            } else {
+                $html .= '📦 '.$container->name;
+            }
+            $html .= '</option>';
         }
         $html .= '</optgroup>';
     }
