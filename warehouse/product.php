@@ -64,7 +64,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                 </button>
             </h2>
             <div id="productAccordion2" class="accordion-collapse collapse" aria-labelledby="headingMain" data-bs-parent="#mainAccordion2">
-                <div class="accordion-body p-0">
+                <div class="accordion-body p-0 w-100">
                     <?= productSelect() ?>
                 </div>
             </div>
