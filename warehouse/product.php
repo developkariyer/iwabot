@@ -42,7 +42,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                                             <option value="">Raf/Koli Seçin</option>
                                             <?= containerOptGrouped($product['product']) ?>
                                         </select>
-                                        <button id="Submit<?= $index ?>Product<?= $product['product']->id ?>" type="submit" class="btn btn-success rounded-pill w-100 py-3 mt-2">Ürün Çıkışı Yap</button>
+                                        <button id="Submit<?= $index ?>Product<?= $product['product']->id ?>" type="submit" class="btn btn-primary rounded-pill w-100 py-3 mt-2">Ürün Çıkışı Yap</button>
                                     </form>
                                 </div>
                             </div>
@@ -57,7 +57,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
         <!-- Second Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain2">
-                <button class="accordion-button bg-outline-primary text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion2" aria-expanded="true" aria-controls="productAccordion2">
+                <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion2" aria-expanded="true" aria-controls="productAccordion2">
                     <span><strong>Kendiniz Ürün Seçin</strong></span>
                 </button>
             </h2>
