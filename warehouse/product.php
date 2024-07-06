@@ -99,27 +99,17 @@ $(document).ready(function() {
         if (productId) {
             $('#selectedProduct').removeClass('d-none');
             // Make the AJAX request
-/*            $.ajax({
+            $.ajax({
                 url: 'controller.php',
                 method: 'POST',
                 data: { product_id: productId , action: 'product_info', csrf_token: '<?= $_SESSION['csrf_token'] ?>'},
                 success: function(response) {
-                    // Assuming the response is a JSON object with product information
-                    var product = response.product;
-                    
-                    // Set hidden fields
-                    $('#hiddenField1').val(product.field1); // Replace with actual field IDs and response fields
-                    $('#hiddenField2').val(product.field2);
-
-                    // Update visible fields or divs
-                    $('#product_name').text(product.name);
-                    $('#product_fnsku').text(product.fnsku);
-                    $('#product_info').removeClass('d-none');
+                    $('#product_info').html(response.info);
                 },
                 error: function(xhr, status, error) {
                     console.error('Error fetching product information:', error);
                 }
-            });*/
+            });
         } else {
             // Hide the product_info div and clear hidden fields
             $('#selectedProduct').addClass('d-none');
