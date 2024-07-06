@@ -11,7 +11,6 @@ abstract class WarehouseAbstract
 
     public function __construct($id = null, $data = [])
     {
-        error_log('Constructing '.get_called_class().' with id '.$id);
         $this->id = $id;
         $this->setDbValues($data);
         if ($id) {
@@ -21,7 +20,6 @@ abstract class WarehouseAbstract
 
     protected static function addInstance($id, $instance)
     {
-        error_log('Adding instance cache of '.get_called_class().' with id '.$id);
         $class = get_called_class();
         if (!isset(static::$instances[$class])) {
             static::$instances[$class] = [];
@@ -31,7 +29,6 @@ abstract class WarehouseAbstract
 
     protected static function getInstance($id, $class=null)
     {
-        error_log('Getting instance cache of '.get_called_class().' with id '.$id);
         if (is_null($class)) {
             $class = get_called_class();
         }
@@ -41,13 +38,11 @@ abstract class WarehouseAbstract
         if (isset(static::$instances[$class][$id])) {
             return static::$instances[$class][$id];
         }
-        error_log('Instance not found');
         return null;
     }
 
     public static function getById($id)
     {
-        error_log('Getting '.get_called_class().' by id with id '.$id);
         if (empty($id)) {
             return null;
         }
@@ -60,7 +55,6 @@ abstract class WarehouseAbstract
 
     public static function getByField($field, $value, $check=true)
     {
-        error_log('Getting '.get_called_class().' by field '.$field.' with value '.$value);
         if (empty($value)) {
             return null;
         }
@@ -76,13 +70,11 @@ abstract class WarehouseAbstract
             }
             return new static($data['id'], $data);
         }
-        error_log('Instance not found by field '.$field.' with value '.$value);
         return null;
     }
 
     public function save()
     {
-        error_log('Saving '.get_called_class().' with id '.$this->id);
         if ($this->id) {
             return $this->update();
         } else {
@@ -92,7 +84,6 @@ abstract class WarehouseAbstract
 
     protected function update()
     {
-        error_log('Updating '.get_called_class().' with id '.$this->id);
         if (!$this->validate()) {
             return false;
         }
@@ -110,7 +101,6 @@ abstract class WarehouseAbstract
 
     protected function insert()
     {
-        error_log('Inserting '.get_called_class());
         if (!$this->validate(false)) {
             return false;
         }
@@ -125,10 +115,8 @@ abstract class WarehouseAbstract
         if ($stmt->execute($values)) {
             $this->id = $GLOBALS['pdo']->lastInsertId();
             static::addInstance($this->id, $this);
-            error_log('Inserted '.get_called_class().' with id '.$this->id);
             return true;
         }
-        error_log('Failed to insert '.get_called_class());
         return false;
     }
 
@@ -140,11 +128,9 @@ abstract class WarehouseAbstract
         $fields = static::getDBFields();
         foreach ($fields as $field) {
             if (!$this->validateField($field, $this->$field)) {
-                error_log('Validation failed for field '.$field.' with value '.$this->$field);
                 return false;
             }
         }
-        error_log('Validation passed');
         return true;
     }
 
@@ -186,7 +172,6 @@ abstract class WarehouseAbstract
 
     public function __get($field)
     {
-        error_log('Getting field '.$field.' from '.get_called_class().' with id '.$this->id);
         if (in_array($field, static::getDBFields())) {
             if (isset($this->dbValues[$field])) {
                 return $this->dbValues[$field];
@@ -203,7 +188,6 @@ abstract class WarehouseAbstract
 
     public function __set($field, $value)
     {
-        error_log('Setting field '.$field.' to '.$value.' in '.get_called_class().' with id '.$this->id);
         if (in_array($field, static::getDBFields())) {
             if ($this->validateField($field, $value)) {
                 $this->dbValues[$field] = $value;
@@ -259,6 +243,15 @@ abstract class WarehouseAbstract
             return $instance;
         }
         return null;
+    }
+
+    public function getAsArray()
+    {
+        $json = [];
+        $json['id'] = $this->id;
+        $json['class'] = get_called_class();
+        $json = array_merge($json, $this->dbValues);
+        return $json;
     }
 
     abstract protected static function getCustomMethods();

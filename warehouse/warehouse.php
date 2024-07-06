@@ -3,6 +3,10 @@
 require_once('../_login.php');
 require_once('../_init.php');
 
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 require_once('WarehouseAbstract.php');
 require_once('WarehouseProduct.php');
 require_once('WarehouseContainer.php');

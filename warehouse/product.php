@@ -5,12 +5,22 @@ require_once('warehouse.php');
 include '../_header.php';
 
 ?>
+
 <div class="container mt-5">
     <div class="jumbotron text-center">
-        <h1>IWA Depo Yönetim</h1>
-        <p><span class="username"><?= $_SESSION['user_info']['name'] ?></span></p>
-        <p>Lütfen yapmak istediğiniz işlemi seçiniz.</p>
+        <h1>Ürün İşlemleri</h1>
+        <p>İşlem yapmak istediğiniz ürünü seçiniz. Depo Ana Menü için <a href="./">buraya basınız.</a></p>
     </div>
+
+
+
+
+
+
+
+
+
+
     <div class="row g-3 m-3">
         <?= button('product.php', 'Ürün İşlem') ?>
         <?= button('container.php', 'Koli/Raf İşlem') ?>
@@ -23,11 +33,9 @@ include '../_header.php';
         <?= button('order.php', 'Yeni Sipariş') ?>
         <?= button('order.php', 'Sipariş Sil') ?>
     </div>
-
     <?= wh_menu() ?>
 
 </div>
-
 <?php
 
 include '../_footer.php';

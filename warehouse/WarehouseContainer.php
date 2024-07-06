@@ -29,7 +29,6 @@ class WarehouseContainer extends WarehouseAbstract
 
     protected static function validateField($field, $value)
     {
-        error_log('WarehouseContainer: Validating field '.$field.' with value '.$value);
         switch ($field) {
             case 'name':
                 return is_string($value) && strlen($value) <= 255;
@@ -125,25 +124,6 @@ class WarehouseContainer extends WarehouseAbstract
         return $this->parent;
     }
 
-    protected function setParent($newParent)
-    {
-        if ($newParent instanceof self) {
-            $oldParentId = $this->parent_id;
-            if ($this->getParent()) {
-                $this->parent->children = [];
-            }
-            $this->parent_id = $newParent->id;
-            $this->parent = $newParent;
-            $newParent->children = [];
-            if ($this->save()) {
-                $this->logAction('setParent', ['old_parent_id' => $oldParentId, 'new_parent_id' => $this->parent_id]);
-                return true;
-            }
-            return false;
-        }
-        throw new Exception("Parent must be an instance of WarehouseContainer");
-    }
-
     public static function getWarehouses()
     {
         if (empty(static::$warehouses)) {
@@ -165,7 +145,7 @@ class WarehouseContainer extends WarehouseAbstract
         return static::$parentContainers;
     }
 
-    public static function getContainers($type = 'Raf', $parent_id = -1, $warehouse = null)
+    protected static function getContainers($type = 'Raf', $parent_id = -1, $warehouse = null)
     {
         if (!static::validateField('type', $type)) {
             throw new Exception("Invalid container type");
@@ -201,4 +181,38 @@ class WarehouseContainer extends WarehouseAbstract
         return $containers;
     }
 
+    public function getAsArray()
+    {
+        $retval = parent::getAsArray();
+        $retval['children'] = [];
+        foreach ($this->getChildren() as $child) {
+            $retval['children'][] = $child->getAsArray();
+        }
+        $retval['products'] = [];
+        foreach ($this->getProducts() as $product) {
+            $productAsArray = $product->getAsArray();
+            $productAsArray['stock'] = $product->inContainerCount[$this->id];
+            $retval['products'][] = $productAsArray;
+        }
+        return $retval;
+    }
+
+    protected function setParent($newParent)
+    {
+        if ($newParent instanceof self) {
+            $oldParentId = $this->parent_id;
+            if ($this->getParent()) {
+                $this->parent->children = [];
+            }
+            $this->parent_id = $newParent->id;
+            $this->parent = $newParent;
+            $newParent->children = [];
+            if ($this->save()) {
+                $this->logAction('setParent', ['old_parent_id' => $oldParentId, 'new_parent_id' => $this->parent_id]);
+                return true;
+            }
+            return false;
+        }
+        throw new Exception("Parent must be an instance of WarehouseContainer");
+    }
 }
