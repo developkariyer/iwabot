@@ -50,7 +50,7 @@ function productInfo($product) {
     <b>IWASKU:</b> {$product->iwasku}<br>
     <b>Özellikler (metrik):</b><br>{$product->dimension1}x{$product->dimension2}x{$product->dimension3}cm, {$product->weight}gr<br>
     <b>Özellikler (imperyal):</b><br>".metricToImp($product->dimension1)."x".metricToImp($product->dimension2)."x".metricToImp($product->dimension3)."in, ".metricToImp($product->weight, 0.00220462)."lbs<br>
-    <b>Toplam Depo Stoğu:</b> {$product->getTotalCount()} adet";
+    <b>Toplam Depo Stoğu:</b> {$product->getTotalCount()} adet<br>";
     //    <b>Seri Numarası:</b> {$product->serial_number}<br>
 
 }

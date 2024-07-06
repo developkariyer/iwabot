@@ -33,7 +33,7 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
                                 <div class="accordion-body">
                                     <p>
                                         <?= productInfo($product['product']) ?>
-                                        <b>Bulunduğu Raflar:</b><br>
+                                        <b>Çıkış Yapılacak Raf/Koli Seçin:</b><br>
                                         <?php foreach ($product['product']->getContainers() as $container): ?>
                                             <li><b><?= $container->type ?></b> <?= $container->name ?>: <?= $product['product']->getInContainerCount($container) ?> adet</li>
                                         <?php endforeach; ?>
