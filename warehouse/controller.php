@@ -250,7 +250,7 @@ function handleAddSoldItem() {
         addMessage('add_new_sale: Geçersiz parametre!');
         return;
     }
-    $product->addUnfulfilledSale($description);
+    $product->addSoldItem($description);
     addMessage("$product->name için yeni satış eklendi");
 }
 
