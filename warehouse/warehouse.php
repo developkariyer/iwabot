@@ -61,16 +61,26 @@ function containerOptGrouped($containers) {
     $raflar = [];
     foreach($containers as $container) {
         if ($container->type == 'Raf' || $container->type == 'Gemi') {
-            if (!isset($raflar[$container->name])) {
-                $raflar[$container->name] = [];
+            if ($container->type === 'Gemi') {
+                $icon = '🚢'; //\u{1F6A2}
+            } else {
+                $icon = '🗄️'; // \u{1F5C4}
             }
-            $raflar[$container->name][] = $container;
+            if (!isset($raflar["$icon {$container->name}"])) {
+                $raflar["$icon {$container->name}"] = [];
+            }
+            $raflar["$icon {$container->name}"][] = $container;
         } else {
             if ($container->parent) {
-                if (!isset($raflar[$container->parent->name])) {
-                    $raflar[$container->parent->name] = [];
+                if ($container->parent->type === 'Gemi') {
+                    $icon = '📦'; //\u{1F4E6}
+                } else {
+                    $icon = '📦'; //\u{1F4E6}
                 }
-                $raflar[$container->parent->name][] = $container;
+                if (!isset($raflar["$icon {$container->parent->name}"])) {
+                    $raflar["$icon {$container->parent->name}"] = [];
+                }
+                $raflar["$icon {$container->parent->name}"][] = $container;
             } else {
                 throw new Exception('Rafı veya gemisi olmayan bir Koli var: '.$container->name);
             }            
@@ -82,10 +92,11 @@ function containerOptGrouped($containers) {
         $html .= '<optgroup label="'.$raflar_name.'">';
         foreach($raflar_containers as $container) {
             $html .= '<option value="'.$container->id.'">';
-            if ($container->type === 'Raf' || $container->type === 'Gemi') {
+            if ($container->type === 'Raf') {
                 $html .= 'Rafta açık';
             } else {
-                $html .= '📦 '.$container->name;
+                $icon = '📦'; //\u{1F4E6}
+                $html .= "$icon {$container->name}";
             }
             $html .= '</option>';
         }
