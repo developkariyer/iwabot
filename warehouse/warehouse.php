@@ -92,11 +92,13 @@ function containerOptGrouped($containers) {
         $html .= '<optgroup label="'.$raflar_name.'">';
         foreach($raflar_containers as $container) {
             $html .= '<option value="'.$container->id.'">';
-            if ($container->type === 'Raf') {
-                $html .= 'Rafta açık';
-            } else {
+            if ($container->type === 'Koli') {
                 $icon = '📦'; //\u{1F4E6}
-                $html .= "$icon {$container->name}";
+                $html .= "$icon {$container->name} ({$container->parent->name} rafında/gemisinde)";
+            } elseif ($container->type === 'Raf') {
+                $html .= $container->name.' rafında açık';
+            } else {
+                $html .= $container->name.' gemisinde bilinmiyor! (HATA!)';
             }
             $html .= '</option>';
         }
