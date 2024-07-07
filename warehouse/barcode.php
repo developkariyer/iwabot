@@ -13,7 +13,7 @@ include '../_header.php';
 
     <div class="d-none" id="cameraOpenDiv">
         <video id="video" width="100%" height="200" autoplay></video>
-        <p>Scanned Code: <span id="barcode">Waiting...</span></p>
+        <p class="text-center"><span id="barcode">Waiting...</span></p>
     </div>
     <div class="row g-3 m-3 mt-5">
         <div class="col-md-3"></div>
