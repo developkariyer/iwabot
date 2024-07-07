@@ -151,7 +151,11 @@ abstract class WarehouseAbstract
 
     public function clearAllCache()
     {
-        static::clearCache([get_called_class()."getAll"]);
+        if (is_null(static::$predis)) {
+            static::$predis = new Predis\Client();
+        }
+        error_log("Cache flushed");
+        return static::$predis->flushdb();
     }
 
     protected function validate($checkId = true)
@@ -275,6 +279,7 @@ abstract class WarehouseAbstract
         $instance = new static(null, $data);
         if ($instance->save()) {
             $instance->logAction('addNew', $data);
+            $instance->clearAllCache();
             return $instance;
         }
         return null;

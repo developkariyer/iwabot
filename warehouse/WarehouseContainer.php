@@ -252,11 +252,12 @@ class WarehouseContainer extends WarehouseAbstract
     public function clearAllCache()
     {
         error_log("Clearing all cache for Container {$this->id}");
+        /*
         static::clearCache([
             "Container{$this->id}Products",
             "containerOptGrouped0",
             "containerOptGrouped{$this->id}",
-        ]);
+        ]);*/
         parent::clearAllCache();
     }
 

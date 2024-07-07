@@ -231,11 +231,11 @@ class WarehouseProduct extends WarehouseAbstract
     public function clearAllCache()
     {
         error_log("Clearing all cache for Product {$this->id}");
-        static::clearCache([
+        /*static::clearCache([
             "Product{$this->id}Containers",
             "containerOptGrouped0",
             "containerOptGrouped{$this->id}"
-        ]);
+        ]);*/
         parent::clearAllCache();
     }
 
