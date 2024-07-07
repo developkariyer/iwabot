@@ -76,13 +76,13 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
         <!-- Second Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain2">
-                <button class="accordion-button bg-success text-white <?= $product_id ? '' : 'collapsed' ?> py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion2" aria-expanded="true" aria-controls="productAccordion2">
+                <button class="accordion-button bg-success text-white <?= $product_id ? '' : 'collapsed' ?> w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion2" aria-expanded="true" aria-controls="productAccordion2">
                     <span><strong>Kendiniz Ürün Seçin</strong></span>
                 </button>
             </h2>
             <div id="productAccordion2" class="accordion-collapse collapse <?= $product_id ? 'show' : '' ?>" aria-labelledby="headingMain2" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-0 w-100">
-                    <a href="barcode.php" class="btn btn-success w-100 py-3 m-3 rounded-pill">Barkod Okutun</a>
+                    <a href="barcode.php" class="btn btn-success py-3 m-3 rounded-pill">Barkod Okutun</a>
                     <?= productSelect($product_id) ?>
                     <div id="selectedProduct" class="<?= $product_id ? '' : 'd-none' ?>">
                         <div class="p-3" id="product_info">
