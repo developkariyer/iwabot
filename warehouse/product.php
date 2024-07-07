@@ -171,6 +171,8 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
 
     </div>
 
+    <hr>
+
     <?= wh_menu() ?>
 </div>
 <script defer>
