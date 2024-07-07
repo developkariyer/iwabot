@@ -97,8 +97,6 @@ include '../_header.php';
                 const barcodes = await barcodeDetector.detect(video);
                 if (barcodes.length > 0) {
                     const detectedBarcode = barcodes[0].rawValue;
-                    video.pause();
-                    stream.getTracks().forEach(track => track.stop());
                     document.getElementById('barcode').textContent = detectedBarcode;
                     checkBarcode(detectedBarcode);
                 }
@@ -110,6 +108,7 @@ include '../_header.php';
     };
 
     const checkBarcode = (barcode) => {
+        closeCamera(); // Stop camera during barcode check
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'controller.php', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
