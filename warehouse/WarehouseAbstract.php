@@ -20,7 +20,7 @@ abstract class WarehouseAbstract
         }
     }
 
-    protected static function getCache($key)
+    public static function getCache($key)
     {
         if (is_null(static::$predis)) {
             static::$predis = new Predis\Client();
@@ -28,7 +28,7 @@ abstract class WarehouseAbstract
         return static::$predis->get($key);
     }
 
-    protected static function setCache($key, $value)
+    public static function setCache($key, $value)
     {
         if (is_null(static::$predis)) {
             static::$predis = new Predis\Client();
@@ -36,7 +36,7 @@ abstract class WarehouseAbstract
         return static::$predis->set($key, $value);
     }
 
-    protected static function clearCache($keyArray)
+    public static function clearCache($keyArray)
     {
         if (is_null(static::$predis)) {
             static::$predis = new Predis\Client();
