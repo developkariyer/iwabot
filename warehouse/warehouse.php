@@ -56,6 +56,13 @@ function productInfo($product) {
 }
 
 function containerOptGrouped($product = null) {
+    $product_id = $product instanceof WarehouseProduct ? $product->id :0;
+    $cache = WarehouseAbstract::getCache("containerOptGrouped{$product_id}");
+    if (!empty($cache) && is_string($cache)) {
+        error_log("Cache Hit: containerOptGrouped{$product_id}");
+        return $cache;
+    }
+
     if ($product instanceof WarehouseProduct) {
         $containers = $product->getContainers();
     } else {
@@ -110,6 +117,8 @@ function containerOptGrouped($product = null) {
         }
         $html .= '</optgroup>';
     }
+    WarehouseAbstract::setCache("containerOptGrouped{$product_id}", $html);
+
     return $html;
 }
 
