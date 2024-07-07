@@ -81,7 +81,7 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
                 </button>
             </h2>
             <div id="productAccordion2" class="accordion-collapse collapse <?= $product_id ? 'show' : '' ?>" aria-labelledby="headingMain2" data-bs-parent="#mainAccordion">
-                <div class="accordion-body p-0 w-100">
+                <div class="accordion-body p-0 w-100 mb-3">
                     <a href="barcode.php" class="btn btn-success py-3 m-3 rounded-pill <?= $product_id ? 'd-none':'' ?>">Barkod Okutun</a>
                     <?= productSelect($product_id) ?>
                     <div id="selectedProduct" class="<?= $product_id ? '' : 'd-none' ?>">
