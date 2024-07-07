@@ -8,7 +8,8 @@ include '../_header.php';
 <div class="container mt-5">
     <div class="jumbotron text-center">
         <h1>IWA Depo Yönetim</h1>
-        <p>Lütfen okutmak istediğiniz barkodu kameraya gösteriniz.</p>
+        <p>Barkodu kameraya gösteriniz.</p>
+        <p class="alert alert-warning">iOS cihazlarda çalışmaz :(</p>
     </div>
 
     <div class="d-none" id="cameraOpenDiv">
