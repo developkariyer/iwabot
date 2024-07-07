@@ -12,7 +12,7 @@ include '../_header.php';
 
 $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
 
-$product_info='';
+$product_info=$product_containers='';
 $product_id = null;
 if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GET['product_id'])) {
     $product = WarehouseProduct::getById($_GET['product_id']);
@@ -20,6 +20,7 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
         $product_info = productInfo($product);
         if ($product_info) {
             $product_id = $product->id;
+            $product_containers = containerOptGrouped($product);
         }
     }
 }
@@ -88,11 +89,11 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
                             <?= $product_info ?>
                         </div>
                         <form id="customActionForm" action="controller.php" method="post">
-                            <input type="hidden" name="product_id" id="hidden_product_id">
+                            <input type="hidden" name="product_id" id="hidden_product_id" value="<?= $product_id ?>">
                             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                             <select id="dynamic_container_list" name="container_id" class="form-select btn-outline-success rounded-pill w-100 py-3">
                                 <option value="">Mevcut Raf/Koli Seçin</option>
-                                <!-- dynamically loaded option values -->
+                                <?= $product_containers ?>
                             </select>
                             <select name="new_container_id" class="form-select btn-outline-success rounded-pill w-100 py-3">
                                 <option value="">Yeni Raf/Koli Seçin</option>
