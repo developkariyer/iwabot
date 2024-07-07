@@ -284,6 +284,7 @@ abstract class WarehouseAbstract
             $cache = unserialize(static::getCache(get_called_class()."getAll"));
             if (is_array($cache)) {
                 static::$allObjects = $cache;
+                error_log("Cache Hit: ".get_called_class()."getAll");
             } else {
                 $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName(). " ORDER BY name");
                 $stmt->execute();
