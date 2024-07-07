@@ -57,6 +57,9 @@ switch($action) {
     case 'product_info':
         handleProductInfo();
         break;
+    case 'barcode_scan':
+        handleBarcodeScan();
+        break;
     case 'container_info':
         handleContainerInfo();
         break;
@@ -273,6 +276,17 @@ function handleProductInfo() {
     }
     $retval['info'] = productInfo($product);
     die(json_encode($retval));
+}
+
+function handleBarcodeScan() {
+    header('Content-type: application/json');
+    $product = WarehouseProduct::getByField('fnsku', getPostValue('fnsku'));
+    if (!$product) {
+        die(json_encode([
+            'error' => 'Ürün bilgisi bulunamadı.',
+        ]));
+    }
+    die(json_encode($product->getAsArray()));
 }
 
 function handleContainerInfo() {
