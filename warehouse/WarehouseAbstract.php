@@ -281,8 +281,10 @@ abstract class WarehouseAbstract
     public static function getAll()
     {
         if (empty(static::$allObjects)) {
-            static::$allObjects = unserialize(static::getCache(get_called_class()."getAll"));
-            if (empty(static::$allObjects)) {
+            $cache = unserialize(static::getCache(get_called_class()."getAll"));
+            if (is_array($cache)) {
+                static::$allObjects = $cache;
+            } else {
                 $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName(). " ORDER BY name");
                 $stmt->execute();
                 $objects = [];

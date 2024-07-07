@@ -66,8 +66,10 @@ class WarehouseProduct extends WarehouseAbstract
             return [];
         }
         if (empty($this->containers)) {
-            $this->containers = unserialize(static::getCache("Product{$this->id}Containers"));
-            if (empty($this->containers)) {
+            $cache = unserialize(static::getCache("Product{$this->id}Containers"));
+            if (is_array($cache)) {
+                $this->containers = $cache;
+            } else {
                 $stmt = $GLOBALS['pdo']->prepare("SELECT DISTINCT container_id FROM " . WarehouseAbstract::$productJoinTableName . " WHERE product_id = :product_id");
                 $stmt->execute(['product_id' => $this->id]);
                 $containers = [];
