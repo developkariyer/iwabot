@@ -201,7 +201,7 @@ class WarehouseProduct extends WarehouseAbstract
             }
             if ($retval) {
                 $this->logAction('placeInContainer', ['container_id' => $container->id, 'count' => $retval]);
-                static::clearCache(["Product{$this->id}Containers", "Container{$container->id}Products"]);
+                static::clearCache(["Product{$this->id}Containers", "Container{$container->id}Products"]);                
             }
             return $retval;
         }
