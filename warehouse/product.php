@@ -111,11 +111,11 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
         <!-- Third Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain3">
-                <button class="accordion-button bg-success text-white <?= $product_id ? '' : 'collapsed' ?> w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion2" aria-expanded="true" aria-controls="productAccordion2">
+                <button class="accordion-button bg-success text-white <?= $product_id ? '' : 'collapsed' ?> w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion3" aria-expanded="true" aria-controls="productAccordion3">
                     <span><strong>Kataloğa Yeni Ürün Ekleyin</strong></span>
                 </button>
             </h2>
-            <div id="productAccordion2" class="accordion-collapse collapse <?= $product_id ? 'show' : '' ?>" aria-labelledby="headingMain3" data-bs-parent="#mainAccordion">
+            <div id="productAccordion3" class="accordion-collapse collapse <?= $product_id ? 'show' : '' ?>" aria-labelledby="headingMain3" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-0 w-100">
                     <form action="controller.php" method="POST">
                         <input type="hidden" name="action" value="add_product">
