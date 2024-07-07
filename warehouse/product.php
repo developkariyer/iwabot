@@ -108,6 +108,67 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
                 </div>
             </div>
         </div>
+        <!-- Third Main Accordion Item -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingMain3">
+                <button class="accordion-button bg-success text-white <?= $product_id ? '' : 'collapsed' ?> w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion2" aria-expanded="true" aria-controls="productAccordion2">
+                    <span><strong>Kataloğa Yeni Ürün Ekleyin</strong></span>
+                </button>
+            </h2>
+            <div id="productAccordion2" class="accordion-collapse collapse <?= $product_id ? 'show' : '' ?>" aria-labelledby="headingMain3" data-bs-parent="#mainAccordion">
+                <div class="accordion-body p-0 w-100">
+                    <form action="controller.php" method="POST">
+                        <input type="hidden" name="action" value="add_product">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Ürün Adı</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fnsku" class="form-label">FNSKU</label>
+                            <input type="text" class="form-control" id="fnsku" name="fnsku" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Category</label>
+                            <input type="text" class="form-control" id="category" name="category" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="iwasku" class="form-label">IWASKU</label>
+                            <input type="text" class="form-control" id="iwasku" name="iwasku">
+                        </div>
+                        <div class="mb-3">
+                            <label for="dimension1" class="form-label">Ölçüler (cm)</label>
+                            <div class="row">
+                                <div class="col-3">
+                                    <input type="text" class="form-control" id="dimension1" name="dimension1" placeholder="Dimension 1">
+                                </div>
+                                <div class="col-1 text-center">
+                                    <span class="form-control-plaintext">x</span>
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" class="form-control" id="dimension2" name="dimension2" placeholder="Dimension 2">
+                                </div>
+                                <div class="col-1 text-center">
+                                    <span class="form-control-plaintext">x</span>
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" class="form-control" id="dimension3" name="dimension3" placeholder="Dimension 3">
+                                </div>
+                                <div class="col-1 text-center">
+                                    <span class="form-control-plaintext">cm</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="weight" class="form-label">Ağırlık (gr)</label>
+                            <input type="text" class="form-control" id="weight" name="weight">
+                        </div>
+                        <button type="submit" class="btn btn-primary rounded-pill w-100 py-3 mt-2">Yeni Ürün Ekle</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <?= wh_menu() ?>
