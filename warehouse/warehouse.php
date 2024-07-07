@@ -111,7 +111,7 @@ function containerOptGrouped($product = null) {
     return $html;
 }
 
-function productSelect() {
+function productSelect($product_id = null) {
     $GLOBALS['footer_script'] = '$(document).ready(function(){$(\'.select2-select\').select2({theme: "classic"});});';
 
     $options = [];
@@ -119,7 +119,12 @@ function productSelect() {
         if (!isset($options[$product->category])) {
             $options[$product->category] = [];
         }
-        $options[$product->category][] = '<option value="'.$product->id.'">'.$product->name.' ('.$product->fnsku.')</option>';
+        if ($product_id && $product->id == $product_id) {
+            $selected = ' selected';
+        } else {
+            $selected = '';
+        }
+        $options[$product->category][] = "<option value='{$product->id}' $selected>{$product->name} ({$product->fnsku})</option>";
     }
     $html = '<select id="product_select" name="product_id" class="select2-select form-select w-100" required style="width: 100%;">';
     $html .= '<option value="">Ürün Seçin</option>';

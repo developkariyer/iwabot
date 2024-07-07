@@ -11,6 +11,19 @@ require_once('warehouse.php');
 include '../_header.php';
 
 $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
+
+$product_info='';
+$product_id = null;
+if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GET['product_id'])) {
+    $product = WarehouseProduct::getById($_GET['product_id']);
+    if ($product) {
+        $product_info = productInfo($product);
+        if ($product_info) {
+            $product_id = $product->id;
+        }
+    }
+}
+
 ?>
 
 <div class="container mt-5">
@@ -63,16 +76,16 @@ $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
         <!-- Second Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain2">
-                <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion2" aria-expanded="true" aria-controls="productAccordion2">
+                <button class="accordion-button bg-success text-white <?= $product_id ? '' : 'collapsed' ?> w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion2" aria-expanded="true" aria-controls="productAccordion2">
                     <span><strong>Kendiniz Ürün Seçin</strong></span>
                 </button>
             </h2>
             <div id="productAccordion2" class="accordion-collapse collapse" aria-labelledby="headingMain2" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-0 w-100">
                     <?= productSelect() ?>
-                    <div id="selectedProduct" class="d-none">
+                    <div id="selectedProduct" class="<?= $product_id ? '' : 'd-none' ?>">
                         <div class="p-3" id="product_info">
-                            <p>Ürün Bilgileri</p>
+                            <?= $product_info ?>
                         </div>
                         <form id="customActionForm" action="controller.php" method="post">
                             <input type="hidden" name="product_id" id="hidden_product_id">
