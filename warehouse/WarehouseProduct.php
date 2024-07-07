@@ -78,6 +78,7 @@ class WarehouseProduct extends WarehouseAbstract
                     $containers[] = WarehouseContainer::getById($data['container_id']);
                 }
                 $this->containers = $containers;
+                error_log("Cache Miss: Product{$this->id}Containers");
                 static::setCache("Product{$this->id}Containers", serialize($this->containers));
             }
         }
@@ -123,15 +124,23 @@ class WarehouseProduct extends WarehouseAbstract
     public static function getUnfulfilledProducts()
     {
         if (empty(static::$unfulfilled)) {
-            static::$unfulfilled =[];
-            $stmt = $GLOBALS['pdo']->query("SELECT * FROM warehouse_sold WHERE fulfilled = FALSE ORDER BY product_id ASC");
-            while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $product = static::getById($data['product_id']);
-                if (!$product) {
-                    continue;
+            $cache = unserialize(static::getCache("getUnfulfilledProducts"));
+            if (is_array($cache)) {
+                static::$unfulfilled = $cache;
+                error_log("Cache Hit: getUnfulfilledProducts");
+            } else {
+                static::$unfulfilled =[];
+                $stmt = $GLOBALS['pdo']->query("SELECT * FROM warehouse_sold WHERE fulfilled = FALSE ORDER BY product_id ASC");
+                while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $product = static::getById($data['product_id']);
+                    if (!$product) {
+                        continue;
+                    }
+                    static::$unfulfilled[$data['id']] = $data;
+                    static::$unfulfilled[$data['id']]['product'] = $product;
                 }
-                static::$unfulfilled[$data['id']] = $data;
-                static::$unfulfilled[$data['id']]['product'] = $product;
+                error_log("Cache Miss: getUnfulfilledProducts");
+                static::setCache("getUnfulfilledProducts", serialize(static::$unfulfilled));
             }
         }
         return static::$unfulfilled;
@@ -155,6 +164,7 @@ class WarehouseProduct extends WarehouseAbstract
                 $stmt = $GLOBALS['pdo']->prepare("UPDATE warehouse_sold SET fulfilled = TRUE WHERE id = :id");
                 if ($stmt->execute(['id' => $sold_id])) {
                     $this->logAction('fulfil', ['sold_id' => $sold_id]);
+                    static::clearCache(["getUnfulfilledProducts"]);
                     return true;
                 }
             } else {
@@ -173,6 +183,7 @@ class WarehouseProduct extends WarehouseAbstract
         $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_sold (product_id, description) VALUES (:product_id, :description)");
         if ($stmt->execute(['product_id' => $this->id, 'description' => $description])) {
             $this->logAction('addSoldItem', ['description' => $description]);
+            static::clearCache(["getUnfulfilledProducts"]);
             return true;
         }
         return false;
