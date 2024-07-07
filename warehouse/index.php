@@ -2,10 +2,6 @@
 
 require_once('warehouse.php');
 
-$client = new Predis\Client();
-$client->set('foo', 'bar');
-$value = $client->get('foo');
-
 include '../_header.php';
 
 ?>

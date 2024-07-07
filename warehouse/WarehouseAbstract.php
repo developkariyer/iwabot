@@ -9,7 +9,7 @@ abstract class WarehouseAbstract
     protected $dbValues = [];
     static protected $instances = [];
     protected static $allObjects = [];
-
+    static protected $predis = null;
 
     public function __construct($id = null, $data = [])
     {
@@ -18,6 +18,27 @@ abstract class WarehouseAbstract
         if ($id) {
             static::addInstance($id, $this);
         }
+    }
+
+    protected static function getCache($key)
+    {
+        if (is_null(static::$predis)) {
+            static::$predis = new Predis\Client();
+        }
+        return static::$predis->get($key);
+    }
+
+    protected static function setCache($key, $value)
+    {
+        if (is_null(static::$predis)) {
+            static::$predis = new Predis\Client();
+        }
+        return static::$predis->set($key, $value);
+    }
+
+    protected static function clearCache($key)
+    {
+        return static::$predis->del([$key]);
     }
 
     protected static function addInstance($id, $instance)
@@ -117,6 +138,7 @@ abstract class WarehouseAbstract
         if ($stmt->execute($values)) {
             $this->id = $GLOBALS['pdo']->lastInsertId();
             static::addInstance($this->id, $this);
+            static::clearCache([get_called_class()."getAll"]);
             return true;
         }
         return false;
@@ -259,17 +281,21 @@ abstract class WarehouseAbstract
     public static function getAll()
     {
         if (empty(static::$allObjects)) {
-            $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName(). " ORDER BY name");
-            $stmt->execute();
-            $objects = [];
-            while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $instance = static::getInstance($data['id']);
-                if (!$instance) {
-                    $instance = new static($data['id'], $data);
+            static::$allObjects = unserialize(static::getCache(get_called_class()."getAll"));
+            if (empty(static::$allObjects)) {
+                $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName(). " ORDER BY name");
+                $stmt->execute();
+                $objects = [];
+                while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $instance = static::getInstance($data['id']);
+                    if (!$instance) {
+                        $instance = new static($data['id'], $data);
+                    }
+                    $objects[] = $instance;
                 }
-                $objects[] = $instance;
+                static::$allObjects = $objects;
+                static::setCache(get_called_class()."getAll", serialize(static::$allObjects));
             }
-            static::$allObjects = $objects;
         }
         return static::$allObjects;
     }

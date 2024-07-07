@@ -66,13 +66,17 @@ class WarehouseProduct extends WarehouseAbstract
             return [];
         }
         if (empty($this->containers)) {
-            $stmt = $GLOBALS['pdo']->prepare("SELECT DISTINCT container_id FROM " . WarehouseAbstract::$productJoinTableName . " WHERE product_id = :product_id");
-            $stmt->execute(['product_id' => $this->id]);
-            $containers = [];
-            while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $containers[] = WarehouseContainer::getById($data['container_id']);
+            $this->containers = unserialize(static::getCache("Product{$this->id}Containers"));
+            if (empty($this->containers)) {
+                $stmt = $GLOBALS['pdo']->prepare("SELECT DISTINCT container_id FROM " . WarehouseAbstract::$productJoinTableName . " WHERE product_id = :product_id");
+                $stmt->execute(['product_id' => $this->id]);
+                $containers = [];
+                while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $containers[] = WarehouseContainer::getById($data['container_id']);
+                }
+                $this->containers = $containers;
+                static::setCache("Product{$this->id}Containers", serialize($this->containers));
             }
-            $this->containers = $containers;
         }
         return $this->containers;
     }
@@ -183,6 +187,7 @@ class WarehouseProduct extends WarehouseAbstract
             }
             if ($retval) {
                 $this->logAction('placeInContainer', ['container_id' => $container->id, 'count' => $retval]);
+                static::clearCache(["Product{$this->id}Containers"]);
             }
             return $retval;
         }
@@ -200,6 +205,7 @@ class WarehouseProduct extends WarehouseAbstract
             $stmt->execute();
             if ($count = $stmt->rowCount()) {
                 $this->logAction('removeFromContainer', ['container_id' => $container->id, 'count' => $count]);
+                static::clearCache(["Product{$this->id}Containers"]);
                 return $count;
             }
         }
