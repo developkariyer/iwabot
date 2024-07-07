@@ -225,7 +225,8 @@ class WarehouseContainer extends WarehouseAbstract
             $newParent->children = [];
             if ($this->save()) {
                 $this->logAction('setParent', ['old_parent_id' => $oldParentId, 'new_parent_id' => $this->parent_id]);
-                static::clearCache(["containerOptGrouped"]);
+                $this->clearAllCache();
+                $newParent->clearAllCache();
                 return true;
             }
             return false;
@@ -244,14 +245,19 @@ class WarehouseContainer extends WarehouseAbstract
                 throw new Exception("Verilen üst birim Raf tipinde olmalı");
             }
         }
-        static::clearCache(["containerOptGrouped"]);
+        static::clearCache(["containerOptGrouped0"]);
         return parent::addNew($data);
     }
 
-    public function insert()
+    public function clearAllCache()
     {
-        static::clearCache(["containerOptGrouped"]);
-        parent::insert();
+        error_log("Clearing all cache for Container {$this->id}");
+        static::clearCache([
+            "Container{$this->id}Products",
+            "containerOptGrouped0",
+            "containerOptGrouped{$this->id}",
+        ]);
+        parent::clearAllCache();
     }
 
 }

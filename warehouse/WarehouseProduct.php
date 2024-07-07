@@ -201,7 +201,8 @@ class WarehouseProduct extends WarehouseAbstract
             }
             if ($retval) {
                 $this->logAction('placeInContainer', ['container_id' => $container->id, 'count' => $retval]);
-                static::clearCache(["Product{$this->id}Containers", "Container{$container->id}Products"]);                
+                $this->clearAllCache();
+                $container->clearAllCache();
             }
             return $retval;
         }
@@ -219,11 +220,23 @@ class WarehouseProduct extends WarehouseAbstract
             $stmt->execute();
             if ($count = $stmt->rowCount()) {
                 $this->logAction('removeFromContainer', ['container_id' => $container->id, 'count' => $count]);
-                static::clearCache(["Product{$this->id}Containers", "Container{$container->id}Products"]);
+                $this->clearAllCache();
+                $container->clearAllCache();
                 return $count;
             }
         }
         return 0;
+    }
+
+    public function clearAllCache()
+    {
+        error_log("Clearing all cache for Product {$this->id}");
+        static::clearCache([
+            "Product{$this->id}Containers",
+            "containerOptGrouped0",
+            "containerOptGrouped{$this->id}"
+        ]);
+        parent::clearAllCache();
     }
 
     public function moveToContainer($oldContainer, $newContainer, $count = 1)

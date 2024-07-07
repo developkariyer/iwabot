@@ -123,6 +123,7 @@ abstract class WarehouseAbstract
         }
         $values['id'] = $this->id;
         $stmt = $GLOBALS['pdo']->prepare("UPDATE " . static::getTableName() . " SET " . implode(', ', $set) . " WHERE id = :id");
+        $this->clearAllCache();
         return $stmt->execute($values);    
     }
 
@@ -142,10 +143,15 @@ abstract class WarehouseAbstract
         if ($stmt->execute($values)) {
             $this->id = $GLOBALS['pdo']->lastInsertId();
             static::addInstance($this->id, $this);
-            static::clearCache([get_called_class()."getAll"]);
+            $this->clearAllCache();
             return true;
         }
         return false;
+    }
+
+    public function clearAllCache()
+    {
+        static::clearCache([get_called_class()."getAll"]);
     }
 
     protected function validate($checkId = true)
