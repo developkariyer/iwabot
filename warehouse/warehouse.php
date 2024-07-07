@@ -112,7 +112,11 @@ function containerOptGrouped($product = null) {
 }
 
 function productSelect($product_id = null) {
-    $GLOBALS['footer_script'] = '$(document).ready(function(){$(\'.select2-select\').select2({theme: "classic"});});';
+    $GLOBALS['footer_script'] = '$(document).ready(function(){$(\'.select2-select\').select2({theme: "classic"';
+    if ($product_id) {
+        $GLOBALS['footer_script'] .= ',val:"'.$product_id.'"';
+    }
+    $GLOBALS['footer_script'].='});});';
 
     $options = [];
     foreach (WarehouseProduct::getAll() as $product) {
