@@ -123,6 +123,7 @@ class WarehouseContainer extends WarehouseAbstract
     protected function getTotalCount()
     {
         if (empty($this->totalCount)) {
+            error_log("Cache Candidate: getTotalCount");
             $this->getProducts();
         }
         return $this->totalCount;
