@@ -67,14 +67,20 @@ class WarehouseContainer extends WarehouseAbstract
             return [];
         }
         if (empty($this->children)) {
-            $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName() . " WHERE parent_id = ?");
-            $stmt->execute([$this->id]);
-            while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $instance = static::getInstance($data['id']);
-                if (!$instance) {
-                    $instance = new self($data['id'], $data);
+            $cache = unserialize(static::getCache("Container{$this->id}Children"));
+            if (is_array($cache)) {
+                $this->children = $cache;
+            } else {
+                $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName() . " WHERE parent_id = ?");
+                $stmt->execute([$this->id]);
+                while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $instance = static::getInstance($data['id']);
+                    if (!$instance) {
+                        $instance = new self($data['id'], $data);
+                    }
+                    $this->children[] = $instance;
                 }
-                $this->children[] = $instance;
+                static::setCache("Container{$this->id}Children", serialize($this->children));
             }
         }
         return $this->children;
@@ -83,17 +89,25 @@ class WarehouseContainer extends WarehouseAbstract
     protected function getProducts()
     {
         if (empty($this->products)) {
-            $sql = "
-                SELECT wp.id, wp.name, wp.fnsku, count(*) as product_count 
-                FROM ".WarehouseAbstract::$productJoinTableName." wsp
-                JOIN ".WarehouseProduct::getTableName()." wp ON wsp.product_id = wp.id
-                WHERE wsp.container_id = :container_id
-                GROUP BY wp.id, wp.name, wp.fnsku";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':container_id', $this->id, PDO::PARAM_INT);
-            $stmt->execute();
-            $this->totalCount = 0;
-            foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+            $cache = unserialize(static::getCache("Container{$this->id}Products"));
+            if (is_array($cache)) {
+                $rows = $cache;
+            } else {
+                $sql = "
+                    SELECT wp.id, wp.name, wp.fnsku, count(*) as product_count 
+                    FROM ".WarehouseAbstract::$productJoinTableName." wsp
+                    JOIN ".WarehouseProduct::getTableName()." wp ON wsp.product_id = wp.id
+                    WHERE wsp.container_id = :container_id
+                    GROUP BY wp.id, wp.name, wp.fnsku";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bindParam(':container_id', $this->id, PDO::PARAM_INT);
+                $stmt->execute();
+                $this->totalCount = 0;
+                $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                static::setCache("Container{$this->id}Products",serialize($rows));
+            }
+
+            foreach ($rows as $row) {
                 $instance = WarehouseProduct::getInstance($row['id']);
                 if (!$instance) {
                     $instance = new WarehouseProduct($row['id'], $row);
