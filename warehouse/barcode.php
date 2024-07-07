@@ -12,8 +12,8 @@ include '../_header.php';
     </div>
 
     <div class="d-none" id="cameraOpenDiv">
-        <video id="video" width="100%" height="400" autoplay></video>
-        <p class="text-center">Scanned Code: <span id="barcode">Waiting...</span></p>
+        <video id="video" width="100%" height="200" autoplay></video>
+        <p>Scanned Code: <span id="barcode">Waiting...</span></p>
     </div>
     <div class="row g-3 m-3 mt-5">
         <div class="col-md-3"></div>
@@ -78,6 +78,7 @@ include '../_header.php';
                     const detectedBarcode = barcodes[0].rawValue;
                     video.pause();
                     stream.getTracks().forEach(track => track.stop());
+                    document.getElementById('barcode').textContent = detectedBarcode;
                     checkBarcode(detectedBarcode);
                 }
             } catch (error) {
@@ -98,6 +99,7 @@ include '../_header.php';
                     window.location.href = `product.php?product_id=${response.id}`;
                 } else {
                     console.error('Error in response:', response.error);
+                    document.getElementById('barcode').textContent = `${barcode} - Ürün Bulunamadı!`;
                     reopenCamera();
                 }
             }
