@@ -20,14 +20,14 @@ function button($url, $text, $color='primary') {
 function wh_menu() {
     return 
     '<div class="row g-3 m-1">'.
-        button('product.php', 'Ürün İşlem').
-        button('container.php', 'Koli/Raf İşlem').
+        button('product.php', 'Ürün İşlem', 'secondary').
+        button('container.php', 'Koli/Raf İşlem', 'secondary').
     '</div><div class="row g-3 m-1 mt-1">'.
-        button('inventory.php', 'Depo Envanteri').
-        button('transfers.php', 'Hareket Raporu').
+        button('inventory.php', 'Depo Envanteri', 'secondary').
+        button('transfers.php', 'Hareket Raporu', 'secondary').
     '</div><div class="row g-3 m-1 mt-1">'.
-        button('addsolditem.php', 'Yeni Sipariş').
-        button('order.php', 'Sipariş Sil').
+        button('addsolditem.php', 'Yeni Sipariş', 'secondary').
+        button('order.php', 'Sipariş Sil', 'secondary').
     '</div><div class="row g-3 m-1 mt-1">'.
         button('./', 'Depo Ana Sayfa', 'secondary').
         button('../', 'Ana Sayfa', 'secondary').
