@@ -80,7 +80,7 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
                     <span><strong>Kendiniz Ürün Seçin</strong></span>
                 </button>
             </h2>
-            <div id="productAccordion2" class="accordion-collapse collapse" aria-labelledby="headingMain2" data-bs-parent="#mainAccordion">
+            <div id="productAccordion2" class="accordion-collapse collapse <?= $product_id ? 'show' : '' ?>" aria-labelledby="headingMain2" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-0 w-100">
                     <?= productSelect() ?>
                     <div id="selectedProduct" class="<?= $product_id ? '' : 'd-none' ?>">
