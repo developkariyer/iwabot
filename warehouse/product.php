@@ -95,7 +95,7 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
                                 <option value="">Mevcut Raf/Koli Seçin</option>
                                 <?= $product_containers ?>
                             </select>
-                            <select name="new_container_id" class="form-select btn-outline-success rounded-pill w-100 py-3">
+                            <select id="dynamic_new_container" name="new_container_id" class="form-select btn-outline-success rounded-pill w-100 py-3">
                                 <option value="">Yeni Raf/Koli Seçin</option>
                                 <?= containerOptGrouped() ?>
                             </select>
@@ -141,7 +141,7 @@ $(document).ready(function() {
     $('#customActionForm').on('submit', function(event) {
         var action = $(document.activeElement).val(); // Get the value of the clicked button
         var containerId = $('#dynamic_container_list').val();
-        var newContainerId = $('[name="new_container_id"]').val();
+        var newContainerId = $('#dynamic_new_container').val();
         var count = $('[name="count"]').val();
         if (count < 1) {
             alert('Ürün adedi 1\'den küçük olamaz.');
