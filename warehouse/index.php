@@ -2,9 +2,6 @@
 
 require_once('warehouse.php');
 
-require 'Predis/Autoloader.php';
-Predis\Autoloader::register();
-
 $client = new Predis\Client();
 $client->set('foo', 'bar');
 $value = $client->get('foo');
