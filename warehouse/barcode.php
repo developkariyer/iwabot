@@ -8,13 +8,19 @@ include '../_header.php';
 <div class="container mt-5">
     <div class="jumbotron text-center">
         <h1>IWA Depo Yönetim</h1>
-        <p>Barkodu kameraya gösteriniz.</p>
+        <p>Barkodu kameraya gösteriniz veya elle giriniz.</p>
         <p class="alert alert-warning">iOS cihazlarda çalışmaz :(</p>
     </div>
 
     <div class="d-none" id="cameraOpenDiv">
         <video id="video" width="100%" height="400" autoplay></video>
-        <p class="text-center"><span id="barcode">Tarıyor...</span></p>
+    </div>
+    <p class="text-center"><span id="barcode">Hazır...</span></p>
+    <div class="row g-3 m-1 mb-3">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <input type="text" id="barcodeInput" class="form-control" placeholder="Barkodu elle giriniz" autofocus>
+        </div>
     </div>
     <div class="row g-3 m-1 mb-3">
         <div class="col-md-3"></div>
@@ -30,6 +36,20 @@ include '../_header.php';
     let stream;
     let video;
     let barcodeDetector;
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        document.getElementById('barcodeInput').focus();
+
+        document.getElementById('barcodeInput').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                const barcode = e.target.value.trim();
+                if (barcode) {
+                    document.getElementById('barcode').textContent = barcode;
+                    checkBarcode(barcode);
+                }
+            }
+        });
+    });
 
     const toggleCamera = async () => {
         const cameraOpenDiv = document.getElementById('cameraOpenDiv');
