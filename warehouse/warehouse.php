@@ -56,15 +56,18 @@ function productInfo($product) {
 }
 
 function containerOptGrouped($product = null) {
+    $product_id = $product instanceof WarehouseProduct ? $product->id : 0;
+
+    $cache = WarehouseAbstract::getCache("containerOptGrouped{$product_id}");
+    if (!empty($cache) && is_string($cache)) {
+        error_log("Cache Hit: containerOptGrouped{$product_id}");
+        return $cache;
+    }
+    error_log("Cache Miss: containerOptGrouped{$product_id}");
 
     if ($product instanceof WarehouseProduct) {
         $containers = $product->getContainers();
     } else {
-        $cache = WarehouseAbstract::getCache("containerOptGrouped");
-        if (!empty($cache) && is_string($cache)) {
-            error_log("Cache Hit: containerOptGrouped");
-            return $cache;
-        }
         $containers = WarehouseContainer::getAll();
     }
     $raflar = [];
@@ -116,10 +119,7 @@ function containerOptGrouped($product = null) {
         }
         $html .= '</optgroup>';
     }
-    if (!$product instanceof WarehouseProduct) {
-        WarehouseAbstract::setCache("containerOptGrouped", $html);
-    }
-
+    WarehouseAbstract::setCache("containerOptGrouped{$product_id}", $html);
     return $html;
 }
 
