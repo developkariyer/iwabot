@@ -87,12 +87,21 @@ $products = WarehouseProduct::getAll();
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingProduct<?= $index ?>">
                                 <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProduct<?= $index ?>" aria-expanded="false" aria-controls="collapseProduct<?= $index ?>">
-                                    <span><strong><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>)</strong> (Toplam: <?= $product->getTotalCount() ?>)</span>
+                                    <span><strong><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>)</strong> (Toplam: <?= $product->getTotalCount() ?> adet)</span>
                                 </button>
                             </h2>
                             <div id="collapseProduct<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="headingProduct<?= $index ?>" data-bs-parent="#inventoryAccordion2">
                                 <div class="accordion-body">
-                                    <?= productInfo($product) ?>
+                                    <p>
+                                        <?= productInfo($product) ?>
+                                    </p>
+                                    <h4>Ürünün Bulunduğu Raflar ve Koli Bilgileri</h4>
+                                    <?= empty($product->getContainers()) ? "<p>Bu ürün hiçbir raf veya koli içinde bulunmamaktadır.</p>" : "" ?>                                        
+                                    <ul>
+                                    <?php foreach ($product->getContainers() as $container): ?>
+                                        <li><?= $container->name ?> (<?= $container->type === 'Raf' ? 'Rafta açık' : $container->parent->name ?>) (<?= $product->getInContainerCount($container) ?> adet)</li>
+                                    <?php endforeach; ?>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
