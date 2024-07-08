@@ -95,22 +95,22 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
                         <form id="customActionForm" action="controller.php" method="post">
                             <input type="hidden" name="product_id" id="hidden_product_id" value="<?= $product_id ?>">
                             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                            <div class="mb-3">
-                                <label for="dynamic_container_list" class="form-label">Ürün İşlemleri</label>
+                            <div class="m-3">
+                                <label for="dynamic_container_list" class="form-label">Ürünün Halihazırdaki Raf/Kolileri</label>
                                 <select id="dynamic_container_list" name="container_id" class="form-select w-100">
                                     <option value="">Mevcut Raf/Koli Seçin</option>
                                     <?= $product_containers ?>
                                 </select>
                             </div>
-                            <div class="mb-3">
-                                <label for="count" class="form-label">Ürün Adedi</label>
+                            <div class="m-3">
+                                <label for="count" class="form-label">Ürün İçin Yeni Raf/Koli</label>
                                 <select id="dynamic_new_container" name="new_container_id" class="form-select w-100">
                                     <option value="">Yeni Raf/Koli Seçin</option>
                                     <?= containerOptGrouped() ?>
                                 </select>
                             </div>
-                            <div class="mb-3">
-                                <label for="count" class="form-label">Ürün Adedi</label>
+                            <div class="m-3">
+                                <label for="count" class="form-label">İşlem Yapılacak Ürün Adedi</label>
                                 <input type="number" name="count" min="1" class="form-control w-100" placeholder="Ürün Adedi">
                             </div>
                             <button name="action" value="remove_from_container" type="submit" class="btn btn-primary w-100 py-3 mt-2">Depo Çıkışı Yap</button>
