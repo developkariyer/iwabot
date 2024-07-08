@@ -36,7 +36,7 @@ $products = WarehouseProduct::getAll();
                             </h2>
                             <div id="collapseRaf<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="headingRaf<?= $index ?>" data-bs-parent="#inventoryAccordion1">
                                 <div class="accordion-body">
-                                    <?= containerInfo($raf) ?>
+                                    <?= containerInfo($raf) ?><br>
                                     <strong>Raftaki Koliler:</strong><br>
                                     <?php foreach ($raf->getChildren() as $childIndex => $child): ?>
                                         <div class="accordion-item">
