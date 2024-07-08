@@ -224,10 +224,15 @@ class WarehouseProduct extends WarehouseAbstract
 
     public function moveToContainer($oldContainer, $newContainer, $count = 1)
     {
+        error_log("Moving $count items from {$oldContainer->name} to {$newContainer->name}");
         if ($oldContainer instanceof WarehouseContainer && $newContainer instanceof WarehouseContainer && !empty($this->id) && $count>0) {
             $newCount = $this->removeFromContainer($oldContainer, $count);
+            error_log("  Removed $newCount items from {$oldContainer->name}");
             if ($newCount && $newCount<=$count) {
-                return $this->placeInContainer($newContainer, $newCount);
+                if ($this->placeInContainer($newContainer, $newCount)) {
+                    error_log("  Placed $newCount items in {$newContainer->name}");
+                    return true;
+                }
             }
         }
         return false;
