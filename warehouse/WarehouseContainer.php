@@ -89,6 +89,9 @@ class WarehouseContainer extends WarehouseAbstract
 
     public function getProducts($noCache = false)
     {
+        if ($noCache) {
+            $this->products = [];
+        }
         if (empty($this->products)) {
             $cache = unserialize(static::getCache("Container{$this->id}Products"));
             if (!$noCache && is_array($cache)) {
@@ -108,7 +111,6 @@ class WarehouseContainer extends WarehouseAbstract
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 static::setCache("Container{$this->id}Products",serialize($rows));
             }
-
             foreach ($rows as $row) {
                 $instance = WarehouseProduct::getInstance($row['id']);
                 if (!$instance) {
