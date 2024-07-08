@@ -213,7 +213,7 @@ class WarehouseContainer extends WarehouseAbstract
         return $retval;
     }
 
-    protected function setParent($newParent)
+    public function setParent($newParent)
     {
         if ($newParent instanceof self) {
             $oldParentId = $this->parent_id;
