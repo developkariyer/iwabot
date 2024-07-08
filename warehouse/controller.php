@@ -255,6 +255,10 @@ function handleDeleteContainer() {
         addMessage('delete_container: Geçersiz parametre!');
         return;
     }
+    if ($container->getProducts(noCache:true)) {
+        addMessage("$container->name içinde ürün bulunmaktadır, silinemedi");
+        return;
+    }
     if ($container->delete()) {
         addMessage("$container->name silindi");
     } else {
