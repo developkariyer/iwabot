@@ -247,6 +247,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+<script>$(document).ready(function(){$('#accordion1container_id').select2({theme: "classic"});});</script>
 </script>
 
 <?php
