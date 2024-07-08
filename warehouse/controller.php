@@ -113,16 +113,29 @@ function handleAddContainer() {
 }
 
 function handleSetParent() {
-    $container = WarehouseContainer::getById(getPostValue('container_id'));
     $parent = WarehouseContainer::getById(getPostValue('parent_id'));
-    if (!$container || !$parent) {
-        addMessage('set_parent: Geçersiz parametre!');
+    if (!$parent) {
+        addMessage('set_parent: Geçersiz parametre: parent');
         return;
     }
-    if ($container->setParent($parent)) {
-        addMessage("Konteyner $container->name, $parent->name altına taşındı");
-    } else {
-        addMessage("Konteyner $container->name, $parent->name altına taşınamadı");
+    $container_id = getPostValue('container_id');
+    if (!is_array($container_id)) {
+        if (empty($container_id)) {
+            addMessage('set_parent: Geçersiz parametre: container_id');
+            return;
+        }
+        $container_id = [$container_id];
+    }
+    foreach ($container_id as $cid) {
+        $container = WarehouseContainer::getById($cid);
+        if (!$container) {
+            continue;
+        }
+        if ($container->setParent($parent)) {
+            addMessage("Konteyner $container->name, $parent->name altına taşındı");
+        } else {
+            addMessage("Konteyner $container->name, $parent->name altına taşınamadı");
+        }
     }
 }
 
