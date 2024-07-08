@@ -147,8 +147,20 @@ include '../_header.php';
                             </h2>
                             <div id="collapseBox<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="headingBox<?= $index ?>" data-bs-parent="#orderAccordion4">
                                 <div class="accordion-body">
-                                    <p><?= containerInfo($item['container']) ?></p>
-                                    <p><b>Açıklama:</b> <?= nl2br(htmlspecialchars($item['description'])) ?></p>
+                                    <p>
+                                        <?= containerInfo($item['container']) ?></p>
+                                    <p>
+                                        <b>Açıklama:</b><br>
+                                        <?= nl2br(htmlspecialchars($item['description'])) ?>
+                                    </p>
+                                        <b>Aynı İçerikli Koliler:</b>
+                                        <ul>
+                                            <?php foreach ($item['container']->findSimilar() as $sameContainer): ?>
+                                                <li><?= $sameContainer->name ?></li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    <p>
+                                    </p>
                                 </div>
                             </div>
                         </div>

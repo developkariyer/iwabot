@@ -231,6 +231,25 @@ class WarehouseContainer extends WarehouseAbstract
         return static::$unfulfilled;
     }
     
+    public function findSimilar()
+    {
+        $cache = unserialize(static::getCache("findSimilar{$this->id}"));
+        if (is_array($cache)) {
+            error_log("Cache Hit: findSimilar{$this->id}");
+            return $cache;
+        }
+        error_log("Cache Miss: findSimilar{$this->id}");
+        $sql = "SELECT container_id FROM warehouse_view_container_signatures WHERE signature = (SELECT signature FROM warehouse_view_container_signatures WHERE container_id = :container_id) AND container_id <> :container_id";
+        $stmt = $GLOBALS['pdo']->prepare($sql);
+        $stmt->execute(['container_id' => $this->id]);
+        $containers = [];
+        while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $containers[] = static::getById($data['container_id']);
+        }
+        static::setCache("findSimilar{$this->id}", serialize($containers));
+        return $containers;
+    }
+
     /* ACTION METHODS BELOW */
 
     public function fulfil($sold_id)
