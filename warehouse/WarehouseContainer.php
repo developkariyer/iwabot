@@ -12,6 +12,7 @@ class WarehouseContainer extends WarehouseAbstract
     protected static $warehouses = [];
     protected static $parentContainers = [];
     private $totalCount = 0;
+    private static $unfulfilled = [];
     protected static $allObjects = [];
 
     public static function getTableName()
@@ -205,6 +206,72 @@ class WarehouseContainer extends WarehouseAbstract
         return $retval;
     }
 
+    public static function getUnfulfilledBoxes()
+    {
+        if (empty(static::$unfulfilled)) {
+            $cache = unserialize(static::getCache("getUnfulfilledBoxes"));
+            if (is_array($cache)) {
+                static::$unfulfilled = $cache;
+                error_log("Cache Hit: getUnfulfilledBoxes");
+            } else {
+                static::$unfulfilled =[];
+                $stmt = $GLOBALS['pdo']->query("SELECT * FROM warehouse_sold WHERE fulfilled = FALSE AND sold_type = 'WarehouseContainer' ORDER BY product_id ASC");
+                while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $container = static::getById($data['product_id']);
+                    if (!$container) {
+                        continue;
+                    }
+                    static::$unfulfilled[$data['id']] = $data;
+                    static::$unfulfilled[$data['id']]['container'] = $container;
+                }
+                error_log("Cache Miss: getUnfulfilledBoxes");
+                static::setCache("getUnfulfilledBoxes", serialize(static::$unfulfilled));
+            }
+        }
+        return static::$unfulfilled;
+    }
+    
+    /* ACTION METHODS BELOW */
+
+    public function fulfil($sold_id)
+    {
+        if (empty(static::$unfulfilled)) {
+            static::getUnfulfilledBoxes();
+        }
+        if (isset(static::$unfulfilled[$sold_id])) {
+            while (count($this->getProducts()) > 0) {
+                $product = $this->getProducts()[0];
+                $product->removeFromContainer($this, $product->getInContainerCount($this));
+            }
+            if ($this->delete()) {
+                $stmt = $GLOBALS['pdo']->prepare("UPDATE warehouse_sold SET fulfilled = TRUE WHERE id = :id");
+                if ($stmt->execute(['id' => $sold_id])) {
+                    $this->logAction('fulfil_box', ['sold_id' => $sold_id]);
+                    $this->clearAllCache();
+                    return true;
+                }
+            } else {
+                throw new Exception("{$this->fnsku} kodlu koli çıkartılırken bir hata oluştu.");
+            }
+        } else {
+            throw new Exception("{$this->fnsku} kodlu koli ilgili satış kaydı bulunamadı.");
+        }
+    }
+
+    public function addSoldBox($description)
+    {
+        if (empty($description) || !is_string($description)) {
+            throw new Exception("addSoldBox: Açıklama boş olamaz");
+        }
+        $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_sold (product_id, sold_type, description) VALUES (:product_id, 'WarehouseContainer', :description)");
+        if ($stmt->execute(['product_id' => $this->id, 'description' => $description])) {
+            $this->logAction('addSoldBox', ['description' => $description]);
+            $this->clearAllCache();
+            return true;
+        }
+        return false;
+    }
+
     public function setParent($newParent)
     {
         if ($newParent instanceof self) {
@@ -235,20 +302,7 @@ class WarehouseContainer extends WarehouseAbstract
                 throw new Exception("Verilen üst birim Raf tipinde olmalı");
             }
         }
-        static::clearCache(["containerOptGrouped0"]);
         return parent::addNew($data);
-    }
-
-    public function clearAllCache()
-    {
-        error_log("Clearing all cache for Container {$this->id}");
-        /*
-        static::clearCache([
-            "Container{$this->id}Products",
-            "containerOptGrouped0",
-            "containerOptGrouped{$this->id}",
-        ]);*/
-        parent::clearAllCache();
     }
 
 }

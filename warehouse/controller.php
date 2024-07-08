@@ -51,6 +51,12 @@ switch($action) {
     case 'fulfil':
         handleFulfil();
         break;
+    case 'fulfil_box':
+        handleFulfilBox();
+        break;
+    case 'add_sold_box':
+        handleAddSoldBox();
+        break;
     case 'add_sold_item':
         handleAddSoldItem();
         break;
@@ -69,7 +75,6 @@ switch($action) {
 }
 header("Location: $return_url");
 exit;
-
 
 function handleAddProduct() {
     $product = WarehouseProduct::addNew([
@@ -251,11 +256,33 @@ function handleAddSoldItem() {
     $product = WarehouseProduct::getById(getPostValue('product_id'));
     $description = getPostValue('description');
     if (!$product || empty($description) || !is_string($description)) {
-        addMessage('add_new_sale: Geçersiz parametre!');
+        addMessage('add_sold_item: Geçersiz parametre!');
         return;
     }
     $product->addSoldItem($description);
     addMessage("$product->name için yeni satış eklendi");
+}
+
+function handleFulfilBox() {
+    $container = WarehouseContainer::getById(getPostValue('container_id'));
+    $soldItem = getPostValue('sold_id');
+    if (!$container || empty($soldItem) || !isset(WarehouseContainer::getUnfulfilledBoxes()[$soldItem])) {
+        addMessage('fulfil_box: Geçersiz parametre!');
+        return;
+    }
+    $container->fulfil($soldItem);
+    addMessage("$container->name için koli çıkışı yapıldı");
+}
+
+function handleAddSoldBox() {
+    $container = WarehouseContainer::getById(getPostValue('container_id'));
+    $description = getPostValue('description');
+    if (!$container || empty($description) || !is_string($description)) {
+        addMessage('add_sold_box: Geçersiz parametre!');
+        return;
+    }
+    $container->addSoldItem($description);
+    addMessage("$container->name için yeni satış eklendi");
 }
 
 function handleProductInfo() {

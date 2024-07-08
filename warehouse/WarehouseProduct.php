@@ -130,7 +130,7 @@ class WarehouseProduct extends WarehouseAbstract
                 error_log("Cache Hit: getUnfulfilledProducts");
             } else {
                 static::$unfulfilled =[];
-                $stmt = $GLOBALS['pdo']->query("SELECT * FROM warehouse_sold WHERE fulfilled = FALSE ORDER BY product_id ASC");
+                $stmt = $GLOBALS['pdo']->query("SELECT * FROM warehouse_sold WHERE fulfilled = FALSE AND sold_type = 'WarehouseProduct' ORDER BY product_id ASC");
                 while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $product = static::getById($data['product_id']);
                     if (!$product) {
@@ -164,7 +164,7 @@ class WarehouseProduct extends WarehouseAbstract
                 $stmt = $GLOBALS['pdo']->prepare("UPDATE warehouse_sold SET fulfilled = TRUE WHERE id = :id");
                 if ($stmt->execute(['id' => $sold_id])) {
                     $this->logAction('fulfil', ['sold_id' => $sold_id]);
-                    static::clearCache(["getUnfulfilledProducts"]);
+                    static::clearAllCache();
                     return true;
                 }
             } else {
@@ -180,10 +180,10 @@ class WarehouseProduct extends WarehouseAbstract
         if (empty($description) || !is_string($description)) {
             throw new Exception("Invalid description. Must be a valid string");
         }
-        $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_sold (product_id, description) VALUES (:product_id, :description)");
+        $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_sold (product_id, sold_type, description) VALUES (:product_id, 'WarehouseProduct', :description)");
         if ($stmt->execute(['product_id' => $this->id, 'description' => $description])) {
             $this->logAction('addSoldItem', ['description' => $description]);
-            static::clearCache(["getUnfulfilledProducts"]);
+            static::clearAllCache();
             return true;
         }
         return false;
@@ -201,8 +201,7 @@ class WarehouseProduct extends WarehouseAbstract
             }
             if ($retval) {
                 $this->logAction('placeInContainer', ['container_id' => $container->id, 'count' => $retval]);
-                $this->clearAllCache();
-                $container->clearAllCache();
+                static::clearAllCache();
             }
             return $retval;
         }
@@ -220,23 +219,11 @@ class WarehouseProduct extends WarehouseAbstract
             $stmt->execute();
             if ($count = $stmt->rowCount()) {
                 $this->logAction('removeFromContainer', ['container_id' => $container->id, 'count' => $count]);
-                $this->clearAllCache();
-                $container->clearAllCache();
+                static::clearAllCache();
                 return $count;
             }
         }
         return 0;
-    }
-
-    public function clearAllCache()
-    {
-        error_log("Clearing all cache for Product {$this->id}");
-        /*static::clearCache([
-            "Product{$this->id}Containers",
-            "containerOptGrouped0",
-            "containerOptGrouped{$this->id}"
-        ]);*/
-        parent::clearAllCache();
     }
 
     public function moveToContainer($oldContainer, $newContainer, $count = 1)

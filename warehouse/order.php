@@ -50,16 +50,31 @@ include '../_header.php';
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain3">
                 <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#orderAccordion3" aria-expanded="false" aria-controls="orderAccordion3">
-                    <span><strong>Tamamlanmış İşlemler</strong></span>
+                    <span><strong>Yeni Koli Çıkışı Gir</strong></span>
                 </button>
             </h2>
             <div id="orderAccordion3" class="accordion-collapse collapse" aria-labelledby="headingMain3" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
-                    <!-- Dynamic content for completed orders will go here -->
+                    <form action="controller.php" method="post">
+                        <input type="hidden" name="action" value="add_sold_box">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                        <div class="mb-3">
+                            <label for="container_id" class="form-label">Koli Seçin</label>
+                            <select id="container_id" name="container_id" class="form-select" required>
+                                <option value="">Koli Seçin</option>
+                                <?= containersInOpt('Raf') ?>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Açıklama</label>
+                            <textarea id="description" name="description" rows="5" class="form-control btn-outline-success w-100 py-3" placeholder="Açıklama" required></textarea>
+                        </div>
+                        <button id="submitbutton" type="submit" class="btn btn-primary rounded-pill w-100 py-3 mt-2">Yeni Çıkış Kaydı Ekle</button>
+                    </form>
                 </div>
             </div>
         </div>
-
+        
     </div>
 
     <hr>

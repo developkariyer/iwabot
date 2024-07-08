@@ -36,15 +36,6 @@ abstract class WarehouseAbstract
         return static::$predis->set($key, $value);
     }
 
-    public static function clearCache($keyArray)
-    {
-        if (is_null(static::$predis)) {
-            static::$predis = new Predis\Client();
-        }
-        error_log("Cache cleared: ".json_encode($keyArray));
-        return static::$predis->del($keyArray);
-    }
-
     protected static function addInstance($id, $instance)
     {
         $class = get_called_class();
@@ -122,7 +113,7 @@ abstract class WarehouseAbstract
             $set[] = $field . ' = :' . $field;
         }
         $stmt = $GLOBALS['pdo']->prepare("UPDATE " . static::getTableName() . " SET " . implode(', ', $set) . " WHERE id = :id");
-        $this->clearAllCache();
+        static::clearAllCache();
         return $stmt->execute($values);    
     }
 
@@ -148,7 +139,7 @@ abstract class WarehouseAbstract
         return false;
     }
 
-    public function clearAllCache()
+    public static function clearAllCache()
     {
         if (is_null(static::$predis)) {
             static::$predis = new Predis\Client();
@@ -249,7 +240,7 @@ abstract class WarehouseAbstract
     {
         if ($this->canDelete()) {
             $stmt = $GLOBALS['pdo']->prepare("DELETE FROM " . static::getTableName() . " WHERE id = ? LIMIT 1");
-            static::clearCache([get_called_class()."getAll"]);
+            static::clearAllCache();
             return $stmt->execute([$this->id]);
         }
         throw new Exception("Cannot delete object");
