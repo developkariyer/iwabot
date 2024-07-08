@@ -31,12 +31,12 @@ $products = WarehouseProduct::getAll();
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingRaf<?= $index ?>">
                                 <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRaf<?= $index ?>" aria-expanded="false" aria-controls="collapseRaf<?= $index ?>">
-                                    <span><strong><?= htmlspecialchars($raf->name) ?> (<?= count($raf->getChildren()) ?> Koli,<?= count($raf->getProducts()) ?> Ürün)</strong></span>
+                                    <span><strong><?= htmlspecialchars($raf->name) ?></strong> (<?= count($raf->getChildren()) ?> Koli, <?= count($raf->getProducts()) ?> Ürün)</span>
                                 </button>
                             </h2>
                             <div id="collapseRaf<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="headingRaf<?= $index ?>" data-bs-parent="#inventoryAccordion1">
                                 <div class="accordion-body">
-                                    <?php foreach ($raf->getChildren() as $childIndex => $child): ?>
+                                    <?php foreach (array_merge([$raf], $raf->getChildren()) as $childIndex => $child): ?>
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="headingChild<?= $index ?>-<?= $childIndex ?>">
                                                 <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChild<?= $index ?>-<?= $childIndex ?>" aria-expanded="false" aria-controls="collapseChild<?= $index ?>-<?= $childIndex ?>">
