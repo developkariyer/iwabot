@@ -67,10 +67,13 @@ function containersInOpt($type='Raf') {
     error_log("Cache Miss: containersInShipOpt");
 
     $html = '';
-    $containers = WarehouseContainer::getContainers(type: 'Gemi');
-    $icon = '🚢'; //\u{1F6A2}
+    $containers = WarehouseContainer::getContainers(type: $type);
+    $icon = [
+        'Gemi' => '🚢', //\u{1F6A2}
+        'Raf' => '🗄️', // \u{1F5C4}
+    ];
     foreach ($containers as $container) {
-        $html .= "<optgroup label='{$icon} {$container->name}'>";
+        $html .= "<optgroup label='{$icon[$type]} {$container->name}'>";
         foreach (WarehouseContainer::getContainers(type: 'Koli', parent_id: $container->id) as $box) {
             $html .= "<option value='{$box->id}'>📦 {$box->name}</option>";
         }
@@ -123,24 +126,20 @@ function containerOptGrouped($product = null) {
         $containers = WarehouseContainer::getAll();
     }
     $raflar = [];
+    $icons = [
+        'Gemi' => '🚢', //\u{1F6A2}
+        'Raf' => '🗄️', // \u{1F5C4}
+    ];
     foreach($containers as $container) {
         if ($container->type == 'Raf' || $container->type == 'Gemi') {
-            if ($container->type === 'Gemi') {
-                $icon = '🚢'; //\u{1F6A2}
-            } else {
-                $icon = '🗄️'; // \u{1F5C4}
-            }
+            $icon = $icons[$container->type];
             if (!isset($raflar["$icon {$container->name}"])) {
                 $raflar["$icon {$container->name}"] = [];
             }
             $raflar["$icon {$container->name}"][] = $container;
         } else {
             if ($container->parent) {
-                if ($container->parent->type === 'Gemi') {
-                    $icon = '🚢'; //\u{1F6A2}
-                } else {
-                    $icon = '🗄️'; // \u{1F5C4}
-                }
+                $icon = $icons[$container->parent->type];
                 if (!isset($raflar["$icon {$container->parent->name}"])) {
                     $raflar["$icon {$container->parent->name}"] = [];
                 }
