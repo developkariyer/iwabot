@@ -153,14 +153,6 @@ class WarehouseContainer extends WarehouseAbstract
         return static::$warehouses;
     }
 
-    public static function getParentContainers($warehouse = null)
-    {
-        if (empty(static::$parentContainers)) {
-            static::$parentContainers = static::getContainers('Raf', null, $warehouse);
-        }
-        return static::$parentContainers;
-    }
-
     public static function getContainers($type = 'Raf', $parent_id = -1, $warehouse = null)
     {
         if (!static::validateField('type', $type)) {
@@ -175,7 +167,7 @@ class WarehouseContainer extends WarehouseAbstract
                 $sql .= " AND parent_id = :parent_id";
                 $params['parent_id'] = $parent_id;
             }
-        }
+        }/*TODO warehouse fix
         if (is_null($warehouse)) {
             $sql .= " AND warehouse IS NULL";
         } else {
@@ -183,7 +175,7 @@ class WarehouseContainer extends WarehouseAbstract
                 $sql .= " AND warehouse = :warehouse";
                 $params['warehouse'] = $warehouse;
             }
-        }
+        }*/
         $stmt = $GLOBALS['pdo']->prepare($sql);
         $stmt->execute($params);
         $containers = [];
