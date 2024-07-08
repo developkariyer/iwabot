@@ -84,7 +84,7 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
                 <div class="accordion-body p-0 w-100 mb-3">
                     <a href="barcode.php" class="btn btn-success py-3 m-3 rounded-pill <?= $product_id ? 'd-none':'' ?>">Barkod Okutun</a>
                     <?= productSelect($product_id) ?>
-                    <div id="selectedProduct" class="<?= $product_id ? '' : 'd-none' ?>">
+                    <div id="selectedProduct" class="p-5 <?= $product_id ? '' : 'd-none' ?>">
                         <div class="p-3" id="product_info">
                             <?= $product_info ?>
                         </div>
