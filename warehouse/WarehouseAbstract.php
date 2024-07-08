@@ -122,6 +122,7 @@ abstract class WarehouseAbstract
             $set[] = $field . ' = :' . $field;
         }
         $values['id'] = $this->id;
+        error_log("UPDATE " . static::getTableName() . " SET " . implode(', ', $set) . " WHERE id = :id");
         $stmt = $GLOBALS['pdo']->prepare("UPDATE " . static::getTableName() . " SET " . implode(', ', $set) . " WHERE id = :id");
         $this->clearAllCache();
         return $stmt->execute($values);    

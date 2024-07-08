@@ -225,8 +225,6 @@ class WarehouseContainer extends WarehouseAbstract
             $newParent->children = [];
             if ($this->save()) {
                 $this->logAction('setParent', ['old_parent_id' => $oldParentId, 'new_parent_id' => $this->parent_id]);
-                $this->clearAllCache();
-                $newParent->clearAllCache();
                 return true;
             }
             return false;
