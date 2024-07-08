@@ -301,7 +301,7 @@ abstract class WarehouseAbstract
                 error_log("Cache Hit: ".get_called_class()."getAll");
             } else {
                 error_log("Cache Miss: ".get_called_class()."getAll");
-                $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName(). " ORDER BY name");
+                $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName(). " ORDER BY name ASC");
                 $stmt->execute();
                 $objects = [];
                 while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
