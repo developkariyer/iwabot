@@ -55,6 +55,34 @@ function productInfo($product) {
     //    <b>Seri Numarası:</b> {$product->serial_number}<br>
 }
 
+function containerInfo($container) {
+    if (!$container instanceof WarehouseContainer) {
+        return "Koli bilgisi alınamadı: Geçersiz koli";
+    }
+    $icon = [
+        'Gemi' => '🚢', //\u{1F6A2}
+        'Raf' => '🗄️', // \u{1F5C4}
+        'Koli' => '📦', //\u{1F4E6}
+    ];
+    $html = "<b>Adı:</b> {$container->name}<br>
+    <b>Tip:</b> {$icon[$container->type]} {$container->type}<br>";
+    if ($container->parent) {
+        $html .= "<b>Yerleştirildiği Konum:</b> {$icon[$container->parent->type]} {$container->parent->name}<br>";
+    }
+    $html .= "<b>İçindeki Ürünler:</b><br>";
+    $products = $container->getProducts();
+    if (empty($products)) {
+        $html .= "Bu koli boş.";
+    } else {
+        $html .= "<ul>";
+        foreach($products as $product) {
+            $html .= "<li>{$product->name} ({$product->fnsku}): ".$product->getInContainerCount($container)."</li>";
+        }
+        $html .= "</ul>";
+    }
+    return $html;
+}
+
 function containersInOpt($type='Raf') {
     if (!in_array($type, ['Raf', 'Gemi'])) {
         throw new Exception('Konteyner tipi "Raf" veya "Gemi" olmalı. Verilen: '.$type);

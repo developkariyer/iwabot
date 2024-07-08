@@ -8,6 +8,8 @@ $icon = [
     'Koli' => '📦', //\u{1F4E6}
 ];
 
+$unfulfilledBoxes = WarehouseContainer::getUnfulfilledBoxes();
+
 include '../_header.php';
 
 ?>
@@ -126,6 +128,38 @@ include '../_header.php';
                 </div>
             </div>
         </div>
+
+        <!-- Fourth Main Accordion Item -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingMain4">
+                <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#orderAccordion4" aria-expanded="false" aria-controls="orderAccordion4">
+                    <span><strong>İşlem Bekleyen Koliler</strong></span>
+                </button>
+            </h2>
+            <div id="orderAccordion4" class="accordion-collapse collapse" aria-labelledby="headingMain4" data-bs-parent="#mainAccordion">
+                <div class="accordion-body p-5">
+                    <?php foreach ($unfulfilledBoxes as $index => $item): ?>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingBox<?= $index ?>">
+                                <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBox<?= $index ?>" aria-expanded="false" aria-controls="collapseBox<?= $index ?>">
+                                    <span><strong><?= htmlspecialchars($item['container']->name) ?></strong></span>
+                                </button>
+                            </h2>
+                            <div id="collapseBox<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="headingBox<?= $index ?>" data-bs-parent="#orderAccordion4">
+                                <div class="accordion-body">
+                                    <p><?= containerInfo($item['container']) ?></p>
+                                    <p><b>Açıklama:</b> <?= nl2br(htmlspecialchars($item['description'])) ?></p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                    <?php if (empty($unfulfilledBoxes)): ?>
+                        <p>İşlem bekleyen koli bulunmamaktadır.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 

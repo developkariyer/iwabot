@@ -329,10 +329,7 @@ function handleContainerInfo() {
         ]));
     }
     $data = $container->getAsArray();
-    $data['info'] = "<b>Koli İçeriği:</b><br>";
-    foreach ($container->products as $product) {
-        $data['info'] .= "<li><strong>{$product->name}</strong> ({$product->fnsku}): ".$product->getInContainerCount($container)." adet</li>";
-    }
+    $data['info'] = containerInfo($container);
     die(json_encode($data));
 }
 
