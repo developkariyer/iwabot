@@ -55,24 +55,25 @@ function productInfo($product) {
     //    <b>Seri Numarası:</b> {$product->serial_number}<br>
 }
 
-function containersInShip() {
-    $cache = unserialize(WarehouseAbstract::getCache('containersInShip'));
-    if (is_array($cache)) {
-        error_log("Cache Hit: containersInShip");
+function containersInShipOpt() {
+    $cache = WarehouseAbstract::getCache('containersInShipOpt');
+    if (!empty($cache) && is_string($cache)) {
+        error_log("Cache Hit: containersInShipOpt");
         return $cache;
     }
-    error_log("Cache Miss: containersInShip");
+    error_log("Cache Miss: containersInShipOpt");
 
+    $html = '';
     $containers = WarehouseContainer::getContainers(type: 'Gemi');
-    $retval = [];
+    $icon = '🚢'; //\u{1F6A2}
     foreach ($containers as $container) {
-        $retval[] = [
-            'container' => $container,
-            'boxes' => WarehouseContainer::getContainers(type: 'Koli', parent_id: $container->id),
-        ];
+        $html .= "<optgroup label='{$icon} {$container->name}'>";
+        foreach (WarehouseContainer::getContainers(type: 'Koli', parent_id: $container->id) as $box) {
+            $html .= "<option value='{$box->id}'>📦 {$box->name}</option>";
+        }
     }
-    WarehouseAbstract::setCache('containersInShip', serialize($retval));
-    return $retval;
+    WarehouseAbstract::setCache('containersInShipOpt', $html);
+    return $html;
 }
 
 function parentContainersOpt($type = 'Raf') {

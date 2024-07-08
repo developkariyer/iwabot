@@ -28,44 +28,30 @@ $containersInShip = [
                 </button>
             </h2>
             <div id="containerAccordion1" class="accordion-collapse collapse" aria-labelledby="headingMain1" data-bs-parent="#mainAccordion">
-                <div class="accordion-body p-0">
-                    <?php foreach (containersInShip() as $shipIndex => $shipData): ?>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingShip<?= $shipIndex ?>">
-                                <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseShip<?= $shipIndex ?>" aria-expanded="false" aria-controls="collapseShip<?= $shipIndex ?>">
-                                    <span><strong><?= htmlspecialchars($shipData['container']->name) ?> (<?= htmlspecialchars($shipData['container']->id) ?>)</strong></span>
-                                </button>
-                            </h2>
-                            <div id="collapseShip<?= $shipIndex ?>" class="accordion-collapse collapse" aria-labelledby="headingShip<?= $shipIndex ?>" data-bs-parent="#containerAccordion1">
-                                <div class="accordion-body">
-                                    <div class="accordion" id="shipAccordion<?= $shipIndex ?>">
-                                        <?php foreach ($shipData['boxes'] as $boxIndex => $box): ?>
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header" id="headingBox<?= $shipIndex ?><?= $boxIndex ?>">
-                                                    <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBox<?= $shipIndex ?><?= $boxIndex ?>" aria-expanded="false" aria-controls="collapseBox<?= $shipIndex ?><?= $boxIndex ?>">
-                                                        <span><strong><?= htmlspecialchars($box->name) ?> (<?= htmlspecialchars($box->id) ?>)</strong></span>
-                                                    </button>
-                                                </h2>
-                                                <div id="collapseBox<?= $shipIndex ?><?= $boxIndex ?>" class="accordion-collapse collapse" aria-labelledby="headingBox<?= $shipIndex ?><?= $boxIndex ?>" data-bs-parent="#shipAccordion<?= $shipIndex ?>">
-                                                    <div class="accordion-body">
-                                                        <p><strong>Box ID:</strong> <?= htmlspecialchars($box->id) ?></p>
-                                                        <p><strong>Box Name:</strong> <?= htmlspecialchars($box->name) ?></p>
-                                                        <!-- Add more box details here as needed -->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        <?php endforeach; ?>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="accordion-body p-5">
+                    <form action="controller.php" method="POST">
+                        <input type="hidden" name="action" value="set_parent">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                        <div class="mb-3">
+                            <label for="container_id" class="form-label">Koli Seçin</label>
+                            <select id="container_id" name="container_id" class="form-select" required>
+                                <option value="">Gemiden Koli Seçin</option>
+                                <?= containersInShipOpt() ?>
+                            </select>
                         </div>
-                    <?php endforeach; ?>
-                    <?php if (empty(containersInShip())): ?>
-                        <p>Gemi ile gelen koli bulunmamaktadır.</p>
-                    <?php endif; ?>
+                        <div class="mb-3">
+                            <label for="parent_id" class="form-label">Raf Seçin</label>
+                            <select id="parent_id" name="parent_id" class="form-select" required>
+                                <option value="">Yerleştirileceği Rafı Seçin</option>
+                                <?= parentContainersOpt() ?>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-3 mt-2">Kaydet</button>
+                    </form>
                 </div>
             </div>
         </div>
+
 
         <!-- Second Main Accordion Item -->
         <div class="accordion-item">
