@@ -81,7 +81,7 @@ function containerInfo($container) {
     } else {
         $html .= "<ul>";
         foreach($products as $product) {
-            $html .= "<li>{$product->name} ({$product->fnsku}): ".$product->getInContainerCount($container)."</li>";
+            $html .= "<li>{$product->name} ({$product->fnsku}): ".$product->getInContainerCount($container)." adet</li>";
         }
         $html .= "</ul>";
     }
