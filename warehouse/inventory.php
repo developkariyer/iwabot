@@ -27,6 +27,7 @@ $products = WarehouseProduct::getAll();
             </h2>
             <div id="inventoryAccordion1" class="accordion-collapse collapse" aria-labelledby="headingMain1" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
+                    <input type="text" id="filterInput" class="form-control mb-3" placeholder="Koli aramak için bir şeyler yazın...">
                     <?php foreach ($rafContainers as $index => $raf): ?>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingRaf<?= $index ?>">
@@ -47,7 +48,7 @@ $products = WarehouseProduct::getAll();
                                     <?php endif; ?>
                                     <?php foreach ($raf->getChildren() as $childIndex => $child): ?>
                                         <div class="accordion-item">
-                                            <h2 class="accordion-header" id="headingChild<?= $index ?>-<?= $childIndex ?>">
+                                            <h2 class="accordion-header box-h2" id="headingChild<?= $index ?>-<?= $childIndex ?>">
                                                 <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChild<?= $index ?>-<?= $childIndex ?>" aria-expanded="false" aria-controls="collapseChild<?= $index ?>-<?= $childIndex ?>">
                                                     <span><strong><?= htmlspecialchars($child->name) ?></strong></span>
                                                 </button>
@@ -82,7 +83,7 @@ $products = WarehouseProduct::getAll();
             </h2>
             <div id="inventoryAccordion2" class="accordion-collapse collapse" aria-labelledby="headingMain2" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
-                    <input type="text" id="filterInput2" class="form-control mb-3" placeholder="Aramak için bir şeyler yazın...">
+                    <input type="text" id="filterInput2" class="form-control mb-3" placeholder="Ürün aramak için bir şeyler yazın...">
                     <?php foreach ($products as $index => $product): ?>
                         <?php if ($product->getTotalCount() == 0) continue; ?>
                         <div class="accordion-item" style="display: none;">
@@ -134,6 +135,21 @@ $(document).ready(function() {
                 }
             });
         });
+    });
+    $('#inventoryAccordion1').on('shown.bs.collapse', function () {
+        $('#filterInput').on('keyup', function() {
+        var value = $(this).val().toLowerCase();
+        $('#mainAccordion .accordion-item').hide();
+        $('#mainAccordion .accordion-item').filter(function() {
+            var text = $(this).find('.box-h2').text().toLowerCase();
+            return text.indexOf(value) > -1;
+        }).each(function() {
+            $(this).show();
+            $(this).parents('.accordion-item').show();
+            $(this).find('.accordion-collapse').collapse('show');
+            $(this).parents('.accordion-collapse').collapse('show');
+        });
+    });
     });
 });
 </script>
