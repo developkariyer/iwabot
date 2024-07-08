@@ -55,6 +55,54 @@ function productInfo($product) {
     //    <b>Seri Numarası:</b> {$product->serial_number}<br>
 }
 
+function containersInShip() {
+    $cache = unserialize(WarehouseAbstract::getCache('containersInShip'));
+    if (is_array($cache)) {
+        error_log("Cache Hit: containersInShip");
+        return $cache;
+    }
+    error_log("Cache Miss: containersInShip");
+
+    $containers = WarehouseContainer::getContainers(type: 'Gemi');
+    $retval = [];
+    foreach ($containers as $container) {
+        $retval[] = [
+            'container' => $container,
+            'boxes' => WarehouseContainer::getContainers(type: 'Box', parent_id: $container->id),
+        ];
+    }
+    WarehouseAbstract::setCache('containersInShip', serialize($retval));
+    return $retval;
+}
+
+function parentContainersOpt($type = 'Raf') {
+    if (!in_array($type, ['Raf', 'Gemi'])) {
+        throw new Exception('Ana konteyner tipi "Raf" veya "Gemi" olmalı. Verilen: '.$type);
+    }
+    $cache = WarehouseAbstract::getCache("parentContainersOpt{$type}");
+    if (!empty($cache) && is_string($cache)) {
+        error_log("Cache Hit: parentContainersOpt{$type}");
+        return $cache;
+    }
+    error_log("Cache Miss: parentContainersOpt{$type}");
+
+    $icon = [
+        'Gemi' => '🚢', //\u{1F6A2}
+        'Raf' => '🗄️', // \u{1F5C4}
+    ];
+    $containers = WarehouseContainer::getContainers(type: $type);
+    $html = '';
+    foreach($containers as $container) {
+        if ($type && $container->type !== $type) {
+            continue;
+        }
+        $icon = $icon[$container->type];
+        $html .= "<option value='{$container->id}'>$icon {$container->name}</option>";
+    }
+    WarehouseAbstract::setCache("parentContainersOpt{$type}", $html);
+    return $html;
+}
+
 function containerOptGrouped($product = null) {
     $product_id = $product instanceof WarehouseProduct ? $product->id : 0;
 
