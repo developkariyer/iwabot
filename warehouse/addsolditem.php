@@ -17,7 +17,7 @@ include '../_header.php';
         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
         <?= productSelect() ?>
         <input type="text" name="description" class="form-control btn-outline-success rounded-pill w-100 py-3 mt-2" placeholder="Açıklama" required>
-        <button id="submitbutton" type="submit" class="btn btn-success btn-lg rounded-pill w-100 py-3 mt-2">Yeni Çıkış Kaydı Ekle</button>
+        <button id="submitbutton" type="submit" class="btn btn-primary rounded-pill w-100 py-3 mt-2">Yeni Çıkış Kaydı Ekle</button>
     </form>
 
     <?= wh_menu() ?>
