@@ -157,7 +157,7 @@ include '../_header.php';
                                             </p>
                                             <p>
                                                 <strong>Açıklama:</strong><br>
-                                                <?= htmlspecialchars($item['description']) ?>
+                                                <?= htmlspecialchars(nl2br($item['description'])) ?>
                                             </p>
                                             <label for="container_id_<?= $index ?>" class="form-label">Koli Seçin</label>
                                             <select id="container_id_<?= $index ?>" name="container_id" class="form-select" required>
