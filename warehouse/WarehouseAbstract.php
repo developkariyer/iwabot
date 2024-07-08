@@ -112,16 +112,15 @@ abstract class WarehouseAbstract
     protected function update()
     {
         if (!$this->validate()) {
-            return false;
+            throw new Exception("Validation failed for ".get_called_class()."->{$this->id}");
         }
         $fields = static::getDBFields();
         $set = [];
-        $values = [];
+        $values['id'] = $this->id;
         foreach ($fields as $field) {
             $values[$field] = $this->$field;
             $set[] = $field . ' = :' . $field;
         }
-        $values['id'] = $this->id;
         error_log("UPDATE " . static::getTableName() . " SET " . implode(', ', $set) . " WHERE id = :id".json_encode($values));
         $stmt = $GLOBALS['pdo']->prepare("UPDATE " . static::getTableName() . " SET " . implode(', ', $set) . " WHERE id = :id");
         $this->clearAllCache();
@@ -195,11 +194,13 @@ abstract class WarehouseAbstract
             throw new Exception("Field not found in database fields");
         }
         if (isset($this->dbValues[$field])) {
+            error_log("Class Cache Hit (getField): ".get_called_class()."->{$this->id}->$field as {$this->dbValues[$field]}");
             return $this->dbValues[$field];
         }
         if (empty($this->id)) {
             return null;
         }
+        error_log("Class Cache Miss (getField): ".get_called_class()."->{$this->id}->$field");
         $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName() . " WHERE id = :id");
         $stmt->execute(['id' => $this->id]);
         if ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -213,8 +214,10 @@ abstract class WarehouseAbstract
     {
         if (in_array($field, static::getDBFields())) {
             if (isset($this->dbValues[$field])) {
+                error_log("Class Cache Hit (__get): ".get_called_class()."->{$this->id}->$field as {$this->dbValues[$field]}");
                 return $this->dbValues[$field];
             }
+            error_log("Class Cache Miss: ".get_called_class()."->{$this->id}->$field");
             return $this->getField($field);
         }
         $methods = static::getCustomMethods();
