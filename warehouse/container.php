@@ -38,7 +38,7 @@ include '../_header.php';
                                 <?= parentContainersOpt() ?>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100 py-3 mt-2">Kaydet</button>
+                        <button type="submit" class="btn btn-primary w-100 py-3 mt-2">Gemiden Rafa Taşı</button>
                     </form>
                 </div>
             </div>
@@ -54,8 +54,7 @@ include '../_header.php';
             </h2>
             <div id="containerAccordion2" class="accordion-collapse collapse" aria-labelledby="headingMain2" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
-                    <form action="controller.php" method="POST">
-                        <input type="hidden" name="action" value="set_parent">
+                    <form action="controller.php" method="POST" id="containerForm">
                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <div class="mb-3">
                             <label for="container_id" class="form-label">Koli Seçin</label>
@@ -66,17 +65,17 @@ include '../_header.php';
                         </div>
                         <div class="mb-3">
                             <label for="parent_id" class="form-label">Yerleştirileceği Rafı Seçin</label>
-                            <select id="parent_id" name="parent_id" class="form-select" required>
+                            <select id="parent_id" name="parent_id" class="form-select">
                                 <option value="">Yerleştirileceği Rafı Seçin</option>
                                 <?= parentContainersOpt() ?>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100 py-3 mt-2">Kaydet</button>
+                        <button type="submit" name="action" value="set_parent" class="btn btn-primary w-100 py-3 mt-2">Raftan Rafa Taşı</button>
+                        <button type="submit" name="action" value="delete_container" class="btn btn-danger w-100 py-3 mt-2">Koli Sil</button>
                     </form>
                 </div>
             </div>
         </div>
-
 
         <!-- Third Main Accordion Item -->
         <div class="accordion-item">
@@ -110,6 +109,24 @@ include '../_header.php';
 
     <?= wh_menu() ?>
 </div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const containerForm = document.getElementById('containerForm');
+    const parentSelect = document.getElementById('parent_id');
+    const moveButton = containerForm.querySelector('button[value="set_parent"]');
+    const deleteButton = containerForm.querySelector('button[value="delete_container"]');
+
+    moveButton.addEventListener('click', function() {
+        parentSelect.required = true;
+    });
+
+    deleteButton.addEventListener('click', function() {
+        parentSelect.required = false;
+    });
+});
+</script>
 
 <?php
 
