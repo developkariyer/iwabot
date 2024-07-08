@@ -94,10 +94,8 @@ function containersInOpt($type='Raf') {
     }
     $cache = WarehouseAbstract::getCache("containersInOpt{$type}");
     if (!empty($cache) && is_string($cache)) {
-        error_log("Cache Hit: containersInOpt{$type}");
         return $cache;
     }
-    error_log("Cache Miss: containersInShipOpt");
 
     $html = '';
     $containers = WarehouseContainer::getContainers(type: $type);
@@ -121,10 +119,8 @@ function parentContainersOpt($type = 'Raf') {
     }
     $cache = WarehouseAbstract::getCache("parentContainersOpt{$type}");
     if (!empty($cache) && is_string($cache)) {
-        error_log("Cache Hit: parentContainersOpt{$type}");
         return $cache;
     }
-    error_log("Cache Miss: parentContainersOpt{$type}");
 
     $icon = [
         'Gemi' => '🚢', //\u{1F6A2}
@@ -147,10 +143,8 @@ function containerOptGrouped($product = null) {
 
     $cache = WarehouseAbstract::getCache("containerOptGrouped{$product_id}");
     if (!empty($cache) && is_string($cache)) {
-        error_log("Cache Hit: containerOptGrouped{$product_id}");
         return $cache;
     }
-    error_log("Cache Miss: containerOptGrouped{$product_id}");
 
     if ($product instanceof WarehouseProduct) {
         $containers = $product->getContainers();
@@ -214,7 +208,6 @@ function productSelect($product_id = 0) {
 
     $cache = WarehouseAbstract::getCache("productSelect{$product_id}");
     if (!empty($cache) && is_string($cache)) {
-        error_log("Cache Hit: productSelect{$product_id}");
         return $cache;
     }
 
@@ -238,7 +231,6 @@ function productSelect($product_id = 0) {
         $html .= '</optgroup>';
     }
     $html .= '</select>';
-    error_log("Cache Miss: productSelect{$product_id}");
     WarehouseAbstract::setCache("productSelect{$product_id}", $html);
     return $html;
 }

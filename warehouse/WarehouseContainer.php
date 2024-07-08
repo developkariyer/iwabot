@@ -125,7 +125,6 @@ class WarehouseContainer extends WarehouseAbstract
     protected function getTotalCount()
     {
         if (empty($this->totalCount)) {
-            error_log("Cache Candidate: getTotalCount");
             $this->getProducts();
         }
         return $this->totalCount;
@@ -214,7 +213,6 @@ class WarehouseContainer extends WarehouseAbstract
             $cache = unserialize(static::getCache("getUnfulfilledBoxes"));
             if (is_array($cache)) {
                 static::$unfulfilled = $cache;
-                error_log("Cache Hit: getUnfulfilledBoxes");
             } else {
                 static::$unfulfilled =[];
                 $stmt = $GLOBALS['pdo']->query("SELECT * FROM warehouse_sold WHERE fulfilled = FALSE AND sold_type = 'WarehouseContainer' ORDER BY product_id ASC");
@@ -226,7 +224,6 @@ class WarehouseContainer extends WarehouseAbstract
                     static::$unfulfilled[$data['id']] = $data;
                     static::$unfulfilled[$data['id']]['container'] = $container;
                 }
-                error_log("Cache Miss: getUnfulfilledBoxes");
                 static::setCache("getUnfulfilledBoxes", serialize(static::$unfulfilled));
             }
         }
@@ -237,10 +234,8 @@ class WarehouseContainer extends WarehouseAbstract
     {
         $cache = unserialize(static::getCache("findSimilar{$this->id}"));
         if (is_array($cache)) {
-            error_log("Cache Hit: findSimilar{$this->id}");
             return $cache;
         }
-        error_log("Cache Miss: findSimilar{$this->id}");
         $sql = "SELECT container_id FROM warehouse_view_container_signatures WHERE signature = (SELECT signature FROM warehouse_view_container_signatures WHERE container_id = :container_id) AND container_id <> :container_id";
         $stmt = $GLOBALS['pdo']->prepare($sql);
         $stmt->execute(['container_id' => $this->id]);

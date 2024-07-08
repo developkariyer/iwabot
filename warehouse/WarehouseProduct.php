@@ -69,7 +69,6 @@ class WarehouseProduct extends WarehouseAbstract
             $cache = unserialize(static::getCache("Product{$this->id}Containers"));
             if (is_array($cache)) {
                 $this->containers = $cache;
-                error_log("Cache Hit: Product{$this->id}Containers");
             } else {
                 $stmt = $GLOBALS['pdo']->prepare("SELECT DISTINCT container_id FROM " . WarehouseAbstract::$productJoinTableName . " WHERE product_id = :product_id");
                 $stmt->execute(['product_id' => $this->id]);
@@ -78,7 +77,6 @@ class WarehouseProduct extends WarehouseAbstract
                     $containers[] = WarehouseContainer::getById($data['container_id']);
                 }
                 $this->containers = $containers;
-                error_log("Cache Miss: Product{$this->id}Containers");
                 static::setCache("Product{$this->id}Containers", serialize($this->containers));
             }
         }
@@ -127,7 +125,6 @@ class WarehouseProduct extends WarehouseAbstract
             $cache = unserialize(static::getCache("getUnfulfilledProducts"));
             if (is_array($cache)) {
                 static::$unfulfilled = $cache;
-                error_log("Cache Hit: getUnfulfilledProducts");
             } else {
                 static::$unfulfilled =[];
                 $stmt = $GLOBALS['pdo']->query("SELECT * FROM warehouse_sold WHERE fulfilled = FALSE AND sold_type = 'WarehouseProduct' ORDER BY product_id ASC");
@@ -139,7 +136,6 @@ class WarehouseProduct extends WarehouseAbstract
                     static::$unfulfilled[$data['id']] = $data;
                     static::$unfulfilled[$data['id']]['product'] = $product;
                 }
-                error_log("Cache Miss: getUnfulfilledProducts");
                 static::setCache("getUnfulfilledProducts", serialize(static::$unfulfilled));
             }
         }

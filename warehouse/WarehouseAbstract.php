@@ -144,7 +144,6 @@ abstract class WarehouseAbstract
         if (is_null(static::$predis)) {
             static::$predis = new Predis\Client();
         }
-        error_log("Cache flushed");
         return static::$predis->flushdb();
     }
 
@@ -298,9 +297,7 @@ abstract class WarehouseAbstract
             $cache = unserialize(static::getCache(get_called_class()."getAll"));
             if (is_array($cache)) {
                 static::$allObjects = $cache;
-                error_log("Cache Hit: ".get_called_class()."getAll");
             } else {
-                error_log("Cache Miss: ".get_called_class()."getAll");
                 $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName(). " ORDER BY name ASC");
                 $stmt->execute();
                 $objects = [];
