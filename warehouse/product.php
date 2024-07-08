@@ -49,7 +49,7 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
                                 </button>
                             </h2>
                             <div id="collapse<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $index ?>" data-bs-parent="#productAccordion">
-                                <div class="accordion-body">
+                                <div class="accordion-body p-5">
                                     <p><?= productInfo($product['product']) ?></p>
                                     <p><b>Açıklama</b><br><?= nl2br(htmlspecialchars($product['description'])) ?></p>
                                     <form action="controller.php" method="post">
@@ -61,7 +61,7 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
                                             <option value="">Raf/Koli Seçin</option>
                                             <?= containerOptGrouped($product['product']) ?>
                                         </select>
-                                        <button id="Submit<?= $index ?>Product<?= $product['product']->id ?>" type="submit" class="btn btn-primary rounded-pill w-100 py-3 mt-2">Ürün Çıkışı Yap</button>
+                                        <button id="Submit<?= $index ?>Product<?= $product['product']->id ?>" type="submit" class="btn btn-primary w-100 py-3 mt-2">Ürün Çıkışı Yap</button>
                                     </form>
                                 </div>
                             </div>
@@ -100,9 +100,9 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
                                 <?= containerOptGrouped() ?>
                             </select>
                             <input type="number" name="count" min="1" class="form-control btn-outline-success rounded-pill w-100 py-3" placeholder="Ürün Adedi">
-                            <button name="action" value="remove_from_container" type="submit" class="btn btn-primary rounded-pill w-100 py-3 mt-1">Depo Çıkışı Yap</button>
-                            <button name="action" value="move_to_container" type="submit" class="btn btn-primary rounded-pill w-100 py-3 mt-1">Depo İçinde Taşı</button>
-                            <button name="action" value="place_in_container" type="submit" class="btn btn-primary rounded-pill w-100 py-3 mt-1">Depo Girişi Yap</button>
+                            <button name="action" value="remove_from_container" type="submit" class="btn btn-primary w-100 py-3 mt-2">Depo Çıkışı Yap</button>
+                            <button name="action" value="move_to_container" type="submit" class="btn btn-primary w-100 py-3 mt-2">Depo İçinde Taşı</button>
+                            <button name="action" value="place_in_container" type="submit" class="btn btn-primary w-100 py-3 mt-2">Depo Girişi Yap</button>
                         </form>
                     </div>
                 </div>
@@ -163,7 +163,7 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
                             <label for="weight" class="form-label">Ağırlık (gr)</label>
                             <input type="text" class="form-control" id="weight" name="weight">
                         </div>
-                        <button type="submit" class="btn btn-primary rounded-pill w-100 py-3 mt-2">Yeni Ürün Ekle</button>
+                        <button type="submit" class="btn btn-primary w-100 py-3 mt-2">Yeni Ürün Ekle</button>
                     </form>
                 </div>
             </div>

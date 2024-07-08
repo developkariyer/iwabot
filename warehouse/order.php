@@ -40,7 +40,7 @@ include '../_header.php';
                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <?= productSelect() ?>
                         <textarea rows="5" name="description" class="form-control btn-outline-success w-100 py-3 mt-2" placeholder="İsim - Adres - Açıklama - Ürün Kodları" required></textarea>
-                        <button id="submitbutton" type="submit" class="btn btn-primary rounded-pill w-100 py-3 mt-2">Yeni Çıkış Kaydı Ekle</button>
+                        <button id="submitbutton" type="submit" class="btn btn-primary w-100 py-3 mt-2">Yeni Çıkış Kaydı Ekle</button>
                     </form>
                 </div>
             </div>
