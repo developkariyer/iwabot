@@ -44,7 +44,6 @@ include '../_header.php';
             </div>
         </div>
 
-
         <!-- Second Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain2">
@@ -70,8 +69,8 @@ include '../_header.php';
                                 <?= parentContainersOpt() ?>
                             </select>
                         </div>
-                        <button type="submit" name="action" value="set_parent" class="btn btn-primary w-100 py-3 mt-2">Raftan Rafa Taşı</button>
-                        <button type="submit" name="action" value="delete_container" class="btn btn-danger w-100 py-3 mt-2">Koli Sil</button>
+                        <button type="submit" name="action" value="set_parent" class="btn btn-primary w-100 py-3 mt-2" id="moveButton">Raftan Rafa Taşı</button>
+                        <button type="submit" name="action" value="delete_container" class="btn btn-danger w-100 py-3 mt-2" id="deleteButton">Koli Sil</button>
                     </form>
                 </div>
             </div>
@@ -86,18 +85,33 @@ include '../_header.php';
             </h2>
             <div id="containerAccordion3" class="accordion-collapse collapse" aria-labelledby="headingMain3" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5 w-100">
-                    <form action="controller.php" method="POST">
-                        <input type="hidden" name="action" value="add_shelf">
+                    <form action="controller.php" method="POST" id="addContainerForm">
+                        <input type="hidden" name="action" value="add_container">
                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <div class="mb-3">
-                            <label for="shelf_name" class="form-label">Raf Adı</label>
-                            <input type="text" class="form-control" id="shelf_name" name="shelf_name" required>
+                            <label for="name" class="form-label">Adı</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="location" class="form-label">Konum</label>
-                            <input type="text" class="form-control" id="location" name="location" required>
+                            <label for="type" class="form-label">Tip</label>
+                            <select id="type" name="type" class="form-select" required>
+                                <option value="Gemi">Gemi</option>
+                                <option value="Raf">Raf</option>
+                                <option value="Koli">Koli</option>
+                            </select>
                         </div>
-                        <button type="submit" class="btn btn-primary rounded-pill w-100 py-3 mt-2">Yeni Raf Ekle</button>
+                        <div class="mb-3">
+                            <label for="parent_id" class="form-label">Yerleştirileceği Konum</label>
+                            <select id="parent_id" name="parent_id" class="form-select" disabled>
+                                <optgroup label="Raf">
+                                    <?= parentContainersOpt('Raf') ?>
+                                </optgroup>
+                                <optgroup label="Gemi">
+                                    <?= parentContainersOpt('Gemi') ?>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-3 mt-2" id="addNewButton">Yeni Ekle</button>
                     </form>
                 </div>
             </div>
@@ -112,18 +126,40 @@ include '../_header.php';
 
 
 <script>
+
 document.addEventListener('DOMContentLoaded', function() {
     const containerForm = document.getElementById('containerForm');
     const parentSelect = document.getElementById('parent_id');
-    const moveButton = containerForm.querySelector('button[value="set_parent"]');
-    const deleteButton = containerForm.querySelector('button[value="delete_container"]');
+    const moveButton = document.getElementById('moveButton');
+    const deleteButton = document.getElementById('deleteButton');
 
-    moveButton.addEventListener('click', function() {
-        parentSelect.required = true;
+    moveButton.addEventListener('click', function(event) {
+        if (!parentSelect.value) {
+            alert('Yerleştirileceği Rafı Seçin');
+            event.preventDefault(); // Prevent form submission
+        }
     });
+});
 
-    deleteButton.addEventListener('click', function() {
-        parentSelect.required = false;
+document.addEventListener('DOMContentLoaded', function() {
+    const addContainerForm = document.getElementById('addContainerForm');
+    const typeSelect = document.getElementById('type');
+    const parentSelect = document.getElementById('parent_id');
+    const addNewButton = document.getElementById('addNewButton');
+
+    addNewButton.addEventListener('click', function(event) {
+        if (typeSelect.value === 'Koli' && !parentSelect.value) {
+            alert('Kolinin yerleştirileceği Gemi/Rafı seçin');
+            event.preventDefault();
+        }
+    }
+
+    typeSelect.addEventListener('change', function() {
+        if (typeSelect.value === 'Koli') {
+            parentSelect.disabled = false;
+        } else {
+            parentSelect.disabled = true;
+        }
     });
 });
 </script>
