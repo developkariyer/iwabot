@@ -121,7 +121,6 @@ abstract class WarehouseAbstract
             $values[$field] = $this->$field;
             $set[] = $field . ' = :' . $field;
         }
-        error_log("UPDATE " . static::getTableName() . " SET " . implode(', ', $set) . " WHERE id = :id".json_encode($values));
         $stmt = $GLOBALS['pdo']->prepare("UPDATE " . static::getTableName() . " SET " . implode(', ', $set) . " WHERE id = :id");
         $this->clearAllCache();
         return $stmt->execute($values);    
@@ -197,13 +196,11 @@ abstract class WarehouseAbstract
             throw new Exception("Field not found in database fields");
         }
         if (isset($this->dbValues[$field])) {
-            error_log("Class Cache Hit (getField): ".get_called_class()."->{$this->id}->$field as {$this->dbValues[$field]}");
             return $this->dbValues[$field];
         }
         if (empty($this->id)) {
             return null;
         }
-        error_log("Class Cache Miss (getField): ".get_called_class()."->{$this->id}->$field");
         $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName() . " WHERE id = :id");
         $stmt->execute(['id' => $this->id]);
         if ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -220,10 +217,8 @@ abstract class WarehouseAbstract
         }
         if (in_array($field, static::getDBFields())) {
             if (isset($this->dbValues[$field])) {
-                error_log("Class Cache Hit (__get): ".get_called_class()."->{$this->id}->$field as {$this->dbValues[$field]}");
                 return $this->dbValues[$field];
             }
-            error_log("Class Cache Miss: ".get_called_class()."->{$this->id}->$field");
             return $this->getField($field);
         }
         $methods = static::getCustomMethods();
@@ -239,7 +234,6 @@ abstract class WarehouseAbstract
         if (in_array($field, static::getDBFields())) {
             if ($this->validateField($field, $value)) {
                 $this->dbValues[$field] = $value;
-                error_log("Field ".get_called_class()."->$field set to $value for id={$this->id}");
                 return;
             } else {
                 throw new Exception("Invalid value ($value) for field $field");
@@ -315,6 +309,7 @@ abstract class WarehouseAbstract
                 static::$allObjects = $cache;
                 error_log("Cache Hit: ".get_called_class()."getAll");
             } else {
+                error_log("Cache Miss: ".get_called_class()."getAll");
                 $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName(). " ORDER BY name");
                 $stmt->execute();
                 $objects = [];
