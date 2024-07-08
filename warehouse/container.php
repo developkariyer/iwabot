@@ -155,6 +155,10 @@ include '../_header.php';
                                             <p>
                                                 <?= containerInfo($item['container']) ?>
                                             </p>
+                                            <p>
+                                                <strong>Açıklama:</strong><br>
+                                                <?= htmlspecialchars($item['description']) ?>
+                                            </p>
                                             <label for="container_id_<?= $index ?>" class="form-label">Koli Seçin</label>
                                             <select id="container_id_<?= $index ?>" name="container_id" class="form-select" required>
                                                 <option value="">Çıkış Yapılacak Koli Seçin</option>
@@ -167,10 +171,6 @@ include '../_header.php';
                                                     <?php endforeach; ?>
                                                 </optgroup>
                                             </select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="description_<?= $index ?>" class="form-label">Açıklama</label>
-                                            <textarea id="description_<?= $index ?>" name="description" rows="5" class="form-control btn-outline-success w-100 py-3" placeholder="Açıklama" required><?= htmlspecialchars($item['description']) ?></textarea>
                                         </div>
                                         <button type="submit" class="btn btn-primary w-100 py-3 mt-2">Koli Çıkışını Tamamla</button>
                                     </form>
