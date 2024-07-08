@@ -126,7 +126,7 @@ include '../_header.php';
                         <div class="mb-3">
                             <label for="accordion2container_id" class="form-label">Koli Seçin</label>
                             <select id="accordion2container_id" name="container_id" class="form-select" required>
-                                <option value="">Raf Seçin</option>
+                                <option value="">Koli Seçin</option>
                                 <?= containersInOpt('Raf') ?>
                             </select>
                         </div>
