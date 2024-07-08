@@ -85,7 +85,7 @@ $products = WarehouseProduct::getAll();
                     <input type="text" id="filterInput2" class="form-control mb-3" placeholder="Aramak için bir şeyler yazın...">
                     <?php foreach ($products as $index => $product): ?>
                         <?php if ($product->getTotalCount() == 0) continue; ?>
-                        <div class="accordion-item">
+                        <div class="accordion-item" style="display: none;">
                             <h2 class="accordion-header" id="headingProduct<?= $index ?>">
                                 <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProduct<?= $index ?>" aria-expanded="false" aria-controls="collapseProduct<?= $index ?>">
                                     <span><strong><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>)</strong> (Toplam: <?= $product->getTotalCount() ?> adet)</span>
@@ -126,8 +126,7 @@ $(document).ready(function() {
         // Only add the filter functionality when the accordion section is shown
         $('#filterInput2').on('keyup', function() {
             var value = $(this).val().toLowerCase();
-            $('#inventoryAccordion2 .accordion-item').filter(function() {
-                // Only search within the h2 elements of each accordion item
+            $('#inventoryAccordion2 .accordion-item').each(function() {
                 var headerText = $(this).find('.accordion-header').text().toLowerCase();
                 $(this).toggle(headerText.indexOf(value) > -1);
             });
@@ -135,6 +134,7 @@ $(document).ready(function() {
     });
 });
 </script>
+
 
 
 <?php
