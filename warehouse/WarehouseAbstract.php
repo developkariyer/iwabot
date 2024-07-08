@@ -230,8 +230,10 @@ abstract class WarehouseAbstract
         if (in_array($field, static::getDBFields())) {
             if ($this->validateField($field, $value)) {
                 $this->dbValues[$field] = $value;
+                return;
+            } else {
+                throw new Exception("Invalid value ($value) for field $field");
             }
-            return;
         }
         $methods = static::getCustomMethods();
         if (isset($methods[$field]) && ($value === [] || is_null($value))) {
