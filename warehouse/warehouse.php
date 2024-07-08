@@ -65,14 +65,14 @@ function containerInfo($container) {
         'Koli' => '📦', //\u{1F4E6}
     ];
     $html = "<b>Adı:</b> {$container->name}<br>
-    <b>Tip:</b> {$icon[$container->type]} {$container->type}<br>";
+    <b>Tipi:</b> {$icon[$container->type]} {$container->type}<br>";
     if ($container->parent) {
-        $html .= "<b>Yerleştirildiği Konum:</b> {$icon[$container->parent->type]} {$container->parent->name}<br>";
+        $html .= "<b>Rafı:</b> {$icon[$container->parent->type]} {$container->parent->name}<br>";
     }
-    $html .= "<b>İçindeki Ürünler:</b><br>";
+    $html .= "<b>İçindeki Ürünler:</b>";
     $products = $container->getProducts();
     if (empty($products)) {
-        $html .= "Bu koli boş.";
+        $html .= "<br>Bu koli boş.";
     } else {
         $html .= "<ul>";
         foreach($products as $product) {
