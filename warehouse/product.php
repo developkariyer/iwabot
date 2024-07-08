@@ -68,7 +68,9 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
                         </div>
                     <?php endforeach; ?>
                     <?php if (empty($unfulfilledProducts) || count($unfulfilledProducts) == 0): ?>
-                        <p>Çıkış için bekleyen ürün bulunmamaktadır.</p>
+                        <div class="p-5">
+                            <p>Çıkış için bekleyen ürün bulunmamaktadır.</p>
+                        </div>
                     <?php endif; ?>
                 </div>
             </div>
