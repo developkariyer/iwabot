@@ -54,10 +54,10 @@ class WarehouseContainer extends WarehouseAbstract
             throw new Exception("Cannot delete an object without an ID");
         }
         if (!empty($this->getChildren())) {
-            throw new Exception("Cannot delete a container with children");
+            throw new Exception("Cannot delete container {$this->id} with children");
         }
         if (!empty($this->getProducts())) {
-            throw new Exception("Cannot delete a container with products");
+            throw new Exception("Cannot delete container {$this->id} with products");
         }
         return true;
     }
