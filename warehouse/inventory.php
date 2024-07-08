@@ -31,7 +31,7 @@ $products = WarehouseProduct::getAll();
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingRaf<?= $index ?>">
                                 <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRaf<?= $index ?>" aria-expanded="false" aria-controls="collapseRaf<?= $index ?>">
-                                    <span><strong><?= htmlspecialchars($raf->name) ?></strong></span>
+                                    <span><strong><?= htmlspecialchars($raf->name) ?> (<?= count($raf->getChildren()) ?> Koli,<?= count($raf->getProducts()) ?> Ürün)</strong></span>
                                 </button>
                             </h2>
                             <div id="collapseRaf<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="headingRaf<?= $index ?>" data-bs-parent="#inventoryAccordion1">
