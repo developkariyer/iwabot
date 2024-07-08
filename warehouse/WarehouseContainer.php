@@ -161,7 +161,7 @@ class WarehouseContainer extends WarehouseAbstract
         return static::$parentContainers;
     }
 
-    protected static function getContainers($type = 'Raf', $parent_id = -1, $warehouse = null)
+    public static function getContainers($type = 'Raf', $parent_id = -1, $warehouse = null)
     {
         if (!static::validateField('type', $type)) {
             throw new Exception("Invalid container type");
