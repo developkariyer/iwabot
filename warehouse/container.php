@@ -95,6 +95,7 @@ include '../_header.php';
                         <div class="mb-3">
                             <label for="type" class="form-label">Tip</label>
                             <select id="type" name="type" class="form-select" required>
+                                <option value="">Tip Seçin</option>
                                 <option value="Gemi">Gemi</option>
                                 <option value="Raf">Raf</option>
                                 <option value="Koli">Koli</option>
@@ -103,6 +104,7 @@ include '../_header.php';
                         <div class="mb-3">
                             <label for="parent_id" class="form-label">Yerleştirileceği Konum</label>
                             <select id="parent_id" name="parent_id" class="form-select" disabled>
+                                <option value="">Yerleştirileceği Konumu Seçin</option>
                                 <optgroup label="Raf">
                                     <?= parentContainersOpt('Raf') ?>
                                 </optgroup>
