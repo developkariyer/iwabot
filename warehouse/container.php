@@ -31,15 +31,15 @@ include '../_header.php';
                         <input type="hidden" name="action" value="set_parent">
                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <div class="mb-3">
-                            <label for="container_id" class="form-label">Koli Seçin</label>
-                            <select id="container_id" name="container_id" class="form-select" required>
+                            <label for="accordion1container_id" class="form-label">Koli Seçin</label>
+                            <select id="accordion1container_id" name="container_id" class="form-select" required>
                                 <option value="">Gemiden Koli Seçin</option>
                                 <?= containersInOpt(type: 'Gemi') ?>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="parent_id" class="form-label">Raf Seçin</label>
-                            <select id="parent_id" name="parent_id" class="form-select" required>
+                            <select id="accordion1parent_id" name="parent_id" class="form-select" required>
                                 <option value="">Yerleştirileceği Rafı Seçin</option>
                                 <?= parentContainersOpt() ?>
                             </select>
@@ -59,24 +59,25 @@ include '../_header.php';
             </h2>
             <div id="containerAccordion2" class="accordion-collapse collapse" aria-labelledby="headingMain2" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
-                    <form action="controller.php" method="POST" id="containerForm">
+                    <form action="controller.php" method="POST" id="accordion2containerForm">
+                        <input type="hidden" name="action" value="set_parent">
                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <div class="mb-3">
-                            <label for="container_id" class="form-label">Koli Seçin</label>
-                            <select id="container_id" name="container_id" class="form-select" required>
+                            <label for="accordion2container_id" class="form-label">Koli Seçin</label>
+                            <select id="accordion2container_id" name="container_id" class="form-select" required>
                                 <option value="">Raf Seçin</option>
                                 <?= containersInOpt('Raf') ?>
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="parent_id" class="form-label">Yerleştirileceği Rafı Seçin</label>
-                            <select id="parent_id" name="parent_id" class="form-select">
+                            <label for="accordion2parent_id" class="form-label">Yerleştirileceği Rafı Seçin</label>
+                            <select id="accordion2parent_id" name="parent_id" class="form-select">
                                 <option value="">Yerleştirileceği Rafı Seçin</option>
                                 <?= parentContainersOpt() ?>
                             </select>
                         </div>
-                        <button type="submit" name="action" value="set_parent" class="btn btn-primary w-100 py-3 mt-2" id="moveButton">Raftan Rafa Taşı</button>
-                        <button type="submit" name="action" value="delete_container" class="btn btn-danger w-100 py-3 mt-2" id="deleteButton">Koli Sil</button>
+                        <button type="submit" name="action" value="set_parent" class="btn btn-primary w-100 py-3 mt-2" id="accordion2moveButton">Raftan Rafa Taşı</button>
+                        <button type="submit" name="action" value="delete_container" class="btn btn-danger w-100 py-3 mt-2" id="accordion2deleteButton">Koli Sil</button>
                     </form>
                 </div>
             </div>
@@ -91,16 +92,16 @@ include '../_header.php';
             </h2>
             <div id="containerAccordion3" class="accordion-collapse collapse" aria-labelledby="headingMain3" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5 w-100">
-                    <form action="controller.php" method="POST" id="addContainerForm">
+                    <form action="controller.php" method="POST" id="accordion3addContainerForm">
                         <input type="hidden" name="action" value="add_container">
                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <div class="mb-3">
-                            <label for="name" class="form-label">Adı</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
+                            <label for="accordion3name" class="form-label">Adı</label>
+                            <input id="accordion3name" type="text" class="form-control" name="name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="type" class="form-label">Tip</label>
-                            <select id="type" name="type" class="form-select" required>
+                            <label for="accordion3type" class="form-label">Tip</label>
+                            <select id="accordion3type" name="type" class="form-select" required>
                                 <option value="">Tip Seçin</option>
                                 <option value="Gemi"><?= $icon['Gemi'] ?> Gemi</option>
                                 <option value="Raf"><?= $icon['Raf'] ?> Raf</option>
@@ -108,8 +109,8 @@ include '../_header.php';
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="parent_id" class="form-label">Yerleştirileceği Konum</label>
-                            <select id="parent_id" name="parent_id" class="form-select" disabled>
+                            <label for="accordion3parent_id" class="form-label">Yerleştirileceği Konum</label>
+                            <select id="accordion3parent_id" name="parent_id" class="form-select" disabled>
                                 <option value="">Yerleştirileceği Konumu Seçin</option>
                                 <optgroup label="Raf">
                                     <?= parentContainersOpt('Raf') ?>
@@ -119,7 +120,7 @@ include '../_header.php';
                                 </optgroup>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100 py-3 mt-2" id="addNewButton">Yeni Ekle</button>
+                        <button type="submit" class="btn btn-primary w-100 py-3 mt-2" id="accordion3addNewButton">Yeni Ekle</button>
                     </form>
                 </div>
             </div>
@@ -136,13 +137,13 @@ include '../_header.php';
 <script>
 
 document.addEventListener('DOMContentLoaded', function() {
-    const containerForm = document.getElementById('containerForm');
-    const parentSelect = document.getElementById('parent_id');
-    const moveButton = document.getElementById('moveButton');
-    const deleteButton = document.getElementById('deleteButton');
+    const containerForm = document.getElementById('accordion2containerForm');
+    const a2parentSelect = document.getElementById('accordion2parent_id');
+    const moveButton = document.getElementById('accordion2moveButton');
+    const deleteButton = document.getElementById('accordion2deleteButton');
 
     moveButton.addEventListener('click', function(event) {
-        if (!parentSelect.value) {
+        if (!a2parentSelect.value) {
             alert('Yerleştirileceği Rafı Seçin');
             event.preventDefault(); // Prevent form submission
         }
@@ -150,13 +151,13 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    const addContainerForm = document.getElementById('addContainerForm');
-    const typeSelect = document.getElementById('type');
-    const parentSelect = document.getElementById('parent_id');
-    const addNewButton = document.getElementById('addNewButton');
+    const addContainerForm = document.getElementById('accordion3addContainerForm');
+    const typeSelect = document.getElementById('accordion3type');
+    const a3parentSelect = document.getElementById('accordion3parent_id');
+    const addNewButton = document.getElementById('accordion3addNewButton');
 
     addNewButton.addEventListener('click', function(event) {
-        if (typeSelect.value === 'Koli' && !parentSelect.value) {
+        if (typeSelect.value === 'Koli' && !a3parentSelect.value) {
             alert('Kolinin yerleştirileceği Gemi/Rafı seçin');
             event.preventDefault();
         }
@@ -164,9 +165,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     typeSelect.addEventListener('change', function() {
         if (typeSelect.value === 'Koli') {
-            parentSelect.disabled = false;
+            a3parentSelect.disabled = false;
         } else {
-            parentSelect.disabled = true;
+            a3parentSelect.disabled = true;
         }
     });
 });
