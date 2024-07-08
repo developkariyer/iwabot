@@ -57,7 +57,7 @@ class WarehouseContainer extends WarehouseAbstract
             throw new Exception("Cannot delete container {$this->id} with children");
         }
         if (!empty($this->getProducts(noCache: true))) {
-            throw new Exception("Cannot delete container {$this->id} with products");
+            throw new Exception("Cannot delete container {$this->id} with products: ".json_encode($this->getProducts(noCache:true)));
         }
         return true;
     }
