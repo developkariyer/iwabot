@@ -164,7 +164,7 @@ class WarehouseContainer extends WarehouseAbstract
     public static function getContainers($type = 'Raf', $parent_id = -1, $warehouse = null)
     {
         if (!static::validateField('type', $type)) {
-            throw new Exception("Invalid container type");
+            throw new Exception("Invalid container type: $type");
         }
         $sql = "SELECT * FROM " . static::getTableName() . " WHERE type = :type";
         $params = ['type' => $type];
