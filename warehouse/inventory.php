@@ -27,7 +27,6 @@ $products = WarehouseProduct::getAll();
             </h2>
             <div id="inventoryAccordion1" class="accordion-collapse collapse" aria-labelledby="headingMain1" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
-                    <input type="text" id="filterInput" class="form-control mb-3" placeholder="Koli aramak için bir şeyler yazın...">
                     <?php foreach ($rafContainers as $index => $raf): ?>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingRaf<?= $index ?>">
@@ -136,26 +135,8 @@ $(document).ready(function() {
             });
         });
     });
-    $('#inventoryAccordion1').on('shown.bs.collapse', function () {
-        $('#filterInput').on('keyup', function() {
-        var value = $(this).val().toLowerCase();
-        $('#mainAccordion .accordion-item').hide();
-        $('#mainAccordion .accordion-item').filter(function() {
-            var text = $(this).find('.box-h2').text().toLowerCase();
-            return text.indexOf(value) > -1;
-        }).each(function() {
-            $(this).show();
-            $(this).parents('.accordion-item').show();
-            $(this).find('.accordion-collapse').collapse('show');
-            $(this).parents('.accordion-collapse').collapse('show');
-        });
-    });
-    });
 });
 </script>
-
-
-
 
 <?php
 
