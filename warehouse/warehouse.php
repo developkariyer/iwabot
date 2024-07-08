@@ -72,7 +72,12 @@ function containerInfo($container) {
     $html .= "<b>İçindeki Ürünler:</b>";
     $products = $container->getProducts();
     if (empty($products)) {
-        $html .= "<br>Bu koli boş.";
+        if ($container->type == 'Koli') {
+            $html .= "<br>Bu koli boş görünüyor.";
+        }
+        if ($container->type == 'Raf') {
+            $html .= "<br>Bu rafta açıkta ürün yok.";
+        }
     } else {
         $html .= "<ul>";
         foreach($products as $product) {
