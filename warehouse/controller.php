@@ -169,10 +169,10 @@ function handleMoveToContainer() {
         addMessage('move_to_container: Geçersiz parametre: '.getPostValue('product_id').'/'.getPostValue('container_id').'/'.getPostValue('new_container_id').'/'.getPostValue('count'));
         return;
     }
-    if ($product->moveToContainer($old_container, $new_container)) {
-        addMessage("$product->name, $old_container->name => $new_container->name taşındı");
+    if ($product->moveToContainer($old_container, $new_container, $count)) {
+        addMessage("$count adet $product->name, $old_container->name => $new_container->name taşındı");
     } else {
-        addMessage("$product->name, $old_container->name => $new_container->name taşınamadı");
+        addMessage("$count adet $product->name, $old_container->name => $new_container->name taşınamadı");
     }
 }
 
