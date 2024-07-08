@@ -2,6 +2,12 @@
 
 require_once('warehouse.php');
 
+$icon = [
+    'Gemi' => '🚢', //\u{1F6A2}
+    'Raf' => '🗄️', // \u{1F5C4}
+    'Koli' => '📦', //\u{1F4E6}
+];
+
 include '../_header.php';
 
 ?>
@@ -96,9 +102,9 @@ include '../_header.php';
                             <label for="type" class="form-label">Tip</label>
                             <select id="type" name="type" class="form-select" required>
                                 <option value="">Tip Seçin</option>
-                                <option value="Gemi">Gemi</option>
-                                <option value="Raf">Raf</option>
-                                <option value="Koli">Koli</option>
+                                <option value="Gemi"><?= $icon['Gemi'] ?> Gemi</option>
+                                <option value="Raf"><?= $icon['Raf'] ?> Raf</option>
+                                <option value="Koli"><?= $icon['Koli'] ?> Koli</option>
                             </select>
                         </div>
                         <div class="mb-3">

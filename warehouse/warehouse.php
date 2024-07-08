@@ -128,6 +128,7 @@ function containerOptGrouped($product = null) {
     $icon = [
         'Gemi' => '🚢', //\u{1F6A2}
         'Raf' => '🗄️', // \u{1F5C4}
+        'Koli' => '📦', //\u{1F4E6}
     ];
     foreach($containers as $container) {
         if ($container->type == 'Raf' || $container->type == 'Gemi') {
