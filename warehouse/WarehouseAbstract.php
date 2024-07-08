@@ -190,6 +190,9 @@ abstract class WarehouseAbstract
 
     protected function getField($field)
     {
+        if ($field === 'warehouse') {
+            return '';
+        }
         if (!in_array($field, static::getDBFields())) {
             throw new Exception("Field not found in database fields");
         }
@@ -212,7 +215,7 @@ abstract class WarehouseAbstract
 
     public function __get($field)
     {
-        if ($field === 'Warehouse') {
+        if ($field === 'warehouse') {
             return '';
         }
         if (in_array($field, static::getDBFields())) {
