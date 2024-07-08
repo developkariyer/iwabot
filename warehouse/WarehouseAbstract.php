@@ -127,7 +127,10 @@ abstract class WarehouseAbstract
         $values = [];
         foreach ($fields as $field) {
             $set[] = $field;
-            $values[$field] = is_null($this->$field) ? null : $this->$field;
+            $values[$field] = $this->$field;
+            if (in_array($field, ['dimension1', 'dimension2', 'dimension3', 'weight']) && !is_numeric($values[$field])) {
+                $values[$field] = '0';
+            }
         }
         $stmt = $GLOBALS['pdo']->prepare("INSERT INTO " . static::getTableName() . " (" . implode(', ', $set) . ") VALUES (:" . implode(', :', $set) . ")");
         if ($stmt->execute($values)) {
