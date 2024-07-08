@@ -328,7 +328,9 @@ function handleContainerInfo() {
             'error' => 'Konteyner bilgisi bulunamadı.',
         ]));
     }
-    die(json_encode($container->getAsArray()));
+    $data = $container->getAsArray();
+    $data['info'] = $container->name;
+    die(json_encode($data));
 }
 
 

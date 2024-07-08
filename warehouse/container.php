@@ -69,6 +69,7 @@ include '../_header.php';
                                 <?= containersInOpt('Raf') ?>
                             </select>
                         </div>
+                        <div id="containerInfo" class="p-3"></div>
                         <div class="mb-3">
                             <label for="accordion2parent_id" class="form-label">Yerleştirileceği Rafı Seçin</label>
                             <select id="accordion2parent_id" name="parent_id" class="form-select">
@@ -137,6 +138,23 @@ include '../_header.php';
 <script defer>
 
 document.addEventListener('DOMContentLoaded', function() {
+    const containerSelect = document.getElementById('accordion2container_id');
+    const containerInfoDiv = document.getElementById('containerInfo');
+
+    containerSelect.addEventListener('change', function() {
+        const containerId = containerSelect.value;
+        if (containerId) {
+            fetch(`controller.php?action=container_info&container_id=${containerId}`)
+                .then(response => response.json())
+                .then(data => {
+                    containerInfoDiv.innerHTML = data.info;
+                })
+                .catch(error => console.error('Error fetching container info:', error));
+        } else {
+            containerInfoDiv.innerHTML = '';
+        }
+    });
+
     const containerForm = document.getElementById('accordion2containerForm');
     const a2parentSelect = document.getElementById('accordion2parent_id');
     const moveButton = document.getElementById('accordion2moveButton');
@@ -148,9 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
             event.preventDefault();
         }
     });
-});
 
-document.addEventListener('DOMContentLoaded', function() {
     const addContainerForm = document.getElementById('accordion3addContainerForm');
     const typeSelect = document.getElementById('accordion3type');
     const a3parentSelect = document.getElementById('accordion3parent_id');
