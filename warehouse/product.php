@@ -35,7 +35,7 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
         <!-- First Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain">
-                <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion" aria-expanded="true" aria-controls="productAccordion">
+                <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion" aria-expanded="false" aria-controls="productAccordion">
                     <span><strong>Çıkış İçin Bekleyen Ürünler (<?= count($unfulfilledProducts) ?> adet)</strong></span>
                 </button>
             </h2>
@@ -76,7 +76,7 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
         <!-- Second Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain2">
-                <button class="accordion-button bg-success text-white <?= $product_id ? '' : 'collapsed' ?> w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion2" aria-expanded="true" aria-controls="productAccordion2">
+                <button class="accordion-button bg-success text-white <?= $product_id ? '' : 'collapsed' ?> w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion2" aria-expanded="<?= $product_id ? 'true' : 'false' ?>" aria-controls="productAccordion2">
                     <span><strong>Kendiniz Ürün Seçin</strong></span>
                 </button>
             </h2>
@@ -99,7 +99,7 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
                                 <option value="">Yeni Raf/Koli Seçin</option>
                                 <?= containerOptGrouped() ?>
                             </select>
-                            <input type="number" name="count" class="form-control btn-outline-success rounded-pill w-100 py-3" placeholder="Ürün Adedi">
+                            <input type="number" name="count" min="1" class="form-control btn-outline-success rounded-pill w-100 py-3" placeholder="Ürün Adedi">
                             <button name="action" value="remove_from_container" type="submit" class="btn btn-primary rounded-pill w-100 py-3 mt-1">Depo Çıkışı Yap</button>
                             <button name="action" value="move_to_container" type="submit" class="btn btn-primary rounded-pill w-100 py-3 mt-1">Depo İçinde Taşı</button>
                             <button name="action" value="place_in_container" type="submit" class="btn btn-primary rounded-pill w-100 py-3 mt-1">Depo Girişi Yap</button>
@@ -111,7 +111,7 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
         <!-- Third Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain3">
-                <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion3" aria-expanded="true" aria-controls="productAccordion3">
+                <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion3" aria-expanded="false" aria-controls="productAccordion3">
                     <span><strong>Kataloğa Yeni Ürün Ekleyin</strong></span>
                 </button>
             </h2>
