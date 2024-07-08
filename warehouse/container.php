@@ -147,20 +147,32 @@ include '../_header.php';
                             </h2>
                             <div id="collapseBox<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="headingBox<?= $index ?>" data-bs-parent="#orderAccordion4">
                                 <div class="accordion-body">
-                                    <p>
-                                        <?= containerInfo($item['container']) ?></p>
-                                    <p>
-                                        <b>Açıklama:</b><br>
-                                        <?= nl2br(htmlspecialchars($item['description'])) ?>
-                                    </p>
-                                        <b>Aynı İçerikli Koliler:</b>
-                                        <ul>
-                                            <?php foreach ($item['container']->findSimilar() as $sameContainer): ?>
-                                                <li><?= $sameContainer->name ?></li>
-                                            <?php endforeach; ?>
-                                        </ul>
-                                    <p>
-                                    </p>
+                                    <form action="controller.php" method="post">
+                                        <input type="hidden" name="action" value="fulfil_box">
+                                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                                        <input type="hidden" name="sold_id" value="<?= htmlspecialchars($item['id']) ?>">
+                                        
+                                        <div class="mb-3">
+                                            <label for="container_id_<?= $index ?>" class="form-label">Koli Seçin</label>
+                                            <select id="container_id_<?= $index ?>" name="container_id" class="form-select" required>
+                                                <optgroup label="Bu Koli">
+                                                    <option value="<?= htmlspecialchars($item['container']->id) ?>"><?= htmlspecialchars($item['container']->name) ?></option>
+                                                </optgroup>
+                                                <optgroup label="Aynı İçerikli Koliler">
+                                                    <?php foreach ($item['container']->findSimilar() as $sameContainer): ?>
+                                                        <option value="<?= htmlspecialchars($sameContainer->id) ?>"><?= htmlspecialchars($sameContainer->name) ?></option>
+                                                    <?php endforeach; ?>
+                                                </optgroup>
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="description_<?= $index ?>" class="form-label">Açıklama</label>
+                                            <textarea id="description_<?= $index ?>" name="description" rows="5" class="form-control btn-outline-success w-100 py-3" placeholder="Açıklama" required><?= htmlspecialchars($item['description']) ?></textarea>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary w-100 py-3 mt-2">Koli Çıkışını Tamamla</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -171,6 +183,7 @@ include '../_header.php';
                 </div>
             </div>
         </div>
+
 
 
     </div>
