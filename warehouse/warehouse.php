@@ -70,12 +70,11 @@ function containerInfo($container) {
         $html .= "<b>Yerleştirildiği Konum:</b> {$icon[$container->parent->type]} {$container->parent->name}<br>";
     }
     $html .= "<b>İçindeki Ürünler:</b><br>";
-    $products = $container->getProducts();
-    if (empty($products)) {
+    if (empty($container->products)) {
         $html .= "Bu koli boş.";
     } else {
         $html .= "<ul>";
-        foreach($products as $product) {
+        foreach($container->products as $product) {
             $html .= "<li>{$product->name} ({$product->fnsku}): ".$product->getInContainerCount($container)."</li>";
         }
         $html .= "</ul>";
