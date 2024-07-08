@@ -35,11 +35,11 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
         <!-- First Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain">
-                <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion" aria-expanded="false" aria-controls="productAccordion">
+                <button class="accordion-button bg-success text-white w-100 py-3" data-bs-toggle="collapse" data-bs-target="#productAccordion" aria-expanded="true" aria-controls="productAccordion">
                     <span><strong>Çıkış İçin Bekleyen Ürünler (<?= count($unfulfilledProducts) ?> adet)</strong></span>
                 </button>
             </h2>
-            <div id="productAccordion" class="accordion-collapse collapse" aria-labelledby="headingMain" data-bs-parent="#mainAccordion">
+            <div id="productAccordion" class="accordion-collapse collapse show" aria-labelledby="headingMain" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-0">
                     <?php foreach ($unfulfilledProducts as $index => $product): ?>
                         <div class="accordion-item">
