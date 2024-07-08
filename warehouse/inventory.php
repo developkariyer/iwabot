@@ -117,12 +117,15 @@ $(document).ready(function() {
         $('#filterInput2').on('keyup', function() {
             var value = $(this).val().toLowerCase();
             $('#inventoryAccordion2 .accordion-item').filter(function() {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                // Only search within the h2 elements of each accordion item
+                var headerText = $(this).find('.accordion-header').text().toLowerCase();
+                $(this).toggle(headerText.indexOf(value) > -1);
             });
         });
     });
 });
 </script>
+
 
 <?php
 
