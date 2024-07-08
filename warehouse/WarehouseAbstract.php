@@ -237,6 +237,7 @@ abstract class WarehouseAbstract
 
     public function delete()
     {
+        static::clearAllCache();
         if ($this->canDelete()) {
             $stmt = $GLOBALS['pdo']->prepare("DELETE FROM " . static::getTableName() . " WHERE id = ? LIMIT 1");
             static::clearAllCache();
