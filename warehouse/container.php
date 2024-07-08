@@ -28,7 +28,7 @@ include '../_header.php';
                     <span><strong>İşlem Bekleyen Koliler</strong></span>
                 </button>
             </h2>
-            <div id="orderAccordion4" class="accordion-collapse show" aria-labelledby="headingMain4" data-bs-parent="#mainAccordion">
+            <div id="orderAccordion4" class="accordion-collapse collapse show" aria-labelledby="headingMain4" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
                     <?php foreach ($unfulfilledBoxes as $index => $item): ?>
                         <div class="accordion-item">
