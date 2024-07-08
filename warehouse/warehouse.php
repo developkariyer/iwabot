@@ -123,8 +123,13 @@ function containerOptGrouped($product = null) {
     return $html;
 }
 
-function productSelect($product_id = null) {
+function productSelect($product_id = 0) {
     $GLOBALS['footer_script'] = '$(document).ready(function(){$(\'.select2-select\').select2({theme: "classic"';
+    $cache = WarehouseAbstract::getCache("productSelect{$product_id}");
+    if (!empty($cache) && is_string($cache)) {
+        error_log("Cache Hit: productSelect{$product_id}");
+        return $cache;
+    }
     if ($product_id) {
         $GLOBALS['footer_script'] .= ',val:"'.$product_id.'"';
     }
@@ -150,5 +155,7 @@ function productSelect($product_id = null) {
         $html .= '</optgroup>';
     }
     $html .= '</select>';
+    error_log("Cache Miss: productSelect{$product_id}");
+    WarehouseAbstract::setCache("productSelect{$product_id}", $html);
     return $html;
 }
