@@ -68,7 +68,7 @@ function containersInShip() {
     foreach ($containers as $container) {
         $retval[] = [
             'container' => $container,
-            'boxes' => WarehouseContainer::getContainers(type: 'Box', parent_id: $container->id),
+            'boxes' => WarehouseContainer::getContainers(type: 'Koli', parent_id: $container->id),
         ];
     }
     WarehouseAbstract::setCache('containersInShip', serialize($retval));
