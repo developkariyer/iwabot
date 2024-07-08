@@ -135,7 +135,7 @@ function containerOptGrouped($product = null) {
             if (!isset($raflar["{$icon[$container->type]} {$container->name}"])) {
                 $raflar["{$icon[$container->type]} {$container->name}"] = [];
             }
-            $raflar["$icon {$container->name}"][] = $container;
+            $raflar["{$icon[$container->type]} {$container->name}"][] = $container;
         } else {
             if ($container->parent) {
                 if (!isset($raflar["{$icon[$container->parent->type]} {$container->parent->name}"])) {
