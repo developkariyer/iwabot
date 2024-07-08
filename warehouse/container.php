@@ -139,6 +139,7 @@ include '../_header.php';
                             </select>
                         </div>
                         <button type="submit" name="action" value="set_parent" class="btn btn-primary w-100 py-3 mt-2" id="accordion2moveButton">Raftan Rafa Taşı</button>
+                        <button type="submit" name="action" value="flush_box" class="btn btn-primary w-100 py-3 mt-2" id="accordion2moveButton">Ürünlerin Hepsini Rafa Çıkar</button>
                         <button type="submit" name="action" value="delete_container" class="btn btn-danger w-100 py-3 mt-2" id="accordion2deleteButton">Koli Sil</button>
                     </form>
                 </div>

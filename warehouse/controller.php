@@ -66,6 +66,9 @@ switch($action) {
     case 'barcode_scan':
         handleBarcodeScan();
         break;
+    case 'flush_box':
+        handleFlushBox();
+        break;
     case 'container_info':
         handleContainerInfo();
         break;
@@ -79,6 +82,7 @@ switch($action) {
 }
 header("Location: $return_url");
 exit;
+
 
 function handleAddProduct() {
     $product = WarehouseProduct::addNew([
@@ -109,6 +113,23 @@ function handleAddContainer() {
         addMessage(getPostValue('name') . " " . getPostValue('type') . " olarak eklendi");
     } else {
         addMessage(getPostValue('name') . " eklenemedi");
+    }
+}
+
+function handleFlushBox() {
+    $parent = WarehouseContainer::getById(getPostValue('parent_id'));
+    $container = WarehouseContainer::getById(getPostValue('container_id'));
+    if (!$parent || !$container) {
+        addMessage('flush_box: Geçersiz parametre!');
+        return;
+    }
+    foreach ($container->getProducts() as $product) {
+        $product->moveToContainer($container, $parent, $product->getInContainerCount($container));
+    }
+    if ($container->delete()) {
+        addMessage("$container->name içindeki ürünler $parent->name altına taşındı ve $container->name silindi");
+    } else {
+        addMessage("$container->name silinemedi");
     }
 }
 
