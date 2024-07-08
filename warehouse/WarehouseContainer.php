@@ -100,7 +100,7 @@ class WarehouseContainer extends WarehouseAbstract
                     JOIN ".WarehouseProduct::getTableName()." wp ON wsp.product_id = wp.id
                     WHERE wsp.container_id = :container_id
                     GROUP BY wp.id, wp.name, wp.fnsku";
-                $stmt = $this->db->prepare($sql);
+                $stmt = $GLOBALS["pdo"]->prepare($sql);
                 $stmt->bindParam(':container_id', $this->id, PDO::PARAM_INT);
                 $stmt->execute();
                 $this->totalCount = 0;
