@@ -62,7 +62,7 @@ class WarehouseContainer extends WarehouseAbstract
         return true;
     }
 
-    protected function getChildren()
+    public function getChildren()
     {
         if (empty($this->id)) {
             return [];
