@@ -26,8 +26,8 @@ function wh_menu() {
         button('inventory.php', 'Depo Envanteri', 'secondary').
         button('transfers.php', 'Hareket Raporu', 'secondary').
     '</div><div class="row g-3 m-1 mt-1">'.
-        button('addsolditem.php', 'Yeni Sipariş', 'secondary').
-        button('order.php', 'Sipariş Sil', 'secondary').
+        button('order.php', 'Sipariş İşlem', 'secondary').
+        button('order.php', '?', 'secondary').
     '</div><div class="row g-3 m-1 mt-1">'.
         button('./', 'Depo Ana Sayfa', 'secondary').
         button('../', 'Ana Sayfa', 'secondary').

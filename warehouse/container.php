@@ -134,7 +134,7 @@ include '../_header.php';
 </div>
 
 
-<script>
+<script defer>
 
 document.addEventListener('DOMContentLoaded', function() {
     const containerForm = document.getElementById('accordion2containerForm');
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
     moveButton.addEventListener('click', function(event) {
         if (!a2parentSelect.value) {
             alert('Yerleştirileceği Rafı Seçin');
-            event.preventDefault(); // Prevent form submission
+            event.preventDefault();
         }
     });
 });

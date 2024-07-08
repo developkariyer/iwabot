@@ -175,6 +175,7 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
 
     <?= wh_menu() ?>
 </div>
+
 <script defer>
 $(document).ready(function() {
     $('#product_select').on('change', function() {
