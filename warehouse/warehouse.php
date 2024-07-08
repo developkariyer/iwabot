@@ -103,8 +103,7 @@ function parentContainersOpt($type = 'Raf') {
         if ($type && $container->type !== $type) {
             continue;
         }
-        $icon = $icon[$container->type];
-        $html .= "<option value='{$container->id}'>$icon {$container->name}</option>";
+        $html .= "<option value='{$container->id}'>{$icon[$container->type]} {$container->name}</option>";
     }
     WarehouseAbstract::setCache("parentContainersOpt{$type}", $html);
     return $html;
@@ -126,24 +125,22 @@ function containerOptGrouped($product = null) {
         $containers = WarehouseContainer::getAll();
     }
     $raflar = [];
-    $icons = [
+    $icon = [
         'Gemi' => '🚢', //\u{1F6A2}
         'Raf' => '🗄️', // \u{1F5C4}
     ];
     foreach($containers as $container) {
         if ($container->type == 'Raf' || $container->type == 'Gemi') {
-            $icon = $icons[$container->type];
-            if (!isset($raflar["$icon {$container->name}"])) {
-                $raflar["$icon {$container->name}"] = [];
+            if (!isset($raflar["{$icon[$container->type]} {$container->name}"])) {
+                $raflar["{$icon[$container->type]} {$container->name}"] = [];
             }
             $raflar["$icon {$container->name}"][] = $container;
         } else {
             if ($container->parent) {
-                $icon = $icons[$container->parent->type];
-                if (!isset($raflar["$icon {$container->parent->name}"])) {
-                    $raflar["$icon {$container->parent->name}"] = [];
+                if (!isset($raflar["{$icon[$container->parent->type]} {$container->parent->name}"])) {
+                    $raflar["{$icon[$container->parent->type]} {$container->parent->name}"] = [];
                 }
-                $raflar["$icon {$container->parent->name}"][] = $container;
+                $raflar["{$icon[$container->parent->type]} {$container->parent->name}"][] = $container;
             } else {
                 throw new Exception('Rafı veya gemisi olmayan bir Koli var: '.$container->name);
             }            
