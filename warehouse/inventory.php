@@ -82,6 +82,7 @@ $products = WarehouseProduct::getAll();
             </h2>
             <div id="inventoryAccordion2" class="accordion-collapse collapse" aria-labelledby="headingMain2" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
+                    <input type="text" id="filterInput2" class="form-control mb-3" placeholder="Aramak için bir şeyler yazın...">
                     <?php foreach ($products as $index => $product): ?>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingProduct<?= $index ?>">
@@ -109,6 +110,19 @@ $products = WarehouseProduct::getAll();
 
     <?= wh_menu() ?>
 </div>
+<script>
+$(document).ready(function() {
+    $('#inventoryAccordion2').on('shown.bs.collapse', function () {
+        // Only add the filter functionality when the accordion section is shown
+        $('#filterInput2').on('keyup', function() {
+            var value = $(this).val().toLowerCase();
+            $('#inventoryAccordion2 .accordion-item').filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+    });
+});
+</script>
 
 <?php
 
