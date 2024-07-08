@@ -72,7 +72,7 @@ class WarehouseContainer extends WarehouseAbstract
             if (is_array($cache)) {
                 $this->children = $cache;
             } else {
-                $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName() . " WHERE parent_id = ?");
+                $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName() . " WHERE parent_id = ? ORDER BY name ASC");
                 $stmt->execute([$this->id]);
                 while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $instance = static::getInstance($data['id']);
@@ -99,7 +99,8 @@ class WarehouseContainer extends WarehouseAbstract
                     FROM ".WarehouseAbstract::$productJoinTableName." wsp
                     JOIN ".WarehouseProduct::getTableName()." wp ON wsp.product_id = wp.id
                     WHERE wsp.container_id = :container_id
-                    GROUP BY wp.id, wp.name, wp.fnsku";
+                    GROUP BY wp.id, wp.name, wp.fnsku
+                    ORDER BY wp.name ASC";
                 $stmt = $GLOBALS["pdo"]->prepare($sql);
                 $stmt->bindParam(':container_id', $this->id, PDO::PARAM_INT);
                 $stmt->execute();
@@ -159,7 +160,7 @@ class WarehouseContainer extends WarehouseAbstract
         if (!static::validateField('type', $type)) {
             throw new Exception("Invalid container type: $type");
         }
-        $sql = "SELECT * FROM " . static::getTableName() . " WHERE type = :type";
+        $sql = "SELECT * FROM " . static::getTableName() . " WHERE type = :type ORDER BY name ASC";
         $params = ['type' => $type];
         if (is_null($parent_id)) {
             $sql .= " AND parent_id IS NULL";

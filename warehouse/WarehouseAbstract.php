@@ -79,7 +79,7 @@ abstract class WarehouseAbstract
         if ($check && !in_array($field, static::getDBFields())) {
             throw new Exception("Field not found in database fields");
         }
-        $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName() . " WHERE " . $field . " = :" . $field);
+        $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName() . " WHERE " . $field . " = :" . $field ." LIMIT 1");
         $stmt->execute([$field => $value]);
         if ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $instance = static::getInstance($data['id']);
@@ -192,7 +192,7 @@ abstract class WarehouseAbstract
         if (empty($this->id)) {
             return null;
         }
-        $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName() . " WHERE id = :id");
+        $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName() . " WHERE id = :id LIMIT 1");
         $stmt->execute(['id' => $this->id]);
         if ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $this->setDbValues($data);
