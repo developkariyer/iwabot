@@ -38,13 +38,14 @@ $products = WarehouseProduct::getAll();
                                 <div class="accordion-body">
                                     <?= containerInfo($raf) ?>
                                     <?php if (count($raf->getProducts())): ?>
-                                        <h4>Rafta Açık Ürünler</h4>
+                                        <h4>Rafta Açık Ürünler:</h4>
                                         <ul>
                                             <?php foreach ($raf->getProducts() as $product): ?>
                                                 <li><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>)</li>
                                             <?php endforeach; ?>
                                         </ul>
                                     <?php endif; ?>
+                                    <h4>Raftaki Koliler:</h4>
                                     <?php foreach ($raf->getChildren() as $childIndex => $child): ?>
                                         <div class="accordion-item">
                                             <h2 class="accordion-header box-h2" id="headingChild<?= $index ?>-<?= $childIndex ?>">
