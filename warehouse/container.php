@@ -34,7 +34,7 @@ include '../_header.php';
                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <div class="mb-3">
                             <label for="accordion1container_id" class="form-label">Koli Seçin</label>
-                            <select id="accordion1container_id" name="container_id" class="select2-select form-select w-100" required style="width: 100%;" required>
+                            <select id="accordion1container_id" name="container_id[]" multiple="multiple" class="select2-select form-select w-100" required style="width: 100%;" required>
                                 <option value="">Gemiden Koli Seçin</option>
                                 <?= containersInOpt(type: 'Gemi') ?>
                             </select>
