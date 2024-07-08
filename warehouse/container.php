@@ -4,14 +4,6 @@ require_once('warehouse.php');
 
 include '../_header.php';
 
-$containersInShip = [
-    // Sample data structure
-    // 'ship' => [
-    //     'container' => new WarehouseContainer(), // Example object
-    //     'boxes' => [new WarehouseContainer(), new WarehouseContainer()] // Example objects
-    // ]
-];
-
 ?>
 
 <div class="container mt-5">
@@ -36,7 +28,7 @@ $containersInShip = [
                             <label for="container_id" class="form-label">Koli Seçin</label>
                             <select id="container_id" name="container_id" class="form-select" required>
                                 <option value="">Gemiden Koli Seçin</option>
-                                <?= containersInShipOpt() ?>
+                                <?= containersInOpt(type: 'Gemi') ?>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -57,15 +49,34 @@ $containersInShip = [
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain2">
                 <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#containerAccordion2" aria-expanded="false" aria-controls="containerAccordion2">
-                    <span><strong>Kendiniz Koli Seçin</strong></span>
+                    <span><strong>Depodaki Koliler</strong></span>
                 </button>
             </h2>
             <div id="containerAccordion2" class="accordion-collapse collapse" aria-labelledby="headingMain2" data-bs-parent="#mainAccordion">
-                <div class="accordion-body p-0">
-                    <!-- Dynamic content for selecting a container and performing actions will go here -->
+                <div class="accordion-body p-5">
+                    <form action="controller.php" method="POST">
+                        <input type="hidden" name="action" value="set_parent">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                        <div class="mb-3">
+                            <label for="container_id" class="form-label">Koli Seçin</label>
+                            <select id="container_id" name="container_id" class="form-select" required>
+                                <option value="">Raf Seçin</option>
+                                <?= containersInOpt('Raf') ?>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="parent_id" class="form-label">Yerleştirileceği Rafı Seçin</label>
+                            <select id="parent_id" name="parent_id" class="form-select" required>
+                                <option value="">Yerleştirileceği Rafı Seçin</option>
+                                <?= parentContainersOpt() ?>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-3 mt-2">Kaydet</button>
+                    </form>
                 </div>
             </div>
         </div>
+
 
         <!-- Third Main Accordion Item -->
         <div class="accordion-item">

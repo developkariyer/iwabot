@@ -55,10 +55,13 @@ function productInfo($product) {
     //    <b>Seri Numarası:</b> {$product->serial_number}<br>
 }
 
-function containersInShipOpt() {
-    $cache = WarehouseAbstract::getCache('containersInShipOpt');
+function containersInOpt($type='Raf') {
+    if (!in_array($type, ['Raf', 'Gemi'])) {
+        throw new Exception('Konteyner tipi "Raf" veya "Gemi" olmalı. Verilen: '.$type);
+    }
+    $cache = WarehouseAbstract::getCache("containersInOpt{$type}");
     if (!empty($cache) && is_string($cache)) {
-        error_log("Cache Hit: containersInShipOpt");
+        error_log("Cache Hit: containersInOpt{$type}");
         return $cache;
     }
     error_log("Cache Miss: containersInShipOpt");
@@ -72,7 +75,7 @@ function containersInShipOpt() {
             $html .= "<option value='{$box->id}'>📦 {$box->name}</option>";
         }
     }
-    WarehouseAbstract::setCache('containersInShipOpt', $html);
+    WarehouseAbstract::setCache("containersInOpt{$type}", $html);
     return $html;
 }
 
