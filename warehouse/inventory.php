@@ -123,17 +123,21 @@ $products = WarehouseProduct::getAll();
 <script>
 $(document).ready(function() {
     $('#inventoryAccordion2').on('shown.bs.collapse', function () {
-        // Only add the filter functionality when the accordion section is shown
         $('#filterInput2').on('keyup', function() {
             var value = $(this).val().toLowerCase();
             $('#inventoryAccordion2 .accordion-item').each(function() {
                 var headerText = $(this).find('.accordion-header').text().toLowerCase();
-                $(this).toggle(headerText.indexOf(value) > -1);
+                if (value === "") {
+                    $(this).hide();
+                } else {
+                    $(this).toggle(headerText.indexOf(value) > -1);
+                }
             });
         });
     });
 });
 </script>
+
 
 
 
