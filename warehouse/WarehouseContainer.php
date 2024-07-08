@@ -87,7 +87,7 @@ class WarehouseContainer extends WarehouseAbstract
         return $this->children;
     }
 
-    protected function getProducts()
+    public function getProducts()
     {
         if (empty($this->products)) {
             $cache = unserialize(static::getCache("Container{$this->id}Products"));
