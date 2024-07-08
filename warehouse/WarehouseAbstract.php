@@ -212,6 +212,9 @@ abstract class WarehouseAbstract
 
     public function __get($field)
     {
+        if ($field === 'Warehouse') {
+            return '';
+        }
         if (in_array($field, static::getDBFields())) {
             if (isset($this->dbValues[$field])) {
                 error_log("Class Cache Hit (__get): ".get_called_class()."->{$this->id}->$field as {$this->dbValues[$field]}");
