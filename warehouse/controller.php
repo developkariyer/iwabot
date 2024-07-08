@@ -69,6 +69,10 @@ switch($action) {
     case 'container_info':
         handleContainerInfo();
         break;
+    case 'clear_cache':
+        WarehouseAbstract::clearAllCache();
+        addMessage('Önbellek temizlendi');
+        break;
     default:
         addMessage('Geçersiz işlem!');
         break;

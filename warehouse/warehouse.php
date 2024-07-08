@@ -27,7 +27,7 @@ function wh_menu() {
         button('transfers.php', 'Hareket Raporu', 'secondary').
     '</div><div class="row g-3 m-1 mt-1">'.
         button('order.php', 'Sipariş İşlem', 'secondary').
-        button('order.php', '?', 'secondary').
+        button('controller.php?action=clear_cache', 'Önbellek Temizle', 'secondary').
     '</div><div class="row g-3 m-1 mt-1">'.
         button('./', 'Depo Ana Sayfa', 'secondary').
         button('../', 'Ana Sayfa', 'secondary').
