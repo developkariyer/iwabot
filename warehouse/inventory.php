@@ -1,4 +1,4 @@
-<?php
+<strong?php
 
 require_once('warehouse.php');
 
@@ -37,15 +37,7 @@ $products = WarehouseProduct::getAll();
                             <div id="collapseRaf<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="headingRaf<?= $index ?>" data-bs-parent="#inventoryAccordion1">
                                 <div class="accordion-body">
                                     <?= containerInfo($raf) ?>
-                                    <?php if (count($raf->getProducts())): ?>
-                                        <h4>Rafta Açık Ürünler:</h4>
-                                        <ul>
-                                            <?php foreach ($raf->getProducts() as $product): ?>
-                                                <li><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>)</li>
-                                            <?php endforeach; ?>
-                                        </ul>
-                                    <?php endif; ?>
-                                    <h4>Raftaki Koliler:</h4>
+                                    <strong>Raftaki Koliler:</strong><br>
                                     <?php foreach ($raf->getChildren() as $childIndex => $child): ?>
                                         <div class="accordion-item">
                                             <h2 class="accordion-header box-h2" id="headingChild<?= $index ?>-<?= $childIndex ?>">
