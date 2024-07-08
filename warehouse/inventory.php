@@ -1,4 +1,4 @@
-<strong?php
+<?php
 
 require_once('warehouse.php');
 
