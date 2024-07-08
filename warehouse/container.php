@@ -157,6 +157,7 @@ include '../_header.php';
                                             </p>
                                             <label for="container_id_<?= $index ?>" class="form-label">Koli Seçin</label>
                                             <select id="container_id_<?= $index ?>" name="container_id" class="form-select" required>
+                                                <option value="">Çıkış Yapılacak Koli Seçin</option>
                                                 <optgroup label="Bu Koli">
                                                     <option value="<?= htmlspecialchars($item['container']->id) ?>"><?= htmlspecialchars($item['container']->name) ?></option>
                                                 </optgroup>
