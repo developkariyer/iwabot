@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Kolinin yerleştirileceği Gemi/Rafı seçin');
             event.preventDefault();
         }
-    }
+    });
 
     typeSelect.addEventListener('change', function() {
         if (typeSelect.value === 'Koli') {
