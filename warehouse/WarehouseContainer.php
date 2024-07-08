@@ -56,7 +56,7 @@ class WarehouseContainer extends WarehouseAbstract
         if (!empty($this->getChildren())) {
             throw new Exception("Cannot delete container {$this->id} with children");
         }
-        if (!empty($this->getProducts())) {
+        if (!empty($this->getProducts(noCache: true))) {
             throw new Exception("Cannot delete container {$this->id} with products");
         }
         return true;
@@ -87,11 +87,11 @@ class WarehouseContainer extends WarehouseAbstract
         return $this->children;
     }
 
-    public function getProducts()
+    public function getProducts($noCache = false)
     {
         if (empty($this->products)) {
             $cache = unserialize(static::getCache("Container{$this->id}Products"));
-            if (is_array($cache)) {
+            if (!$noCache && is_array($cache)) {
                 $rows = $cache;
             } else {
                 $sql = "
