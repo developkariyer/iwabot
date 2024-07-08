@@ -36,7 +36,16 @@ $products = WarehouseProduct::getAll();
                             </h2>
                             <div id="collapseRaf<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="headingRaf<?= $index ?>" data-bs-parent="#inventoryAccordion1">
                                 <div class="accordion-body">
-                                    <?php foreach (array_merge([$raf], $raf->getChildren()) as $childIndex => $child): ?>
+                                    <?= containerInfo($raf) ?>
+                                    <?php if (count($raf->getProducts())): ?>
+                                        <h4>Rafta Açık Ürünler</h4>
+                                        <ul>
+                                            <?php foreach ($raf->getProducts() as $product): ?>
+                                                <li><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>)</li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    <?php endif; ?>
+                                    <?php foreach ($raf->getChildren() as $childIndex => $child): ?>
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="headingChild<?= $index ?>-<?= $childIndex ?>">
                                                 <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChild<?= $index ?>-<?= $childIndex ?>" aria-expanded="false" aria-controls="collapseChild<?= $index ?>-<?= $childIndex ?>">
