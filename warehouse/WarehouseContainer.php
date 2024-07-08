@@ -160,7 +160,7 @@ class WarehouseContainer extends WarehouseAbstract
         if (!static::validateField('type', $type)) {
             throw new Exception("Invalid container type: $type");
         }
-        $sql = "SELECT * FROM " . static::getTableName() . " WHERE type = :type ORDER BY name ASC";
+        $sql = "SELECT * FROM " . static::getTableName() . " WHERE type = :type ";
         $params = ['type' => $type];
         if (is_null($parent_id)) {
             $sql .= " AND parent_id IS NULL";
@@ -178,6 +178,7 @@ class WarehouseContainer extends WarehouseAbstract
                 $params['warehouse'] = $warehouse;
             }
         }*/
+        $sql .= " ORDER BY name ASC";
         $stmt = $GLOBALS['pdo']->prepare($sql);
         $stmt->execute($params);
         $containers = [];
