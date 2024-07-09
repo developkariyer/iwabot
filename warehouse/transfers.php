@@ -69,7 +69,7 @@ include '../_header.php';
                             <?php foreach ($soldOrders as $index => $order): ?>
                                 <?php 
                                     $object = $order['sold_type']::getById($order['product_id']); 
-                                    $fulfilInfo = $object->getFulfilInfo($order['id']) ?? ['closed_by' => 'Bilinmiyor', 'closed_at' => 'Bilinmiyor'];
+                                    $fulfilInfo = $object ? $object->getFulfilInfo($order['id']) : ['closed_by' => 'Bilinmiyor', 'closed_at' => 'Bilinmiyor'];
                                 ?>
                                 <tr>
                                     <td><?= $order['sold_type'] === 'WarehouseProduct' ? 'Ürün/' : 'Koli/' ?><?= htmlspecialchars($object->name) ?></td>
