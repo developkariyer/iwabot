@@ -284,12 +284,23 @@ abstract class WarehouseAbstract
         return false;
     }
 
-    public static function getUserFromLogData($json) {
-        $data = json_decode($json, true);
-        if (empty($data['user'])) {
-            return '';
+    public function getFulfilInfo($sold_id)
+    {
+        if (empty($sold_id)) {
+            throw new Exception("getFulfilStatus: Invalid sold_id");
         }
-        return slackUsername($data['user']);
+        $action = get_called_class() === 'WarehouseProduct' ? 'fulfil' : 'fulfil_box';
+        $logs = static::getLogs(action:$action, data:['id' => $this->id, 'sold_id' => $sold_id]);
+        if (!empty($logs)) {
+            $data = json_decode($logs[0]['data'], true);
+            if (empty($data)) {
+                $data['user'] = '';
+            }
+        }
+        return [
+            'closed_by' => empty($logs) ? '' : $data['user'],
+            'closed_at' => empty($logs) ? '' : $logs[0]['created_at'],
+        ];
     }
 
     public static function getLogs($action, $data)

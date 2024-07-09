@@ -235,18 +235,6 @@ class WarehouseContainer extends WarehouseAbstract
         return static::$unfulfilled;
     }
     
-    public function getFulfilInfo($sold_id)
-    {
-        if (empty($sold_id)) {
-            throw new Exception("getFulfilStatus: Invalid sold_id");
-        }
-        $logs = static::getLogs(action:'fulfil_box', data:['id' => $this->id, 'sold_id' => $sold_id]);
-        return [
-            'closed_by' => empty($logs) ? '' : $this->getUserFromLogData($logs[0]['data']),
-            'closed_at' => empty($logs) ? '' : $logs[0]['created_at'],
-        ];
-    }
-
     public function findSimilar()
     {
         $cache = unserialize(static::getCache("findSimilar{$this->id}"));
