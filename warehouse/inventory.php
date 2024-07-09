@@ -8,6 +8,12 @@ if (!userCan(['view'])) {
     exit;
 }
 
+$icon = [
+    'Gemi' => '🚢', //\u{1F6A2}
+    'Raf' => '🗄️', // \u{1F5C4}
+    'Koli' => '📦', //\u{1F4E6}
+];
+
 include '../_header.php';
 
 // Fetch raf containers
@@ -49,11 +55,11 @@ $products = WarehouseProduct::getAll();
                                         <?= productInfo($product) ?>
                                     </p>
                                     <h4>Ürünün Bulunduğu Raflar ve Koli Bilgileri</h4>
-                                    <?= empty($product->getContainers()) ? "<p>Bu ürün hiçbir raf veya koli içinde bulunmamaktadır.</p>" : "" ?>                                        
                                     <ul>
-                                    <?php foreach ($product->getContainers() as $container): ?>
-                                        <li><?= $container->name ?> (<?= $container->type === 'Raf' ? 'Rafta açık' : $container->parent->name ?>) (<?= $product->getInContainerCount($container) ?> adet)</li>
-                                    <?php endforeach; ?>
+                                        <?= empty($product->getContainers()) ? "<p>Bu ürün hiçbir raf veya koli içinde bulunmamaktadır.</p>" : "" ?>                                        
+                                        <?php foreach ($product->getContainers() as $container): ?>
+                                            <li><?= $icon[$container->type] ?> <?= $container->name ?> (<?= $container->type === 'Raf' ? 'Rafta açık' : $container->parent->name ?>) (<?= $product->getInContainerCount($container) ?> adet)</li>
+                                        <?php endforeach; ?>
                                     </ul>
                                 </div>
                             </div>
@@ -81,7 +87,7 @@ $products = WarehouseProduct::getAll();
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingRaf<?= $index ?>">
                                 <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRaf<?= $index ?>" aria-expanded="false" aria-controls="collapseRaf<?= $index ?>">
-                                    <span><strong><?= htmlspecialchars($raf->name) ?></strong> (<?= count($raf->getChildren()) ?> koli, <?= count($raf->getProducts()) ?> açık ürün)</span>
+                                    <span><strong><?= $icon['Raf'] ?> <?= htmlspecialchars($raf->name) ?></strong> (<?= count($raf->getChildren()) ?> koli, <?= count($raf->getProducts()) ?> açık ürün)</span>
                                 </button>
                             </h2>
                             <div id="collapseRaf<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="headingRaf<?= $index ?>" data-bs-parent="#inventoryAccordion1">
@@ -92,7 +98,7 @@ $products = WarehouseProduct::getAll();
                                         <div class="accordion-item">
                                             <h2 class="accordion-header box-h2" id="headingChild<?= $index ?>-<?= $childIndex ?>">
                                                 <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChild<?= $index ?>-<?= $childIndex ?>" aria-expanded="false" aria-controls="collapseChild<?= $index ?>-<?= $childIndex ?>">
-                                                    <span><strong><?= htmlspecialchars($child->name) ?> (<?= htmlspecialchars($child->getTotalCount()) ?> ürün)</strong></span>
+                                                    <span><strong><?= $icon['Koli'] ?> <?= htmlspecialchars($child->name) ?> (<?= htmlspecialchars($child->getTotalCount()) ?> ürün)</strong></span>
                                                 </button>
                                             </h2>
                                             <div id="collapseChild<?= $index ?>-<?= $childIndex ?>" class="accordion-collapse collapse" aria-labelledby="headingChild<?= $index ?>-<?= $childIndex ?>" data-bs-parent="#collapseRaf<?= $index ?>">
