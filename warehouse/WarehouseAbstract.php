@@ -168,16 +168,10 @@ abstract class WarehouseAbstract
     protected function setDbValues($data)
     {
         $this->dbValues=[];
-        if (isset($data['created_at'])) {
-            unset($data['created_at']);
-        }
-        if (isset($data['updated_at'])) {
-            unset($data['updated_at']);
-        }
-        if (isset($data['deleted_at'])) {
-            unset($data['deleted_at']);
-        }
         foreach ($data as $field=>$value) {
+            if (in_array($field, ['created_at', 'updated_at', 'deleted_at'])) {
+                continue;
+            }
             if ($this->validateField($field, $value)) {
                 $this->dbValues[$field] = $value;
             }
