@@ -62,7 +62,7 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
                                         <input type="hidden" name="action" value="fulfil">
                                         <input type="hidden" name="sold_id" value="<?= $product['id'] ?>">
                                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                                        <select id="Select<?= $index ?>Product<?= $product['product']->id ?>" name="container_id" class="form-select btn-outline-success rounded-pill w-100 py-3" required>
+                                        <select id="Select<?= $index ?>Product<?= $product['product']->id ?>" name="container_id" class="select2-select form-select w-100" style="width: 100%;" required>
                                             <option value="">Raf/Koli Seçin</option>
                                             <?= containerOptGrouped($product['product']) ?>
                                         </select>
