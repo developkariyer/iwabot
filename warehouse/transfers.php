@@ -60,10 +60,8 @@ include '../_header.php';
                                 <th scope="col">?</th>
                                 <th scope="col">Sipariş</th>
                                 <th scope="col">Alıcı</th>
-                                <th scope="col">Kaydeden</th>
-                                <th scope="col">Kayıt Zamanı</th>
-                                <th scope="col">Kapatan</th>
-                                <th scope="col">Kapanma Zamanı</th>
+                                <th scope="col">Kayıt</th>
+                                <th scope="col">Kapatma</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -73,18 +71,16 @@ include '../_header.php';
                                     $fulfilInfo = $object ? $object->getFulfilInfo($order['id']) : ['closed_by' => 'Bilinmiyor', 'closed_at' => 'Bilinmiyor'];
                                 ?>
                                 <tr>
-                                    <td class="table-success"><?= $order['sold_type'] === 'WarehouseProduct' ? 'Ürün' : 'Koli' ?></td>
+                                    <td class="<?= empty($order['closed_at']) ? 'table-danger' : 'table-success' ?>"><?= $order['sold_type'] === 'WarehouseProduct' ? 'Ürün' : 'Koli' ?></td>
                                     <td><?= htmlspecialchars($object->name) ?></td>
                                     <td><?= nl2br(htmlspecialchars($order['description'])) ?></td>
-                                    <td>Kaydeden</td>
-                                    <td><?= htmlspecialchars($order['created_at']) ?></td>
-                                    <td><?= username($fulfilInfo['closed_by']) ?></td>
-                                    <td><?= $fulfilInfo['closed_at'] ?></td>
+                                    <td>Kaydeden<br><?= htmlspecialchars($order['created_at']) ?></td>
+                                    <td><?= username($fulfilInfo['closed_by']) ?><br><?= $fulfilInfo['closed_at'] ?></td>
                                 </tr>
                             <?php endforeach; ?>
                             <?php if (empty($soldOrders)): ?>
                                 <tr>
-                                    <td colspan="7" class="text-center">Sipariş kaydı bulunmamaktadır.</td>
+                                    <td colspan="5" class="text-center">Sipariş kaydı bulunmamaktadır.</td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>
