@@ -28,7 +28,7 @@ $products = WarehouseProduct::getAll();
         <!-- Second Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain2">
-                <button class="accordion-button bg-success text-white  w-100 py-3" data-bs-toggle="collapse" data-bs-target="#inventoryAccordion2" aria-expanded="false" aria-controls="inventoryAccordion2">
+                <button class="accordion-button bg-success text-white  w-100 py-3" data-bs-toggle="collapse" data-bs-target="#inventoryAccordion2" aria-expanded="true" aria-controls="inventoryAccordion2">
                     <span><strong>Ürün Bilgisine Göre Envanter</strong></span>
                 </button>
             </h2>
