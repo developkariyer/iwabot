@@ -53,17 +53,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .select2-container .select2-selection--single {
-            height: auto!important;
-            padding: 7px 0;
-        }
-        .select2-container--default .select2-selection--single .select2-selection__rendered {
-            line-height: normal!important;
-        }
-        .select2-container .select2-selection--single .select2-selection__rendered {
-            white-space: normal!important;
-        }      
-
     </style>
 </head>
 <body>
