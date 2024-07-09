@@ -18,19 +18,88 @@ include '../_header.php';
         <p>Sipariş/ürün çıkış işlemleri aşağıdan seçiniz. Depo Ana Menü için <a href="./">buraya basınız.</a></p>
     </div>
     <div class="accordion mb-3" id="mainAccordion">
-        <!-- First Main Accordion Item -->
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingMain1">
-                <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#orderAccordion1" aria-expanded="false" aria-controls="orderAccordion1">
-                    <span><strong>İşlem Bekleyen Siparişler</strong></span>
-                </button>
-            </h2>
-            <div id="orderAccordion1" class="accordion-collapse collapse" aria-labelledby="headingMain1" data-bs-parent="#mainAccordion">
-                <div class="accordion-body p-5">
-                    <!-- Dynamic content for pending orders will go here -->
+
+<!-- First Main Accordion Item -->
+<div class="accordion-item">
+    <h2 class="accordion-header" id="headingMain1">
+        <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#orderAccordion1" aria-expanded="false" aria-controls="orderAccordion1">
+            <span><strong>İşlem Bekleyen Siparişler</strong></span>
+        </button>
+    </h2>
+    <div id="orderAccordion1" class="accordion-collapse collapse" aria-labelledby="headingMain1" data-bs-parent="#mainAccordion">
+        <div class="accordion-body p-5">
+
+            <div class="accordion mb-3" id="nestedAccordion1">
+                <!-- First Sub Accordion: İşlem Bekleyen Koliler -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingSub1">
+                        <button class="accordion-button bg-secondary text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#subAccordion1" aria-expanded="false" aria-controls="subAccordion1">
+                            <span><strong>İşlem Bekleyen Koliler</strong></span>
+                        </button>
+                    </h2>
+                    <div id="subAccordion1" class="accordion-collapse collapse" aria-labelledby="headingSub1" data-bs-parent="#nestedAccordion1">
+                        <div class="accordion-body">
+
+                            <div class="accordion mb-3" id="subNestedAccordion1">
+                                <?php foreach ($unfulfilledBoxes as $box): ?>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingBox<?= $box->id ?>">
+                                            <button class="accordion-button bg-light text-dark collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#collapseBox<?= $box->id ?>" aria-expanded="false" aria-controls="collapseBox<?= $box->id ?>">
+                                                <span><strong><?= htmlspecialchars($box->name) ?></strong></span>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseBox<?= $box->id ?>" class="accordion-collapse collapse" aria-labelledby="headingBox<?= $box->id ?>" data-bs-parent="#subNestedAccordion1">
+                                            <div class="accordion-body">
+                                                <p>Placeholder for <?= htmlspecialchars($box->name) ?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                                <?php if (empty($unfulfilledBoxes)): ?>
+                                    <p>İşlem bekleyen koli bulunmamaktadır.</p>
+                                <?php endif; ?>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Second Sub Accordion: İşlem Bekleyen Ürünler -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingSub2">
+                        <button class="accordion-button bg-secondary text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#subAccordion2" aria-expanded="false" aria-controls="subAccordion2">
+                            <span><strong>İşlem Bekleyen Ürünler</strong></span>
+                        </button>
+                    </h2>
+                    <div id="subAccordion2" class="accordion-collapse collapse" aria-labelledby="headingSub2" data-bs-parent="#nestedAccordion1">
+                        <div class="accordion-body">
+
+                            <div class="accordion mb-3" id="subNestedAccordion2">
+                                <?php foreach ($unfulfilledProducts as $product): ?>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingProduct<?= $product->id ?>">
+                                            <button class="accordion-button bg-light text-dark collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#collapseProduct<?= $product->id ?>" aria-expanded="false" aria-controls="collapseProduct<?= $product->id ?>">
+                                                <span><strong><?= htmlspecialchars($product->name) ?></strong></span>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseProduct<?= $product->id ?>" class="accordion-collapse collapse" aria-labelledby="headingProduct<?= $product->id ?>" data-bs-parent="#subNestedAccordion2">
+                                            <div class="accordion-body">
+                                                <p>Placeholder for <?= htmlspecialchars($product->name) ?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                                <?php if (empty($unfulfilledProducts)): ?>
+                                    <p>İşlem bekleyen ürün bulunmamaktadır.</p>
+                                <?php endif; ?>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
 
         <!-- Second Main Accordion Item -->
         <div class="accordion-item">

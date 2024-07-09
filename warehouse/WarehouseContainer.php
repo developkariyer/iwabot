@@ -17,7 +17,7 @@ class WarehouseContainer extends WarehouseAbstract
 
     public static function getTableName()
     {
-        return 'warehouse_container';
+        return WarehouseAbstract::$containerTableName;
     }
 
     protected static function getCustomMethods()
@@ -220,7 +220,7 @@ class WarehouseContainer extends WarehouseAbstract
                 static::$unfulfilled = $cache;
             } else {
                 static::$unfulfilled =[];
-                $stmt = $GLOBALS['pdo']->query("SELECT * FROM warehouse_sold WHERE fulfilled = FALSE AND sold_type = 'WarehouseContainer' ORDER BY product_id ASC");
+                $stmt = $GLOBALS['pdo']->query("SELECT * FROM ".WarehouseAbstract::$soldItemsTableName." WHERE fulfilled = FALSE AND sold_type = 'WarehouseContainer' ORDER BY product_id ASC");
                 while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $container = static::getById($data['product_id']);
                     if (!$container) {
@@ -241,7 +241,7 @@ class WarehouseContainer extends WarehouseAbstract
         if (is_array($cache)) {
             return $cache;
         }
-        $sql = "SELECT container_id FROM warehouse_view_container_signatures WHERE signature = (SELECT signature FROM warehouse_view_container_signatures WHERE container_id = :container_id) AND container_id <> :container_id";
+        $sql = "SELECT container_id FROM ".WarehouseAbstract::$containerSignatureTableName." WHERE signature = (SELECT signature FROM ".WarehouseAbstract::$containerSignatureTableName." WHERE container_id = :container_id) AND container_id <> :container_id";
         $stmt = $GLOBALS['pdo']->prepare($sql);
         $stmt->execute(['container_id' => $this->id]);
         $containers = [];
@@ -265,7 +265,7 @@ class WarehouseContainer extends WarehouseAbstract
                 $product->removeFromContainer($this, $product->getInContainerCount($this));
             }
             if ($this->delete()) {
-                $stmt = $GLOBALS['pdo']->prepare("UPDATE warehouse_sold SET fulfilled = TRUE WHERE id = :id");
+                $stmt = $GLOBALS['pdo']->prepare("UPDATE ".WarehouseAbstract::$soldItemsTableName." SET fulfilled = TRUE WHERE id = :id");
                 if ($stmt->execute(['id' => $sold_id])) {
                     $this->logAction('fulfil_box', ['sold_id' => $sold_id]);
                     $this->clearAllCache();
@@ -284,7 +284,7 @@ class WarehouseContainer extends WarehouseAbstract
         if (empty($description) || !is_string($description)) {
             throw new Exception("addSoldBox: Açıklama boş olamaz");
         }
-        $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_sold (product_id, sold_type, description) VALUES (:product_id, 'WarehouseContainer', :description)");
+        $stmt = $GLOBALS['pdo']->prepare("INSERT INTO ".WarehouseAbstract::$soldItemsTableName." (product_id, sold_type, description) VALUES (:product_id, 'WarehouseContainer', :description)");
         if ($stmt->execute(['product_id' => $this->id, 'description' => $description])) {
             $this->logAction('addSoldBox', ['description' => $description]);
             $this->clearAllCache();

@@ -2,7 +2,7 @@
 
 require_once('warehouse.php');
 
-$soldOrders = $GLOBALS['pdo']->query("SELECT * FROM warehouse_sold ORDER BY sold_type DESC, fulfilled DESC, created_at ASC")->fetchAll(PDO::FETCH_ASSOC);
+$soldOrders = WarehouseAbstract::getSoldOrders();
 
 $slackUsers = slackUsers();
 

@@ -180,12 +180,7 @@ include '../_header.php';
                             <label for="accordion3parent_id" class="form-label">Yerleştirileceği Konum</label>
                             <select id="accordion3parent_id" name="parent_id" class="form-select" disabled>
                                 <option value="">Yerleştirileceği Konumu Seçin</option>
-                                <optgroup label="Raf">
-                                    <?= parentContainersOpt('Raf') ?>
-                                </optgroup>
-                                <optgroup label="Gemi">
-                                    <?= parentContainersOpt('Gemi') ?>
-                                </optgroup>
+                                <?= parentContainersOpt('Raf') ?>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary w-100 py-3 mt-2" id="accordion3addNewButton">Yeni Ekle</button>

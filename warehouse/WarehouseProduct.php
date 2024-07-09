@@ -15,7 +15,7 @@ class WarehouseProduct extends WarehouseAbstract
 
     public static function getTableName()
     {
-        return 'warehouse_product';
+        return WarehouseAbstract::$productTableName;
     }
 
     protected static function getCustomMethods()
@@ -127,7 +127,7 @@ class WarehouseProduct extends WarehouseAbstract
                 static::$unfulfilled = $cache;
             } else {
                 static::$unfulfilled =[];
-                $stmt = $GLOBALS['pdo']->query("SELECT * FROM warehouse_sold WHERE fulfilled = FALSE AND sold_type = 'WarehouseProduct' ORDER BY product_id ASC");
+                $stmt = $GLOBALS['pdo']->query("SELECT * FROM ".WarehouseAbstract::$soldItemsTableName." WHERE fulfilled = FALSE AND sold_type = 'WarehouseProduct' ORDER BY product_id ASC");
                 while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $product = static::getById($data['product_id']);
                     if (!$product) {
@@ -157,7 +157,7 @@ class WarehouseProduct extends WarehouseAbstract
         }
         if (isset(static::$unfulfilled[$sold_id])) {
             if ($this->removeFromContainer($container)) {
-                $stmt = $GLOBALS['pdo']->prepare("UPDATE warehouse_sold SET fulfilled = TRUE WHERE id = :id");
+                $stmt = $GLOBALS['pdo']->prepare("UPDATE ".WarehouseAbstract::$soldItemsTableName." SET fulfilled = TRUE WHERE id = :id");
                 if ($stmt->execute(['id' => $sold_id])) {
                     $this->logAction('fulfil', ['sold_id' => $sold_id]);
                     static::clearAllCache();
@@ -176,7 +176,7 @@ class WarehouseProduct extends WarehouseAbstract
         if (empty($description) || !is_string($description)) {
             throw new Exception("Invalid description. Must be a valid string");
         }
-        $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_sold (product_id, sold_type, description) VALUES (:product_id, 'WarehouseProduct', :description)");
+        $stmt = $GLOBALS['pdo']->prepare("INSERT INTO ".WarehouseAbstract::$soldItemsTableName." (product_id, sold_type, description) VALUES (:product_id, 'WarehouseProduct', :description)");
         if ($stmt->execute(['product_id' => $this->id, 'description' => $description])) {
             $this->logAction('addSoldItem', ['description' => $description]);
             static::clearAllCache();
