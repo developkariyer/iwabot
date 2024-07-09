@@ -8,6 +8,9 @@ if (!userCan(['manage', 'order'])) {
     exit;
 }
 
+$unfulfilledBoxes = WarehouseContainer::getUnfulfilledBoxes();
+$unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
+
 include '../_header.php';
 
 ?>
