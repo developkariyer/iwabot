@@ -118,16 +118,12 @@ $permissionList = [
 
         <?php endforeach; ?>
 
-
     </div>
 
     <hr>
 
     <?= wh_menu() ?>
 </div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 
 <script>
     $(document).ready(function() {
