@@ -320,6 +320,7 @@ abstract class WarehouseAbstract
             $values[$field] = $value;
         }
         $sql .= " ORDER BY created_at ASC";
+        error_log("SQL: $sql Value: ".json_encode($values));
         $stmt = $GLOBALS['pdo']->prepare($sql);
         $stmt->execute($values);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
