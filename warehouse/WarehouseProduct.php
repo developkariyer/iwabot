@@ -70,7 +70,7 @@ class WarehouseProduct extends WarehouseAbstract
             if (is_array($cache)) {
                 $this->containers = $cache;
             } else {
-                $stmt = $GLOBALS['pdo']->prepare("SELECT DISTINCT container_id FROM " . WarehouseAbstract::$productJoinTableName . " WHERE product_id = :product_id");
+                $stmt = $GLOBALS['pdo']->prepare("SELECT DISTINCT container_id FROM " . WarehouseAbstract::$productJoinTableName . " WHERE deleted_at IS NULL AND product_id = :product_id");
                 $stmt->execute(['product_id' => $this->id]);
                 $containers = [];
                 while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -85,7 +85,7 @@ class WarehouseProduct extends WarehouseAbstract
 
     private function getInContainerCountFromDb($container)
     {
-        $stmt = $GLOBALS['pdo']->prepare("SELECT count(*) as count FROM " . WarehouseAbstract::$productJoinTableName . " WHERE product_id = :product_id AND container_id = :container_id");
+        $stmt = $GLOBALS['pdo']->prepare("SELECT count(*) as count FROM " . WarehouseAbstract::$productJoinTableName . " WHERE deleted_at IS NULL AND product_id = :product_id AND container_id = :container_id");
         $stmt->execute(['product_id' => $this->id, 'container_id' => $container->id]);
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         return $data['count'];
@@ -104,7 +104,7 @@ class WarehouseProduct extends WarehouseAbstract
     public function getTotalCount()
     {
         if (empty($this->totalCount)) {
-            $stmt = $GLOBALS['pdo']->prepare("SELECT count(*) as count FROM " . WarehouseAbstract::$productJoinTableName . " WHERE product_id = :product_id");
+            $stmt = $GLOBALS['pdo']->prepare("SELECT count(*) as count FROM " . WarehouseAbstract::$productJoinTableName . " WHERE deleted_at IS NULL AND product_id = :product_id"); 
             $stmt->execute(['product_id' => $this->id]);
             $data = $stmt->fetch(PDO::FETCH_ASSOC);
             $this->totalCount = $data['count'];

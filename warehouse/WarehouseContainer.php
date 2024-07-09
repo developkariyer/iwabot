@@ -75,7 +75,7 @@ class WarehouseContainer extends WarehouseAbstract
             if (!$noCache && is_array($cache)) {
                 $this->children = $cache;
             } else {
-                $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName() . " WHERE parent_id = ? ORDER BY name ASC");
+                $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName() . " WHERE deleted_at IS NULL AND parent_id = ? ORDER BY name ASC");
                 $stmt->execute([$this->id]);
                 while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $instance = static::getInstance($data['id']);
@@ -104,7 +104,7 @@ class WarehouseContainer extends WarehouseAbstract
                     SELECT wp.id, wp.name, wp.fnsku, count(*) as product_count 
                     FROM ".WarehouseAbstract::$productJoinTableName." wsp
                     JOIN ".WarehouseProduct::getTableName()." wp ON wsp.product_id = wp.id
-                    WHERE wsp.container_id = :container_id
+                    WHERE wsp.container_id = :container_id AND wsp.deleted_at IS NULL
                     GROUP BY wp.id, wp.name, wp.fnsku
                     ORDER BY wp.name ASC";
                 $stmt = $GLOBALS["pdo"]->prepare($sql);
@@ -164,7 +164,7 @@ class WarehouseContainer extends WarehouseAbstract
         if (!static::validateField('type', $type)) {
             throw new Exception("Invalid container type: $type");
         }
-        $sql = "SELECT * FROM " . static::getTableName() . " WHERE type = :type ";
+        $sql = "SELECT * FROM " . static::getTableName() . " WHERE deleted_at IS NULL AND type = :type ";
         $params = ['type' => $type];
         if (is_null($parent_id)) {
             $sql .= " AND parent_id IS NULL";

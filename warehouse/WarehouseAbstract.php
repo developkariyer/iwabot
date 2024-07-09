@@ -239,7 +239,7 @@ abstract class WarehouseAbstract
     public function delete()
     {
         if ($this->canDelete()) {
-            $stmt = $GLOBALS['pdo']->prepare("DELETE FROM " . static::getTableName() . " WHERE id = ? LIMIT 1");
+            $stmt = $GLOBALS['pdo']->prepare("UPDATE " . static::getTableName() . " SET deleted_at = NOW() WHERE id = ? LIMIT 1");
             static::clearAllCache();
             return $stmt->execute([$this->id]);
         }
@@ -331,7 +331,7 @@ abstract class WarehouseAbstract
             if (is_array($cache)) {
                 static::$allObjects = $cache;
             } else {
-                $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName(). " ORDER BY name ASC");
+                $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName(). " WHERE deleted_at IS NULL ORDER BY name ASC");
                 $stmt->execute();
                 $objects = [];
                 while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
