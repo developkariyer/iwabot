@@ -59,7 +59,7 @@ function slackChannels() {
 function slackUsers() {
     if (!isset($GLOBALS['slackUsers']) || !is_array($GLOBALS['slackUsers'])) {
         $GLOBALS['slackUsers'] = [];
-        $sql = "SELECT user_id, json->>'name' as name, json->>'real_name' as real_name FROM users ORDER BY real_name";
+        $sql = "SELECT user_id, json->>'$.name' AS name, json->>'$.real_name' AS real_name FROM users ORDER BY real_name;";
         $stmt = $GLOBALS['pdo']->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
