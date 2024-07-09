@@ -94,7 +94,6 @@ header("Location: $return_url");
 exit;
 
 function handlePermissionChange($action) {
-    header('Content-Type: application/json');
     $actions = explode('_', $action);
     $permType = $actions[1];
     if (!in_array($permType, ['view', 'manage', 'order', 'process'])) {
@@ -137,9 +136,9 @@ function handlePermissionChange($action) {
         }
     }
     if ($flag) {
-        die(json_encode(['ok' => true]));
+        addMessage('Yetkilendirme değişiklikleri kaydedildi');
     } else {
-        die(json_encode(['ok' => false]));
+        addMessage('Yetkilendirme değişiklikleri kaydedilemedi');
     }
 }
 
