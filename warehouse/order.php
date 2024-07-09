@@ -105,18 +105,21 @@ include '../_header.php';
                                             </h2>
                                             <div id="collapse<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $index ?>" data-bs-parent="#productAccordion">
                                                 <div class="accordion-body p-5">
-                                                    <p><?= productInfo($product['product']) ?></p>
-                                                    <p><b>Açıklama</b><br><?= nl2br(htmlspecialchars($product['description'])) ?></p>
                                                     <form action="controller.php" method="post">
                                                         <input type="hidden" name="product_id" value="<?= $product['product']->id ?>">
-                                                        <input type="hidden" name="action" value="fulfil">
                                                         <input type="hidden" name="sold_id" value="<?= $product['id'] ?>">
                                                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                                                        <select id="Select<?= $index ?>Product<?= $product['product']->id ?>" name="container_id" class="select2-select form-select w-100" style="width: 100%;" required>
-                                                            <option value="">Raf/Koli Seçin</option>
-                                                            <?= containerOptGrouped($product['product']) ?>
-                                                        </select>
-                                                        <button id="Submit<?= $index ?>Product<?= $product['product']->id ?>" type="submit" class="btn btn-primary w-100 py-3 mt-2">Ürün Çıkışı Yap</button>
+                                                        <p><?= productInfo($product['product']) ?></p>
+                                                        <p><strong>Bulunduğu Raflar:</strong></p>
+                                                        <?php foreach ($product['product']->getContainers() as $container): ?>
+                                                            <p><?= $icon[$container->type] ?> <?= $container->name ?> (<?= $container->type === 'Raf' ? 'Rafta açık' : $container->parent->name ?>) (<?= $product['product']->getInContainerCount($container) ?> adet)</p>
+                                                        <?php endforeach; ?>
+                                                        <div class="mb-3">
+                                                            <label for="description" class="form-label">Açıklama</label>
+                                                            <textarea id="description" name="description" rows="5" class="form-control btn-outline-success w-100 py-3" placeholder="Açıklama" required><?= htmlspecialchars($product['description']) ?></textarea>
+                                                        </div>
+                                                        <button name="action" value="fulfil_update" id="Submit<?= $index ?>Product<?= $product['product']->id ?>" type="submit" class="btn btn-primary w-100 py-3 mt-2">Ürün Çıkış Bilgilerini Güncelle</button>
+                                                        <button name="action" value="fulfil_delete" id="Delete<?= $index ?>Product<?= $product['product']->id ?>" type="submit" class="btn btn-danger w-100 py-3 mt-2">Ürün Çıkış Bilgilerini Sil</button>
                                                     </form>
                                                 </div>
                                             </div>
