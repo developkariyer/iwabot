@@ -89,10 +89,11 @@ $products = WarehouseProduct::getAll();
                                     <?= containerInfo($raf) ?><br>
                                     <strong>Raftaki Koliler:</strong><br>
                                     <?php foreach ($raf->getChildren() as $childIndex => $child): ?>
+                                        <?php if ($child->getTotalCount() == 0) continue; ?>
                                         <div class="accordion-item">
                                             <h2 class="accordion-header box-h2" id="headingChild<?= $index ?>-<?= $childIndex ?>">
                                                 <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChild<?= $index ?>-<?= $childIndex ?>" aria-expanded="false" aria-controls="collapseChild<?= $index ?>-<?= $childIndex ?>">
-                                                    <span><strong><?= htmlspecialchars($child->name) ?></strong></span>
+                                                    <span><strong><?= htmlspecialchars($child->name) ?> (<?= htmlspecialchars($child->getTotalCount()) ?> ürün)</strong></span>
                                                 </button>
                                             </h2>
                                             <div id="collapseChild<?= $index ?>-<?= $childIndex ?>" class="accordion-collapse collapse" aria-labelledby="headingChild<?= $index ?>-<?= $childIndex ?>" data-bs-parent="#collapseRaf<?= $index ?>">
