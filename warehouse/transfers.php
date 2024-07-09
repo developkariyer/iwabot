@@ -67,14 +67,17 @@ include '../_header.php';
                         </thead>
                         <tbody>
                             <?php foreach ($soldOrders as $index => $order): ?>
-                                <?php $object = $order['sold_type']::getById($order['product_id']); ?>
+                                <?php 
+                                    $object = $order['sold_type']::getById($order['product_id']); 
+                                    $fulfilInfo = $object->getFulfilInfo($order['id']);
+                                ?>
                                 <tr>
                                     <td><?= $order['sold_type'] === 'WarehouseProduct' ? 'Ürün/' : 'Koli/' ?><?= htmlspecialchars($object->name) ?></td>
                                     <td><?= nl2br(htmlspecialchars($order['description'])) ?></td>
                                     <td>Kaydeden</td>
                                     <td><?= htmlspecialchars($order['created_at']) ?></td>
-                                    <td>Kapatan</td>
-                                    <td>Kapanma Zamanı</td>
+                                    <td><?= $fulfilInfo['closed_by'] ?></td>
+                                    <td><?= $fulfilInfo['closed_at'] ?></td>
                                     <td>Seri/Koli No</td>
                                 </tr>
                             <?php endforeach; ?>

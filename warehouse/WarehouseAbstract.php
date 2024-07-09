@@ -278,6 +278,31 @@ abstract class WarehouseAbstract
         return false;
     }
 
+    private static function getUserFromLogData($json) {
+        $data = json_decode($json, true);
+        if (empty($data['user'])) {
+            return '';
+        }
+        return slackUsername($data['user']);
+    }
+
+    public static function getLogs($action, $data)
+    {
+        $sql = "SELECT * FROM warehouse_log WHERE action = :action";
+        if (!is_array($data)) {
+            $data = [];
+        }
+        $values = ['action' => $action];
+        foreach ($data as $field=>$value) {
+            $sql .= " AND data->>'$.{$field}' = :$field";
+            $values[$field] = $value;
+        }
+        $sql .= " ORDER BY created_at ASC";
+        $stmt = $GLOBALS['pdo']->prepare($sql);
+        $stmt->execute($values);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public static function addNew($data)
     {
         error_log("Adding new ".get_called_class());
