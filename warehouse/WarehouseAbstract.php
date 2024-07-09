@@ -174,6 +174,9 @@ abstract class WarehouseAbstract
         if (isset($data['updated_at'])) {
             unset($data['updated_at']);
         }
+        if (isset($data['deleted_at'])) {
+            unset($data['deleted_at']);
+        }
         foreach ($data as $field=>$value) {
             if ($this->validateField($field, $value)) {
                 $this->dbValues[$field] = $value;
