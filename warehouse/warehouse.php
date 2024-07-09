@@ -77,7 +77,7 @@ function loadPermissions($noCache = false) {
         ];
         $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM warehouse_user");
         $stmt->execute();
-        while ($row = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $GLOBALS['permissions'][$row['permission']][] = $row['user_id'];
         }
         $viewUsers = [];
