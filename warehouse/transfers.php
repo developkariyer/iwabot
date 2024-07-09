@@ -69,7 +69,7 @@ include '../_header.php';
                             <?php foreach ($soldOrders as $index => $order): ?>
                                 <?php $object = $order['sold_type']::getById($order['product_id']); ?>
                                 <tr>
-                                    <td><?= htmlspecialchars($object->name) ?></td>
+                                    <td><?= $order['sold_type'] === 'WarehouseProduct' ? 'Ürün/' : 'Koli/' ?><?= htmlspecialchars($object->name) ?></td>
                                     <td><?= nl2br(htmlspecialchars($order['description'])) ?></td>
                                     <td>Kaydeden</td>
                                     <td><?= htmlspecialchars($order['created_at']) ?></td>
