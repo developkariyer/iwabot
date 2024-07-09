@@ -310,7 +310,6 @@ abstract class WarehouseAbstract
 
     public static function getLogs($action, $data)
     {
-        error_log("********************* getLogs called *********************: $action, ".json_encode($data));
         $sql = "SELECT * FROM ".WarehouseAbstract::$logTableName." WHERE action = :action";
         if (!is_array($data)) {
             $data = [];
@@ -321,7 +320,6 @@ abstract class WarehouseAbstract
             $values[$field] = $value;
         }
         $sql .= " ORDER BY created_at ASC";
-        error_log("SQL: $sql Value: ".json_encode($values));
         $stmt = $GLOBALS['pdo']->prepare($sql);
         $stmt->execute($values);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
