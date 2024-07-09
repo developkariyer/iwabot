@@ -70,27 +70,44 @@ function slackUsers() {
 
 function loadPermissions($noCache = false) {
     if ($noCache || !isset($GLOBALS['permissions']) || !is_array($GLOBALS['permissions'])) {
-        $GLOBALS['permissions'] = [
-            'process' => [],
-            'view' => [],
-            'order' => [],
-            'manage' => [],
-        ];
         $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM warehouse_user");
         $stmt->execute();
+        $viewChannels = $viewUsers = $orderUsers = $processUsers = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $GLOBALS['permissions'][$row['permission']][] = $row['user_id'];
+            switch($row['permission']) {
+                case 'process':
+                    $processUsers[] = $row['user_id'];
+                    $viewUsers[] = $row['user_id'];
+                    break;
+                case 'view':
+                    $viewChannels[] = $row['user_id'];
+                    break;
+                case 'order':
+                    $orderUsers[] = $row['user_id'];
+                    $viewUsers[] = $row['user_id'];
+                    break;
+                case 'manage':
+                    $manageUsers[] = $row['user_id'];
+                    $orderUsers[] = $row['user_id'];
+                    $processUsers[] = $row['user_id'];
+                    $viewUsers[] = $row['user_id'];
+                    break;
+            }
         }
-        $viewUsers = [];
         $stmt = $GLOBALS['pdo']->prepare("SELECT user_id FROM channel_user WHERE channel_id = ?");
-        foreach ($GLOBALS['permissions']['view'] as $channel_id) {
+        foreach ($viewChannels as $channel_id) {
             $stmt->execute([$channel_id]);
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $viewUsers[] = $row['user_id'];
             }
         }
-        $GLOBALS['permissions']['view_channels'] = $GLOBALS['permissions']['view'];
-        $GLOBALS['permissions']['view'] = array_unique($viewUsers);
+        $GLOBALS['permissions'] = [
+            'view_channels' => $viewChannels,
+            'process' => array_unique($processUsers),
+            'view' => array_unique($viewUsers),
+            'order' => array_unique($orderUsers),
+            'manage' => array_unique($manageUsers),
+        ];
     }
     error_log(json_encode($GLOBALS['permissions']));
 }
