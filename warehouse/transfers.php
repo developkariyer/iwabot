@@ -54,9 +54,10 @@ include '../_header.php';
             </h2>
             <div id="transfersAccordion3" class="accordion-collapse collapse" aria-labelledby="headingMain3" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
-                    <table class="table table-striped">
+                    <table class="table table-striped table-hover table-sm">
                         <thead>
                             <tr>
+                                <th scope="col">?</th>
                                 <th scope="col">Sipariş</th>
                                 <th scope="col">Alıcı</th>
                                 <th scope="col">Kaydeden</th>
@@ -72,7 +73,8 @@ include '../_header.php';
                                     $fulfilInfo = $object ? $object->getFulfilInfo($order['id']) : ['closed_by' => 'Bilinmiyor', 'closed_at' => 'Bilinmiyor'];
                                 ?>
                                 <tr>
-                                    <td><?= $order['sold_type'] === 'WarehouseProduct' ? 'Ürün/' : 'Koli/' ?><?= htmlspecialchars($object->name) ?></td>
+                                    <td class="table-success"><?= $order['sold_type'] === 'WarehouseProduct' ? 'Ürün' : 'Koli' ?></td>
+                                    <td><?= htmlspecialchars($object->name) ?></td>
                                     <td><?= nl2br(htmlspecialchars($order['description'])) ?></td>
                                     <td>Kaydeden</td>
                                     <td><?= htmlspecialchars($order['created_at']) ?></td>
