@@ -45,7 +45,7 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
                 </button>
             </h2>
             <div id="productAccordion" class="accordion-collapse collapse show" aria-labelledby="headingMain" data-bs-parent="#mainAccordion">
-                <div class="accordion-body p-0">
+                <div class="accordion-body p-5">
                     <?php foreach ($unfulfilledProducts as $index => $product): ?>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="heading<?= $index ?>">

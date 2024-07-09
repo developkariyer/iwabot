@@ -61,7 +61,7 @@ include '../_header.php';
                                                                     <?= containerInfo($item['container']) ?>
                                                                 </p>
                                                             </div>
-                                                            <h4>Aynı İçerikli Koliler</h4>
+                                                            <p><strong>Aynı İçerikli Koliler</strong></p>
                                                             <ul>
                                                                 <?php foreach ($item['container']->findSimilar() as $sameContainer): ?>
                                                                     <li><?= htmlspecialchars($sameContainer->name) ?> (<?= htmlspecialchars($sameContainer->parent->name) ?>)</li>
