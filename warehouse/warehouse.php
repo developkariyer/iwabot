@@ -18,6 +18,7 @@ function button($url, $text, $color='primary') {
 }
 
 function userCan($actions = []) {
+    error_log("UserCan :".json_encode($actions));
     if (empty($actions)) {
         return false;
     }
@@ -91,6 +92,7 @@ function loadPermissions($noCache = false) {
         $GLOBALS['permissions']['view_channels'] = $GLOBALS['permissions']['view'];
         $GLOBALS['permissions']['view'] = array_unique($viewUsers);
     }
+    error_log(json_encode($GLOBALS['permissions']));
 }
 
 function wh_menu() {
