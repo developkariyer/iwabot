@@ -33,7 +33,7 @@ $permissionList = [
             </h2>
             <div id="userAccordion1" class="accordion-collapse collapse" aria-labelledby="headingMain1" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
-                    <form action="controller.php" method="post">
+                    <form id="inventoryForm" action="controller.php" method="post">
                         <input type="hidden" name="action" value="permission_view_add">
                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <div class="mb-3">
@@ -85,7 +85,7 @@ $permissionList = [
                 </h2>
                 <div id="userAccordion<?= $permType ?>" class="accordion-collapse collapse" aria-labelledby="headingMain<?= $permType ?>" data-bs-parent="#mainAccordion">
                     <div class="accordion-body p-5">
-                        <form action="controller.php" method="post">
+                        <form id="<?= $permType ?>Form" action="controller.php" method="post">
                             <input type="hidden" name="action" value="permission_<?= $permType ?>_add">
                             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                             <div class="mb-3">
@@ -131,7 +131,35 @@ $permissionList = [
         $('#managePersonnel').select2();
         $('#orderPersonnel').select2();
         $('#processPersonnel').select2();
+
+        $('#inventoryForm').on('submit', function(e) {
+            e.preventDefault();
+            submitFormAjax($(this));
+        });
+
+        <?php foreach (array_keys($permissionList) as $permType): ?>
+            $('#<?= $permType ?>Form').on('submit', function(e) {
+                e.preventDefault();
+                submitFormAjax($(this));
+            });
+        <?php endforeach; ?>
     });
+
+    function submitFormAjax(form) {
+        $.ajax({
+            type: 'POST',
+            url: form.attr('action'),
+            data: form.serialize(),
+            success: function(response) {
+                if (response.ok) {
+                    alert('Yetki başarıyla güncellendi.');
+                    location.reload(); // Reload the page to reflect changes
+                } else {
+                    alert('Yetki güncellenirken hata oluştu.');
+                }
+            }
+        });
+    }
 
     function removePermission(type, id) {
         let action;
@@ -156,7 +184,7 @@ $permissionList = [
             if (response.ok) {
                 $(`button[onclick="removePermission('${type}', ${id})"]`).parent().remove();
             } else {
-                alert('Error removing permission');
+                alert('Yetki kaldırılırken hata oluştu.');
             }
         }, 'json');
     }
