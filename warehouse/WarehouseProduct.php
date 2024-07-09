@@ -171,20 +171,6 @@ class WarehouseProduct extends WarehouseAbstract
         }
     }
 
-    public function addSoldItem($description)
-    {
-        if (empty($description) || !is_string($description)) {
-            throw new Exception("Invalid description. Must be a valid string");
-        }
-        $stmt = $GLOBALS['pdo']->prepare("INSERT INTO ".WarehouseAbstract::$soldItemsTableName." (product_id, sold_type, description) VALUES (:product_id, 'WarehouseProduct', :description)");
-        if ($stmt->execute(['product_id' => $this->id, 'description' => $description])) {
-            $this->logAction('addSoldItem', ['description' => $description]);
-            static::clearAllCache();
-            return true;
-        }
-        return false;
-    }
-
     public function placeInContainer($container, $count = 1)
     {
         if ($container instanceof WarehouseContainer && !empty($this->id)) {

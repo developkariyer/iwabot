@@ -376,6 +376,21 @@ abstract class WarehouseAbstract
         return $GLOBALS['pdo']->query("SELECT * FROM ".WarehouseAbstract::$soldItemsTableName." ORDER BY sold_type DESC, fulfilled DESC, created_at ASC")->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function addSoldItem($description)
+    {
+        if (empty($description) || !is_string($description)) {
+            throw new Exception("Invalid description. Must be a valid string");
+        }
+        $stmt = $GLOBALS['pdo']->prepare("INSERT INTO ".WarehouseAbstract::$soldItemsTableName." (product_id, sold_type, description) VALUES (:product_id, 'WarehouseProduct', :description)");
+        if ($stmt->execute(['product_id' => $this->id, 'description' => $description])) {
+            $sold_id = $GLOBALS['pdo']->lastInsertId();
+            $this->logAction('addSoldItem', ['sold_id' => $sold_id, 'description' => $description]);
+            static::clearAllCache();
+            return true;
+        }
+        return false;
+    }
+
     abstract protected static function getCustomMethods();
     abstract public static function getTableName();
     abstract protected static function validateField($field, $value);

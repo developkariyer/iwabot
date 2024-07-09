@@ -406,7 +406,7 @@ function handleAddSoldBox() { // add_sold_box
         addMessage('add_sold_box: Geçersiz parametre!');
         return;
     }
-    $container->addSoldBox($description);
+    $container->addSoldItem($description);
     addMessage("$container->name için yeni satış eklendi");
 }
 

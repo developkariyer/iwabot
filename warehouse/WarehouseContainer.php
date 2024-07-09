@@ -279,20 +279,6 @@ class WarehouseContainer extends WarehouseAbstract
         }
     }
 
-    public function addSoldBox($description)
-    {
-        if (empty($description) || !is_string($description)) {
-            throw new Exception("addSoldBox: Açıklama boş olamaz");
-        }
-        $stmt = $GLOBALS['pdo']->prepare("INSERT INTO ".WarehouseAbstract::$soldItemsTableName." (product_id, sold_type, description) VALUES (:product_id, 'WarehouseContainer', :description)");
-        if ($stmt->execute(['product_id' => $this->id, 'description' => $description])) {
-            $this->logAction('addSoldBox', ['description' => $description]);
-            $this->clearAllCache();
-            return true;
-        }
-        return false;
-    }
-
     public function setParent($newParent)
     {
         if ($newParent instanceof self) {
