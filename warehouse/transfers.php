@@ -62,7 +62,6 @@ include '../_header.php';
                                 <th scope="col">Kayıt Zamanı</th>
                                 <th scope="col">Kapatan</th>
                                 <th scope="col">Kapanma Zamanı</th>
-                                <th scope="col">Seri/Koli No</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -78,7 +77,6 @@ include '../_header.php';
                                     <td><?= htmlspecialchars($order['created_at']) ?></td>
                                     <td><?= $fulfilInfo['closed_by'] ?></td>
                                     <td><?= $fulfilInfo['closed_at'] ?></td>
-                                    <td>Seri/Koli No</td>
                                 </tr>
                             <?php endforeach; ?>
                             <?php if (empty($soldOrders)): ?>
