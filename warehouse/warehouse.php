@@ -292,7 +292,7 @@ function containerOptGrouped($product = null) {
 }
 
 function productSelect($product_id = 0) {
-    $GLOBALS['footer_script'] = '$(document).ready(function(){$(\'.select2-select\').select2({maximumSelectionLenght:1,theme: "classic"';
+    $GLOBALS['footer_script'] = '$(document).ready(function(){$(\'.select2-select\').select2({theme: "classic"';
     if ($product_id) {
         $GLOBALS['footer_script'] .= ',val:"'.$product_id.'"';
     }
@@ -315,7 +315,7 @@ function productSelect($product_id = 0) {
         }
         $options[$product->category][] = "<option value='{$product->id}' $selected>{$product->name} ({$product->fnsku})</option>";
     }
-    $html = '<select id="product_select" name="product_id[]" class="select2-select form-select w-100" required style="width: 100%;" multiple="multiple">';
+    $html = '<select id="product_select" name="product_id" class="select2-select form-select w-100" required style="width: 100%;" >';
     $html .= '<option value="">Ürün Seçin</option>';
     foreach($options as $category => $products) {
         $html .= '<optgroup label="'.$category.'">';
