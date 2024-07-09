@@ -33,7 +33,7 @@ $permissionList = [
             </h2>
             <div id="userAccordion1" class="accordion-collapse collapse" aria-labelledby="headingMain1" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
-                    <form id="inventoryForm" action="controller.php" method="post">
+                    <form action="controller.php" method="post">
                         <input type="hidden" name="action" value="permission_view_add">
                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <div class="mb-3">
@@ -62,10 +62,15 @@ $permissionList = [
                     <h3>Envanter Görmeye Yetkili Kanallar</h3>
                     <div id="inventoryChannelList">
                         <?php foreach ($GLOBALS['permissions']['view_channels'] as $channel_id): ?>
-                            <span class="badge bg-secondary me-2">
-                                <?= htmlspecialchars($channelList[$channel_id]) ?>
-                                <button type="button" class="btn-close btn-close-white ms-2" aria-label="Close" data-type="view" data-id="<?= htmlspecialchars($channel_id) ?>"></button>
-                            </span>
+                            <form action="controller.php" method="post" style="display:inline;">
+                                <input type="hidden" name="action" value="permission_view_remove">
+                                <input type="hidden" name="target_id" value="<?= htmlspecialchars($channel_id) ?>">
+                                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                                <span class="badge bg-secondary me-2">
+                                    <?= htmlspecialchars($channelList[$channel_id]) ?>
+                                    <button type="submit" class="btn-close btn-close-white ms-2" aria-label="Close"></button>
+                                </span>
+                            </form>
                         <?php endforeach; ?>
                     </div>
                     <?php if (empty($GLOBALS['permissions']['view_channels'])): ?>
@@ -75,8 +80,8 @@ $permissionList = [
             </div>
         </div>
 
-        <?php foreach (array_keys($permissionList) as $permType): ?>
 
+        <?php foreach (array_keys($permissionList) as $permType): ?>
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingMain<?= $permType ?>">
                     <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#userAccordion<?= $permType ?>" aria-expanded="false" aria-controls="userAccordion<?= $permType ?>">
@@ -85,7 +90,7 @@ $permissionList = [
                 </h2>
                 <div id="userAccordion<?= $permType ?>" class="accordion-collapse collapse" aria-labelledby="headingMain<?= $permType ?>" data-bs-parent="#mainAccordion">
                     <div class="accordion-body p-5">
-                        <form id="<?= $permType ?>Form" action="controller.php" method="post">
+                        <form action="controller.php" method="post">
                             <input type="hidden" name="action" value="permission_<?= $permType ?>_add">
                             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                             <div class="mb-3">
@@ -103,10 +108,15 @@ $permissionList = [
                         <h3><?= $permissionList[$permType] ?> Yetkili Kişiler</h3>
                         <div id="<?= $permType ?>PersonnelList">
                             <?php foreach ($GLOBALS['permissions'][$permType] as $user_id): ?>
-                                <span id="<?= $permType ?>UserSpan" class="badge bg-secondary me-2">
-                                    <?= htmlspecialchars($userList[$user_id]) ?>
-                                    <button type="button" class="btn-close btn-close-white ms-2" aria-label="Close" data-type="<?= $permType ?>" data-id="<?= htmlspecialchars($user_id) ?>"></button>
-                                </span>
+                                <form action="controller.php" method="post" style="display:inline;">
+                                    <input type="hidden" name="action" value="permission_<?= $permType ?>_remove">
+                                    <input type="hidden" name="target_id" value="<?= htmlspecialchars($user_id) ?>">
+                                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                                    <span class="badge bg-secondary me-2">
+                                        <?= htmlspecialchars($userList[$user_id]) ?>
+                                        <button type="submit" class="btn-close btn-close-white ms-2" aria-label="Close"></button>
+                                    </span>
+                                </form>
                             <?php endforeach; ?>
                         </div>
                         <?php if (empty($GLOBALS['permissions'][$permType])): ?>
@@ -115,8 +125,8 @@ $permissionList = [
                     </div>
                 </div>
             </div>
-
         <?php endforeach; ?>
+
 
     </div>
 
@@ -131,69 +141,7 @@ $permissionList = [
         $('#managePersonnel').select2();
         $('#orderPersonnel').select2();
         $('#processPersonnel').select2();
-
-        $('#inventoryForm').on('submit', function(e) {
-            e.preventDefault();
-            submitFormAjax($(this));
-        });
-
-        <?php foreach (array_keys($permissionList) as $permType): ?>
-            $('#<?= $permType ?>Form').on('submit', function(e) {
-                e.preventDefault();
-                submitFormAjax($(this));
-            });
-        <?php endforeach; ?>
-
-        $(document).on('click', '.btn-close', function() {
-            const type = $(this).data('type');
-            const id = $(this).data('id');
-            removePermission(type, id);
-        });
     });
-
-    function submitFormAjax(form) {
-        $.ajax({
-            type: 'POST',
-            url: form.attr('action'),
-            data: form.serialize(),
-            success: function(response) {
-                if (response.ok) {
-                    alert('Yetki başarıyla güncellendi.');
-                    location.reload(); // Reload the page to reflect changes
-                } else {
-                    alert('Yetki güncellenirken hata oluştu.');
-                }
-            }
-        });
-    }
-
-    function removePermission(type, id) {
-        let action;
-        switch (type) {
-            case 'view':
-                action = 'permission_view_remove';
-                break;
-            case 'manage':
-                action = 'permission_manage_remove';
-                break;
-            case 'order':
-                action = 'permission_order_remove';
-                break;
-            case 'process':
-                action = 'permission_process_remove';
-                break;
-            default:
-                return;
-        }
-
-        $.post('controller.php', { action: action, target_id: id }, function(response) {
-            if (response.ok) {
-                $(`button[onclick="removePermission('${type}', ${id})"]`).parent().remove();
-            } else {
-                alert('Yetki kaldırılırken hata oluştu.');
-            }
-        }, 'json');
-    }
 </script>
 
 <?php
