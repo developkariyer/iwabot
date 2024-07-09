@@ -54,7 +54,7 @@ include '../_header.php';
                                             <div class="accordion-item">
                                                 <h2 class="accordion-header" id="headingBox<?= $index ?>">
                                                     <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBox<?= $index ?>" aria-expanded="false" aria-controls="collapseBox<?= $index ?>">
-                                                        <span><strong><?= htmlspecialchars($item['container']->name) ?></strong></span>
+                                                        <span><strong><?= $icon[$item['container']->type] ?> <?= htmlspecialchars($item['container']->name) ?></strong></span>
                                                     </button>
                                                 </h2>
                                                 <div id="collapseBox<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="headingBox<?= $index ?>" data-bs-parent="#orderAccordion4">
@@ -70,7 +70,7 @@ include '../_header.php';
                                                             <p><strong>Aynı İçerikli Koliler</strong></p>
                                                             <ul>
                                                                 <?php foreach ($item['container']->findSimilar() as $sameContainer): ?>
-                                                                    <li><?= htmlspecialchars($sameContainer->name) ?> (<?= htmlspecialchars($sameContainer->parent->name) ?>)</li>
+                                                                    <li><?= $icon[$sameContainer->type] ?> <?= htmlspecialchars($sameContainer->name) ?> (<?= htmlspecialchars($sameContainer->parent->name) ?>)</li>
                                                                 <?php endforeach; ?>
                                                             </ul>
                                                             <div class="mb-3">
