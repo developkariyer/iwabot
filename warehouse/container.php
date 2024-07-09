@@ -16,12 +16,12 @@ include '../_header.php';
 
 <div class="container mt-5">
     <div class="jumbotron text-center">
-        <h1>Depo İşlemleri</h1>
-        <p>İşlem yapmak istediğiniz koliyi seçiniz. Depo Ana Menü için <a href="./">buraya basınız.</a></p>
+        <h1>Gemi/Roli/Raf İşlemleri</h1>
+        <p>Depo Ana Menü için <a href="./">buraya basınız.</a></p>
     </div>
     <div class="accordion mb-3" id="mainAccordion">
 
-        <!-- Fourth Main Accordion Item -->
+        <!-- First Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain4">
                 <button class="accordion-button bg-success text-white  w-100 py-3" data-bs-toggle="collapse" data-bs-target="#orderAccordion4" aria-expanded="true" aria-controls="orderAccordion4">
@@ -79,7 +79,7 @@ include '../_header.php';
 
 
 
-        <!-- First Main Accordion Item -->
+        <!-- Second Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain1">
                 <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#containerAccordion1" aria-expanded="false" aria-controls="containerAccordion1">
@@ -111,7 +111,7 @@ include '../_header.php';
             </div>
         </div>
 
-        <!-- Second Main Accordion Item -->
+        <!-- Third Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain2">
                 <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#containerAccordion2" aria-expanded="false" aria-controls="containerAccordion2">
@@ -121,7 +121,6 @@ include '../_header.php';
             <div id="containerAccordion2" class="accordion-collapse collapse" aria-labelledby="headingMain2" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
                     <form action="controller.php" method="POST" id="accordion2containerForm">
-                        <input type="hidden" name="action" value="set_parent">
                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <div class="mb-3">
                             <label for="accordion2container_id" class="form-label">Koli Seçin</label>
@@ -146,7 +145,7 @@ include '../_header.php';
             </div>
         </div>
 
-        <!-- Third Main Accordion Item -->
+        <!-- Fourth Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain3">
                 <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#containerAccordion3" aria-expanded="false" aria-controls="containerAccordion3">

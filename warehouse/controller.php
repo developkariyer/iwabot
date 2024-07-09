@@ -84,7 +84,7 @@ header("Location: $return_url");
 exit;
 
 
-function handleAddProduct() {
+function handleAddProduct() { //add_product
     $product = WarehouseProduct::addNew([
         'name' => getPostValue('name'),
         'fnsku' => getPostValue('fnsku'),
@@ -102,7 +102,7 @@ function handleAddProduct() {
         addMessage(getPostValue('name')." eklenemedi");
     }
 }
-function handleAddContainer() {
+function handleAddContainer() { //add_container
     $container = WarehouseContainer::addNew([
         'name' => getPostValue('name'),
         'type' => getPostValue('type'),
@@ -116,24 +116,35 @@ function handleAddContainer() {
     }
 }
 
-function handleFlushBox() {
+function handleFlushBox() { //flush_box
+    // if parent is not set, move products to parent of the box
     $parent = WarehouseContainer::getById(getPostValue('parent_id'));
-    $container = WarehouseContainer::getById(getPostValue('container_id'));
-    if (!$parent || !$container) {
-        addMessage('flush_box: Geçersiz parametre!');
-        return;
+    $container_id = getPostValue('container_id');
+    if (!is_array($container_id)) {
+        if (empty($container_id)) {
+            addMessage('flush_box: Geçersiz parametre: container_id');
+            return;
+        }
+        $container_id = [$container_id];
     }
-    foreach ($container->getProducts() as $product) {
-        $product->moveToContainer($container, $parent, $product->getInContainerCount($container));
-    }
-    if ($container->delete()) {
-        addMessage("$container->name içindeki ürünler $parent->name altına taşındı ve $container->name silindi");
-    } else {
-        addMessage("$container->name silinemedi");
+    foreach ($container_id as $cid) {
+        $container = WarehouseContainer::getById($cid);
+        $flush_to = $parent ?? $container->parent;
+        if (!$container || !$flush_to) {
+            continue;
+        }
+        foreach ($container->getProducts() as $product) {
+            $product->moveToContainer($container, $flush_to, $product->getInContainerCount($container));
+        }
+        if ($container->delete()) {
+            addMessage("{$container->name} içindeki ürünler {$flush_to->name} altına taşındı ve {$container->name} silindi");
+        } else {
+            addMessage("$container->name silinemedi");
+        }
     }
 }
 
-function handleSetParent() {
+function handleSetParent() { //set_parent
     $parent = WarehouseContainer::getById(getPostValue('parent_id'));
     if (!$parent) {
         addMessage('set_parent: Geçersiz parametre: parent');
@@ -160,7 +171,7 @@ function handleSetParent() {
     }
 }
 
-function handleMoveToContainer() {
+function handleMoveToContainer() { //move_to_container
     $product = WarehouseProduct::getById(getPostValue('product_id'));
     $old_container = WarehouseContainer::getById(getPostValue('container_id'));
     $new_container = WarehouseContainer::getById(getPostValue('new_container_id'));
@@ -176,7 +187,7 @@ function handleMoveToContainer() {
     }
 }
 
-function handleRemoveFromContainer() {
+function handleRemoveFromContainer() { //remove_from_container
     $product = WarehouseProduct::getById(getPostValue('product_id'));
     $container = WarehouseContainer::getById(getPostValue('container_id'));
     if (!$product || !$container || !getPostValue('count')) {
@@ -194,7 +205,7 @@ function handleRemoveFromContainer() {
     }
 }
 
-function handlePlaceInContainer() {
+function handlePlaceInContainer() { //place_in_container
     $product = WarehouseProduct::getById(getPostValue('product_id'));
     $container = WarehouseContainer::getById(getPostValue('new_container_id'));
     if (!$product || !$container || !getPostValue('count')) {
@@ -208,7 +219,7 @@ function handlePlaceInContainer() {
     }
 }
 
-function handleUpdateContainer() {
+function handleUpdateContainer() { //update_container
     $container = WarehouseContainer::getById(getPostValue('container_id'));
     if (!$container) {
         addMessage('update_container: Geçersiz parametre!');
@@ -226,7 +237,7 @@ function handleUpdateContainer() {
     }
 }
 
-function handleUpdateProduct() {
+function handleUpdateProduct() { //update_product
     $product = WarehouseProduct::getById(getPostValue('product_id'));
     if (!$product) {
         addMessage('update_product: Geçersiz parametre!');
@@ -249,24 +260,37 @@ function handleUpdateProduct() {
     }
 }
 
-function handleDeleteContainer() {
-    $container = WarehouseContainer::getById(getPostValue('container_id'));
-    if (!$container) {
-        addMessage('delete_container: Geçersiz parametre!');
-        return;
+function handleDeleteContainer() { // delete_container
+    $container_id = getPostValue('container_id');
+    if (!is_array($container_id)) {
+        if (empty($container_id)) {
+            addMessage('delete_container: Geçersiz parametre: container_id');
+            return;
+        }
+        $container_id = [$container_id];
     }
-    if ($container->getProducts(noCache:true)) {
-        addMessage("$container->name içinde ürün bulunmaktadır, silinemedi");
-        return;
-    }
-    if ($container->delete()) {
-        addMessage("$container->name silindi");
-    } else {
-        addMessage("$container->name silinemedi");
+    foreach ($container_id as $cid) {
+        $container = WarehouseContainer::getById($cid);
+        if (!$container) {
+            continue;
+        }
+        if ($container->getChildren(noCache:true)) {
+            addMessage("$container->name içinde alt konteynerler bulunmaktadır, silinemedi");
+            return;
+        }
+        if ($container->getProducts(noCache:true)) {
+            addMessage("$container->name içinde ürün bulunmaktadır, silinemedi");
+            return;
+        }
+        if ($container->delete()) {
+            addMessage("$container->name silindi");
+        } else {
+            addMessage("$container->name silinemedi");
+        }
     }
 }
 
-function handleDeleteProduct() {
+function handleDeleteProduct() { // delete_product
     $product = WarehouseProduct::getById(getPostValue('product_id'));
     if (!$product) {
         addMessage('delete_product: Geçersiz parametre!');
@@ -279,7 +303,7 @@ function handleDeleteProduct() {
     }
 }
 
-function handleFulfil() {
+function handleFulfil() { // fulfil
     $product = WarehouseProduct::getById(getPostValue('product_id'));
     $container = WarehouseContainer::getById(getPostValue('container_id'));
     $soldItem = getPostValue('sold_id');
@@ -294,7 +318,7 @@ function handleFulfil() {
     }
 }
 
-function handleAddSoldItem() {
+function handleAddSoldItem() { // add_sold_item
     $product = WarehouseProduct::getById(getPostValue('product_id'));
     $description = getPostValue('description');
     if (!$product || empty($description) || !is_string($description)) {
@@ -305,7 +329,7 @@ function handleAddSoldItem() {
     addMessage("$product->name için yeni satış eklendi");
 }
 
-function handleFulfilBox() {
+function handleFulfilBox() { // fulfil_box
     $container = WarehouseContainer::getById(getPostValue('container_id'));
     $soldItem = getPostValue('sold_id');
     if (!$container || empty($soldItem) || !isset(WarehouseContainer::getUnfulfilledBoxes()[$soldItem])) {
@@ -316,7 +340,7 @@ function handleFulfilBox() {
     addMessage("$container->name için koli çıkışı yapıldı");
 }
 
-function handleAddSoldBox() {
+function handleAddSoldBox() { // add_sold_box
     $container = WarehouseContainer::getById(getPostValue('container_id'));
     $description = getPostValue('description');
     if (!$container || empty($description) || !is_string($description)) {
@@ -327,7 +351,7 @@ function handleAddSoldBox() {
     addMessage("$container->name için yeni satış eklendi");
 }
 
-function handleProductInfo() {
+function handleProductInfo() { // 
     header('Content-Type: application/json');
     $product = WarehouseProduct::getById(getPostValue('product_id'));
     $container = WarehouseContainer::getById(getPostValue('container_id'));
@@ -347,7 +371,7 @@ function handleProductInfo() {
     die(json_encode($retval));
 }
 
-function handleBarcodeScan() {
+function handleBarcodeScan() { // 
     header('Content-type: application/json');
     $product = WarehouseProduct::getByField('fnsku', getPostValue('fnsku'));
     if (!$product) {
@@ -358,7 +382,7 @@ function handleBarcodeScan() {
     die(json_encode($product->getAsArray()));
 }
 
-function handleContainerInfo() {
+function handleContainerInfo() { //container_info
     header('Content-Type: application/json');
     $container = WarehouseContainer::getById(getPostValue('container_id'));
     if (!$container) {

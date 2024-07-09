@@ -62,14 +62,17 @@ class WarehouseContainer extends WarehouseAbstract
         return true;
     }
 
-    public function getChildren()
+    public function getChildren($noCache = false)
     {
         if (empty($this->id)) {
             return [];
         }
+        if ($noCache) {
+            $this->children = [];
+        }
         if (empty($this->children)) {
             $cache = unserialize(static::getCache("Container{$this->id}Children"));
-            if (is_array($cache)) {
+            if (!$noCache && is_array($cache)) {
                 $this->children = $cache;
             } else {
                 $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName() . " WHERE parent_id = ? ORDER BY name ASC");

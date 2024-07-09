@@ -9,32 +9,107 @@ if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-require_once('WarehouseAbstract.php');
-require_once('WarehouseProduct.php');
-require_once('WarehouseContainer.php');
+require_once 'WarehouseAbstract.php';
+require_once 'WarehouseProduct.php';
+require_once 'WarehouseContainer.php';
 
 function button($url, $text, $color='primary') {
-    return '<div class="col-md-6"><a href="'.$url.'" class="btn btn-'.$color.' btn-lg rounded-pill w-100 py-3">'.$text.'</a></div>';
+    return "<div class=\"col-md-6\"><a href=\"$url\" class=\"btn btn-$color btn-lg rounded-pill w-100 py-3\">$text</a></div>";
+}
+
+function userCan($actions = []) {
+    if (empty($actions)) {
+        return false;
+    }
+    if (!is_array($actions)) {
+        $actions = [$actions];
+    }
+    if (empty($_SESSION['user_id'])) {
+        return false;
+    }
+    loadPermissions();
+    foreach ($actions as $action) {
+        if (!in_array($action, ['process', 'view', 'order', 'manage'])) {
+            throw new Exception("Geçersiz yetki: $action");
+        }
+        if (in_array($_SESSION['user_id'], $GLOBALS['permissions'][$action])) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function slackChannels() {
+    if (!isset($GLOBALS['slackChannels']) || !is_array($GLOBALS['slackChannels'])) {
+        $GLOBALS['slackChannels'] = [];
+        $sql = "SELECT channel_id, name FROM channels ORDER BY name";
+        $stmt = $GLOBALS['pdo']->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($result as $row) {
+            $GLOBALS['slackChannels'][$row['channel_id']] = $row['name'];
+        }
+    }
+    return $GLOBALS['slackChannels'];
+}
+
+function slackUsers() {
+    if (!isset($GLOBALS['slackUsers']) || !is_array($GLOBALS['slackUsers'])) {
+        $GLOBALS['slackUsers'] = [];
+        $sql = "SELECT user_id, json->>'name' as name, json->>'real_name' as real_name FROM users ORDER BY real_name";
+        $stmt = $GLOBALS['pdo']->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($result as $row) {
+            $GLOBALS['slackUsers'][$row['user_id']] = "{$row['real_name']} ({$row['name']})";
+        }
+    }
+    return $GLOBALS['slackUsers'];
+}
+
+function loadPermissions($noCache = false) {
+    if ($noCache || !isset($GLOBALS['permissions']) || !is_array($GLOBALS['permissions'])) {
+        $GLOBALS['permissions'] = [
+            'process' => [],
+            'view' => [],
+            'order' => [],
+            'manage' => [],
+        ];
+        $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM warehouse_user");
+        $stmt->execute();
+        while ($row = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
+            $GLOBALS['permissions'][$row['permission']][] = $row['user_id'];
+        }
+        $viewUsers = [];
+        $stmt = $GLOBALS['pdo']->prepare("SELECT user_id FROM channel_user WHERE channel_id = ?");
+        foreach ($GLOBALS['permissions']['view'] as $channel_id) {
+            $stmt->execute([$channel_id]);
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $viewUsers[] = $row['user_id'];
+            }
+        }
+        $GLOBALS['permissions']['view_channels'] = $GLOBALS['permissions']['view'];
+        $GLOBALS['permissions']['view'] = array_unique($viewUsers);
+    }
 }
 
 function wh_menu() {
-    return 
-    '<div class="row g-3 m-1">'.
-        button('product.php', 'Ürün İşlem', 'secondary').
-        button('container.php', 'Koli/Raf İşlem', 'secondary').
-    '</div><div class="row g-3 m-1 mt-1">'.
-        button('inventory.php', 'Depo Envanteri', 'secondary').
-        button('transfers.php', 'Hareket Raporu', 'secondary').
-    '</div><div class="row g-3 m-1 mt-1">'.
-        button('order.php', 'Sipariş İşlem', 'secondary').
-        button('controller.php?action=clear_cache', 'Önbellek Temizle', 'secondary').
-    '</div><div class="row g-3 m-1 mt-1">'.
-        button('./', 'Depo Ana Sayfa', 'secondary').
-        button('../', 'Ana Sayfa', 'secondary').
-    '</div><div class="row g-3 m-1 mt-1">'.
-        '<div class="col-md-3"></div>'.
-        button('../?logout=1', 'Çıkış', 'danger').
-    '</div>';
+    $menu = '';
+    if (userCan('process')) {
+        $menu .= '<div class="row g-3 m-1">'.button('product.php', 'Ürün İşlem', 'secondary').button('container.php', 'Koli/Raf İşlem', 'secondary').'</div>';
+    }
+    if (userCan('view')) {
+        $menu .= '<div class="row g-3 m-1 mt-1">'.button('inventory.php', 'Depo Envanteri', 'secondary').button('transfers.php', 'Hareket Raporu', 'secondary').'</div>';
+    }
+    if (userCan('order')) {
+        $menu .= '<div class="row g-3 m-1 mt-1">'.button('order.php', 'Sipariş İşlem', 'secondary').button('controller.php?action=clear_cache', 'Önbellek Temizle', 'secondary').'</div>';
+    }
+    if (userCan('manage')) {
+        $menu .= '<div class="row g-3 m-1 mt-1">'.button('users.php', 'Kullanıcı Yönetimi', 'secondary').button('controller.php?action=clear_cache', 'Önbellek Temizle', 'secondary').'</div>';
+    }
+    $menu .= '<div class="row g-3 m-1 mt-1">'.button('./', 'Depo Ana Sayfa', 'secondary').button('../', 'Ana Sayfa', 'secondary').'</div>';
+    $menu .= '<div class="row g-3 m-1 mt-1">'.'<div class="col-md-3"></div>'.button('../?logout=1', 'Çıkış', 'danger').'</div>';
+    return $menu;
 }
 
 function metricToImp($inp, $conv=0.393700787) {
