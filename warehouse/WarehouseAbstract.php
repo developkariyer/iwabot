@@ -283,6 +283,7 @@ abstract class WarehouseAbstract
 
     public static function addNew($data)
     {
+        error_log("Adding new ".get_called_class());
         $instance = new static(null, $data);
         if ($instance->save()) {
             $instance->logAction('addNew', $data);
