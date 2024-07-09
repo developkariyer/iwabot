@@ -143,6 +143,12 @@ $permissionList = [
                 submitFormAjax($(this));
             });
         <?php endforeach; ?>
+
+        $(document).on('click', '.btn-close', function() {
+            const type = $(this).data('type');
+            const id = $(this).data('id');
+            removePermission(type, id);
+        });
     });
 
     function submitFormAjax(form) {
