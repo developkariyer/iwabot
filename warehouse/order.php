@@ -36,7 +36,7 @@ include '../_header.php';
                         <!-- First Sub Accordion: İşlem Bekleyen Koliler -->
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingSub1">
-                                <button class="accordion-button bg-secondary text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#subAccordion1" aria-expanded="false" aria-controls="subAccordion1">
+                                <button class="accordion-button collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#subAccordion1" aria-expanded="false" aria-controls="subAccordion1">
                                     <span><strong>İşlem Bekleyen Koliler</strong></span>
                                 </button>
                             </h2>
@@ -70,7 +70,7 @@ include '../_header.php';
                         <!-- Second Sub Accordion: İşlem Bekleyen Ürünler -->
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingSub2">
-                                <button class="accordion-button bg-secondary text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#subAccordion2" aria-expanded="false" aria-controls="subAccordion2">
+                                <button class="accordion-button collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#subAccordion2" aria-expanded="false" aria-controls="subAccordion2">
                                     <span><strong>İşlem Bekleyen Ürünler</strong></span>
                                 </button>
                             </h2>
