@@ -270,9 +270,15 @@ abstract class WarehouseAbstract
     {
         $data['id'] = $this->id;
         $data['class'] = get_called_class();
-        $data['user'] = $_SESSION['user_id'] ?? 'U047D6QF19D';
+        $data['user'] = $_SESSION['user_id'] ?? 'U072DFQK9CZ';
         $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_log (action, data) VALUES (:action, :data)");
-        return $stmt->execute(['action' => $action, 'data' => json_encode($data)]);
+        if ($stmt->execute(['action' => $action, 'data' => json_encode($data)])) {
+            error_log("Action $action logged for ".get_called_class()."->{$this->id}");
+            return true;
+        } else {
+            error_log($stmt->errorInfo());
+        }
+        return false;
     }
 
     public static function addNew($data)

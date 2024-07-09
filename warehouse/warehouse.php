@@ -123,7 +123,7 @@ function wh_menu() {
         $menu .= '<div class="row g-3 m-1 mt-1">'.button('inventory.php', 'Depo Envanteri', 'secondary').button('transfers.php', 'Hareket Raporu', 'secondary').'</div>';
     }
     if (userCan('order')) {
-        $menu .= '<div class="row g-3 m-1 mt-1">'.button('order.php', 'Sipariş İşlem', 'secondary').button('controller.php?action=clear_cache', 'Önbellek Temizle', 'secondary').'</div>';
+        $menu .= '<div class="row g-3 m-1 mt-1">'.button('order.php', 'Sipariş İşlem', 'secondary').button('#', 'Yeni Gemi Yükle', 'secondary').'</div>';
     }
     if (userCan('manage')) {
         $menu .= '<div class="row g-3 m-1 mt-1">'.button('users.php', 'Kullanıcı Yönetimi', 'secondary').button('controller.php?action=clear_cache', 'Önbellek Temizle', 'secondary').'</div>';
