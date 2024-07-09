@@ -219,11 +219,10 @@ class WarehouseProduct extends WarehouseAbstract
     public function removeFromContainer($container, $count = 1)
     {
         if ($container instanceof WarehouseContainer && !empty($this->id) && $count>0) {
-            $sql = "DELETE FROM " . WarehouseAbstract::$productJoinTableName . " WHERE container_id = :container_id AND product_id = :product_id LIMIT :count";
+            $sql = "UPDATE " . WarehouseAbstract::$productJoinTableName . " SET deleted_at = NOW() WHERE deleted_at IS NULL AND container_id = :container_id AND product_id = :product_id LIMIT $count";
             $stmt = $GLOBALS['pdo']->prepare($sql);
             $stmt->bindParam(':container_id', $container->id, PDO::PARAM_INT);
             $stmt->bindParam(':product_id', $this->id, PDO::PARAM_INT);
-            $stmt->bindParam(':count', $count, PDO::PARAM_INT);
             $stmt->execute();
             if ($count = $stmt->rowCount()) {
                 $this->logAction('removeFromContainer', ['container_id' => $container->id, 'count' => $count]);

@@ -239,7 +239,7 @@ abstract class WarehouseAbstract
     public function delete()
     {
         if ($this->canDelete()) {
-            $stmt = $GLOBALS['pdo']->prepare("UPDATE " . static::getTableName() . " SET deleted_at = NOW() WHERE id = ? LIMIT 1");
+            $stmt = $GLOBALS['pdo']->prepare("UPDATE " . static::getTableName() . " SET deleted_at = NOW() WHERE id = ? AND deleted_at IS NULL LIMIT 1");
             static::clearAllCache();
             return $stmt->execute([$this->id]);
         }
