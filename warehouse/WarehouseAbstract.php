@@ -109,8 +109,11 @@ abstract class WarehouseAbstract
         $set = [];
         $values['id'] = $this->id;
         foreach ($fields as $field) {
+            if (in_array($field, ['created_at', 'updated_at', 'deleted_at'])) {
+                continue;
+            }
             $values[$field] = $this->$field;
-            $set[] = $field . ' = :' . $field;
+            $set[] = "$field  = :$field";
         }
         $stmt = $GLOBALS['pdo']->prepare("UPDATE " . static::getTableName() . " SET " . implode(', ', $set) . " WHERE id = :id");
         static::clearAllCache();
@@ -158,6 +161,9 @@ abstract class WarehouseAbstract
         }
         $fields = static::getDBFields();
         foreach ($fields as $field) {
+            if (in_array($field, ['created_at', 'updated_at', 'deleted_at'])) {
+                continue;
+            }
             if (!$this->validateField($field, $this->$field)) {
                 return false;
             }
