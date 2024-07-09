@@ -42,7 +42,7 @@ class WarehouseContainer extends WarehouseAbstract
                 return is_null($value) || ( is_string($value) && strlen($value) <= 100 );
             default:
                 if (in_array($field, static::getDbFields())) {
-                    throw new Exception("Field known but no validation rule set");
+                    throw new Exception("Field $field known but no validation rule set");
                 }
                 return false;
         }
