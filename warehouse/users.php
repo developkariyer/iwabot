@@ -64,7 +64,7 @@ $permissionList = [
                         <?php foreach ($GLOBALS['permissions']['view_channels'] as $channel_id): ?>
                             <span class="badge bg-secondary me-2">
                                 <?= htmlspecialchars($channelList[$channel_id]) ?>
-                                <button type="button" class="btn-close btn-close-white ms-2" aria-label="Close" onclick="removePermission('view', <?= htmlspecialchars($channel_id) ?>)"></button>
+                                <button type="button" class="btn-close btn-close-white ms-2" aria-label="Close" data-type="view" data-id="<?= htmlspecialchars($channel_id) ?>"></button>
                             </span>
                         <?php endforeach; ?>
                     </div>
@@ -105,7 +105,7 @@ $permissionList = [
                             <?php foreach ($GLOBALS['permissions'][$permType] as $user_id): ?>
                                 <span id="<?= $permType ?>UserSpan" class="badge bg-secondary me-2">
                                     <?= htmlspecialchars($userList[$user_id]) ?>
-                                    <button type="button" class="btn-close btn-close-white ms-2" aria-label="Close" onclick="removePermission('<?= $permType ?>', <?= htmlspecialchars($user_id) ?>)"></button>
+                                    <button type="button" class="btn-close btn-close-white ms-2" aria-label="Close" data-type="<?= $permType ?>" data-id="<?= htmlspecialchars($user_id) ?>"></button>
                                 </span>
                             <?php endforeach; ?>
                         </div>
