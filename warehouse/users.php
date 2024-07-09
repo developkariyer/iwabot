@@ -9,7 +9,7 @@ loadPermissions();
 $channelList = slackChannels();
 $userList = slackUsers();
 
-$permissions = [
+$permissionList = [
     'manage' => 'IWA Depo Yönetme',
     'order' => 'Sipariş Oluşturma',
     'process' => 'Depo İşletme',
@@ -75,12 +75,12 @@ $permissions = [
             </div>
         </div>
 
-        <?php foreach (array_keys($permissions) as $permType): ?>
+        <?php foreach (array_keys($permissionList) as $permType): ?>
 
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingMain<?= $permType ?>">
                     <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#userAccordion<?= $permType ?>" aria-expanded="false" aria-controls="userAccordion<?= $permType ?>">
-                        <span><strong><?= $permissions[$permType] ?> Yetkili Personel</strong></span>
+                        <span><strong><?= $permissionList[$permType] ?> Yetkili Personel</strong></span>
                     </button>
                 </h2>
                 <div id="userAccordion<?= $permType ?>" class="accordion-collapse collapse" aria-labelledby="headingMain<?= $permType ?>" data-bs-parent="#mainAccordion">
@@ -100,7 +100,7 @@ $permissions = [
                             <button type="submit" class="btn btn-primary w-100 py-3 mt-2"><?= $permissoins[$permType] ?> Yetkisi Ver</button>
                         </form>
                         <hr>
-                        <h3><?= $permissions[$permType] ?> Yetkili Kişiler</h3>
+                        <h3><?= $permissionList[$permType] ?> Yetkili Kişiler</h3>
                         <div id="<?= $permType ?>PersonnelList">
                             <?php foreach ($GLOBALS['permissions'][$permType] as $user_id): ?>
                                 <span id="<?= $permType ?>UserSpan" class="badge bg-secondary me-2">
@@ -110,7 +110,7 @@ $permissions = [
                             <?php endforeach; ?>
                         </div>
                         <?php if (empty($GLOBALS['permissions'][$permType])): ?>
-                            <p><?= $permissions[$permType] ?> yetkili personel bulunmamaktadır.</p>
+                            <p><?= $permissionList[$permType] ?> yetkili personel bulunmamaktadır.</p>
                         <?php endif; ?>
                     </div>
                 </div>
