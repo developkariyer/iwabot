@@ -68,7 +68,7 @@ include '../_header.php';
                                 <?php 
                                     $object = $order['sold_type']::getById($order['product_id']); 
                                     $fulfilInfo = $object ? $object->getFulfilInfo($order['id']) : ['closed_by' => 'Bilinmiyor', 'closed_at' => 'Bilinmiyor'];
-                                    $logs = WarehouseAbstract::getLogs($object->type === 'Koli' ? 'addSoldBox' : 'addSoldItem', ['id' => $object->id]);
+                                    $logs = WarehouseAbstract::getLogs($object instanceof WarehouseContainer ? 'addSoldBox' : 'addSoldItem', ['id' => $object->id]);
                                     if (!empty($logs)) {
                                         $data = json_decode($logs[0]['data'], true);
                                         $userId = $data['user_id'] ?? '';
