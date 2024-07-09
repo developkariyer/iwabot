@@ -310,6 +310,7 @@ abstract class WarehouseAbstract
 
     public static function getLogs($action, $data)
     {
+        error_log("********************* getLogs called *********************: $action, ".json_encode($data));
         $sql = "SELECT * FROM ".WarehouseAbstract::$logTableName." WHERE action = :action";
         if (!is_array($data)) {
             $data = [];
