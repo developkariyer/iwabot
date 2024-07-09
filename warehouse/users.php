@@ -38,7 +38,7 @@ $permissionList = [
                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <div class="mb-3">
                             <label for="inventoryChannels" class="form-label">Slack Kanalları</label>
-                            <select id="inventoryChannels" name="target_id[]" class="form-select" multiple>
+                            <select id="inventoryChannels" name="target_id[]" class="select2-select form-select w-100" required style="width: 100%;"  multiple>
                                 <?php foreach ($channelList as $key => $channel): ?>
                                     <?php if (in_array($key, $GLOBALS['permissions']['view_channels'])) continue; ?>
                                     <option value="<?= htmlspecialchars($key) ?>"><?= htmlspecialchars($channel) ?></option>
@@ -90,7 +90,7 @@ $permissionList = [
                             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                             <div class="mb-3">
                                 <label for="<?= $permType ?>Personnel" class="form-label">Personel Seçin</label>
-                                <select id="<?= $permType ?>Personnel" name="target_id[]" class="form-select" multiple>
+                                <select id="<?= $permType ?>Personnel" name="target_id[]" class="select2-select form-select w-100" required style="width: 100%;"  multiple>
                                     <?php foreach ($userList as $key => $user): ?>
                                         <?php if (in_array($key, $GLOBALS['permissions'][$permType])) continue; ?>
                                         <option value="<?= htmlspecialchars($key) ?>"><?= htmlspecialchars($user) ?></option>
