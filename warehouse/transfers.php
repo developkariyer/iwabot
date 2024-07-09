@@ -53,29 +53,42 @@ include '../_header.php';
             </h2>
             <div id="transfersAccordion3" class="accordion-collapse collapse" aria-labelledby="headingMain3" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
-                    <div class="accordion" id="nestedAccordion">
-                        <?php foreach ($soldOrders as $index => $order): ?>
-                            <?php $object = $order['sold_type']::getById($order['product_id']); ?>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingOrder<?= $index ?>">
-                                    <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#collapseOrder<?= $index ?>" aria-expanded="false" aria-controls="collapseOrder<?= $index ?>">
-                                        <span><strong><?= htmlspecialchars($object->name) ?></strong></span>
-                                    </button>
-                                </h2>
-                                <div id="collapseOrder<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="headingOrder<?= $index ?>" data-bs-parent="#nestedAccordion">
-                                    <div class="accordion-body">
-                                        <?= $order['sold_type'] === 'WarehouseProduct' ? productInfo($object) : containerInfo($object) ?>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                        <?php if (empty($soldOrders)): ?>
-                            <p>Sipariş kaydı bulunmamaktadır.</p>
-                        <?php endif; ?>
-                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Sipariş</th>
+                                <th scope="col">Alıcı</th>
+                                <th scope="col">Kaydeden</th>
+                                <th scope="col">Kayıt Zamanı</th>
+                                <th scope="col">Kapatan</th>
+                                <th scope="col">Kapanma Zamanı</th>
+                                <th scope="col">Seri/Koli No</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($soldOrders as $index => $order): ?>
+                                <?php $object = $order['sold_type']::getById($order['product_id']); ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($object->name) ?></td>
+                                    <td><?= nl2br(htmlspecialchars($object->description)) ?></td>
+                                    <td>Kaydeden</td>
+                                    <td><?= htmlspecialchars($order['created_at']) ?></td>
+                                    <td>Kapatan</td>
+                                    <td>Kapanma Zamanı</td>
+                                    <td>Seri/Koli No</td>
+                                </tr>
+                            <?php endforeach; ?>
+                            <?php if (empty($soldOrders)): ?>
+                                <tr>
+                                    <td colspan="7" class="text-center">Sipariş kaydı bulunmamaktadır.</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
+
 
 
     </div>
