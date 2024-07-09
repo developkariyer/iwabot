@@ -1,8 +1,7 @@
 <?php
 
-//TODO: koli taşıma/ekleme/silme/düzenleme
-//TODO: ürün ekleme/silme/düzenleme
-//TODO: envanter listesi
+//TODO: koli düzenleme
+//TODO: ürün silme/düzenleme
 //TODO: envanter hareketleri analizi
 
 require_once('warehouse.php');

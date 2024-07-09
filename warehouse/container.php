@@ -125,7 +125,7 @@ include '../_header.php';
                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <div class="mb-3">
                             <label for="accordion2container_id" class="form-label">Koli Seçin</label>
-                            <select id="accordion2container_id" name="container_id" class="form-select" required>
+                            <select id="accordion2container_id" name="container_id[]"  multiple="multiple" class="select2-select form-select w-100" required style="width: 100%;" required>
                                 <option value="">Koli Seçin</option>
                                 <?= containersInOpt('Raf') ?>
                             </select>
@@ -254,6 +254,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 $(document).ready(function(){$('#accordion1container_id').select2({theme: "classic"});});
+$(document).ready(function(){$('#accordion2container_id').select2({theme: "classic"});});
 
 </script>
 
