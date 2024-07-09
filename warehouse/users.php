@@ -37,12 +37,11 @@ $permissionList = [
                         <input type="hidden" name="action" value="permission_view_add">
                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <div class="mb-3">
-                            <label for="inventoryChannels" class="form-label">Slack Kanalları</label>
+                            <label for="inventoryChannels" class="form-label">Yetkilendirilecek Slack Kanalları</label>
                             <select id="inventoryChannels" name="target_id[]" multiple="multiple" class="select2-select form-select w-100" style="width: 100%;" required>
-                                <option value="" disabled>Yetkilendirilecek Slack kanallarını seçin</option>
                                 <?php foreach ($channelList as $key => $channel): ?>
                                     <?php if (in_array($key, $GLOBALS['permissions']['view_channels'])) continue; ?>
-                                    <option value="<?= htmlspecialchars($key) ?>"><?= htmlspecialchars($channel) ?></option>
+                                    <option value="<?= trim(htmlspecialchars($key)) ?>"><?= trim(htmlspecialchars($channel)) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
