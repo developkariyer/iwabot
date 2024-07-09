@@ -96,27 +96,37 @@ include '../_header.php';
                             </h2>
                             <div id="subAccordion2" class="accordion-collapse collapse" aria-labelledby="headingSub2" data-bs-parent="#nestedAccordion1">
                                 <div class="accordion-body">
-
-                                    <div class="accordion mb-3" id="subNestedAccordion2">
-                                        <?php foreach ($unfulfilledProducts as $product): ?>
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header" id="headingProduct<?= $product->id ?>">
-                                                    <button class="accordion-button bg-light text-dark collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#collapseProduct<?= $product->id ?>" aria-expanded="false" aria-controls="collapseProduct<?= $product->id ?>">
-                                                        <span><strong><?= htmlspecialchars($product->name) ?></strong></span>
-                                                    </button>
-                                                </h2>
-                                                <div id="collapseProduct<?= $product->id ?>" class="accordion-collapse collapse" aria-labelledby="headingProduct<?= $product->id ?>" data-bs-parent="#subNestedAccordion2">
-                                                    <div class="accordion-body">
-                                                        <p>Placeholder for <?= htmlspecialchars($product->name) ?></p>
-                                                    </div>
+                                    <?php foreach ($unfulfilledProducts as $index => $product): ?>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="heading<?= $index ?>">
+                                                <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $index ?>" aria-expanded="false" aria-controls="collapse<?= $index ?>">
+                                                    <span><strong><?= htmlspecialchars($product['product']->name) ?> (<?= htmlspecialchars($product['product']->fnsku) ?>)</strong></span>
+                                                </button>
+                                            </h2>
+                                            <div id="collapse<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $index ?>" data-bs-parent="#productAccordion">
+                                                <div class="accordion-body p-5">
+                                                    <p><?= productInfo($product['product']) ?></p>
+                                                    <p><b>Açıklama</b><br><?= nl2br(htmlspecialchars($product['description'])) ?></p>
+                                                    <form action="controller.php" method="post">
+                                                        <input type="hidden" name="product_id" value="<?= $product['product']->id ?>">
+                                                        <input type="hidden" name="action" value="fulfil">
+                                                        <input type="hidden" name="sold_id" value="<?= $product['id'] ?>">
+                                                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                                                        <select id="Select<?= $index ?>Product<?= $product['product']->id ?>" name="container_id" class="select2-select form-select w-100" style="width: 100%;" required>
+                                                            <option value="">Raf/Koli Seçin</option>
+                                                            <?= containerOptGrouped($product['product']) ?>
+                                                        </select>
+                                                        <button id="Submit<?= $index ?>Product<?= $product['product']->id ?>" type="submit" class="btn btn-primary w-100 py-3 mt-2">Ürün Çıkışı Yap</button>
+                                                    </form>
                                                 </div>
                                             </div>
-                                        <?php endforeach; ?>
-                                        <?php if (empty($unfulfilledProducts)): ?>
-                                            <p>İşlem bekleyen ürün bulunmamaktadır.</p>
-                                        <?php endif; ?>
-                                    </div>
-
+                                        </div>
+                                    <?php endforeach; ?>
+                                    <?php if (empty($unfulfilledProducts) || count($unfulfilledProducts) == 0): ?>
+                                        <div class="p-5">
+                                            <p>Çıkış için bekleyen ürün bulunmamaktadır.</p>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
