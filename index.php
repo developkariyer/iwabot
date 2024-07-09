@@ -19,7 +19,7 @@ include '_header.php';
         <p>Lütfen yapmak istediğiniz işlemi seçiniz.</p>
     </div>
     <div class="d-grid gap-2 m-3">
-        <a href="wh.php" class="btn btn-primary btn-lg">Depo Yönetim</a>
+        <a href="warehouse/" class="btn btn-primary btn-lg">Depo Yönetim</a>
         <a href="iwalog.php" class="btn btn-primary btn-lg">Kanal Arşivleri</a>
     </div>
     <div class="d-grid gap-2 m-3 mt-4">

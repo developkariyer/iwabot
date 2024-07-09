@@ -2,66 +2,16 @@
 
 require_once('_login.php');
 require_once('_init.php');
+require_once('wh_include.php');
 
-$productId = $_GET['product'] ?? '';
+$shelfList = StockShelf::allShelves($GLOBALS['pdo']);
+$productList = StockProduct::allProducts($GLOBALS['pdo']);
 
-$shelfs = $GLOBALS['pdo']->query('SELECT * FROM wh_shelf ORDER BY type DESC, name ASC')->fetchAll(PDO::FETCH_ASSOC);
-$shelf = [];
-foreach ($shelfs as $s) {
-    $shelf[$s['id']] = $s;
-    if ($s['parent_id'] && isset($shelf[$s['parent_id']])) {
-        if (!isset($shelf[$s['parent_id']]['children'])) {
-            $shelf[$s['parent_id']]['children'] = [];
-        }
-        $shelf[$s['parent_id']]['children'][] = $s['id'];
+function dumpProducts($shelf) {
+    $retval = '';
+    foreach ($shelf->getProducts() as $product) {
+        $retval .= '<li>' . htmlspecialchars($product->name) . ' ('.htmlspecialchars($product->fnsku).') : ' . htmlspecialchars($product->shelfCount($shelf)) . ' adet</li>';
     }
-}
-
-$productCounts = [];
-
-foreach ($shelf as $key => $s) {
-    $stmt = $GLOBALS['pdo']->prepare('SELECT wsp.product_id AS id, wp.name AS name, wp.fnsku AS fnsku, COUNT(*) AS shelf_count 
-    FROM wh_shelf_product wsp 
-    JOIN wh_product wp ON wp.id = wsp.product_id
-    WHERE wsp.shelf_id = :shelf_id 
-    GROUP BY wsp.product_id, wp.name, wp.fnsku
-    ORDER BY wp.name ASC');
-
-    $stmt->execute(['shelf_id' => $s['id']]);
-    $products = $stmt->fetchAll(PDO::FETCH_ASSOC) ?? [];
-    $shelf[$key]['products'] = $products;
-    foreach ($products as $product) {
-        if (!isset($productCounts[$product['id']])) {
-            $productCounts[$product['id']] = 0;
-        }
-        $productCounts[$product['id']] += $product['shelf_count'];
-    }
-}
-
-function productRow($shelf)
-{
-    global $productCounts;
-    $collapseId = "collapse-child{$shelf['id']}";
-    $retval = "<li><h4><a href='wh_shelf_product.php?shelf={$shelf['id']}'>";
-    if ($shelf['type'] === 'Raf') {
-        $retval .= "Raftaki Açık Ürünler</a>";
-    } else {
-        $retval .= "{$shelf['name']}</a> / {$shelf['type']}";
-    }
-    $retval .= "<span class='badge bg-secondary float-end small' data-bs-toggle='collapse' data-bs-target='#$collapseId' aria-expanded='false' aria-controls='$collapseId' style='cursor: pointer;'>".count($shelf['products'])." Ürün</span>";
-    $retval .= "</h4><ul class='collapse' id='$collapseId'>";
-    if (empty($shelf['products'])) {
-        $retval .= "<p>{$shelf['type']} boş.</p>";
-    } else {
-        foreach ($shelf['products'] as $product) {
-            $retval .= "<li>";
-            $retval .= "<a href='wh_shelf_product.php?shelf={$shelf['id']}&fnsku={$product['fnsku']}'>";
-            $retval .= "{$product['name']}";
-            $retval .= "</a> <small><span style='white-space: nowrap;'>{$product['fnsku']}, {$product['shelf_count']}/{$productCounts[$product['id']]}</span></small>";
-            $retval .= "</li>";
-        }
-    }
-    $retval .= "</ul></li>";
     return $retval;
 }
 
@@ -70,38 +20,88 @@ include '_header.php';
 ?>
 
 <div class="container mt-5">
-    <div class="mt-4 m-3">
-        <h2>Depo Listesi</h2>
+    <div class="mt-5">
+        <h2>Depo Envanteri</h2>
+        <p>
+            Bu sayfada depoda yer alan tüm raf, koli ve ürünlerin dökümü yapılmaktadır.<br>
+            İlk kısımda raflar listelenmekte, raf üzerine tıklandığında o rafta açık bulunan ürünler 
+            ile raftaki kolilerde yer alan ürünler listelenmektedir.<br>
+            İkinci kısımda ise depoda stoğu olan ürünler listelenmekte ve bu ürünlerin nerelerde olduğu ürün
+            üzerine tıklanınca görülebilmektedir.
+        </p>
+        <h3>Depo Envanteri (Rafa Göre)</h3>
         <ul>
-            <?php foreach ($shelf as $sIndex => $s): ?>
-                <?php if ($s['parent_id']) continue; ?>
+            <?php foreach ($shelfList as $index => $shelf): ?>
                 <li>
-                    <h3>
-                        <a href="wh_shelf_product.php?shelf=<?= $s['id'] ?>"><?= $s['name'] ?></a>
-                        / <?= $s['type'] ?>
-                        <span class="badge bg-primary float-end small" data-bs-toggle="collapse" data-bs-target="#collapse-box<?= $sIndex ?>" aria-expanded="false" aria-controls="collapse-box<?= $sIndex ?>" style="cursor: pointer;">
-                            <?= empty($s['children']) ? 0 : count($s['children']) ?> Koli
-                        </span>
-                    </h3>
-                    <ul class='collapse' id='collapse-box<?= $sIndex ?>'>
-                        <?php if (!empty($s['children'])): ?>
-                            <?php foreach ($s['children'] as $child): ?>
-                                <?= productRow($shelf[$child]) ?>
+                    <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#shelf<?= $index ?>" aria-expanded="false" aria-controls="shelf<?= $index ?>">
+                        <strong><?= htmlspecialchars($shelf->name) ?></strong>
+                    </button>
+                    <div id="shelf<?= $index ?>" class="collapse">
+                        <ul>
+                            <li>
+                                <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#openShelf<?= $index ?>" aria-expanded="false" aria-controls="openShelf<?= $index ?>">
+                                    Rafta Açık (<?= count($shelf->getProducts()) ?>)
+                                </button>
+                                <div id="openShelf<?= $index ?>" class="collapse">
+                                    <ul>
+                                        <?= dumpProducts($shelf) ?>
+                                    </ul>
+                                </div>
+                            </li>
+                            <?php foreach ($shelf->getChildren() as $childIndex => $child): ?>
+                                <?php if (count($child->getProducts()) > 0): ?>
+                                    <li>
+                                        <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#child<?= $index ?>_<?= $childIndex ?>" aria-expanded="false" aria-controls="child<?= $index ?>_<?= $childIndex ?>">
+                                            <?= htmlspecialchars($child->name) ?>/<?= htmlspecialchars($child->type) ?> (<?= count($child->getProducts()) ?>)
+                                        </button>
+                                        <div id="child<?= $index ?>_<?= $childIndex ?>" class="collapse">
+                                            <ul>
+                                                <?= dumpProducts($child) ?>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                <?php endif; ?>
                             <?php endforeach; ?>
-                        <?php endif; ?>
-                        <?= productRow($s) ?>
-                    </ul>
+                        </ul>
+                    </div>
                 </li>
             <?php endforeach; ?>
         </ul>
+        
+        <h3>Depo Envanteri (Ürüne Göre)</h3>
+        <ul>
+            <?php foreach ($productList as $productIndex => $product): ?>
+                <?php 
+                $totalAmount = array_reduce($product->getShelves(), function($carry, $shelf) use ($product) {
+                    return $carry + $product->shelfCount($shelf);
+                }, 0);
+                ?>
+                <?php if ($totalAmount > 0): ?>
+                    <li>
+                        <button class="btn btn-link text-start w-100" data-bs-toggle="collapse" data-bs-target="#product<?= $productIndex ?>" aria-expanded="false" aria-controls="product<?= $productIndex ?>">
+                            <strong><?= htmlspecialchars($product->name) ?></strong> (<?= htmlspecialchars($product->fnsku) ?>) (<?= $totalAmount ?> adet)
+                        </button>
+                        <div id="product<?= $productIndex ?>" class="collapse">
+                            <ul>
+                                <?php foreach ($product->getShelves() as $shelf): ?>
+                                    <?php $shelfCount = $product->shelfCount($shelf); ?>
+                                    <?php if ($shelfCount > 0): ?>
+                                        <li><?= htmlspecialchars($shelf->name) ?>/<?= htmlspecialchars($shelf->type) ?>: <?= $shelfCount ?> adet</li>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </li>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </ul>
     </div>
-    <div class="d-grid gap-2 mt-4 m-3">
-        <a href="./wh.php" class="btn btn-secondary btn-lg w-100">Depo Yönetim Ana Sayfa</a>
-        <a href="./" class="btn btn-secondary btn-lg w-100">Ana Sayfa</a>
-        <a href="./?logout=1" class="btn btn-danger btn-lg w-100">Logout</a>
-    </div>
+    <?= wh_menu() ?>
 </div>
+
 
 <?php
 
 include '_footer.php';
+
+?>
