@@ -57,9 +57,8 @@ include '../_header.php';
                     <table class="table table-striped table-hover table-sm">
                         <thead>
                             <tr>
-                                <th scope="col">?</th>
                                 <th scope="col">Sipariş</th>
-                                <th scope="col">Alıcı</th>
+                                <th scope="col">Açıklama</th>
                                 <th scope="col">Kayıt</th>
                                 <th scope="col">Kapatma</th>
                             </tr>
@@ -70,9 +69,8 @@ include '../_header.php';
                                     $object = $order['sold_type']::getById($order['product_id']); 
                                     $fulfilInfo = $object ? $object->getFulfilInfo($order['id']) : ['closed_by' => 'Bilinmiyor', 'closed_at' => 'Bilinmiyor'];
                                 ?>
-                                <tr>
-                                    <td class="<?= empty($fulfilInfo['closed_at']) ? 'table-danger' : 'table-success' ?>"><?= $order['sold_type'] === 'WarehouseProduct' ? 'Ürün' : 'Koli' ?></td>
-                                    <td><?= htmlspecialchars($object->name) ?></td>
+                                <tr class="<?= empty($fulfilInfo['closed_at']) ? 'table-danger' : 'table-success' ?>">
+                                    <td><strong><?= $order['sold_type'] === 'WarehouseProduct' ? 'Ürün' : 'Koli' ?></strong><br><?= htmlspecialchars($object->name) ?></td>
                                     <td><?= nl2br(htmlspecialchars($order['description'])) ?></td>
                                     <td>Kaydeden<br><?= htmlspecialchars($order['created_at']) ?></td>
                                     <td><?= username($fulfilInfo['closed_by']) ?><br><?= $fulfilInfo['closed_at'] ?></td>
