@@ -70,7 +70,7 @@ include '../_header.php';
                                 <?php $object = $order['sold_type']::getById($order['product_id']); ?>
                                 <tr>
                                     <td><?= htmlspecialchars($object->name) ?></td>
-                                    <td><?= nl2br(htmlspecialchars($object->description)) ?></td>
+                                    <td><?= nl2br(htmlspecialchars($order['description'])) ?></td>
                                     <td>Kaydeden</td>
                                     <td><?= htmlspecialchars($order['created_at']) ?></td>
                                     <td>Kapatan</td>
