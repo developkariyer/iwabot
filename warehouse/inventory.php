@@ -77,6 +77,7 @@ $products = WarehouseProduct::getAll();
             <div id="inventoryAccordion1" class="accordion-collapse collapse" aria-labelledby="headingMain1" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
                     <?php foreach ($rafContainers as $index => $raf): ?>
+                        <?php if (count($raf->getChildren()) == 0 && count($raf->getProducts()) == 0) continue; ?>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingRaf<?= $index ?>">
                                 <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRaf<?= $index ?>" aria-expanded="false" aria-controls="collapseRaf<?= $index ?>">
