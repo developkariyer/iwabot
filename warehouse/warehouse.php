@@ -18,14 +18,16 @@ function button($url, $text, $color='primary') {
 }
 
 function userCan($actions = []) {
-    error_log("UserCan :".json_encode($actions));
+    error_log("UserCan {$_SESSION['user_id']}:".json_encode($actions));
     if (empty($actions)) {
+        error_log("UserCan : actions empty");
         return false;
     }
     if (!is_array($actions)) {
         $actions = [$actions];
     }
     if (empty($_SESSION['user_id'])) {
+        error_log("UserCan : user_id empty");
         return false;
     }
     loadPermissions();
