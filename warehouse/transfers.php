@@ -68,11 +68,16 @@ include '../_header.php';
                                 <?php 
                                     $object = $order['sold_type']::getById($order['product_id']); 
                                     $fulfilInfo = $object ? $object->getFulfilInfo($order['id']) : ['closed_by' => 'Bilinmiyor', 'closed_at' => 'Bilinmiyor'];
+                                    $logs = WarehouseAbstract::getLogs('addSoldItem', ['id' => $order['id']]);
+                                    if (!empty($logs)) {
+                                        $data = json_decode($logs[0]['data'], true);
+                                        $userId = $data['user_id'] ?? '';
+                                    }
                                 ?>
                                 <tr class="<?= empty($fulfilInfo['closed_at']) ? 'table-danger' : 'table-success' ?>">
                                     <td><strong><?= $order['sold_type'] === 'WarehouseProduct' ? 'Ürün' : 'Koli' ?></strong><br><?= htmlspecialchars($object->name) ?></td>
                                     <td><?= nl2br(htmlspecialchars($order['description'])) ?></td>
-                                    <td>Kaydeden<br><?= htmlspecialchars($order['created_at']) ?></td>
+                                    <td><?= username($userId) ?><br><?= htmlspecialchars($order['created_at']) ?></td>
                                     <td><?= username($fulfilInfo['closed_by']) ?><br><?= $fulfilInfo['closed_at'] ?></td>
                                 </tr>
                             <?php endforeach; ?>
