@@ -278,7 +278,7 @@ abstract class WarehouseAbstract
         return false;
     }
 
-    private static function getUserFromLogData($json) {
+    public static function getUserFromLogData($json) {
         $data = json_decode($json, true);
         if (empty($data['user'])) {
             return '';
