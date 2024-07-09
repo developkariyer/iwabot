@@ -127,7 +127,7 @@ class WarehouseContainer extends WarehouseAbstract
         return $this->products;
     }
 
-    protected function getTotalCount()
+    public function getTotalCount()
     {
         if (empty($this->totalCount)) {
             $this->getProducts();
