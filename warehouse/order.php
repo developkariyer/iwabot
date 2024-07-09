@@ -117,9 +117,11 @@ include '../_header.php';
                                                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                                                         <p><?= productInfo($product['product']) ?></p>
                                                         <p><strong>Bulunduğu Raflar:</strong></p>
+                                                        <ul>
                                                         <?php foreach ($product['product']->getContainers() as $container): ?>
-                                                            <p><?= $icon[$container->type] ?> <?= $container->name ?> (<?= $container->type === 'Raf' ? 'Rafta açık' : $container->parent->name ?>) (<?= $product['product']->getInContainerCount($container) ?> adet)</p>
+                                                            <li><?= $icon[$container->type] ?> <?= $container->name ?> (<?= $container->type === 'Raf' ? 'Rafta açık' : $container->parent->name ?>) (<?= $product['product']->getInContainerCount($container) ?> adet)</li>
                                                         <?php endforeach; ?>
+                                                        </ul>
                                                         <div class="mb-3">
                                                             <label for="description" class="form-label">Açıklama</label>
                                                             <textarea id="description" name="description" rows="5" class="form-control btn-outline-success w-100 py-3" placeholder="Açıklama" required><?= htmlspecialchars($product['description']) ?></textarea>
