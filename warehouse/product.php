@@ -6,6 +6,12 @@
 
 require_once('warehouse.php');
 
+if (!userCan(['manage', 'process'])) {
+    addMessage('Bu sayfaya erişim izniniz yok!', 'alert-danger');
+    header('Location: ./');
+    exit;
+}
+
 include '../_header.php';
 
 $unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();

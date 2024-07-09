@@ -58,9 +58,9 @@
 <body>
 <?php
 if (isset($_SESSION['messages'])) {
-    foreach ($_SESSION['messages'] as $message) { ?>
-        <div class="alert alert-info alert-dismissible fade show" role="alert">
-            <?= $message ?>
+    foreach ($_SESSION['messages'] as $msg) { ?>
+        <div class="alert <?= is_array($msg) ? $msg['type'] : 'alert-info' ?> alert-dismissible fade show" role="alert">
+            <?= is_array($msg) ? $msg['message'] : $msg ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php }

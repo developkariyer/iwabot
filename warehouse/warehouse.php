@@ -116,7 +116,7 @@ function wh_menu() {
         $menu .= '<div class="row g-3 m-1">'.button('product.php', 'Ürün İşlem', 'secondary').button('container.php', 'Koli/Raf İşlem', 'secondary').'</div>';
     }
     if (userCan('view')) {
-        $menu .= '<div class="row g-3 m-1 mt-1">'.button('inventory.php', 'Depo Envanteri', 'secondary').button('transfers.php', 'Hareket Raporu', 'secondary').'</div>';
+        $menu .= '<div class="row g-3 m-1 mt-1">'.button('inventory.php', 'Depo Envanteri', 'secondary').button('transfers.php', 'İşlem Kayıtları', 'secondary').'</div>';
     }
     if (userCan('order')) {
         $menu .= '<div class="row g-3 m-1 mt-1">'.button('order.php', 'Sipariş İşlem', 'secondary').button('#', 'Yeni Gemi Yükle', 'secondary').'</div>';

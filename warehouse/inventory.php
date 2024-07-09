@@ -2,6 +2,12 @@
 
 require_once('warehouse.php');
 
+if (!userCan(['view'])) {
+    addMessage('Bu sayfaya erişim izniniz yok!', 'alert-danger');
+    header('Location: ./');
+    exit;
+}
+
 include '../_header.php';
 
 // Fetch raf containers

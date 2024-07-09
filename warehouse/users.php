@@ -1,6 +1,12 @@
 <?php
 
-require_once('warehouse.php');
+require_once 'warehouse.php';
+
+if (!userCan(['manage'])) {
+    addMessage('Bu sayfaya erişim izniniz yok!', 'alert-danger');
+    header('Location: ./');
+    exit;
+}
 
 include '../_header.php';
 

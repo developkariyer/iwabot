@@ -2,6 +2,12 @@
 
 require_once('warehouse.php');
 
+if (!userCan(['process'])) {
+    addMessage('Bu sayfaya erişim izniniz yok!', 'alert-danger');
+    header('Location: ./');
+    exit;
+}
+
 $icon = [
     'Gemi' => '🚢', //\u{1F6A2}
     'Raf' => '🗄️', // \u{1F5C4}

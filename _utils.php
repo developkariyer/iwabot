@@ -66,11 +66,14 @@ function slackize($text) {
     return slackEmoji($text);
 }
 
-function addMessage($message) {
+function addMessage($message, $type='alert-info') {
     if (!isset($_SESSION['messages'])) {
         $_SESSION['messages'] = [];
     }
-    $_SESSION['messages'][] = $message;
+    $_SESSION['messages'][] = [
+        'message' => $message,
+        'type' => $type,
+    ];
 }
 
 function username($userId) {
