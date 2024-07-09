@@ -58,7 +58,7 @@ include '../_header.php';
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="headingOrder<?= $index ?>">
                                     <button class="accordion-button bg-secondary text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#collapseOrder<?= $index ?>" aria-expanded="false" aria-controls="collapseOrder<?= $index ?>">
-                                        <span><strong><?= htmlspecialchars($order['name']) ?></strong></span>
+                                        <span><strong><?= htmlspecialchars($order['sold_type']::getById($order['product_id'])->name) ?></strong></span>
                                     </button>
                                 </h2>
                                 <div id="collapseOrder<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="headingOrder<?= $index ?>" data-bs-parent="#nestedAccordion">
