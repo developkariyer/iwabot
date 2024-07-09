@@ -97,7 +97,7 @@ $permissionList = [
                                     <?php endforeach; ?>
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100 py-3 mt-2"><?= $permissoins[$permType] ?> Yetkisi Ver</button>
+                            <button type="submit" class="btn btn-primary w-100 py-3 mt-2"><?= $permissionList[$permType] ?> Yetkisi Ver</button>
                         </form>
                         <hr>
                         <h3><?= $permissionList[$permType] ?> Yetkili Kişiler</h3>
