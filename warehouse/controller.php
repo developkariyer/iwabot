@@ -117,7 +117,7 @@ function handlePermissionChange($action) {
     $userList = slackUsers();
     $channelList = slackChannels();
     loadPermissions();
-    $sql = ($addRemove === 'add') ? 'INSERT INTO warehouse_user (user_id, permission) VALUES (:user_id, :permission)' : 'DELETE FROM warehouse_user WHERE user_id = :user_id AND  = :permission';
+    $sql = ($addRemove === 'add') ? 'INSERT INTO warehouse_user (user_id, permission) VALUES (:user_id, :permission)' : 'DELETE FROM warehouse_user WHERE user_id = :user_id AND permission = :permission';
     $stmt = $GLOBALS['pdo']->prepare($sql);
 
     $flag = false;
