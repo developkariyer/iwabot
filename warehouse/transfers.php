@@ -76,7 +76,7 @@ include '../_header.php';
                                     <td><?= nl2br(htmlspecialchars($order['description'])) ?></td>
                                     <td>Kaydeden</td>
                                     <td><?= htmlspecialchars($order['created_at']) ?></td>
-                                    <td><?= $fulfilInfo['closed_by'] ?></td>
+                                    <td><?= username($fulfilInfo['closed_by']) ?></td>
                                     <td><?= $fulfilInfo['closed_at'] ?></td>
                                 </tr>
                             <?php endforeach; ?>
