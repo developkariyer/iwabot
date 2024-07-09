@@ -71,7 +71,7 @@ include '../_header.php';
                                     $fulfilInfo = $object ? $object->getFulfilInfo($order['id']) : ['closed_by' => 'Bilinmiyor', 'closed_at' => 'Bilinmiyor'];
                                 ?>
                                 <tr>
-                                    <td class="<?= empty($order['closed_at']) ? 'table-danger' : 'table-success' ?>"><?= $order['sold_type'] === 'WarehouseProduct' ? 'Ürün' : 'Koli' ?></td>
+                                    <td class="<?= empty($fulfilInfo['closed_at']) ? 'table-danger' : 'table-success' ?>"><?= $order['sold_type'] === 'WarehouseProduct' ? 'Ürün' : 'Koli' ?></td>
                                     <td><?= htmlspecialchars($object->name) ?></td>
                                     <td><?= nl2br(htmlspecialchars($order['description'])) ?></td>
                                     <td>Kaydeden<br><?= htmlspecialchars($order['created_at']) ?></td>
