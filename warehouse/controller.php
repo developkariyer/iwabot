@@ -76,12 +76,69 @@ switch($action) {
         WarehouseAbstract::clearAllCache();
         addMessage('Önbellek temizlendi');
         break;
+    case 'permission_view_add':
+    case 'permission_manage_add':
+    case 'permission_order_add':
+    case 'permission_process_add':
+    case 'permission_view_remove':
+    case 'permission_manage_remove':
+    case 'permission_order_remove':
+    case 'permission_process_remove':
+        handlePermissionChange($action);
+        break;
     default:
         addMessage('Geçersiz işlem!');
         break;
 }
 header("Location: $return_url");
 exit;
+
+function handlePermissionChange($action) {
+    header('Content-Type: application/json');
+    $actions = explode('_', $action);
+    $permType = $actions[1];
+    if (!in_array($permType, ['view', 'manage', 'order', 'process'])) {
+        addMessage("PermissionChange Geçersiz parametre: $action");
+        return;
+    }
+    $addRemove = $actions[2];
+    if (!in_array($addRemove, ['add', 'remove'])) {
+        addMessage("PermissionChange Geçersiz parametre: $action");
+        return;
+    }
+    $target_id = getPostValue('target_id');
+    if (empty($target_id)) {
+        addMessage('Geçersiz parametre: target_id');
+        return;
+    }
+    if (!is_array($target_id)) {
+        $target_id = [$target_id];
+    }
+    $userList = slackUsers();
+    $channelList = slackChannels();
+    $sql = ($addRemove === 'add') ? 'INSERT INTO warehouse_user (user_id, permission) VALUES (:user_id, :permission)' : 'DELETE FROM warehouse_user WHERE user_id = :user_id AND  = :permission';
+    $stmt = $GLOBALS['db']->prepare($sql);
+
+    $flag = false;
+    foreach ($target_id as $id) {
+        if ($permType === 'view') {
+            if (!isset($channelList[$id]) || ($addRemove === 'remove' && !in_array($id, $GLOBALS['permissions']['view_channels']))) {
+                continue;
+            }
+            $flag = $flag || $stmt->execute(['user_id' => $id, 'permission' => 'view']);
+        } else {
+            if (!isset($userList[$id]) || ($addRemove === 'remove' && !in_array($id, $GLOBALS['permissions'][$permType]))) {
+                continue;
+            }
+            $flag = $flag || $stmt->execute(['user_id' => $id, 'permission' => $permType]);
+        }
+    }
+    if ($flag) {
+        die(json_encode(['ok' => true]));
+    } else {
+        die(json_encode(['ok' => false]));
+    }
+}
 
 
 function handleAddProduct() { //add_product
