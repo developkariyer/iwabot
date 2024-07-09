@@ -18,16 +18,13 @@ function button($url, $text, $color='primary') {
 }
 
 function userCan($actions = []) {
-    error_log("UserCan {$_SESSION['user_id']}:".json_encode($actions));
     if (empty($actions)) {
-        error_log("UserCan : actions empty");
         return false;
     }
     if (!is_array($actions)) {
         $actions = [$actions];
     }
     if (empty($_SESSION['user_id'])) {
-        error_log("UserCan : user_id empty");
         return false;
     }
     loadPermissions();
@@ -111,7 +108,6 @@ function loadPermissions($noCache = false) {
             'manage' => array_unique($manageUsers),
         ];
     }
-    error_log(json_encode($GLOBALS['permissions']));
 }
 
 function wh_menu() {
