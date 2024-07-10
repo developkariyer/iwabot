@@ -30,7 +30,7 @@ $categories = WarehouseProduct::getAllCategorized();
         <p>Depo envanterini görüntüleyin. Depo Ana Menü için <a href="./">buraya basınız.</a></p>
     </div>
     <div class="accordion mb-3" id="mainAccordion">
-
+        
         <!-- Second Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain2">
@@ -52,19 +52,19 @@ $categories = WarehouseProduct::getAllCategorized();
                                     <?php foreach ($products as $index => $product): ?>
                                         <?php if ($product->getTotalCount() == 0) continue; ?>
                                         <div class="accordion-item">
-                                            <h2 class="accordion-header" id="headingProduct<?= $index ?>">
-                                                <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProduct<?= $index ?>" aria-expanded="false" aria-controls="collapseProduct<?= $index ?>">
+                                            <h2 class="accordion-header" id="headingProduct<?= $category . $index ?>">
+                                                <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProduct<?= $category . $index ?>" aria-expanded="false" aria-controls="collapseProduct<?= $category . $index ?>">
                                                     <span><strong><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>)</strong> (Toplam: <?= $product->getTotalCount() ?> adet)</span>
                                                 </button>
                                             </h2>
-                                            <div id="collapseProduct<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="headingProduct<?= $index ?>" data-bs-parent="#inventoryAccordion2">
+                                            <div id="collapseProduct<?= $category . $index ?>" class="accordion-collapse collapse" aria-labelledby="headingProduct<?= $category . $index ?>" data-bs-parent="#collapseCategory<?= $category ?>">
                                                 <div class="accordion-body">
                                                     <p>
                                                         <?= productInfo($product) ?>
                                                     </p>
                                                     <h4>Ürünün Bulunduğu Raflar ve Koli Bilgileri</h4>
                                                     <ul>
-                                                        <?= empty($product->getContainers()) ? "<p>Bu ürün hiçbir raf veya koli içinde bulunmamaktadır.</p>" : "" ?>                                        
+                                                        <?= empty($product->getContainers()) ? "<p>Bu ürün hiçbir raf veya koli içinde bulunmamaktadır.</p>" : "" ?>
                                                         <?php foreach ($product->getContainers() as $container): ?>
                                                             <li><?= $icon[$container->type] ?> <?= $container->name ?> (<?= $container->type === 'Raf' ? 'Rafta açık' : $container->parent->name ?>) (<?= $product->getInContainerCount($container) ?> adet)</li>
                                                         <?php endforeach; ?>
