@@ -166,7 +166,7 @@ include '../_header.php';
             <div id="containerAccordion5" class="accordion-collapse collapse" aria-labelledby="headingMain5" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5 w-100">
                     <select id="accordion5dynamiccontainer" class="select2-select form-select w-100" style="width: 100%;">
-                        <option value="">Raf Seçin</option>
+                        <option value="">Koli Seçin</option>
                         <optgroup label="Depodaki Koliler">
                             <?= containersInOpt('Raf') ?>
                         </optgroup>

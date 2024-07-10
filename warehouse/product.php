@@ -108,7 +108,7 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
                             </div>
                             <div class="m-3">
                                 <label for="count" class="form-label">Ürün İçin Yeni Raf/Koli</label>
-                                <select id="dynamic_new_container" name="new_container_id" class="form-select w-100">
+                                <select id="dynamic_new_container" name="new_container_id" class="select2-select form-select w-100" style="width: 100%;">
                                     <option value="">Yeni Raf/Koli Seçin</option>
                                     <?= containerOptGrouped() ?>
                                 </select>
@@ -248,6 +248,8 @@ $(document).ready(function() {
         }
     });
 });
+
+$(document).ready(function(){$('#dynamic_new_container').select2({theme: "classic"});});
 
 </script>
 
