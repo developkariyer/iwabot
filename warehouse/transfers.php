@@ -2,7 +2,7 @@
 
 require_once('warehouse.php');
 
-$soldOrders = WarehouseSold::getSoldItems();
+$soldOrders = WarehouseSold::getSoldItems(fulfilled: true);
 
 $slackUsers = slackUsers();
 
