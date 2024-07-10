@@ -80,6 +80,7 @@ class WarehouseLogger
         }
         $sql .= " ORDER BY created_at ASC";
         $stmt = $GLOBALS['pdo']->prepare($sql);
+        error_log($sql);
         $stmt->execute($params);
         while ($row = $stmt->fetch()) {
             if ($log = new WarehouseLogger($row)) {
