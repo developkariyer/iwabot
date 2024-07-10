@@ -30,7 +30,7 @@ $categories = WarehouseProduct::getAllCategorized();
         <p>Depo envanterini görüntüleyin. Depo Ana Menü için <a href="./">buraya basınız.</a></p>
     </div>
     <div class="accordion mb-3" id="mainAccordion">
-        
+
         <!-- Second Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain2">
@@ -44,7 +44,7 @@ $categories = WarehouseProduct::getAllCategorized();
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingCategory<?= $category ?>">
                                 <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCategory<?= $category ?>" aria-expanded="false" aria-controls="collapseCategory<?= $category ?>">
-                                    <span><strong><?= htmlspecialchars($category) ?></strong></span>
+                                    <span><strong><?= htmlspecialchars($category) ?> (<?= count($products) ?> çeşit ürün)</strong></span>
                                 </button>
                             </h2>
                             <div id="collapseCategory<?= $category ?>" class="accordion-collapse collapse" aria-labelledby="headingCategory<?= $category ?>" data-bs-parent="#inventoryAccordion2">
