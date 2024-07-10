@@ -67,7 +67,8 @@ include '../_header.php';
                             <?php foreach ($soldOrders as $index => $order): ?>
                                 <?php 
                                     $logFulfil = WarehouseLogger::findLog(['action'=>'fulfilSoldItem', 'sold_id' => $order->id]);
-                                    $logAdd = WarehouseLogger::findLog(['action'=>'addSoldItem', 'sold_id' => $order->id]); 
+                                    $logAdd = WarehouseLogger::findLog(['action'=>'addSoldItem', 'sold_id' => $order->id]);
+                                    error_log(print_r($logFulfil, true));
                                 ?>
                                 <tr class="<?= empty($order->fulfilled_at) ? 'table-danger' : 'table-success' ?>">
                                     <td><strong><?= $order->item_type === 'WarehouseProduct' ? 'Ürün' : 'Koli' ?></strong><br><?= htmlspecialchars($order->object->name) ?></td>
