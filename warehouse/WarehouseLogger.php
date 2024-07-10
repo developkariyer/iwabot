@@ -76,7 +76,7 @@ class WarehouseLogger
         if (count($where) > 0) {
             $sql .= " WHERE " . implode(' AND ', $where);
         }
-        $sql .= " ORDER BY created_at DESC";
+        $sql .= " ORDER BY created_at DESC, id DESC";
         if ($limit > 0) {
             $sql .= " LIMIT $limit";
             if ($offset > 0) {
