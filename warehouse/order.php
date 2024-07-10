@@ -14,8 +14,8 @@ $icon = [
     'Koli' => '📦', //\u{1F4E6}
 ];
 
-$unfulfilledBoxes = WarehouseContainer::getUnfulfilledBoxes();
-$unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
+$unfulfilledBoxes = WarehouseSold::getSoldContainers();
+$unfulfilledProducts = WarehouseSold::getSoldProducts();
 
 include '../_header.php';
 
@@ -50,32 +50,32 @@ include '../_header.php';
                                 <div class="accordion-body">
 
                                     <div class="accordion mb-3" id="subNestedAccordion1">
-                                    <?php foreach ($unfulfilledBoxes as $index => $item): ?>
+                                    <?php foreach ($unfulfilledBoxes as $index => $soldItem): ?>
                                             <div class="accordion-item">
                                                 <h2 class="accordion-header" id="headingBox<?= $index ?>">
                                                     <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBox<?= $index ?>" aria-expanded="false" aria-controls="collapseBox<?= $index ?>">
-                                                        <span><strong><?= $icon[$item['container']->type] ?> <?= htmlspecialchars($item['container']->name) ?></strong></span>
+                                                        <span><strong><?= $icon[$soldItem->object->type] ?> <?= htmlspecialchars($soldItem->object->name) ?></strong></span>
                                                     </button>
                                                 </h2>
                                                 <div id="collapseBox<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="headingBox<?= $index ?>" data-bs-parent="#orderAccordion4">
                                                     <div class="accordion-body">
                                                         <form action="controller.php" method="post">
                                                             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                                                            <input type="hidden" name="sold_id" value="<?= htmlspecialchars($item['id']) ?>">
+                                                            <input type="hidden" name="sold_id" value="<?= htmlspecialchars($soldItem->id) ?>">
                                                             <div class="mb-3">
                                                                 <p>
-                                                                    <?= containerInfo($item['container']) ?>
+                                                                    <?= containerInfo($soldItem->object) ?>
                                                                 </p>
                                                             </div>
                                                             <p><strong>Aynı İçerikli Koliler</strong></p>
                                                             <ul>
-                                                                <?php foreach ($item['container']->findSimilar() as $sameContainer): ?>
+                                                                <?php foreach ($soldItem->object->findSimilar() as $sameContainer): ?>
                                                                     <li><?= $icon[$sameContainer->type] ?> <?= htmlspecialchars($sameContainer->name) ?> (<?= htmlspecialchars($sameContainer->parent->name) ?>)</li>
                                                                 <?php endforeach; ?>
                                                             </ul>
                                                             <div class="mb-3">
                                                                 <label for="description" class="form-label">Açıklama</label>
-                                                                <textarea id="description" name="description" rows="5" class="form-control btn-outline-success w-100 py-3" placeholder="Açıklama" required><?= htmlspecialchars($item['description']) ?></textarea>
+                                                                <textarea id="description" name="description" rows="5" class="form-control btn-outline-success w-100 py-3" placeholder="Açıklama" required><?= htmlspecialchars($soldItem->description) ?></textarea>
                                                             </div>
                                                             <button type="submit" name="action" value="fulfil_box_update" class="btn btn-primary w-100 py-3 mt-2">Çıkış Bilgilerini Güncelle</button>
                                                             <button type="submit" name="action" value="fulfil_box_delete" class="btn btn-danger w-100 py-3 mt-2">Çıkış Bilgilerini Sil</button>
@@ -102,29 +102,29 @@ include '../_header.php';
                             </h2>
                             <div id="subAccordion2" class="accordion-collapse collapse" aria-labelledby="headingSub2" data-bs-parent="#nestedAccordion1">
                                 <div class="accordion-body">
-                                    <?php foreach ($unfulfilledProducts as $index => $product): ?>
+                                    <?php foreach ($unfulfilledProducts as $index => $soldItem): ?>
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="heading<?= $index ?>">
                                                 <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $index ?>" aria-expanded="false" aria-controls="collapse<?= $index ?>">
-                                                    <span><strong><?= htmlspecialchars($product['product']->name) ?> (<?= htmlspecialchars($product['product']->fnsku) ?>)</strong></span>
+                                                    <span><strong><?= htmlspecialchars($soldItem->object->name) ?> (<?= htmlspecialchars($soldItem->object->fnsku) ?>)</strong></span>
                                                 </button>
                                             </h2>
                                             <div id="collapse<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $index ?>" data-bs-parent="#productAccordion">
                                                 <div class="accordion-body p-5">
                                                     <form action="controller.php" method="post">
-                                                        <input type="hidden" name="product_id" value="<?= $product['product']->id ?>">
-                                                        <input type="hidden" name="sold_id" value="<?= $product['id'] ?>">
+                                                        <input type="hidden" name="product_id" value="<?= $soldItem->object->id ?>">
+                                                        <input type="hidden" name="sold_id" value="<?= $soldItem->id ?>">
                                                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                                                        <p><?= productInfo($product['product']) ?></p>
+                                                        <p><?= productInfo($soldItem->object) ?></p>
                                                         <p><strong>Bulunduğu Raflar:</strong></p>
                                                         <ul>
-                                                        <?php foreach ($product['product']->getContainers() as $container): ?>
-                                                            <li><?= $icon[$container->type] ?> <?= $container->name ?> (<?= $container->type === 'Raf' ? 'Rafta açık' : $container->parent->name ?>) (<?= $product['product']->getInContainerCount($container) ?> adet)</li>
+                                                        <?php foreach ($soldItem->object->getContainers() as $container): ?>
+                                                            <li><?= $icon[$container->type] ?> <?= $container->name ?> (<?= $container->type === 'Raf' ? 'Rafta açık' : $container->parent->name ?>) (<?= $soldItem->object->getInContainerCount($container) ?> adet)</li>
                                                         <?php endforeach; ?>
                                                         </ul>
                                                         <div class="mb-3">
                                                             <label for="description" class="form-label">Açıklama</label>
-                                                            <textarea id="description" name="description" rows="5" class="form-control btn-outline-success w-100 py-3" placeholder="Açıklama" required><?= htmlspecialchars($product['description']) ?></textarea>
+                                                            <textarea id="description" name="description" rows="5" class="form-control btn-outline-success w-100 py-3" placeholder="Açıklama" required><?= htmlspecialchars($soldItem->description) ?></textarea>
                                                         </div>
                                                         <button name="action" value="fulfil_update" id="Submit<?= $index ?>Product<?= $product['product']->id ?>" type="submit" class="btn btn-primary w-100 py-3 mt-2">Ürün Çıkış Bilgilerini Güncelle</button>
                                                         <button name="action" value="fulfil_delete" id="Delete<?= $index ?>Product<?= $product['product']->id ?>" type="submit" class="btn btn-danger w-100 py-3 mt-2">Ürün Çıkış Bilgilerini Sil</button>

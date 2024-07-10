@@ -58,14 +58,14 @@ class WarehouseSold
         return $soldItems;
     }
 
-    public static function getSoldProducts()
+    public static function getSoldProducts($fulfilled = false)
     {
-        return self::getSoldItems('WarehouseProduct');
+        return self::getSoldItems(item_type: 'WarehouseProduct', fulfilled: $fulfilled);
     }
 
-    public static function getSoldContainers()
+    public static function getSoldContainers($fulfilled = false)
     {
-        return self::getSoldItems('WarehouseContainer');
+        return self::getSoldItems(item_type: 'WarehouseContainer', fulfilled: $fulfilled);
     }
 
     public static function addNewSoldItem($object, $description)
