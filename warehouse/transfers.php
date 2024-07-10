@@ -39,6 +39,11 @@ function aciklama($log)
             return 'Sipariş karşılanma';
         case 'addSoldItem':
             return 'Sipariş oluşturma';
+        case 'addNew':
+            if ($log->object) {
+                return (get_class($log->object) === 'WarehouseProduct') ? "\"{$log->object->name}\" ürünü eklendi" : "\"{$log->object->name}\" kolisi eklendi";
+            }
+            return 'Yeni ürün/koli eklendi';
         default:
             return 'Bilinmeyen işlem';
     }
