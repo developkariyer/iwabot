@@ -239,13 +239,17 @@ class WarehouseContainer extends WarehouseAbstract
 
     public function checkCompatibility($object)
     {
+        error_log("checkCompatibility for $object->id");
         if (!$object instanceof self) {
+            error_log("checkCompatibility: Not a WarehouseContainer object");
             return false;
         }
         if ($this->type !== $object->type) {
+            error_log("checkCompatibility: Different container types");
             return false;
         }
-        if (!in_array($object->id, $this->findSimilarIds())) {
+        if ($this->id != $object->id && !in_array($object->id, $this->findSimilarIds())) {
+            error_log("checkCompatibility: Not a similar container");
             return false;
         }
         return true;
