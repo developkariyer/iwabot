@@ -103,11 +103,11 @@ include '../_header.php';
                                 <option value="">Gemiden Koli Seçin</option>
                                 <?= containersInOpt(type: 'Gemi') ?>
                             </select>
-                        </div>
+                        </div><!--
                         <div class="mb-3">
                             <label for="tempTextArea" class="form-label">Toplu Koli Girişi (geçici çözüm)</label>
                             <textarea id="tempTextArea" name="tempTextArea" class="form-control" rows="10" placeholder="Koli ID'lerini virgülle veya yeni satır ile ayırarak yapıştırın"></textarea>
-                        </div>
+                        </div>-->
                         <div class="mb-3">
                             <label for="parent_id" class="form-label">Raf Seçin</label>
                             <select id="accordion1parent_id" name="parent_id" class="form-select" required>
