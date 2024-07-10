@@ -75,12 +75,13 @@ include '../_header.php';
                 <div class="accordion-body p-5">
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="transfers.php">&lt;&lt;</a></li>
-                        <li class="page-item <?= $offset ? '' : 'disabled' ?>"><a class="page-link" href="transfers.php?offset=<?= $offset-$logStep ?>">&lt;</a></li>
-                        <li class="page-item <?= $logCount<=$offset+$logStep ? 'disabled' : '' ?>"><a class="page-link" href="transfers.php?offset=<?= $offset+$logStep ?>">&gt;</a></li>
-                        <li class="page-item <?= $logCount<=$offset ? 'disabled' : '' ?>"><a class="page-link" href="transfers.php?offset=<?= floor($logCount / $logStep) * $logStep ?>">&gt;&gt;</a></li>
+                            <li class="page-item"><a class="page-link" href="transfers.php">&lt;&lt;</a></li>
+                            <li class="page-item <?= $offset ? '' : 'disabled' ?>"><a class="page-link" href="transfers.php?offset=<?= $offset-$logStep ?>">&lt;</a></li>
+                            <li class="page-item <?= $logCount<=$offset+$logStep ? 'disabled' : '' ?>"><a class="page-link" href="transfers.php?offset=<?= $offset+$logStep ?>">&gt;</a></li>
+                            <li class="page-item <?= $logCount<=$offset ? 'disabled' : '' ?>"><a class="page-link" href="transfers.php?offset=<?= floor($logCount / $logStep) * $logStep ?>">&gt;&gt;</a></li>
                         </ul>
                     </nav>
+                    <i>Bu sayfadaki tüm saatler Greenwitch/UTC/Z saat dilimindedir.</i>
                     <table class="table table-striped table-hover table-sm">
                         <thead>
                             <tr>
