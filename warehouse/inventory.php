@@ -81,7 +81,6 @@ include '../_header.php';
             </div>
         </div>
 
-
         <!-- First Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain1">
