@@ -220,6 +220,7 @@ function handleSetParent() { //set_parent
         addMessage('set_parent: Geçersiz parametre: parent');
         return;
     }
+    /*
     // TEMPORARY SOLUTION
     $tempTextArea = getPostValue('tempTextArea');
     if (!empty($tempTextArea)) {
@@ -244,7 +245,7 @@ function handleSetParent() { //set_parent
         }
         return;
     } 
-
+    */
     $container_id = getPostValue('container_id');
     if (!is_array($container_id)) {
         if (empty($container_id)) {
