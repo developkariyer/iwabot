@@ -20,7 +20,6 @@ function button($url, $text, $color='primary') {
 }
 
 function userCan($actions = []) {
-    error_log("userCan :".json_encode($actions)."      ".json_encode($_SESSION['user_id']));
     if (empty($actions)) {
         return false;
     }
