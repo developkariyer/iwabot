@@ -64,6 +64,7 @@ class WarehouseLogger
                     $params[$key] = $value;
                     break;
                 case 'sold_id':
+                case 'class':
                     $where[] = "data->>'$.$key' = :$key";
                     $params[$key] = $value;
                     break;
