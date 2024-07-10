@@ -75,15 +75,6 @@ include '../_header.php';
                                     <td><?= $logAdd ? $logAdd->username() : '' ?><br><?= htmlspecialchars($order->created_at) ?></td>
                                     <td><?= $logFulfil ? $logFulfil->username() : '' ?><br><?= htmlspecialchars($order->fulfilled_at) ?></td>
                                 </tr>
-                                <tr>
-                                    <td colspan="4">
-                                        <pre>
-                                            <?= json_encode($logFulfil, JSON_PRETTY_PRINT) ?>
-                                            <hr>
-                                            <?= json_encode($logAdd, JSON_PRETTY_PRINT) ?>
-                                        </pre>
-                                    </td>
-                                </tr>
                             <?php endforeach; ?>
                             <?php if (empty($soldOrders)): ?>
                                 <tr>
