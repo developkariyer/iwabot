@@ -10,13 +10,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' && in_array($action, ['add_product', '
     header('Location: ./');
     exit;
 }
-
+/*
 if (empty($action) || empty($token) || !isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $token)) {
     addMessage('Geçersiz işlem: token!');
     header("Location: $return_url");
     exit;
 }
-
+*/
 error_log("Action: $action, User: ".username($_SESSION['user_id']));
 
 switch($action) {
