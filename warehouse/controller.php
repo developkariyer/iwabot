@@ -504,11 +504,9 @@ function handleProductLog() { // product_log
                 ];
                 break;
             case 'fulfilSoldItem':
-                $container = WarehouseContainer::getById($log->data['container_id']);
-                $container_name = $container ? $container->name : 'Bilinmeyen';
                 $tr = [
                     "Sipariş",
-                    "{$log->object->name} için {$container_name} rafından sipariş çıkışı yapıldı (".substr($log->data['description'], 0, 10)."...)",
+                    "{$log->object->name} siparişinin çıkışı yapıldı (".substr($log->data['description'], 0, 10)."...)",
                 ];
                 break;
             case 'deleteSoldItem':
