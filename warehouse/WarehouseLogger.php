@@ -14,7 +14,7 @@ class WarehouseLogger
         if (!is_array($data)) {
             throw new Exception('logAction: Data must be an array');
         }
-        $data['user'] = $_SESSION['user']['id'];
+        $data['user'] = $_SESSION['user_id'];
         if ($object) {
             $data['class'] = get_class($object);
             $data['id'] = $object->id;
@@ -80,7 +80,7 @@ class WarehouseLogger
         }
         $sql .= " ORDER BY created_at ASC";
         $stmt = $GLOBALS['pdo']->prepare($sql);
-        error_log($sql);
+        error_log("SQL: $sql        PARAMS:".json_encode($params));
         $stmt->execute($params);
         while ($row = $stmt->fetch()) {
             if ($log = new WarehouseLogger($row)) {
