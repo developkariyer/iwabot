@@ -228,8 +228,14 @@ function copyToClipboard(elementId) {
     document.execCommand("Copy");
     document.body.removeChild(textArea);
 
-    // Optionally, show a Bootstrap toast or alert to indicate the copy was successful
-    alert("Metin kopyalandı: " + text);
+    // Show the temporary message
+    var copyMessage = document.getElementById('copyMessage');
+    copyMessage.style.display = 'inline';
+    
+    // Hide the message after 1 second
+    setTimeout(function() {
+        copyMessage.style.display = 'none';
+    }, 1000);
 }
 
 
