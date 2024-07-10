@@ -125,6 +125,7 @@ $(document).ready(function() {
                 method: 'POST',
                 data: { product_id: productId , action: 'product_log', csrf_token: '<?= $_SESSION['csrf_token'] ?>'},
                 success: function(response) {
+                    console.log(response);
                     $('#product_info').html(response.info);
                     $('#product_log').html('<pre>'+response.log+'</pre>');
                     $('#selectedProduct').removeClass('d-none');
