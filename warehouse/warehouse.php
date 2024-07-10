@@ -12,6 +12,8 @@ if (empty($_SESSION['csrf_token'])) {
 require_once 'WarehouseAbstract.php';
 require_once 'WarehouseProduct.php';
 require_once 'WarehouseContainer.php';
+require_once 'WarehouseSold.php';
+require_once 'WarehouseLogger.php';
 
 function button($url, $text, $color='primary') {
     return "<div class=\"col-md-6\"><a href=\"$url\" class=\"btn btn-$color btn-lg rounded-pill w-100 py-3\">$text</a></div>";

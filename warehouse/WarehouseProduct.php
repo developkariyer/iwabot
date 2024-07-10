@@ -119,57 +119,16 @@ class WarehouseProduct extends WarehouseAbstract
         return $retval;
     }
 
-    public static function getUnfulfilledProducts()
+    public function checkCompatibility($object)
     {
-        if (empty(static::$unfulfilled)) {
-            $cache = unserialize(static::getCache("getUnfulfilledProducts"));
-            if (is_array($cache)) {
-                static::$unfulfilled = $cache;
-            } else {
-                static::$unfulfilled =[];
-                $stmt = $GLOBALS['pdo']->query("SELECT * FROM ".WarehouseAbstract::$soldItemsTableName." WHERE fulfilled = FALSE AND sold_type = 'WarehouseProduct' ORDER BY product_id ASC");
-                while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    $product = static::getById($data['product_id']);
-                    if (!$product) {
-                        continue;
-                    }
-                    static::$unfulfilled[$data['id']] = $data;
-                    static::$unfulfilled[$data['id']]['product'] = $product;
-                }
-                static::setCache("getUnfulfilledProducts", serialize(static::$unfulfilled));
-            }
+        if ($object instanceof WarehouseProduct) {
+            return true;
         }
-        return static::$unfulfilled;
+        return false;
     }
+
 
     /* ACTION METHODS BELOW */
-
-    public function fulfil($sold_id, $container)
-    {
-        if (!($container instanceof WarehouseContainer) || empty($container->id)) {
-            throw new Exception("Invalid container");
-        }
-        if (!$this->getInContainerCount($container)) {
-            throw new Exception("{$this->fnsku} kodlu ürün {$container->name} isimli raf/kolide bulunamadı");
-        }
-        if (empty(static::$unfulfilled)) {
-            static::getUnfulfilledProducts();
-        }
-        if (isset(static::$unfulfilled[$sold_id])) {
-            if ($this->removeFromContainer($container)) {
-                $stmt = $GLOBALS['pdo']->prepare("UPDATE ".WarehouseAbstract::$soldItemsTableName." SET fulfilled = TRUE WHERE id = :id");
-                if ($stmt->execute(['id' => $sold_id])) {
-                    $this->logAction('fulfil', ['sold_id' => $sold_id]);
-                    static::clearAllCache();
-                    return true;
-                }
-            } else {
-                throw new Exception("{$this->fnsku} kodlu ürünü {$container->name} isimli raf/koliden çıkartırken bir hata oluştu.");
-            }
-        } else {
-            throw new Exception("{$this->fnsku} kodlu ürünle ilgili satış kaydı bulunamadı.");
-        }
-    }
 
     public function placeInContainer($container, $count = 1)
     {
@@ -182,7 +141,7 @@ class WarehouseProduct extends WarehouseAbstract
                 }
             }
             if ($retval) {
-                $this->logAction('placeInContainer', ['container_id' => $container->id, 'count' => $retval]);
+                WarehouseLogger::logAction('placeInContainer', ['container_id' => $container->id, 'count' => $retval], $this);
                 static::clearAllCache();
             }
             return $retval;
@@ -199,7 +158,7 @@ class WarehouseProduct extends WarehouseAbstract
             $stmt->bindParam(':product_id', $this->id, PDO::PARAM_INT);
             $stmt->execute();
             if ($count = $stmt->rowCount()) {
-                $this->logAction('removeFromContainer', ['container_id' => $container->id, 'count' => $count]);
+                WarehouseLogger::logAction('removeFromContainer', ['container_id' => $container->id, 'count' => $count], $this);
                 static::clearAllCache();
                 return $count;
             }

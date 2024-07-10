@@ -5,10 +5,9 @@ abstract class WarehouseAbstract
 {
     protected static $productJoinTableName = 'warehouse_container_product';
     protected static $containerSignatureTableName = 'warehouse_view_container_signatures';
-    protected static $soldItemsTableName = 'warehouse_sold';
     protected static $containerTableName = 'warehouse_container';
     protected static $productTableName = 'warehouse_product';
-    protected static $logTableName = 'warehouse_log';
+//    protected static $logTableName = 'warehouse_log';
 
     public $id = null;
     protected $dbValues = [];
@@ -274,56 +273,12 @@ abstract class WarehouseAbstract
         return $class::$dbFields;
     }
 
-    protected function logAction($action, $data)
-    {
-        $data['id'] = $this->id;
-        $data['class'] = get_called_class();
-        $data['user'] = $_SESSION['user_id'] ?? 'U072DFQK9CZ';
-        $stmt = $GLOBALS['pdo']->prepare("INSERT INTO ".WarehouseAbstract::$logTableName." (action, data) VALUES (:action, :data)");
-        if ($stmt->execute(['action' => $action, 'data' => json_encode($data)])) {
-            error_log("Action $action logged for ".get_called_class()."->{$this->id}");
-            return true;
-        } else {
-            error_log($stmt->errorInfo());
-        }
-        return false;
-    }
-
-    public function getFulfilInfo($sold_id)
-    {
-        if (empty($sold_id)) {
-            throw new Exception("getFulfilStatus: Invalid sold_id");
-        }
-        $action = get_called_class() === 'WarehouseProduct' ? 'fulfil' : 'fulfil_box';
-        $logs = static::getLogs(action:$action, data:['id' => $this->id, 'sold_id' => $sold_id]);
-        if (!empty($logs)) {
-            $data = json_decode($logs[0]['data'], true);
-            if (empty($data)) {
-                $data['user'] = '';
-            }
-        }
-        return [
-            'closed_by' => empty($logs) ? '' : $data['user'],
-            'closed_at' => empty($logs) ? '' : $logs[0]['created_at'],
-        ];
-    }
-
     public static function getLogs($action, $data)
     {
-        $sql = "SELECT * FROM ".WarehouseAbstract::$logTableName." WHERE action = :action";
         if (!is_array($data)) {
             $data = [];
         }
-        $values = ['action' => $action];
-        foreach ($data as $field=>$value) {
-            $sql .= " AND data->>'$.{$field}' = :$field";
-            $values[$field] = $value;
-        }
-        $sql .= " ORDER BY created_at ASC";
-        error_log("SQL: $sql Value: ".json_encode($values));
-        $stmt = $GLOBALS['pdo']->prepare($sql);
-        $stmt->execute($values);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return WarehouseLogger::findLogs(array_merge(['action'=>$action], $data));
     }
 
     public static function addNew($data)
@@ -331,7 +286,7 @@ abstract class WarehouseAbstract
         error_log("Adding new ".get_called_class());
         $instance = new static(null, $data);
         if ($instance->save()) {
-            $instance->logAction('addNew', $data);
+            WarehouseLogger::logAction('addNew', $data, $instance);
             $instance->clearAllCache();
             return $instance;
         }
@@ -369,26 +324,6 @@ abstract class WarehouseAbstract
             }
         }
         return static::$allObjects;
-    }
-
-    public static function getSoldOrders()
-    {
-        return $GLOBALS['pdo']->query("SELECT * FROM ".WarehouseAbstract::$soldItemsTableName." ORDER BY sold_type DESC, fulfilled DESC, created_at ASC")->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function addSoldItem($description)
-    {
-        if (empty($description) || !is_string($description)) {
-            throw new Exception("Invalid description. Must be a valid string");
-        }
-        $stmt = $GLOBALS['pdo']->prepare("INSERT INTO ".WarehouseAbstract::$soldItemsTableName." (product_id, sold_type, description) VALUES (:product_id, 'WarehouseProduct', :description)");
-        if ($stmt->execute(['product_id' => $this->id, 'description' => $description])) {
-            $sold_id = $GLOBALS['pdo']->lastInsertId();
-            $this->logAction('addSoldItem', ['sold_id' => $sold_id, 'description' => $description]);
-            static::clearAllCache();
-            return true;
-        }
-        return false;
     }
 
     abstract protected static function getCustomMethods();

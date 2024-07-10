@@ -212,41 +212,24 @@ class WarehouseContainer extends WarehouseAbstract
         return $retval;
     }
 
-    public static function getUnfulfilledBoxes()
+    public function findSimilarIds()
     {
-        if (empty(static::$unfulfilled)) {
-            $cache = unserialize(static::getCache("getUnfulfilledBoxes"));
-            if (is_array($cache)) {
-                static::$unfulfilled = $cache;
-            } else {
-                static::$unfulfilled =[];
-                $stmt = $GLOBALS['pdo']->query("SELECT * FROM ".WarehouseAbstract::$soldItemsTableName." WHERE fulfilled = FALSE AND sold_type = 'WarehouseContainer' ORDER BY product_id ASC");
-                while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    $container = static::getById($data['product_id']);
-                    if (!$container) {
-                        continue;
-                    }
-                    static::$unfulfilled[$data['id']] = $data;
-                    static::$unfulfilled[$data['id']]['container'] = $container;
-                }
-                static::setCache("getUnfulfilledBoxes", serialize(static::$unfulfilled));
-            }
-        }
-        return static::$unfulfilled;
+        $sql = "SELECT container_id FROM ".WarehouseAbstract::$containerSignatureTableName." WHERE signature = (SELECT signature FROM ".WarehouseAbstract::$containerSignatureTableName." WHERE container_id = :container_id) AND container_id <> :container_id";
+        $stmt = $GLOBALS['pdo']->prepare($sql);
+        $stmt->execute(['container_id' => $this->id]);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
-    
+
     public function findSimilar()
     {
         $cache = unserialize(static::getCache("findSimilar{$this->id}"));
         if (is_array($cache)) {
             return $cache;
         }
-        $sql = "SELECT container_id FROM ".WarehouseAbstract::$containerSignatureTableName." WHERE signature = (SELECT signature FROM ".WarehouseAbstract::$containerSignatureTableName." WHERE container_id = :container_id) AND container_id <> :container_id";
-        $stmt = $GLOBALS['pdo']->prepare($sql);
-        $stmt->execute(['container_id' => $this->id]);
         $containers = [];
-        while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $containers[] = static::getById($data['container_id']);
+        $ids = $this->findSimilarIds();
+        foreach ($ids as $container_id) {
+            $containers[] = static::getById($container_id);
         }
         static::setCache("findSimilar{$this->id}", serialize($containers));
         return $containers;
@@ -254,29 +237,27 @@ class WarehouseContainer extends WarehouseAbstract
 
     /* ACTION METHODS BELOW */
 
+    public function checkCompatibility($object)
+    {
+        if (!$object instanceof self) {
+            return false;
+        }
+        if ($this->type !== $object->type) {
+            return false;
+        }
+        if (!in_array($object->id, $this->findSimilarIds())) {
+            return false;
+        }
+        return true;
+    }
+
     public function fulfil($sold_id)
     {
-        if (empty(static::$unfulfilled)) {
-            static::getUnfulfilledBoxes();
+        $soldItem = WarehouseSold::getById($sold_id);
+        if (!$soldItem) {
+            throw new Exception("{$sold_id} kodlu satış kaydı bulunamadı.");
         }
-        if (isset(static::$unfulfilled[$sold_id])) {
-            while (count($this->getProducts()) > 0) {
-                $product = $this->getProducts()[0];
-                $product->removeFromContainer($this, $product->getInContainerCount($this));
-            }
-            if ($this->delete()) {
-                $stmt = $GLOBALS['pdo']->prepare("UPDATE ".WarehouseAbstract::$soldItemsTableName." SET fulfilled = TRUE WHERE id = :id");
-                if ($stmt->execute(['id' => $sold_id])) {
-                    $this->logAction('fulfil_box', ['sold_id' => $sold_id]);
-                    $this->clearAllCache();
-                    return true;
-                }
-            } else {
-                throw new Exception("{$this->fnsku} kodlu koli çıkartılırken bir hata oluştu.");
-            }
-        } else {
-            throw new Exception("{$this->fnsku} kodlu koli ilgili satış kaydı bulunamadı.");
-        }
+        $soldItem->fulfil($this);
     }
 
     public function setParent($newParent)
@@ -290,7 +271,7 @@ class WarehouseContainer extends WarehouseAbstract
             $this->parent = $newParent;
             $newParent->children = [];
             if ($this->save()) {
-                $this->logAction('setParent', ['old_parent_id' => $oldParentId, 'new_parent_id' => $this->parent_id]);
+                WarehouseLogger::logAction('setParent', ['old_parent_id' => $oldParentId, 'new_parent_id' => $this->parent_id], $this);
                 return true;
             }
             return false;
