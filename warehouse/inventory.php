@@ -62,7 +62,7 @@ include '../_header.php';
                                             <div class="accordion-item">
                                                 <h2 class="accordion-header" id="headingProduct<?= $category . $index ?>">
                                                     <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProduct<?= $category . $index ?>" aria-expanded="false" aria-controls="collapseProduct<?= $category . $index ?>">
-                                                        <span><strong><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>)</strong> (Toplam: <?= $product->getTotalCount() ?> adet)</span>
+                                                        <span><strong><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>)</strong> (Toplam: <?= $product->getTotalCount() ?> adet) (<?= count($product->getContainers()) ?> koli/rafta)</span>
                                                     </button>
                                                 </h2>
                                                 <div id="collapseProduct<?= $category . $index ?>" class="accordion-collapse collapse" aria-labelledby="headingProduct<?= $category . $index ?>" data-bs-parent="#collapseCategory<?= $category ?>">
