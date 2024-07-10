@@ -204,19 +204,38 @@ function handleFlushBox() { //flush_box
     }
 }
 
+function ultraTrim($inText) {
+    // trim all characters other than numbers and -
+    return preg_replace('/[^0-9-]/', '', $inText);
+}
+
 function handleSetParent() { //set_parent
     $parent = WarehouseContainer::getById(getPostValue('parent_id'));
     if (!$parent) {
         addMessage('set_parent: Geçersiz parametre: parent');
         return;
     }
+    // TEMPORARY SOLUTION
     $tempTextArea = getPostValue('tempTextArea');
     if (!empty($tempTextArea)) {
-        $container_id = explode("\n", $tempTextArea);
-        error_log("tempTextArea detected: ".json_encode($container_id));
-    } else {
-        $container_id = getPostValue('container_id');
-    }
+        $container_names = explode("\n", $tempTextArea);
+        error_log("tempTextArea detected: ".json_encode($container_names));
+        foreach ($container_names as $container_name) {
+            $container = WarehouseContainer::getByField('name', ultraTrim($container_name));
+            if ($container) {
+                if ($container->setParent($parent)) {
+                    addMessage("Konteyner $container->name, $parent->name altına taşındı");
+                } else {
+                    addMessage("Konteyner $container->name, $parent->name altına taşınamadı");
+                }
+            } else {
+                addMessage("Konteyner $container_name bulunamadı");
+            }
+        }
+        return;
+    } 
+
+    $container_id = getPostValue('container_id');
     if (!is_array($container_id)) {
         if (empty($container_id)) {
             addMessage('set_parent: Geçersiz parametre: container_id');
