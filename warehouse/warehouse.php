@@ -152,7 +152,6 @@ function productInfo($product) {
     <b>Toplam Depo Stoğu:</b> {$product->getTotalCount()} adet<br>";
 }
 
-
 function containerInfo($container) {
     if (!$container instanceof WarehouseContainer) {
         return "Koli bilgisi alınamadı: Geçersiz koli";
