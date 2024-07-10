@@ -66,7 +66,7 @@ include '../_header.php';
                         <tbody>
                             <?php foreach ($soldOrders as $index => $order): ?>
                                 <?php 
-                                    $logFulfil = WarehouseLogger::findLogs(['action'=>'fulfil', 'sold_id' => $order->id]);
+                                    $logFulfil = WarehouseLogger::findLogs(['action'=>'fulfilSoldItem', 'sold_id' => $order->id]);
                                     $logAdd = WarehouseLogger::findLog(['action'=>'addSoldItem', 'sold_id' => $order->id]); 
                                 ?>
                                 <tr class="<?= empty($fulfilInfo['closed_at']) ? 'table-danger' : 'table-success' ?>">

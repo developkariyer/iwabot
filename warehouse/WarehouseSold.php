@@ -110,7 +110,7 @@ class WarehouseSold
         }
         $stmt = $GLOBALS['pdo']->prepare("UPDATE " . self::$soldItemsTableName . " SET fulfilled_at = NOW(), item_id = :item_id WHERE id = :id AND deleted_at IS NULL");
         if ($stmt->execute(['id' => $this->id, 'item_id' => $this->object->id])) {
-            WarehouseLogger::logAction('fulfil', ['sold_id' => $this->id], $this->object);
+            WarehouseLogger::logAction('fulfilSoldItem', ['sold_id' => $this->id], $this->object);
             WarehouseAbstract::clearAllCache();
             return true;
         }
@@ -120,13 +120,21 @@ class WarehouseSold
     public function delete()
     {
         $stmt = $GLOBALS['pdo']->prepare("UPDATE " . self::$soldItemsTableName . " SET deleted_at = NOW() WHERE id = :id");
-        return $stmt->execute(['id' => $this->id]);
+        if ($stmt->execute(['id' => $this->id])) {
+            WarehouseLogger::logAction('deleteSoldItem', ['sold_id' => $this->id], $this->object);
+            return true;
+        }
+        return false;
     }
 
     public function update($description)
     {
         $stmt = $GLOBALS['pdo']->prepare("UPDATE " . self::$soldItemsTableName . " SET description = :description WHERE id = :id");
-        return $stmt->execute(['id' => $this->id, 'description' => $description]);
+        if ($stmt->execute(['id' => $this->id, 'description' => $description])) {
+            WarehouseLogger::logAction('updateSoldItem', ['sold_id' => $this->id, 'old_description' => $this->description, 'new_description'=>$description], $this->object);
+            return true;
+        }
+        return false;
     }
 
 }
