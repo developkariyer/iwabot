@@ -570,7 +570,6 @@ function handleContainerInfo() { //container_info
     die(json_encode($data));
 }
 
-
 function getPostValue($key, $default = null, $filter = []) {
     $retval = $_POST[$key] ?? $_GET[$key] ?? $default;
     if (is_array($filter)) {

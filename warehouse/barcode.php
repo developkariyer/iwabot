@@ -113,6 +113,7 @@ include '../_header.php';
         xhr.open('POST', 'controller.php', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onreadystatechange = function() {
+            console.log(xhr.responseText);
             if (xhr.readyState === 4 && xhr.status === 200) {
                 const response = JSON.parse(xhr.responseText);
                 if (response.id && !response.error) {
