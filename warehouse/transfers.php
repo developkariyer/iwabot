@@ -40,7 +40,25 @@ include '../_header.php';
             </h2>
             <div id="transfersAccordion2" class="accordion-collapse collapse" aria-labelledby="headingMain2" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
-                    <p>Placeholder text for Ürün Bazlı İşlem Kayıtları</p>
+                    <?= productSelect($product_id) ?>
+                    <div id="selectedProduct" class="d-none">
+                        <div class="p-3" id="product_info"></div>
+                        <p><strong>Ürün Hareketleri</strong></p>
+                        <div class="p-3" id="product_transfers"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fourth Main Accordion Item -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingMain4">
+                <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#transfersAccordion4" aria-expanded="false" aria-controls="transfersAccordion4">
+                    <span><strong>Koli Bazlı İşlem Kayıtları</strong></span>
+                </button>
+            </h2>
+            <div id="transfersAccordion4" class="accordion-collapse collapse" aria-labelledby="headingMain4" data-bs-parent="#mainAccordion">
+                <div class="accordion-body p-5">
                 </div>
             </div>
         </div>
@@ -96,6 +114,30 @@ include '../_header.php';
     <?= wh_menu() ?>
 </div>
 
+<script defer>
+$(document).ready(function() {
+    $('#product_select').on('change', function() {
+        var productId = $(this).val();
+        if (productId) {
+            $.ajax({
+                url: 'controller.php',
+                method: 'POST',
+                data: { product_id: productId , action: 'product_info', csrf_token: '<?= $_SESSION['csrf_token'] ?>'},
+                success: function(response) {
+                    $('#product_info').html(response.info);
+                    $('#selectedProduct').removeClass('d-none');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching product information:', error);
+                }
+            });
+        } else {
+            $('#selectedProduct').addClass('d-none');
+        }
+    });
+});
+
+</script>
 <?php
 
 include '../_footer.php';
