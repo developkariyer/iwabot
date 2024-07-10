@@ -6,6 +6,9 @@ $soldOrders = WarehouseSold::getSoldItems(fulfilled: true);
 
 $slackUsers = slackUsers();
 
+$offset = $_GET['offset'] ?? 0;
+$logCount = WarehouseLogger::getLogCount();
+
 function aciklama($log)
 {
     switch($log->action) {
@@ -69,6 +72,15 @@ include '../_header.php';
             </h2>
             <div id="transfersAccordion1" class="accordion-collapse collapse show" aria-labelledby="headingMain1" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
                     <table class="table table-striped table-hover table-sm">
                         <thead>
                             <tr>
@@ -79,7 +91,7 @@ include '../_header.php';
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if ($logs = WarehouseLogger::findLogs([], 50)): ?>
+                            <?php if ($logs = WarehouseLogger::findLogs([], 20, 0)): ?>
                                 <?php foreach ($logs as $log): ?>
                                     <tr>
                                         <td><?= htmlspecialchars($log->action) ?></td>

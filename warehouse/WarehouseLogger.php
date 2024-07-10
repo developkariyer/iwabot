@@ -37,6 +37,16 @@ class WarehouseLogger
         }
     }
 
+    public static function getLogCount()
+    {
+        $stmt = $GLOBALS['pdo']->prepare("SELECT count(*) as count FROM " . self::$logTableName);
+        $stmt->execute();
+        if ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            return $data['count'];
+        }
+        return 0;
+    }
+
     public static function findLogs($filter = [], $limit = 0, $offset = 0)
     {
         if (!is_array($filter)) {
