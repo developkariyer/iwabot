@@ -14,7 +14,7 @@ if (!userCan(['manage', 'process'])) {
 
 include '../_header.php';
 
-$unfulfilledProducts = WarehouseProduct::getUnfulfilledProducts();
+$unfulfilledProducts = WarehouseSold::getSoldProducts();
 
 $product_info=$product_containers='';
 $product_id = null;
@@ -46,36 +46,34 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
             </h2>
             <div id="productAccordion" class="accordion-collapse collapse show" aria-labelledby="headingMain" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
-                    <?php foreach ($unfulfilledProducts as $index => $product): ?>
+                    <?php foreach ($unfulfilledProducts as $index => $soldItem): ?>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="heading<?= $index ?>">
                                 <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $index ?>" aria-expanded="false" aria-controls="collapse<?= $index ?>">
-                                    <span><strong><?= htmlspecialchars($product['product']->name) ?> (<?= htmlspecialchars($product['product']->fnsku) ?>)</strong></span>
+                                    <span><strong><?= htmlspecialchars($soldItem->object->name) ?> (<?= htmlspecialchars($soldItem->object->fnsku) ?>)</strong></span>
                                 </button>
                             </h2>
                             <div id="collapse<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $index ?>" data-bs-parent="#productAccordion">
                                 <div class="accordion-body p-5">
-                                    <p><?= productInfo($product['product']) ?></p>
-                                    <p><b>Açıklama</b><br><?= nl2br(htmlspecialchars($product['description'])) ?></p>
+                                    <p><?= productInfo($soldItem->object) ?></p>
+                                    <p><b>Açıklama</b><br><?= nl2br(htmlspecialchars($soldItem->description)) ?></p>
                                     <form action="controller.php" method="post">
-                                        <input type="hidden" name="product_id" value="<?= $product['product']->id ?>">
+                                        <input type="hidden" name="product_id" value="<?= $soldItem->object->id ?>">
                                         <input type="hidden" name="action" value="fulfil">
-                                        <input type="hidden" name="sold_id" value="<?= $product['id'] ?>">
+                                        <input type="hidden" name="sold_id" value="<?= $soldItem->id ?>">
                                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                                        <select id="Select<?= $index ?>Product<?= $product['product']->id ?>" name="container_id" class="select2-select form-select w-100" style="width: 100%;" required>
+                                        <select id="Select<?= $index ?>Product<?= $soldItem->object->id ?>" name="container_id" class="select2-select form-select w-100" style="width: 100%;" required>
                                             <option value="">Raf/Koli Seçin</option>
-                                            <?= containerOptGrouped($product['product']) ?>
+                                            <?= containerOptGrouped($soldItem->object) ?>
                                         </select>
-                                        <button id="Submit<?= $index ?>Product<?= $product['product']->id ?>" type="submit" class="btn btn-primary w-100 py-3 mt-2">Ürün Çıkışı Yap</button>
+                                        <button id="Submit<?= $index ?>Product<?= $soldItem->object->id ?>" type="submit" class="btn btn-primary w-100 py-3 mt-2">Ürün Çıkışı Yap</button>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     <?php endforeach; ?>
                     <?php if (empty($unfulfilledProducts) || count($unfulfilledProducts) == 0): ?>
-                        <div class="p-5">
-                            <p>Çıkış için bekleyen ürün bulunmamaktadır.</p>
-                        </div>
+                        <p>Çıkış için bekleyen ürün bulunmamaktadır.</p>
                     <?php endif; ?>
                 </div>
             </div>
