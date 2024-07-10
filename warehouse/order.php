@@ -134,9 +134,7 @@ include '../_header.php';
                                         </div>
                                     <?php endforeach; ?>
                                     <?php if (empty($unfulfilledProducts) || count($unfulfilledProducts) == 0): ?>
-                                        <div class="p-5">
-                                            <p>Çıkış için bekleyen ürün bulunmamaktadır.</p>
-                                        </div>
+                                        <p>Çıkış için bekleyen ürün bulunmamaktadır.</p>
                                     <?php endif; ?>
                                 </div>
                             </div>
