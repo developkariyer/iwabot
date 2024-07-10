@@ -106,7 +106,7 @@ include '../_header.php';
                         </div>
                         <div class="mb-3">
                             <label for="tempTextArea" class="form-label">Toplu Koli Girişi (geçici çözüm)</label>
-                            <textarea id="tempTextArea" class="form-control" rows="10" placeholder="Koli ID'lerini virgülle veya yeni satır ile ayırarak yapıştırın"></textarea>
+                            <textarea id="tempTextArea" name="tempTextArea" class="form-control" rows="10" placeholder="Koli ID'lerini virgülle veya yeni satır ile ayırarak yapıştırın"></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="parent_id" class="form-label">Raf Seçin</label>
