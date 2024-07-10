@@ -72,7 +72,7 @@ include '../_header.php';
                                 <tr class="<?= empty($order->fulfilled_at) ? 'table-danger' : 'table-success' ?>">
                                     <td><strong><?= $order->item_type === 'WarehouseProduct' ? 'Ürün' : 'Koli' ?></strong><br><?= htmlspecialchars($order->object->name) ?></td>
                                     <td><?= nl2br(htmlspecialchars($order->description)) ?></td>
-                                    <td><?= $logAdd->username() ?><br><?= htmlspecialchars($order->created_at) ?></td>
+                                    <td><?= $logAdd ? $logAdd->username() : '' ?><br><?= htmlspecialchars($order->created_at) ?></td>
                                     <td><?= $logFulfil ? $logFulfil->username() : '' ?><br><?= htmlspecialchars($order->fulfilled_at) ?></td>
                                 </tr>
                             <?php endforeach; ?>
