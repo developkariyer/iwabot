@@ -210,7 +210,13 @@ function handleSetParent() { //set_parent
         addMessage('set_parent: Geçersiz parametre: parent');
         return;
     }
-    $container_id = getPostValue('container_id');
+    $tempTextArea = getPostValue('tempTextArea');
+    if (!empty($tempTextArea)) {
+        $container_id = explode("\n", $tempTextArea);
+        error_log("tempTextArea detected: ".json_encode($container_id));
+    } else {
+        $container_id = getPostValue('container_id');
+    }
     if (!is_array($container_id)) {
         if (empty($container_id)) {
             addMessage('set_parent: Geçersiz parametre: container_id');
@@ -219,8 +225,9 @@ function handleSetParent() { //set_parent
         $container_id = [$container_id];
     }
     foreach ($container_id as $cid) {
-        $container = WarehouseContainer::getById($cid);
+        $container = WarehouseContainer::getById(trim($cid));
         if (!$container) {
+            error_log("Invalid container: $cid");
             continue;
         }
         if ($container->setParent($parent)) {
