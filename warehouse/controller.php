@@ -471,7 +471,7 @@ function handleProductLog() { // product_log
             'error' => 'Ürün bilgisi bulunamadı.',
         ]));
     }
-    $logs = WarehouseLogger::findLogs(['id' => $product->id, 'class' => 'WarehouseProduct']);
+    $logs = WarehouseLogger::findLogs(['product_id' => $product->id]);
     $logjson = [];
     foreach ($logs as $log) {
         switch ($log->action) {
