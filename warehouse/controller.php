@@ -17,6 +17,8 @@ if (empty($action) || empty($token) || !isset($_SESSION['csrf_token']) || !hash_
     exit;
 }
 
+error_log("Action: $action, User: ".username($_SESSION['user_id']));
+
 switch($action) {
     case 'add_product':
         handleAddProduct();
