@@ -125,9 +125,22 @@ $(document).ready(function() {
                 method: 'POST',
                 data: { product_id: productId , action: 'product_log', csrf_token: '<?= $_SESSION['csrf_token'] ?>'},
                 success: function(response) {
-                    console.log(response);
                     $('#product_info').html(response.info);
-                    $('#product_log').html(response.log);
+
+                    var logTable = '<table class="table table-striped table-sm">';
+                    logTable += '<thead><tr><th>İşlem</th><th>Açıklama</th><th>Kullanıcı</th><th>Zaman</th></tr></thead>';
+                    logTable += '<tbody>';
+                    response.log.forEach(function(log) {
+                        logTable += '<tr>';
+                        logTable += '<td>' + log[0] + '</td>';
+                        logTable += '<td>' + log[1] + '</td>';
+                        logTable += '<td>' + log[2] + '</td>';
+                        logTable += '<td>' + log[3] + '</td>';
+                        logTable += '</tr>';
+                    });
+                    logTable += '</tbody></table>';
+
+                    $('#product_log').html(logTable);
                     $('#selectedProduct').removeClass('d-none');
                 },
                 error: function(xhr, status, error) {
@@ -139,6 +152,7 @@ $(document).ready(function() {
         }
     });
 });
+
 
 </script>
 <?php

@@ -87,7 +87,6 @@ class WarehouseLogger
                 $logs[] = $log;
             }
         }
-        error_log("findLogs: " . json_encode($filter). " => " . count($logs) . " logs found: ". json_encode($logs));
         return $logs;
     }
 
