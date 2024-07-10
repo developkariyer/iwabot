@@ -40,7 +40,7 @@ include '../_header.php';
             </h2>
             <div id="transfersAccordion2" class="accordion-collapse collapse" aria-labelledby="headingMain2" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
-                    <?= productSelect($product_id) ?>
+                    <?= productSelect() ?>
                     <div id="selectedProduct" class="d-none">
                         <h4>Ürün Bilgileri</h4>
                         <div class="p-3" id="product_info"></div>
