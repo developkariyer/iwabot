@@ -223,8 +223,9 @@ function handleSetParent() { //set_parent
         foreach ($container_names as $container_name) {
             $container = WarehouseContainer::getByField('name', ultraTrim($container_name));
             if ($container) {
+                $old_parent = $container->parent;
                 if ($container->setParent($parent)) {
-                    addMessage("Konteyner $container->name, $parent->name altına taşındı");
+                    addMessage("Konteyner $container->name, $old_parent->name rafından $parent->name altına taşındı");
                 } else {
                     addMessage("Konteyner $container->name, $parent->name altına taşınamadı");
                 }
