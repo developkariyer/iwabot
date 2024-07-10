@@ -14,7 +14,7 @@ $icon = [
     'Koli' => '📦', //\u{1F4E6}
 ];
 
-$unfulfilledBoxes = WarehouseContainer::getUnfulfilledBoxes();
+$unfulfilledBoxes = WarehouseSold::getSoldItems(item_type: 'WarehouseContainer');
 
 include '../_header.php';
 
@@ -36,11 +36,11 @@ include '../_header.php';
             </h2>
             <div id="orderAccordion4" class="accordion-collapse collapse show" aria-labelledby="headingMain4" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
-                    <?php foreach ($unfulfilledBoxes as $index => $item): ?>
+                    <?php foreach ($unfulfilledBoxes as $index => $soldItem): ?>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingBox<?= $index ?>">
                                 <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBox<?= $index ?>" aria-expanded="false" aria-controls="collapseBox<?= $index ?>">
-                                    <span><strong><?= htmlspecialchars($item['container']->name) ?></strong></span>
+                                    <span><strong><?= htmlspecialchars($soldItem->object->name) ?></strong></span>
                                 </button>
                             </h2>
                             <div id="collapseBox<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="headingBox<?= $index ?>" data-bs-parent="#orderAccordion4">
@@ -48,23 +48,23 @@ include '../_header.php';
                                     <form action="controller.php" method="post">
                                         <input type="hidden" name="action" value="fulfil_box">
                                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                                        <input type="hidden" name="sold_id" value="<?= htmlspecialchars($item['id']) ?>">
+                                        <input type="hidden" name="sold_id" value="<?= htmlspecialchars($soldItem->id) ?>">
                                         <div class="mb-3">
                                             <p>
-                                                <?= containerInfo($item['container']) ?>
+                                                <?= containerInfo($soldItem->object) ?>
                                             </p>
                                             <p>
                                                 <strong>Açıklama:</strong><br>
-                                                <?= nl2br(htmlspecialchars($item['description'])) ?>
+                                                <?= nl2br(htmlspecialchars($soldItem->description)) ?>
                                             </p>
                                             <label for="container_id_<?= $index ?>" class="form-label">Koli Seçin</label>
                                             <select id="container_id_<?= $index ?>" name="container_id" class="form-select" required>
                                                 <option value="">Çıkış Yapılacak Koli Seçin</option>
                                                 <optgroup label="Bu Koli">
-                                                    <option value="<?= htmlspecialchars($item['container']->id) ?>"><?= htmlspecialchars($item['container']->name) ?></option>
+                                                    <option value="<?= htmlspecialchars($soldItem->object->id) ?>"><?= htmlspecialchars($soldItem->object->name) ?></option>
                                                 </optgroup>
                                                 <optgroup label="Aynı İçerikli Koliler">
-                                                    <?php foreach ($item['container']->findSimilar() as $sameContainer): ?>
+                                                    <?php foreach ($soldItem->object->findSimilar() as $sameContainer): ?>
                                                         <option value="<?= htmlspecialchars($sameContainer->id) ?>"><?= htmlspecialchars($sameContainer->name) ?> (<?= htmlspecialchars($sameContainer->parent->name) ?>)</option>
                                                     <?php endforeach; ?>
                                                 </optgroup>
