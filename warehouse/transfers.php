@@ -42,7 +42,7 @@ include '../_header.php';
                 <div class="accordion-body p-5">
                     <?= productSelect() ?>
                     <div id="selectedProduct" class="d-none">
-                        <h4>Ürün Bilgileri</h4>
+                        <h4 class="pt-3">Ürün Bilgileri</h4>
                         <div class="p-3" id="product_info"></div>
                         <h4>Ürün Hareketleri</h4>
                         <div class="p-3" id="product_transfers"></div>
