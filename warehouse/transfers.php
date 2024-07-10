@@ -76,7 +76,7 @@ include '../_header.php';
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
                             <li class="page-item <?= $offset ? '' : 'disabled' ?>"><a class="page-link" href="transfers.php?offset=<?= $offset-$logStep ?>">Önceki</a></li>
-                            <li class="page-item <?= $logCount<=$logStep ? 'disabled' : '' ?>"><a class="page-link" href="transfers.php?offset=<?= $offset+$logStep ?>">Sonraki</a></li>
+                            <li class="page-item <?= $logCount<=$offset+$logStep ? 'disabled' : '' ?>"><a class="page-link" href="transfers.php?offset=<?= $offset+$logStep ?>">Sonraki</a></li>
                         </ul>
                     </nav>
                     <table class="table table-striped table-hover table-sm">
