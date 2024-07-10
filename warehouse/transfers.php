@@ -81,6 +81,7 @@ include '../_header.php';
                     <table class="table table-striped table-hover table-sm">
                         <thead>
                             <tr>
+                                <th scope="col">#</th>
                                 <th scope="col">İşlem</th>
                                 <th scope="col">Açıklama</th>
                                 <th scope="col">Kullanıcı</th>
@@ -89,8 +90,9 @@ include '../_header.php';
                         </thead>
                         <tbody>
                             <?php if ($logs = WarehouseLogger::findLogs([], 20, 0)): ?>
-                                <?php foreach ($logs as $log): ?>
+                                <?php foreach ($logs as $logIndex=>$log): ?>
                                     <tr>
+                                        <td><?= $offset+$logIndex+1 ?></td>
                                         <td><?= htmlspecialchars($log->action) ?></td>
                                         <td><?= htmlspecialchars(aciklama($log)) ?></td>
                                         <td><?= htmlspecialchars($log->username()) ?></td>
@@ -99,7 +101,7 @@ include '../_header.php';
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="4" class="text-center">İşlem kaydı bulunmamaktadır.</td>
+                                    <td colspan="5" class="text-center">İşlem kaydı bulunmamaktadır.</td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>
