@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-$(document).ready(function(){$('#accordion1container_id').select2({theme: "classic"});});
+$(document).ready(function(){$('#accordion1container_id').select2({theme: "classic", tokenSeparators: [','],});});
 $(document).ready(function(){$('#accordion2container_id').select2({theme: "classic"});});
 
 </script>
