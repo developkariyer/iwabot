@@ -110,7 +110,7 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
                                 <label for="count" class="form-label">Ürün İçin Yeni Raf/Koli</label>
                                 <select id="dynamic_new_container" name="new_container_id" class="select2-select form-select w-100" style="width: 100%;">
                                     <option value="">Yeni Raf/Koli Seçin</option>
-                                    <?= containersInOpt() ?>
+                                    <?= containerOptGrouped() ?>
                                 </select>
                             </div>
                             <div class="m-3">
