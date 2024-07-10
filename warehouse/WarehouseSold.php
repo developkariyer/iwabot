@@ -92,10 +92,10 @@ class WarehouseSold
             if (!$object->checkCompatibility($this->object)) {
                 throw new Exception("fulfil: Object is not compatible");
             }
-            $fulfil_id = $object->id;
             $this->object = $object;
-        } else {
-            $fulfil_id = $this->item_id;
+        }
+        if (!$this->object) {
+            throw new Exception("fulfil: Object is required");
         }
         if ($this->item_type === 'WarehouseProduct') {
             if (!is_object($container)) {
@@ -108,8 +108,13 @@ class WarehouseSold
                 throw new Exception("fulfil: Product could not be removed from container");
             }
         }
-        $stmt = $GLOBALS['pdo']->prepare("UPDATE " . self::$soldItemsTableName . " SET fulfilled_at = NOW(), item_id = :item_id WHERE id = :id");
-        return $stmt->execute(['id' => $this->id, 'item_id' => $fulfil_id]);
+        $stmt = $GLOBALS['pdo']->prepare("UPDATE " . self::$soldItemsTableName . " SET fulfilled_at = NOW(), item_id = :item_id WHERE id = :id AND deleted_at IS NULL");
+        if ($stmt->execute(['id' => $this->id, 'item_id' => $this->object->id])) {
+            WarehouseLogger::logAction('fulfil', ['sold_id' => $this->id], $this->object);
+            WarehouseAbstract::clearAllCache();
+            return true;
+        }
+        return false;
     }
 
     public function delete()
