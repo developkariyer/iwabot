@@ -74,8 +74,8 @@ include '../_header.php';
                 <div class="accordion-body p-5">
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
-                            <li class="page-item <?= $offset ? '' : 'disabled' ?>"><a class="page-link" href="transfers.php">Önceki</a></li>
-                            <li class="page-item <?= $logCount<=50 ? 'disabled' : '' ?>"><a class="page-link" href="transfers.php?offset=<?= floor($logCount / 50) * 50 ?>">Sonraki</a></li>
+                            <li class="page-item <?= $offset ? '' : 'disabled' ?>"><a class="page-link" href="transfers.php?offset=<?= $offset-50 ?>">Önceki</a></li>
+                            <li class="page-item <?= $logCount<=50 ? 'disabled' : '' ?>"><a class="page-link" href="transfers.php?offset=<?= $offset+50 ?>">Sonraki</a></li>
                         </ul>
                     </nav>
                     <table class="table table-striped table-hover table-sm">
