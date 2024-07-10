@@ -80,7 +80,6 @@ class WarehouseLogger
             $sql .= " LIMIT $limit";
         }
         $stmt = $GLOBALS['pdo']->prepare($sql);
-        error_log("SQL: $sql        PARAMS:".json_encode($params));
         $stmt->execute($params);
         while ($row = $stmt->fetch()) {
             if ($log = new WarehouseLogger($row)) {
