@@ -85,11 +85,15 @@ class WarehouseSold
 
     public function fulfil($object = null, $container = null)
     {
+        error_log('************ Fulfil called, beginning debug trace ***********');
         if ($this->fulfilled_at || $this->deleted_at) {
+            error_log('fulfil: Sold item already fulfilled or deleted');
             return false;
         }
         if (is_object($object)) {
+            error_log('fulfil: Object is object');
             if (!$object->checkCompatibility($this->object)) {
+                error_log("fulfil: Object is not compatible: " . get_class($object) . " vs " . get_class($this->object));
                 throw new Exception("fulfil: Object is not compatible");
             }
             $this->object = $object;
