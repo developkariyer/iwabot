@@ -20,7 +20,7 @@ include '../_header.php';
 $rafContainers = WarehouseContainer::getContainers('Raf');
 
 // Fetch all products
-$products = WarehouseProduct::getAll();
+$categories = WarehouseProduct::getAllCategorized();
 
 ?>
 
@@ -34,44 +34,55 @@ $products = WarehouseProduct::getAll();
         <!-- Second Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain2">
-                <button class="accordion-button bg-success text-white  w-100 py-3" data-bs-toggle="collapse" data-bs-target="#inventoryAccordion2" aria-expanded="true" aria-controls="inventoryAccordion2">
+                <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#inventoryAccordion2" aria-expanded="false" aria-controls="inventoryAccordion2">
                     <span><strong>Ürün Bilgisine Göre Envanter</strong></span>
                 </button>
             </h2>
-            <div id="inventoryAccordion2" class="accordion-collapse collapse show" aria-labelledby="headingMain2" data-bs-parent="#mainAccordion">
+            <div id="inventoryAccordion2" class="accordion-collapse collapse" aria-labelledby="headingMain2" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
-                    <input type="text" id="filterInput2" class="form-control mb-3" placeholder="Ürün aramak için bir şeyler yazın...">
-                    <?php foreach ($products as $index => $product): ?>
-                        <?php if ($product->getTotalCount() == 0) continue; ?>
-                        <div class="accordion-item" style="display: none;">
-                            <h2 class="accordion-header" id="headingProduct<?= $index ?>">
-                                <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProduct<?= $index ?>" aria-expanded="false" aria-controls="collapseProduct<?= $index ?>">
-                                    <span><strong><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>)</strong> (Toplam: <?= $product->getTotalCount() ?> adet)</span>
+                    <?php foreach ($categories as $category => $products): ?>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingCategory<?= $category ?>">
+                                <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCategory<?= $category ?>" aria-expanded="false" aria-controls="collapseCategory<?= $category ?>">
+                                    <span><strong><?= htmlspecialchars($category) ?></strong></span>
                                 </button>
                             </h2>
-                            <div id="collapseProduct<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="headingProduct<?= $index ?>" data-bs-parent="#inventoryAccordion2">
+                            <div id="collapseCategory<?= $category ?>" class="accordion-collapse collapse" aria-labelledby="headingCategory<?= $category ?>" data-bs-parent="#inventoryAccordion2">
                                 <div class="accordion-body">
-                                    <p>
-                                        <?= productInfo($product) ?>
-                                    </p>
-                                    <h4>Ürünün Bulunduğu Raflar ve Koli Bilgileri</h4>
-                                    <ul>
-                                        <?= empty($product->getContainers()) ? "<p>Bu ürün hiçbir raf veya koli içinde bulunmamaktadır.</p>" : "" ?>                                        
-                                        <?php foreach ($product->getContainers() as $container): ?>
-                                            <li><?= $icon[$container->type] ?> <?= $container->name ?> (<?= $container->type === 'Raf' ? 'Rafta açık' : $container->parent->name ?>) (<?= $product->getInContainerCount($container) ?> adet)</li>
-                                        <?php endforeach; ?>
-                                    </ul>
+                                    <?php foreach ($products as $index => $product): ?>
+                                        <?php if ($product->getTotalCount() == 0) continue; ?>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingProduct<?= $index ?>">
+                                                <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProduct<?= $index ?>" aria-expanded="false" aria-controls="collapseProduct<?= $index ?>">
+                                                    <span><strong><?= htmlspecialchars($product->name) ?> (<?= htmlspecialchars($product->fnsku) ?>)</strong> (Toplam: <?= $product->getTotalCount() ?> adet)</span>
+                                                </button>
+                                            </h2>
+                                            <div id="collapseProduct<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="headingProduct<?= $index ?>" data-bs-parent="#inventoryAccordion2">
+                                                <div class="accordion-body">
+                                                    <p>
+                                                        <?= productInfo($product) ?>
+                                                    </p>
+                                                    <h4>Ürünün Bulunduğu Raflar ve Koli Bilgileri</h4>
+                                                    <ul>
+                                                        <?= empty($product->getContainers()) ? "<p>Bu ürün hiçbir raf veya koli içinde bulunmamaktadır.</p>" : "" ?>                                        
+                                                        <?php foreach ($product->getContainers() as $container): ?>
+                                                            <li><?= $icon[$container->type] ?> <?= $container->name ?> (<?= $container->type === 'Raf' ? 'Rafta açık' : $container->parent->name ?>) (<?= $product->getInContainerCount($container) ?> adet)</li>
+                                                        <?php endforeach; ?>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                    <?php if (empty($products)): ?>
+                                        <p>Ürün bilgisi bulunmamaktadır.</p>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
                     <?php endforeach; ?>
-                    <?php if (empty($products)): ?>
-                        <p>Ürün bilgisi bulunmamaktadır.</p>
-                    <?php endif; ?>
                 </div>
             </div>
         </div>
-
 
         <!-- First Main Accordion Item -->
         <div class="accordion-item">

@@ -25,6 +25,20 @@ class WarehouseProduct extends WarehouseAbstract
         ];
     }
 
+    public static function getAllCategorized()
+    {
+        $stmt = $GLOBALS['pdo']->prepare("SELECT * FROM " . static::getTableName() . " WHERE deleted_at IS NULL ORDER BY category, name");
+        $stmt->execute();
+        $products = [];
+        while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            if (!isset($products[$data['category']])) {
+                $products[$data['category']] = [];
+            }
+            $products[$data['category']][] = new static($data['id'], $data);
+        }
+        return $products;
+    }
+
     protected static function validateField($field, $value)
     {
         switch ($field) {
