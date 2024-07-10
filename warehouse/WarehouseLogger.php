@@ -75,10 +75,10 @@ class WarehouseLogger
         if (count($where) > 0) {
             $sql .= " WHERE " . implode(' AND ', $where);
         }
+        $sql .= " ORDER BY created_at ASC";
         if ($limit > 0) {
             $sql .= " LIMIT $limit";
         }
-        $sql .= " ORDER BY created_at ASC";
         $stmt = $GLOBALS['pdo']->prepare($sql);
         error_log("SQL: $sql        PARAMS:".json_encode($params));
         $stmt->execute($params);
