@@ -8,6 +8,7 @@ $slackUsers = slackUsers();
 
 $offset = $_GET['offset'] ?? 0;
 $logCount = WarehouseLogger::getLogCount();
+$logStep = 20;
 
 function aciklama($log)
 {
@@ -74,8 +75,8 @@ include '../_header.php';
                 <div class="accordion-body p-5">
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
-                            <li class="page-item <?= $offset ? '' : 'disabled' ?>"><a class="page-link" href="transfers.php?offset=<?= $offset-50 ?>">Önceki</a></li>
-                            <li class="page-item <?= $logCount<=50 ? 'disabled' : '' ?>"><a class="page-link" href="transfers.php?offset=<?= $offset+50 ?>">Sonraki</a></li>
+                            <li class="page-item <?= $offset ? '' : 'disabled' ?>"><a class="page-link" href="transfers.php?offset=<?= $offset-$logStep ?>">Önceki</a></li>
+                            <li class="page-item <?= $logCount<=$logStep ? 'disabled' : '' ?>"><a class="page-link" href="transfers.php?offset=<?= $offset+$logStep ?>">Sonraki</a></li>
                         </ul>
                     </nav>
                     <table class="table table-striped table-hover table-sm">
@@ -89,7 +90,7 @@ include '../_header.php';
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if ($logs = WarehouseLogger::findLogs([], 20, 0)): ?>
+                            <?php if ($logs = WarehouseLogger::findLogs([], 20, $offset)): ?>
                                 <?php foreach ($logs as $logIndex=>$log): ?>
                                     <tr>
                                         <td><?= $offset+$logIndex+1 ?></td>
