@@ -37,7 +37,7 @@ class WarehouseLogger
         }
     }
 
-    public static function findLogs($filter = [], $limit = 0)
+    public static function findLogs($filter = [], $limit = 0, $offset = 0)
     {
         if (!is_array($filter)) {
             throw new Exception('findLogs: Filter must be an array');
@@ -79,6 +79,9 @@ class WarehouseLogger
         $sql .= " ORDER BY created_at DESC";
         if ($limit > 0) {
             $sql .= " LIMIT $limit";
+            if ($offset > 0) {
+                $sql .= " OFFSET $offset";
+            }
         }
         $stmt = $GLOBALS['pdo']->prepare($sql);
         $stmt->execute($params);

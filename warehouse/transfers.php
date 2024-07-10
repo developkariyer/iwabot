@@ -6,6 +6,34 @@ $soldOrders = WarehouseSold::getSoldItems(fulfilled: true);
 
 $slackUsers = slackUsers();
 
+function aciklama($log)
+{
+    switch($log->action) {
+        case 'placeInContainer':
+            $container_id = $log->data['container_id'];
+            $container = WarehouseContainer::getById($container_id);
+            $container_name = $container ? $container->name : 'Bilinmeyen';
+            return "{$log->count} adet \"{$log->object->name}\" \"{$container_name}\" rafına/kolisine yerleştirildi";
+        case 'removeFromContainer':
+            $container_id = $log->data['container_id'];
+            $container = WarehouseContainer::getById($container_id);
+            $container_name = $container ? $container->name : 'Bilinmeyen';
+            return "{$log->count} adet \"{$log->object->name}\" \"{$container_name}\" rafından/kolisinden alındı";
+        case 'setParent':
+            $newContainer = WarehouseContainer::getById($log->data['new_parent_id']);
+            $oldContainer = WarehouseContainer::getById($log->data['old_parent_id']);
+            $newContainerName = $newContainer ? $newContainer->name : 'Bilinmeyen';
+            $oldContainerName = $oldContainer ? $oldContainer->name : 'Bilinmeyen';
+            return "\"{$log->object->name}\" kolisi \"{$oldContainerName}\" rafından \"{$newContainerName}\" rafına taşındı";
+        case 'fulfilSoldItem':
+            return 'Sipariş karşılanma';
+        case 'addSoldItem':
+            return 'Sipariş oluşturma';
+        default:
+            return 'Bilinmeyen işlem';
+    }
+}
+
 include '../_header.php';
 
 ?>
@@ -39,9 +67,9 @@ include '../_header.php';
                             <?php if ($logs = WarehouseLogger::findLogs([], 50)): ?>
                                 <?php foreach ($logs as $log): ?>
                                     <tr>
-                                        <td><?= $log->action ?></td>
-                                        <td><?= nl2br(htmlspecialchars($log->data['description'] ?? '')) ?></td>
-                                        <td><?= $log->username() ?></td>
+                                        <td><?= htmlspecialchars($log->action) ?></td>
+                                        <td><?= htmlspecialchars(aciklama($log)) ?></td>
+                                        <td><?= htmlspecialchars($log->username()) ?></td>
                                         <td><?= htmlspecialchars($log->created_at) ?></td>
                                     </tr>
                                 <?php endforeach; ?>

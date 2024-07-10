@@ -160,7 +160,7 @@ include '../_header.php';
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain5">
                 <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#containerAccordion5" aria-expanded="false" aria-controls="containerAccordion5">
-                    <span><strong>Kendiniz Raf Seçin</strong></span>
+                    <span><strong>Kendiniz Koli Seçin</strong></span>
                 </button>
             </h2>
             <div id="containerAccordion5" class="accordion-collapse collapse" aria-labelledby="headingMain5" data-bs-parent="#mainAccordion">
