@@ -175,7 +175,7 @@ include '../_header.php';
                         </optgroup>                            
                     </select>
                     <div id="selectedContainer" class="d-none">
-                        <div id="container_info"></div>
+                        <div class="p-3" id="container_info"></div>
                         <form id="customActionForm" action="controller.php" method="post">
                             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                             <input type="hidden" name="action" value="set_parent">
@@ -316,8 +316,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-$(document).ready(function(){$('#accordion1container_id').select2({theme: "classic", tokenSeparators: [','],});});
+$(document).ready(function(){$('#accordion1container_id').select2({theme: "classic"});});
 $(document).ready(function(){$('#accordion2container_id').select2({theme: "classic"});});
+$(document).ready(function(){$('#accordion5dynamiccontainer').select2({theme: "classic"});});
+
+
+
 
 </script>
 
