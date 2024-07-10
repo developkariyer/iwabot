@@ -274,7 +274,10 @@ function containerOptGrouped($product = null) {
     ksort($raflar);
     $html = '';
     foreach($raflar as $raflar_name => $raflar_containers) {
-        $html .= '<optgroup label="'.$raflar_name.'">';
+        if ($raflar_name === 'Gemi') {
+            continue;
+        }
+        $html .= "<optgroup label=\"$raflar_name\">";
         foreach($raflar_containers as $container) {
             if ($container->type === 'Koli') {
                 $icon = '📦'; //\u{1F4E6}
