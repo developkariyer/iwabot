@@ -200,7 +200,7 @@ function containersInOpt($type='Raf') {
     foreach ($containers as $container) {
         $html .= "<optgroup label='{$icon[$type]} {$container->name}'>";
         foreach (WarehouseContainer::getContainers(type: 'Koli', parent_id: $container->id) as $box) {
-            $html .= "<option value='{$box->id}'>📦 {$box->name}</option>";
+            $html .= "<option value='{$box->id}'>{$box->name} 📦</option>";
         }
     }
     WarehouseAbstract::setCache("containersInOpt{$type}", $html);
