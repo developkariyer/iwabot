@@ -127,7 +127,7 @@ $(document).ready(function() {
                 success: function(response) {
                     console.log(response);
                     $('#product_info').html(response.info);
-                    $('#product_log').html('<pre>'+response.log+'</pre>');
+                    $('#product_log').html(response.log);
                     $('#selectedProduct').removeClass('d-none');
                 },
                 error: function(xhr, status, error) {
