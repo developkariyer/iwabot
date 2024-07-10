@@ -68,13 +68,12 @@ include '../_header.php';
                                 <?php 
                                     $logFulfil = WarehouseLogger::findLog(['action'=>'fulfilSoldItem', 'sold_id' => $order->id]);
                                     $logAdd = WarehouseLogger::findLog(['action'=>'addSoldItem', 'sold_id' => $order->id]);
-                                    error_log(print_r($logFulfil, true));
                                 ?>
                                 <tr class="<?= empty($order->fulfilled_at) ? 'table-danger' : 'table-success' ?>">
                                     <td><strong><?= $order->item_type === 'WarehouseProduct' ? 'Ürün' : 'Koli' ?></strong><br><?= htmlspecialchars($order->object->name) ?></td>
                                     <td><?= nl2br(htmlspecialchars($order->description)) ?></td>
                                     <td><?= $logAdd->username() ?><br><?= htmlspecialchars($order->created_at) ?></td>
-                                    <td><?= $logFulfil->username() ?><br><?= htmlspecialchars($order->fulfilled_at) ?></td>
+                                    <td><?= $logFulfil ? $logFulfil->username() : '' ?><br><?= htmlspecialchars($order->fulfilled_at) ?></td>
                                 </tr>
                             <?php endforeach; ?>
                             <?php if (empty($soldOrders)): ?>
