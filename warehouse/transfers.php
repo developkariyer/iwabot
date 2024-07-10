@@ -66,14 +66,14 @@ include '../_header.php';
                         <tbody>
                             <?php foreach ($soldOrders as $index => $order): ?>
                                 <?php 
-                                    $logFulfil = WarehouseLogger::findLogs(['action'=>'fulfilSoldItem', 'sold_id' => $order->id]);
+                                    $logFulfil = WarehouseLogger::findLog(['action'=>'fulfilSoldItem', 'sold_id' => $order->id]);
                                     $logAdd = WarehouseLogger::findLog(['action'=>'addSoldItem', 'sold_id' => $order->id]); 
                                 ?>
-                                <tr class="<?= empty($fulfilInfo['closed_at']) ? 'table-danger' : 'table-success' ?>">
+                                <tr class="<?= empty($order->fulfilled_at) ? 'table-danger' : 'table-success' ?>">
                                     <td><strong><?= $order->item_type === 'WarehouseProduct' ? 'Ürün' : 'Koli' ?></strong><br><?= htmlspecialchars($order->object->name) ?></td>
                                     <td><?= nl2br(htmlspecialchars($order->description)) ?></td>
                                     <td><?= $logAdd->username() ?><br><?= htmlspecialchars($order->created_at) ?></td>
-                                    <td><?= username($fulfilInfo['closed_by']) ?><br><?= htmlspecialchars($order->fulfilled_at) ?></td>
+                                    <td><?= $logFulfil->username() ?><br><?= htmlspecialchars($order->fulfilled_at) ?></td>
                                 </tr>
                             <?php endforeach; ?>
                             <?php if (empty($soldOrders)): ?>
