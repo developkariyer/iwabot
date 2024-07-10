@@ -78,6 +78,7 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
                 </div>
             </div>
         </div>
+
         <!-- Second Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain2">
@@ -124,6 +125,7 @@ if (isset($_GET['product_id']) && !empty($_GET['product_id']) && is_numeric($_GE
                 </div>
             </div>
         </div>
+        
         <!-- Third Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain3">

@@ -155,7 +155,47 @@ include '../_header.php';
             </div>
         </div>
 
+
         <!-- Fourth Main Accordion Item -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingMain5">
+                <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#containerAccordion5" aria-expanded="false" aria-controls="containerAccordion5">
+                    <span><strong>Kendiniz Raf Seçin</strong></span>
+                </button>
+            </h2>
+            <div id="containerAccordion5" class="accordion-collapse collapse" aria-labelledby="headingMain5" data-bs-parent="#mainAccordion">
+                <div class="accordion-body p-5 w-100">
+                    <select id="accordion5dynamiccontainer" class="select2-select form-select w-100" style="width: 100%;">
+                        <option value="">Raf Seçin</option>
+                        <optgroup label="Depodaki Koliler">
+                            <?= containersInOpt('Raf') ?>
+                        </optgroup>
+                        <optgroup label="Gemideki Koliler">
+                            <?= containersInOpt('Gemi') ?>
+                        </optgroup>                            
+                    </select>
+                    <div id="selectedContainer" class="d-none">
+                        <div id="container_info"></div>
+                        <form id="customActionForm" action="controller.php" method="post">
+                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                            <input type="hidden" name="action" value="set_parent">
+                            <input type="hidden" name="container_id" id="selectedContainerId">
+                            <div class="mb-3">
+                                <label for="parent_id" class="form-label">Yerleştirileceği Rafı Seçin</label>
+                                <select id="accordion5parent_id" name="parent_id" class="form-select">
+                                    <option value="">Yerleştirileceği Rafı Seçin</option>
+                                    <?= parentContainersOpt() ?>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 py-3 mt-2">Raftan Rafa Taşı</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Fifth Main Accordion Item -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain3">
                 <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#containerAccordion3" aria-expanded="false" aria-controls="containerAccordion3">
@@ -200,8 +240,30 @@ include '../_header.php';
     <?= wh_menu() ?>
 </div>
 
-
 <script defer>
+
+$(document).ready(function() {
+    $('#accordion5dynamiccontainer').on('change', function() {
+        var containerId = $(this).val();
+        if (containerId) {
+            $.ajax({
+                url: 'controller.php',
+                method: 'POST',
+                data: { container_id: containerId , action: 'container_info', csrf_token: '<?= $_SESSION['csrf_token'] ?>'},
+                success: function(response) {
+                    $('#container_info').html(response.info);
+                    $('#selectedContainer').removeClass('d-none');
+                    $('#selectedContainerId').val(response.id);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching product information:', error);
+                }
+            });
+        } else {
+            $('#selectedContainer').addClass('d-none');
+        }
+    });
+});
 
 document.addEventListener('DOMContentLoaded', function() {
     const containerSelect = document.getElementById('accordion2container_id');
