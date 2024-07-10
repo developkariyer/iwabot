@@ -219,6 +219,20 @@ $(document).ready(function() {
     });
 });
 
+function copyToClipboard(elementId) {
+    var text = document.getElementById(elementId).innerText;
+    var textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("Copy");
+    document.body.removeChild(textArea);
+
+    // Optionally, show a Bootstrap toast or alert to indicate the copy was successful
+    alert("Metin kopyalandı: " + text);
+}
+
+
 $(document).ready(function() {
     $('#customActionForm').on('submit', function(event) {
         var action = $(document.activeElement).val(); // Get the value of the clicked button

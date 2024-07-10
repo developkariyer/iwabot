@@ -139,15 +139,17 @@ function productInfo($product) {
     if (!$product instanceof WarehouseProduct) {
         return "Ürün bilgisi alınamadı: Geçersiz ürün";
     }
-    return "<b>Ürün Adı:</b> {$product->name}<br>
-    <b>FNSKU:</b> {$product->fnsku}<br>
-    <b>Kategori:</b> {$product->category}<br>
-    <b>IWASKU:</b> {$product->iwasku}<br>
-    <b>Özellikler (metrik):</b><br>{$product->dimension1}x{$product->dimension2}x{$product->dimension3}cm, {$product->weight}kg<br>
-    <b>Özellikler (imperyal):</b><br>".metricToImp($product->dimension1)."x".metricToImp($product->dimension2)."x".metricToImp($product->dimension3)."in, ".metricToImp($product->weight, 2.20462)."lbs<br>
-    <b>Toplam Depo Stoğu:</b> {$product->getTotalCount()} adet<br>";
-    //    <b>Seri Numarası:</b> {$product->serial_number}<br>
+    $fnsku = htmlspecialchars($product->fnsku, ENT_QUOTES, 'UTF-8');
+    return "
+        <b>Ürün Adı:</b> {$product->name}<br>
+        <b>FNSKU:</b> <span id='fnsku'>{$fnsku}</span> <span class='badge badge-primary' style='cursor: pointer;' onclick='copyToClipboard(\"fnsku\")'>Kopyala</span><br>
+        <b>Kategori:</b> {$product->category}<br>
+        <b>IWASKU:</b> {$product->iwasku}<br>
+        <b>Özellikler (metrik):</b><br>{$product->dimension1}x{$product->dimension2}x{$product->dimension3}cm, {$product->weight}kg<br>
+        <b>Özellikler (imperyal):</b><br>".metricToImp($product->dimension1)."x".metricToImp($product->dimension2)."x".metricToImp($product->dimension3)."in, ".metricToImp($product->weight, 2.20462)."lbs<br>
+        <b>Toplam Depo Stoğu:</b> {$product->getTotalCount()} adet<br>";
 }
+
 
 function containerInfo($container) {
     if (!$container instanceof WarehouseContainer) {
