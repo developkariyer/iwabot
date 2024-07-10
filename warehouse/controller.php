@@ -63,6 +63,9 @@ switch($action) {
     case 'product_info':
         handleProductInfo();
         break;
+    case 'product_log':
+        handleProductLog();
+        break;
     case 'barcode_scan':
         handleBarcodeScan();
         break;
@@ -438,7 +441,7 @@ function handleAddSoldBox() { // add_sold_box
     addMessage("$container->name için yeni satış eklendi");
 }
 
-function handleProductInfo() { // 
+function handleProductInfo() { // product_info
     header('Content-Type: application/json');
     $product = WarehouseProduct::getById(getPostValue('product_id'));
     $container = WarehouseContainer::getById(getPostValue('container_id'));
@@ -456,6 +459,89 @@ function handleProductInfo() { //
     }
     $retval['info'] = productInfo($product);
     die(json_encode($retval));
+}
+
+function handleProductLog() { // product_log
+    header('Content-Type: application/json');
+    $product = WarehouseProduct::getById(getPostValue('product_id'));
+    if (!$product) {
+        die(json_encode([
+            'error' => 'Ürün bilgisi bulunamadı.',
+        ]));
+    }
+    $logs = WarehouseLogger::findLogs(['id' => $product->id, 'class' => 'WarehouseProduct']);
+    $logjson = [];
+    foreach ($logs as $log) {
+        switch ($log->action) {
+            case 'addNew':
+                $tr = [
+                    "Katalog",
+                    "{$log->data['name']} ($log->data['fnsku']) ürünü kataloğa eklendi",
+                ];
+                break;
+            case 'removeFromContainer':
+                $container = WarehouseContainer::getById($log->data['container_id']);
+                $container_name = $container ? $container->name : 'Bilinmeyen';
+                $tr = [
+                    "Çıkış",
+                    "{$log->data['count']} adet {$log->object->name} {$container_name} rafından çıkartıldı",
+                ];
+                break;
+            case 'placeInContainer':
+                $container = WarehouseContainer::getById($log->data['container_id']);
+                $container_name = $container ? $container->name : 'Bilinmeyen';
+                $tr = [
+                    "Giriş",
+                    "{$log->data['count']} adet {$log->object->name} {$container_name} rafına yerleştirildi",
+                ];
+                break;
+            case 'addSoldItem':
+                $tr = [
+                    "Sipariş",
+                    "{$log->object->name} için sipariş kaydı oluşturuldu (".substr($log->data['description'], 0, 10)."...)",
+                ];
+                break;
+            case 'fulfilSoldItem':
+                $container = WarehouseContainer::getById($log->data['container_id']);
+                $container_name = $container ? $container->name : 'Bilinmeyen';
+                $tr = [
+                    "Sipariş",
+                    "{$log->object->name} için {$container_name} rafından sipariş çıkışı yapıldı (".substr($log->data['description'], 0, 10)."...)",
+                ];
+                break;
+            case 'deleteSoldItem':
+                $tr = [
+                    "Sipariş",
+                    "{$log->object->name} için sipariş kaydı silindi (".substr($log->data['description'], 0, 10)."...)",
+                ];
+                break;
+            case 'updateSoldItem':
+                $tr = [
+                    "Sipariş",
+                    "{$log->object->name} için sipariş kaydı güncellendi (".substr($log->data['description'], 0, 10)."...)",
+                ];
+                break;
+            case 'delete':
+                $tr = [
+                    "Katalog",
+                    "{$log->object->name} ürünü katalogdan silindi",
+                ];
+                break;
+            case 'update':
+                $tr = [
+                    "Katalog",
+                    "{$log->object->name} ürünü güncellendi",
+                ];
+                break;
+        }
+        $tr[] = $log->username();
+        $tr[] = $log->created_at;
+        $logjson[] = $tr;
+    }
+    die(json_encode([
+        'info' => productInfo($product),
+        'log' => $logjson,    
+    ], JSON_PRETTY_PRINT));
 }
 
 function handleBarcodeScan() { // 

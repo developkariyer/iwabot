@@ -45,7 +45,7 @@ include '../_header.php';
                         <h4 class="pt-3">Ürün Bilgileri</h4>
                         <div class="p-3" id="product_info"></div>
                         <h4>Ürün Hareketleri</h4>
-                        <div class="p-3" id="product_transfers"></div>
+                        <div class="p-3" id="product_log"></div>
                     </div>
                 </div>
             </div>
@@ -123,9 +123,10 @@ $(document).ready(function() {
             $.ajax({
                 url: 'controller.php',
                 method: 'POST',
-                data: { product_id: productId , action: 'product_info', csrf_token: '<?= $_SESSION['csrf_token'] ?>'},
+                data: { product_id: productId , action: 'product_log', csrf_token: '<?= $_SESSION['csrf_token'] ?>'},
                 success: function(response) {
                     $('#product_info').html(response.info);
+                    $('#product_log').html('<pre>'+response.log+'</pre>');
                     $('#selectedProduct').removeClass('d-none');
                 },
                 error: function(xhr, status, error) {
