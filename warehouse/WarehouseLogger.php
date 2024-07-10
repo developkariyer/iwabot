@@ -42,6 +42,7 @@ class WarehouseLogger
         if (!is_array($filter)) {
             throw new Exception('findLogs: Filter must be an array');
         }
+        error_log("findLogs: " . json_encode($filter));
         $sql = "SELECT * FROM " . self::$logTableName;
         $where = [];
         $params = [];
