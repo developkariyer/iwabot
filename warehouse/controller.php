@@ -506,7 +506,7 @@ function handleProductLog() { // product_log
             case 'fulfilSoldItem':
                 $tr = [
                     "Sipariş",
-                    "\"{$log->object->name}\" siparişinin çıkışı yapıldı (".substr($log->data['description'], 0, 10)."...)",
+                    "\"{$log->object->name}\" siparişinin çıkışı yapıldı",
                 ];
                 break;
             case 'deleteSoldItem':
