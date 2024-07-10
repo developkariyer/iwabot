@@ -26,7 +26,32 @@ include '../_header.php';
             </h2>
             <div id="transfersAccordion1" class="accordion-collapse collapse show" aria-labelledby="headingMain1" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
-                    <p>Placeholder text for Kronolojik İşlem Kayıtları</p>
+                    <table class="table table-striped table-hover table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">İşlem</th>
+                                <th scope="col">Açıklama</th>
+                                <th scope="col">Kullanıcı</th>
+                                <th scope="col">Zaman</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if ($logs = WarehouseLogger::findLogs([], 50)): ?>
+                                <?php foreach ($logs as $log): ?>
+                                    <tr>
+                                        <td><?= $log->action ?></td>
+                                        <td><?= nl2br(htmlspecialchars($log->data['description'] ?? '')) ?></td>
+                                        <td><?= $log->username() ?></td>
+                                        <td><?= htmlspecialchars($log->created_at) ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="4" class="text-center">İşlem kaydı bulunmamaktadır.</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -127,7 +152,7 @@ $(document).ready(function() {
                 success: function(response) {
                     $('#product_info').html(response.info);
 
-                    var logTable = '<table class="table table-striped table-sm">';
+                    var logTable = '<table class="table table-striped table-sm table-hover">';
                     logTable += '<thead><tr><th>İşlem</th><th>Açıklama</th><th>Kullanıcı</th><th>Zaman</th></tr></thead>';
                     logTable += '<tbody>';
                     response.log.forEach(function(log) {

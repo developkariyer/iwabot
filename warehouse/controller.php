@@ -486,7 +486,7 @@ function handleProductLog() { // product_log
                 $container_name = $container ? $container->name : 'Bilinmeyen';
                 $tr = [
                     "Çıkış",
-                    "{$log->data['count']} adet {$log->object->name} {$container_name} rafından çıkartıldı",
+                    "{$log->data['count']} adet \"{$log->object->name}\" \"{$container_name}\" rafından alındı",
                 ];
                 break;
             case 'placeInContainer':
@@ -494,19 +494,19 @@ function handleProductLog() { // product_log
                 $container_name = $container ? $container->name : 'Bilinmeyen';
                 $tr = [
                     "Giriş",
-                    "{$log->data['count']} adet {$log->object->name} {$container_name} rafına yerleştirildi",
+                    "{$log->data['count']} adet \"{$log->object->name}\" \"{$container_name}\" rafına yerleştirildi",
                 ];
                 break;
             case 'addSoldItem':
                 $tr = [
                     "Sipariş",
-                    "{$log->object->name} için sipariş kaydı oluşturuldu (".substr($log->data['description'], 0, 10)."...)",
+                    "\"{$log->object->name}\" için sipariş kaydı oluşturuldu (".substr($log->data['description'], 0, 10)."...)",
                 ];
                 break;
             case 'fulfilSoldItem':
                 $tr = [
                     "Sipariş",
-                    "{$log->object->name} siparişinin çıkışı yapıldı (".substr($log->data['description'], 0, 10)."...)",
+                    "\"{$log->object->name}\" siparişinin çıkışı yapıldı (".substr($log->data['description'], 0, 10)."...)",
                 ];
                 break;
             case 'deleteSoldItem':
