@@ -11,14 +11,24 @@ function aciklama($log)
     switch($log->action) {
         case 'placeInContainer':
             $container_id = $log->data['container_id'];
-            $container = WarehouseContainer::getById($container_id);
-            $container_name = $container ? $container->name : 'Bilinmeyen';
-            return "{$log->data['count']} adet \"{$log->object->name}\" \"{$container_name}\" rafına/kolisine yerleştirildi";
+            if ($container = WarehouseContainer::getById($container_id)) {
+                $container_name = $container->name;
+                $container_type = $container->type === 'Raf' ? 'rafına' : 'kolisine';
+            } else {
+                $container_name = 'Bilinmeyen';
+                $container_type = 'yerine';
+            }
+            return "{$log->data['count']} adet \"{$log->object->name}\" \"{$container_name}\" $container_type yerleştirildi";
         case 'removeFromContainer':
             $container_id = $log->data['container_id'];
-            $container = WarehouseContainer::getById($container_id);
-            $container_name = $container ? $container->name : 'Bilinmeyen';
-            return "{$log->data['count']} adet \"{$log->object->name}\" \"{$container_name}\" rafından/kolisinden alındı";
+            if ($container = WarehouseContainer::getById($container_id)) {
+                $container_name = $container->name;
+                $container_type = $container->type === 'Raf' ? 'rafından' : 'kolisinden';
+            } else {
+                $container_name = 'Bilinmeyen';
+                $container_type = 'yerine';
+            }
+            return "{$log->data['count']} adet \"{$log->object->name}\" \"{$container_name}\" $container_type alındı";
         case 'setParent':
             $newContainer = WarehouseContainer::getById($log->data['new_parent_id']);
             $oldContainer = WarehouseContainer::getById($log->data['old_parent_id']);
