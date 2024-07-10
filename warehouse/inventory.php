@@ -16,11 +16,6 @@ $icon = [
 
 include '../_header.php';
 
-// Fetch raf containers
-$rafContainers = WarehouseContainer::getContainers('Raf');
-
-// Fetch all products
-
 ?>
 
 <div class="container mt-5">
@@ -60,9 +55,7 @@ $rafContainers = WarehouseContainer::getContainers('Raf');
                                                 </h2>
                                                 <div id="collapseProduct<?= $category . $index ?>" class="accordion-collapse collapse" aria-labelledby="headingProduct<?= $category . $index ?>" data-bs-parent="#collapseCategory<?= $category ?>">
                                                     <div class="accordion-body">
-                                                        <p>
-                                                            <?= productInfo($product) ?>
-                                                        </p>
+                                                        <p><?= productInfo($product) ?></p>
                                                         <h4>Ürünün Bulunduğu Raflar ve Koli Bilgileri</h4>
                                                         <ul>
                                                             <?= empty($product->getContainers()) ? "<p>Bu ürün hiçbir raf veya koli içinde bulunmamaktadır.</p>" : "" ?>
@@ -98,39 +91,44 @@ $rafContainers = WarehouseContainer::getContainers('Raf');
             </h2>
             <div id="inventoryAccordion1" class="accordion-collapse collapse" aria-labelledby="headingMain1" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
-                    <?php foreach ($rafContainers as $index => $raf): ?>
-                        <?php if (count($raf->getChildren()) == 0 && count($raf->getProducts()) == 0) continue; ?>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingRaf<?= $index ?>">
-                                <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRaf<?= $index ?>" aria-expanded="false" aria-controls="collapseRaf<?= $index ?>">
-                                    <span><strong><?= $icon['Raf'] ?> <?= htmlspecialchars($raf->name) ?></strong> (<?= count($raf->getChildren()) ?> koli, <?= count($raf->getProducts()) ?> açık ürün)</span>
-                                </button>
-                            </h2>
-                            <div id="collapseRaf<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="headingRaf<?= $index ?>" data-bs-parent="#inventoryAccordion1">
-                                <div class="accordion-body">
-                                    <?= containerInfo($raf) ?><br>
-                                    <strong>Raftaki Koliler:</strong><br>
-                                    <?php foreach ($raf->getChildren() as $childIndex => $child): ?>
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header box-h2" id="headingChild<?= $index ?>-<?= $childIndex ?>">
-                                                <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChild<?= $index ?>-<?= $childIndex ?>" aria-expanded="false" aria-controls="collapseChild<?= $index ?>-<?= $childIndex ?>">
-                                                    <span><strong><?= $icon['Koli'] ?> <?= htmlspecialchars($child->name) ?> (<?= htmlspecialchars($child->getTotalCount()) ?> ürün)</strong></span>
-                                                </button>
-                                            </h2>
-                                            <div id="collapseChild<?= $index ?>-<?= $childIndex ?>" class="accordion-collapse collapse" aria-labelledby="headingChild<?= $index ?>-<?= $childIndex ?>" data-bs-parent="#collapseRaf<?= $index ?>">
-                                                <div class="accordion-body">
-                                                    <?= containerInfo($child) ?>
+                    <?php if (!($cache = WarehouseAbstract::getCache('allContainersHtml'))): ?>
+                        <?php ob_start(); ?>
+                        <?php $rafContainers = WarehouseContainer::getContainers('Raf'); ?>
+                        <?php foreach ($rafContainers as $index => $raf): ?>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingRaf<?= $index ?>">
+                                    <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRaf<?= $index ?>" aria-expanded="false" aria-controls="collapseRaf<?= $index ?>">
+                                        <span><strong><?= $icon['Raf'] ?> <?= htmlspecialchars($raf->name) ?></strong> (<?= count($raf->getChildren()) ?> koli, <?= count($raf->getProducts()) ?> açık ürün)</span>
+                                    </button>
+                                </h2>
+                                <div id="collapseRaf<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="headingRaf<?= $index ?>" data-bs-parent="#inventoryAccordion1">
+                                    <div class="accordion-body">
+                                        <?= containerInfo($raf) ?><br>
+                                        <strong>Raftaki Koliler:</strong><br>
+                                        <?php foreach ($raf->getChildren() as $childIndex => $child): ?>
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header box-h2" id="headingChild<?= $index ?>-<?= $childIndex ?>">
+                                                    <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChild<?= $index ?>-<?= $childIndex ?>" aria-expanded="false" aria-controls="collapseChild<?= $index ?>-<?= $childIndex ?>">
+                                                        <span><strong><?= $icon['Koli'] ?> <?= htmlspecialchars($child->name) ?> (<?= htmlspecialchars($child->getTotalCount()) ?> ürün)</strong></span>
+                                                    </button>
+                                                </h2>
+                                                <div id="collapseChild<?= $index ?>-<?= $childIndex ?>" class="accordion-collapse collapse" aria-labelledby="headingChild<?= $index ?>-<?= $childIndex ?>" data-bs-parent="#collapseRaf<?= $index ?>">
+                                                    <div class="accordion-body">
+                                                        <?= containerInfo($child) ?>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    <?php endforeach; ?>
-                                    <?php if (empty($raf->getChildren())): ?>
-                                        <p>Bu raf altında koli bulunmamaktadır.</p>
-                                    <?php endif; ?>
+                                        <?php endforeach; ?>
+                                        <?php if (empty($raf->getChildren())): ?>
+                                            <p>Bu raf altında koli bulunmamaktadır.</p>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                        <?php $cache = ob_get_clean(); WarehouseAbstract::setCache('allContainersHtml', $cache); ?>
+                    <?php endif; ?>
+                    <?= $cache ?>
                     <?php if (empty($rafContainers)): ?>
                         <p>Envanter bilgisi bulunmamaktadır.</p>
                     <?php endif; ?>
