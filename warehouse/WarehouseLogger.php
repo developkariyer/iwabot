@@ -69,7 +69,7 @@ class WarehouseLogger
                     break;
                 default:
                     error_log("findLogs: Unknown filter key $key");
-                    continue;
+                    break;
             }
         }
         if (count($where) > 0) {
