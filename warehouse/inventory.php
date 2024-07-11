@@ -174,8 +174,7 @@ include '../_header.php';
                         <h4>Seçilen Ürün Bilgileri</h4>
                         <div id="product_info"></div>
                         <h4>Raflar ve Koliler</h4>
-                        <select id="dynamic_container_list" class="form-select">
-                        </select>
+                        <div id="dynamic_container_list"></div>
                     </div>
                 </div>
             </div>
