@@ -93,13 +93,8 @@ class WarehouseLogger
                     break;
                 case 'sold_id':
                 case 'class':
-                case 'fulfilled_at':
-                    if (is_null($value)) {
-                        $where[] = "data->>'$.key' IS NULL ";
-                    } else {
-                        $where[] = "data->>'$.$key' = :$key";
-                        $params[$key] = $value;
-                    }
+                    $where[] = "data->>'$.$key' = :$key";
+                    $params[$key] = $value;
                     break;
                 default:
                     error_log("findLogs: Unknown filter key $key");

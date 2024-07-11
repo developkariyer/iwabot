@@ -58,7 +58,7 @@ class WarehouseSold
     public static function getSoldItems($item_type = null, $fulfilled = false)
     {
         $sql = "SELECT * FROM " . self::$soldItemsTableName . " WHERE deleted_at IS NULL ";
-        $sql .= $fulfilled ? "" : " AND fulfilled_at IS NULL";
+        $sql .= $fulfilled ? " AND fulfilled_at IS NOT NULL" : " AND fulfilled_at IS NULL";
         $sql .= $item_type ? " AND item_type = :item_type" : "";
         $sql .= " ORDER BY created_at DESC";
         $stmt = $GLOBALS['pdo']->prepare($sql);
