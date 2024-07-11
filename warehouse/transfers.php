@@ -79,7 +79,7 @@ include '../_header.php';
                     <?php foreach ($allSoldOrders as $soldTitle => $soldOrders): ?>
                         <h3><?= $soldTitle ?></h3>
                         <div class="mb-3">
-                            <table class="table table-striped table-hover table-sm">
+                            <table class="table table-striped table-hover table-sm table-border">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
