@@ -189,6 +189,7 @@ include '../_header.php';
 <script>
     
     function copyToClipboard(elementId) {
+        console.log('copyToClipboard', elementId);
         var text = document.getElementById(elementId).innerText;
         var textArea = document.createElement("textarea");
         textArea.value = text;
