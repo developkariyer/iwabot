@@ -174,8 +174,8 @@ document.addEventListener('DOMContentLoaded', function() {
 function loadLogs(offset) {
     $.ajax({
         url: 'controller.php',
-        type: 'GET',
-        data: { action: 'handleLog', offset: offset },
+        type: 'POST', // Changed to POST
+        data: { action: 'handle_log', offset: offset },
         success: function(response) {
             $('#logTable').html(response);
         },
