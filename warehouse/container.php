@@ -170,9 +170,6 @@ include '../_header.php';
                         <optgroup label="Depodaki Koliler">
                             <?= containersInOpt('Raf') ?>
                         </optgroup>
-                        <optgroup label="Gemideki Koliler">
-                            <?= containersInOpt('Gemi') ?>
-                        </optgroup>                            
                     </select>
                     <div id="selectedContainer" class="d-none">
                         <div class="p-3" id="container_info"></div>

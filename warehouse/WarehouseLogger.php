@@ -164,7 +164,8 @@ class WarehouseLogger
             case 'fulfilSoldItem':
                 return 'Sipariş karşılanma';
             case 'addSoldItem':
-                return 'Sipariş oluşturma';
+                $tip = ($this->object instanceof WarehouseProduct) ? "ürünü" : "kolisi";
+                return "<strong>{$this->object->name}</strong> $tip için yeni sipariş kaydı girildi.";
             case 'permissionChange':
                 $permissionList = [
                     'manage' => 'IWA Depo Yönetme',
