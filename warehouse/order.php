@@ -126,8 +126,8 @@ include '../_header.php';
                                                             <label for="description" class="form-label">Açıklama</label>
                                                             <textarea id="description" name="description" rows="5" class="form-control btn-outline-success w-100 py-3" placeholder="Açıklama" required><?= htmlspecialchars($soldItem->description) ?></textarea>
                                                         </div>
-                                                        <button name="action" value="fulfil_update" id="Submit<?= $index ?>Product<?= $product['product']->id ?>" type="submit" class="btn btn-primary w-100 py-3 mt-2">Ürün Çıkış Bilgilerini Güncelle</button>
-                                                        <button name="action" value="fulfil_delete" id="Delete<?= $index ?>Product<?= $product['product']->id ?>" type="submit" class="btn btn-danger w-100 py-3 mt-2">Ürün Çıkış Bilgilerini Sil</button>
+                                                        <button name="action" value="fulfil_update" id="Submit<?= $index ?>Product<?= $soldItem->object->id?>" type="submit" class="btn btn-primary w-100 py-3 mt-2">Ürün Çıkış Bilgilerini Güncelle</button>
+                                                        <button name="action" value="fulfil_delete" id="Delete<?= $index ?>Product<?= $soldItem->object->id ?>" type="submit" class="btn btn-danger w-100 py-3 mt-2">Ürün Çıkış Bilgilerini Sil</button>
                                                     </form>
                                                 </div>
                                             </div>
