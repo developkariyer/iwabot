@@ -197,7 +197,7 @@ include '../_header.php';
                 <div class="accordion-body p-5">
                     <table class="table table-striped-columns table-hover table-border mb-3">
                         <thead>
-                            <tr>
+                            <tr class="table-dark">
                                 <th>Kategori</th>
                                 <th>Ürün Adedi</th>
                                 <th>Toplam Mevcut</th>
@@ -215,20 +215,26 @@ include '../_header.php';
                     </table>
                     <table class="table table-striped-columns table-hover table-border">
                         <thead>
-                            <tr>
+                            <tr class="table-dark">
                                 <th>Ürün Adı</th>
                                 <th>FNSKU</th>
                                 <th>Toplam Adet</th>
                             </tr>
                         </thead>
                         <tbody>
+                            <?php $grandTotal = 0; ?>
                             <?php foreach ($topProducts as $product): ?>
                                 <tr>
                                     <td><?= htmlspecialchars($product->name) ?></td>
                                     <td><?= htmlspecialchars($product->fnsku) ?></td>
                                     <td><?= $product->getTotalCount() ?></td>
+                                    <?php $grandTotal += $product->getTotalCount(); ?>
                                 </tr>
                             <?php endforeach; ?>
+                            <tr class="table-dark">
+                                <td colspan="2"><strong>Genel Toplam</strong></td>
+                                <td><strong><?= $grandTotal ?></strong></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
