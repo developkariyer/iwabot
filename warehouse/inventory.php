@@ -175,7 +175,6 @@ include '../_header.php';
                         <div id="product_info"></div>
                         <h4>Raflar ve Koliler</h4>
                         <select id="dynamic_container_list" class="form-select">
-                            <?= $product_containers ?>
                         </select>
                     </div>
                 </div>
