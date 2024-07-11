@@ -3,18 +3,64 @@
 if (php_sapi_name() !== 'cli') {
     die('Hello World!');
 }
-exit;
 function cik() {
     echo "Exiting...\n";
     $GLOBALS['pdo']->rollBack();
     exit;
 }
 
-require_once('WarehouseAbstract.php');
-require_once('WarehouseProduct.php');
-require_once('WarehouseContainer.php');
+require_once __DIR__ . '/../vendor/autoload.php';
 
-require_once ('../_init.php');
+require_once('../_init.php');
+
+require_once 'WarehouseAbstract.php';
+require_once 'WarehouseProduct.php';
+require_once 'WarehouseContainer.php';
+require_once 'WarehouseSold.php';
+require_once 'WarehouseLogger.php';
+
+echo "Deleting products and containers in ships...\n";
+$containers = WarehouseContainer::getAll();
+$ships = [];
+foreach ($containers as $container) {
+    if ($container->type === 'Gemi') {
+        echo "  Found ship: $container->name\n";
+        $children = $container->getChildren();
+        $children[] = $container;
+        foreach ($children as $child) {
+            echo "    Found container: $child->name\n";
+            sleep(2);
+            $products = $child->getProducts();
+            foreach ($products as $product) {
+                echo "      Found product $product->name. Deleting...";/*
+                sleep(2);
+                if ($product->removeFromContainer($child, $product->getInContainerCount($child), true)) {
+                    echo " OK\n";
+                } else {
+                    echo " FAILED\n";
+                }*/ echo "\n";
+            }
+            echo "    Deleting container $child->name..."; /*
+            sleep(2);
+            if ($child->delete()) {
+                echo " OK\n";
+            } else {
+                echo " FAILED\n";
+            }*/ echo "\n";
+        }
+        echo "  $container->name deleted\n";
+    }
+}
+
+
+
+
+
+
+
+
+
+exit;
 
 echo "Flushing tables...\n";
 $GLOBALS['pdo']->query('TRUNCATE warehouse_container_product');
