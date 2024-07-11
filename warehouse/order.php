@@ -43,7 +43,7 @@ include '../_header.php';
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingSub1">
                                 <button class="accordion-button collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#subAccordion1" aria-expanded="false" aria-controls="subAccordion1">
-                                    <span><strong>İşlem Bekleyen Koliler</strong></span>
+                                    <span><strong>İşlem Bekleyen Koliler (<?= count($unfulfilledBoxes) ?> koli)</strong></span>
                                 </button>
                             </h2>
                             <div id="subAccordion1" class="accordion-collapse collapse" aria-labelledby="headingSub1" data-bs-parent="#nestedAccordion1">
@@ -97,7 +97,7 @@ include '../_header.php';
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingSub2">
                                 <button class="accordion-button collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#subAccordion2" aria-expanded="false" aria-controls="subAccordion2">
-                                    <span><strong>İşlem Bekleyen Ürünler</strong></span>
+                                    <span><strong>İşlem Bekleyen Ürünler (<?= count($unfulfilledProducts) ?> ürün)</strong></span>
                                 </button>
                             </h2>
                             <div id="subAccordion2" class="accordion-collapse collapse" aria-labelledby="headingSub2" data-bs-parent="#nestedAccordion1">
