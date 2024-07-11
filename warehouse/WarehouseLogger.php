@@ -39,6 +39,7 @@ class WarehouseLogger
 
     public function __get($field)
     {
+        error_log("Getting field $field");
         if (in_array($field, ['created_at', 'updated_at', 'deleted_at'])) {
             if (empty($this->field)) {
                 return null;
