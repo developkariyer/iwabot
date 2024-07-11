@@ -7,7 +7,6 @@ abstract class WarehouseAbstract
     protected static $containerSignatureTableName = 'warehouse_view_container_signatures';
     protected static $containerTableName = 'warehouse_container';
     protected static $productTableName = 'warehouse_product';
-//    protected static $logTableName = 'warehouse_log';
 
     public $id = null;
     protected $dbValues = [];
