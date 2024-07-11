@@ -113,8 +113,6 @@ function loadPermissions($noCache = false) {
                     break;
                 case 'manage':
                     $manageUsers[] = $row['user_id'];
-                    $orderUsers[] = $row['user_id'];
-                    $processUsers[] = $row['user_id'];
                     $viewUsers[] = $row['user_id'];
                     break;
             }
