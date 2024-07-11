@@ -77,7 +77,7 @@ include '../_header.php';
             <div id="transfersAccordion3" class="accordion-collapse collapse show" aria-labelledby="headingMain3" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
                     <?php foreach ($allSoldOrders as $soldTitle => $soldOrders): ?>
-                        <h3><?= $soldTitle ?></h3>
+                        <h4><?= $soldTitle ?></h4>
                         <div class="mb-3">
                             <table class="table table-striped-columns table-hover table-border">
                                 <thead>
