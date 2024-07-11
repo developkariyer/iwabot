@@ -88,7 +88,11 @@ class WarehouseProduct extends WarehouseAbstract
                 $stmt->execute(['product_id' => $this->id]);
                 $containers = [];
                 while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    $containers[] = WarehouseContainer::getById($data['container_id']);
+                    $container = WarehouseContainer::getById($data['container_id']);
+                    if ($container->parent && $container->parent->type === 'Gemi') {
+                        continue;
+                    }
+                    $containers[] = $container;
                 }
                 $this->containers = $containers;
                 static::setCache("Product{$this->id}Containers", serialize($this->containers));
