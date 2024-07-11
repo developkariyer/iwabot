@@ -185,6 +185,7 @@ include '../_header.php';
             foreach ($topProductsRows as $row) {
                 $topProducts[] = WarehouseProduct::getById($row['product_id']);
             }
+            $topCategories = $GLOBALS['pdo']->query("SELECT category, SUM(total_count) as total_count, count(*) as product_count FROM warehouse_product_totals GROUP BY category ORDER BY total_count DESC")->fetchAll(PDO::FETCH_ASSOC);
         ?>
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingMain4">
@@ -194,6 +195,24 @@ include '../_header.php';
             </h2>
             <div id="inventoryAccordion4" class="accordion-collapse collapse" aria-labelledby="headingMain4" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
+                    <table class="table table-striped-columns table-hover table-border mb-3">
+                        <thead>
+                            <tr>
+                                <th>Kategori</th>
+                                <th>Ürün Adedi</th>
+                                <th>Toplam Mevcut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($topCategories as $category): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($category['category']) ?></td>
+                                    <td><?= htmlspecialchars($category['product_count']) ?></td>
+                                    <td><?= htmlspecialchars($category['total_count']) ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
                     <table class="table table-striped-columns table-hover table-border">
                         <thead>
                             <tr>
