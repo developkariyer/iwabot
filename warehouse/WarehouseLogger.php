@@ -6,7 +6,7 @@ class WarehouseLogger
     public $id = null;
     public $action = null;
     public $data = [];
-    public $created_at = null;
+    private $created_at = null;
     public $object = null;
 
     public static function logAction($action, $data, $object = null)
