@@ -118,7 +118,7 @@ $permissionList = [
                                     <input type="hidden" name="action" value="permission_<?= $permType ?>_remove">
                                     <input type="hidden" name="target_id" value="<?= htmlspecialchars($user_id) ?>">
                                     <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                                    <span class="badge bg-secondary me-2">
+                                    <span class="badge bg-secondary me-2 mb-1">
                                         <?= htmlspecialchars($userList[$user_id]) ?>
                                         <button type="submit" class="btn-close btn-close-white ms-2" aria-label="Close"></button>
                                     </span>
