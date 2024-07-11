@@ -3,8 +3,8 @@
 require_once('warehouse.php');
 
 $allSoldOrders = [
-    WarehouseSold::getSoldItems(fulfilled: false),
-    WarehouseSold::getSoldItems(fulfilled: true),
+    "İşlem Bekleyen Siparişler" => WarehouseSold::getSoldItems(fulfilled: false),
+    "İşlem Yapılmış Siparişler" => WarehouseSold::getSoldItems(fulfilled: true),
 ];
 
 $slackUsers = slackUsers();
@@ -76,7 +76,8 @@ include '../_header.php';
             </h2>
             <div id="transfersAccordion3" class="accordion-collapse collapse show" aria-labelledby="headingMain3" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
-                    <?php foreach ($allSoldOrders as $soldOrders): ?>
+                    <?php foreach ($allSoldOrders as $soldTitle => $soldOrders): ?>
+                        <h3><?= $soldTitle ?></h3>
                         <div class="mb-3">
                             <table class="table table-striped table-hover table-sm">
                                 <thead>
