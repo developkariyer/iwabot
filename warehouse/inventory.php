@@ -187,89 +187,89 @@ include '../_header.php';
     <?= wh_menu() ?>
 </div>
 <script>
-$(document).ready(function() {
-    $('#inventoryAccordion2').on('shown.bs.collapse', function () {
-        $('#filterInput2').on('keyup', function() {
-            var value = $(this).val().toLowerCase();
-            $('#inventoryAccordion2 .accordion-item').each(function() {
-                var headerText = $(this).find('.accordion-header').text().toLowerCase();
-                if (value === "") {
-                    $(this).hide();
-                } else {
-                    $(this).toggle(headerText.indexOf(value) > -1);
-                }
-            });
-        });
-    });
-
     $(document).ready(function() {
-        $('#product_select').on('change', function() {
-            var productId = $(this).val();
-            if (productId) {
-                $.ajax({
-                    url: 'controller.php',
-                    method: 'POST',
-                    data: { product_id: productId , action: 'product_info', csrf_token: '<?= $_SESSION['csrf_token'] ?>'},
-                    success: function(response) {
-                        $('#product_info').html(response.info);
-                        $('#selectedProduct').removeClass('d-none');
-                        // Convert the response.container HTML to <ul><li> format
-                        var ulList = convertToUlLi(response.container);
-                        $('#dynamic_container_list').html(ulList);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error fetching product information:', error);
+        $('#inventoryAccordion2').on('shown.bs.collapse', function () {
+            $('#filterInput2').on('keyup', function() {
+                var value = $(this).val().toLowerCase();
+                $('#inventoryAccordion2 .accordion-item').each(function() {
+                    var headerText = $(this).find('.accordion-header').text().toLowerCase();
+                    if (value === "") {
+                        $(this).hide();
+                    } else {
+                        $(this).toggle(headerText.indexOf(value) > -1);
                     }
                 });
-            } else {
-                $('#selectedProduct').addClass('d-none');
+            });
+        });
+
+        $(document).ready(function() {
+            $('#product_select').on('change', function() {
+                var productId = $(this).val();
+                if (productId) {
+                    $.ajax({
+                        url: 'controller.php',
+                        method: 'POST',
+                        data: { product_id: productId , action: 'product_info', csrf_token: '<?= $_SESSION['csrf_token'] ?>'},
+                        success: function(response) {
+                            $('#product_info').html(response.info);
+                            $('#selectedProduct').removeClass('d-none');
+                            // Convert the response.container HTML to <ul><li> format
+                            var ulList = convertToUlLi(response.container);
+                            $('#dynamic_container_list').html(ulList);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error fetching product information:', error);
+                        }
+                    });
+                } else {
+                    $('#selectedProduct').addClass('d-none');
+                }
+            });
+
+            function convertToUlLi(containerHtml) {
+                var ul = $('<ul></ul>');
+                var containerDiv = $('<div></div>').html(containerHtml);
+
+                containerDiv.find('optgroup').each(function() {
+                    var optgroup = $(this);
+                    var li = $('<li></li>').text(optgroup.attr('label'));
+                    var subUl = $('<ul></ul>');
+
+                    optgroup.find('option').each(function() {
+                        var option = $(this);
+                        var subLi = $('<li></li>').text(option.text()).attr('data-value', option.attr('value'));
+                        subUl.append(subLi);
+                    });
+
+                    li.append(subUl);
+                    ul.append(li);
+                });
+
+                return ul;
             }
         });
 
-        function convertToUlLi(containerHtml) {
-            var ul = $('<ul></ul>');
-            var containerDiv = $('<div></div>').html(containerHtml);
-
-            containerDiv.find('optgroup').each(function() {
-                var optgroup = $(this);
-                var li = $('<li></li>').text(optgroup.attr('label'));
-                var subUl = $('<ul></ul>');
-
-                optgroup.find('option').each(function() {
-                    var option = $(this);
-                    var subLi = $('<li></li>').text(option.text()).attr('data-value', option.attr('value'));
-                    subUl.append(subLi);
-                });
-
-                li.append(subUl);
-                ul.append(li);
-            });
-
-            return ul;
-        }
     });
 
-});
 
+    function copyToClipboard(elementId) {
+        var text = document.getElementById(elementId).innerText;
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("Copy");
+        document.body.removeChild(textArea);
 
-function copyToClipboard(elementId) {
-    var text = document.getElementById(elementId).innerText;
-    var textArea = document.createElement("textarea");
-    textArea.value = text;
-    document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand("Copy");
-    document.body.removeChild(textArea);
-
-    // Show the temporary message
-    var copyMessage = document.getElementById('copyMessage');
-    copyMessage.style.display = 'inline';
-    
-    // Hide the message after 1 second
-    setTimeout(function() {
-        copyMessage.style.display = 'none';
-    }, 1000);
-}
+        // Show the temporary message
+        var copyMessage = document.getElementById('copyMessage');
+        copyMessage.style.display = 'inline';
+        
+        // Hide the message after 1 second
+        setTimeout(function() {
+            copyMessage.style.display = 'none';
+        }, 1000);
+    }
 
 </script>
 
