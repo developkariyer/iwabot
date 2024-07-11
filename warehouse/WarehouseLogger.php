@@ -221,7 +221,7 @@ class WarehouseLogger
                 $content.= '            <td>' . htmlspecialchars($log->action) . '</td>';
                 $content.= '            <td>' . $log->aciklama() . '</td>';
                 $content.= '            <td>' . htmlspecialchars($log->username()) . '</td>';
-                $content.= '            <td>' . htmlspecialchars($log->created_at) . '</td>';
+                $content.= '            <td>' . htmlspecialchars($log->__get('created_at')) . '</td>';
                 $content.= '        </tr>';
             }
         } else {
