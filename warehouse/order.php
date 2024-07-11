@@ -184,6 +184,7 @@ include '../_header.php';
                                 <?= containersInOpt('Raf') ?>
                             </select>
                         </div>
+                        <div id="containerInfo" class="m-3"></div>
                         <div class="mb-3">
                             <label for="description" class="form-label">Açıklama</label>
                             <textarea id="description" name="description" rows="5" class="form-control btn-outline-success w-100 py-3" placeholder="Açıklama" required></textarea>
@@ -203,6 +204,27 @@ include '../_header.php';
 
 <script defer>
     $(document).ready(function(){$('#smart_container_id').select2({theme: "classic"});});
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const containerSelect = document.getElementById('smart_container_id');
+        const containerInfoDiv = document.getElementById('containerInfo');
+
+        containerSelect.addEventListener('change', function() {
+            const containerId = containerSelect.value;
+            if (containerId) {
+                fetch(`controller.php?action=container_info&container_id=${containerId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        containerInfoDiv.innerHTML = data.info;
+                    })
+                    .catch(error => console.error('Error fetching container info:', error));
+            } else {
+                containerInfoDiv.innerHTML = '';
+            }
+        });
+    });
+
+
 </script>
 
 
