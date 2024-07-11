@@ -37,6 +37,24 @@ class WarehouseLogger
         }
     }
 
+    public function __get($field)
+    {
+        if (in_array($field, ['created_at', 'updated_at', 'deleted_at'])) {
+            if (empty($this->field)) {
+                return null;
+            }
+            $timezone = 'Europe/Istanbul';
+            if (isset($_COOKIE['timezone'])) {
+                $timezone = $_COOKIE['timezone'];
+            }
+            $date = new DateTime($this->$field);
+            $date->setTimezone(new DateTimeZone($timezone));
+            return $date->format('Y-m-d H:i:s T');
+
+        }
+        return $this->$field || null;
+    }
+
     public static function getLogCount()
     {
         $stmt = $GLOBALS['pdo']->prepare("SELECT count(*) as count FROM " . self::$logTableName);

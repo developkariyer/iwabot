@@ -54,6 +54,14 @@
             text-overflow: ellipsis;
         }
     </style>
+    <script>
+        function setTimezoneCookie() {
+            var timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            document.cookie = "timezone=" + timezone + "; path=/";
+        }
+
+        document.addEventListener('DOMContentLoaded', setTimezoneCookie);
+    </script>
 </head>
 <body>
 <?php
