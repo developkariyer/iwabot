@@ -165,6 +165,21 @@ class WarehouseLogger
                 return 'Sipariş karşılanma';
             case 'addSoldItem':
                 return 'Sipariş oluşturma';
+            case 'permissionChange':
+                $permissionList = [
+                    'manage' => 'IWA Depo Yönetme',
+                    'order' => 'Sipariş Oluşturma',
+                    'process' => 'Depo İşletme',
+                    'view' => 'Envanter Görüntüleme',
+                ];
+                $permParam = explode('_', $this->data['permissionAction']);
+                $permType = $permParam[1];
+                $permAction = $permParam[2];
+                $content = "<strong>";
+                $content.= ($permType === 'view') ? channelIdToName($this->data['target_id'])."</strong> kanalı" : username($this->data['target_id'])."</strong> kullanıcısı";
+                $content.= " için <strong>{$permissionList[$permType]}</strong> yetkisi ";
+                $content.= ($permAction === 'add') ? 'verildi' : 'kaldırıldı';
+                return $content;
             case 'addNew':
                 if ($this->object) {
                     return (get_class($this->object) === 'WarehouseProduct') ? "\"{$this->object->name}\" ürünü eklendi" : "\"{$this->object->name}\" kolisi eklendi";
