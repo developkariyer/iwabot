@@ -132,6 +132,7 @@ class WarehouseLogger
         return username($this->data['user']);
     }
 
+
     public function aciklama()
     {
         switch($this->action) {
@@ -144,7 +145,7 @@ class WarehouseLogger
                     $container_name = 'Bilinmeyen';
                     $container_type = 'yerine';
                 }
-                return "{$this->data['count']} adet <strong>{$this->object->name}</strong> ürünü <strong>{$container_name}</strong> $container_type yerleştirildi";
+                return "{$this->data['count']} adet <strong>{$this->object->name}</strong> ({$this->object->id}) ürünü <strong>{$container_name}</strong> $container_type yerleştirildi";
             case 'removeFromContainer':
                 $container_id = $this->data['container_id'];
                 if ($container = WarehouseContainer::getById($container_id)) {
@@ -154,21 +155,21 @@ class WarehouseLogger
                     $container_name = 'Bilinmeyen';
                     $container_type = 'yerine';
                 }
-                return "{$this->data['count']} adet <strong>{$this->object->name}</strong> ürünü <strong>{$container_name}</strong> $container_type alındı";
+                return "{$this->data['count']} adet <strong>{$this->object->name}</strong> ({$this->object->id}) ürünü <strong>{$container_name}</strong> $container_type alındı";
             case 'setParent':
                 $newContainer = WarehouseContainer::getById($this->data['new_parent_id']);
                 $oldContainer = WarehouseContainer::getById($this->data['old_parent_id']);
                 $newContainerName = $newContainer ? $newContainer->name : 'Bilinmeyen';
                 $oldContainerName = $oldContainer ? $oldContainer->name : 'Bilinmeyen';
-                return "<strong>{$this->object->name}</strong> kolisi <strong>{$oldContainerName}</strong> rafından <strong>{$newContainerName}</strong> rafına taşındı";
+                return "<strong>{$this->object->name}</strong> ({$this->object->id}) kolisi <strong>{$oldContainerName}</strong> rafından <strong>{$newContainerName}</strong> rafına taşındı";
             case 'fulfilSoldItem':
                 return "Sipariş karşılanma (#{$this->data['sold_id']})";
             case 'addSoldItem':
                 $tip = ($this->object instanceof WarehouseProduct) ? "ürünü" : "kolisi";
-                return "<strong>{$this->object->name}</strong> $tip için yeni sipariş kaydı girildi (#{$this->data['sold_id']})";
+                return "<strong>{$this->object->name}</strong> ({$this->object->id}) $tip için yeni sipariş kaydı girildi (#{$this->data['sold_id']})";
             case 'deleteSoldItem':
                 $tip = ($this->object instanceof WarehouseProduct) ? "ürünü" : "kolisi";
-                return "<strong>{$this->object->name}</strong> $tip için sipariş kaydı silindi (#{$this->data['sold_id']})";
+                return "<strong>{$this->object->name}</strong> ({$this->object->id}) $tip için sipariş kaydı silindi (#{$this->data['sold_id']})";
             case 'permissionChange':
                 $permissionList = [
                     'manage' => 'IWA Depo Yönetme',
