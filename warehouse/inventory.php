@@ -250,6 +250,37 @@ $(document).ready(function() {
     });
 
 
+
+    $(document).ready(function() {
+        $('#customActionForm').on('submit', function(event) {
+            var action = $(document.activeElement).val(); // Get the value of the clicked button
+            var containerId = $('#dynamic_container_list').val();
+            var newContainerId = $('#dynamic_new_container').val();
+            var count = $('[name="count"]').val();
+            if (count < 1) {
+                alert('Ürün adedi 1\'den küçük olamaz.');
+                event.preventDefault();
+                return;
+            }
+            var valid = true;
+            
+            if (action === 'remove_from_container' && !containerId) {
+                valid = false;
+                alert('Ürünün olduğu raf/kolilerden birini seçin.');
+            } else if (action === 'move_to_container' && (!containerId || !newContainerId)) {
+                valid = false;
+                alert('Hem mevcut hem de yeni raf/koliyi seçin.');
+            } else if (action === 'place_in_container' && !newContainerId) {
+                valid = false;
+                alert('Ürünün yerleştirileceği raf/koliyi seçin.');
+            }
+
+            if (!valid) {
+                event.preventDefault(); // Prevent the form from submitting if validation fails
+            }
+        });
+    });
+
 });
 
 </script>
