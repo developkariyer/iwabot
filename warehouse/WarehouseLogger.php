@@ -182,10 +182,10 @@ class WarehouseLogger
         $logCount = self::getLogCount();
         $content = '<nav aria-label="Page navigation example">';
         $content.= '    <ul class="pagination">';
-        $content.= '        <li class="page-item"><a class="page-link" href="loadLogs(0)">&lt;&lt;</a></li>';
-        $content.= '        <li class="page-item ' . ($offset ? '' : 'disabled') . '"><a class="page-link" href="loadLogs(' . max(0, $offset-$logStep) . ')">&lt;</a></li>';
-        $content.= '        <li class="page-item ' . ($logCount<=$offset+$logStep ? 'disabled' : '') . '"><a class="page-link" href="loadLogs(' . ($offset+$logStep) . ')">&gt;</a></li>';
-        $content.= '        <li class="page-item ' . ($logCount<=$offset ? 'disabled' : '') . '"><a class="page-link" href="loadLogs(' . (floor($logCount / $logStep) * $logStep) . ')">&gt;&gt;</a></li>';
+        $content.= '        <li class="page-item"><button class="page-link" onclick="loadLogs(0)">&lt;&lt;</button></li>';
+        $content.= '        <li class="page-item ' . ($offset ? '' : 'disabled') . '"><button class="page-link" onclick="loadLogs(' . max(0, $offset-$logStep) . ')">&lt;</button></li>';
+        $content.= '        <li class="page-item ' . ($logCount<=$offset+$logStep ? 'disabled' : '') . '"><button class="page-link" onclick="loadLogs(' . ($offset+$logStep) . ')">&gt;</button></li>';
+        $content.= '        <li class="page-item ' . ($logCount<=$offset ? 'disabled' : '') . '"><button class="page-link" onclick="loadLogs(' . (floor($logCount / $logStep) * $logStep) . ')">&gt;&gt;</button></li>';
         $content.= '    </ul>';
         $content.= '</nav>';
         $content.= '<table class="table table-striped-columns table-sm table-hover">';
