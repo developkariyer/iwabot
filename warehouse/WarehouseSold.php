@@ -117,12 +117,14 @@ class WarehouseSold
                 error_log("fulfil: Object is not compatible: " . get_class($object) . " vs " . get_class($this->object));
                 throw new Exception("fulfil: Object is not compatible");
             }
+            error_log('fulfil: Object is compatible');
             $this->object = $object;
         }
         if (!$this->object) {
             throw new Exception("fulfil: Object is required");
         }
         if ($this->item_type === 'WarehouseProduct') {
+            error_log('fulfil: Item type is product');
             if (!is_object($container)) {
                 throw new Exception("fulfil: Container is required for product");
             }
@@ -132,6 +134,25 @@ class WarehouseSold
             if (!$this->object->removeFromContainer($container)) {
                 throw new Exception("fulfil: Product could not be removed from container");
             }
+            error_log($this->object->name . ' removed from ' . $container->name);
+        }
+        if ($this->item_type === 'WarehouseContainer') {
+            error_log('fulfil: Item type is container');
+            if ($this->object->type !== 'Koli') {
+                throw new Exception("fulfil: Container type is not Koli");
+            }
+            foreach ($this->object->getProducts() as $product) {
+                for ($i = 0; $i < $product->getInContainerCount($this->object); $i++) {
+                    if (!$product->removeFromContainer($this->object)) {
+                        throw new Exception("fulfil: Product could not be removed from container");
+                    }
+                    error_log($product->name . ' removed from ' . $this->object->name);
+                }
+            }
+            if (!$this->object->delete()) {
+                throw new Exception("fulfil: Container could not be deleted");
+            }
+            error_log($this->object->name . ' deleted');
         }
         $stmt = $GLOBALS['pdo']->prepare("UPDATE " . self::$soldItemsTableName . " SET fulfilled_at = NOW(), item_id = :item_id WHERE id = :id AND deleted_at IS NULL");
         if ($stmt->execute(['id' => $this->id, 'item_id' => $this->object->id])) {
