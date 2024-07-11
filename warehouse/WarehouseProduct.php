@@ -180,9 +180,13 @@ class WarehouseProduct extends WarehouseAbstract
         return false;
     }
 
-    public function removeFromContainer($container, $count = 1)
+    public function removeFromContainer($container, $count = 1, $noCheck = false)
     {
         if ($container instanceof WarehouseContainer && !empty($this->id) && $count>0) {
+            if (!$noCheck && $container->type === 'Koli') {
+                addMessage('Koli içerisinden ürün çıkartılamaz. Önce koliyi boşaltın!', 'danger');
+                return 0;
+            }
             $sql = "UPDATE " . WarehouseAbstract::$productJoinTableName . " SET deleted_at = NOW() WHERE deleted_at IS NULL AND container_id = :container_id AND product_id = :product_id LIMIT $count";
             $stmt = $GLOBALS['pdo']->prepare($sql);
             $stmt->bindParam(':container_id', $container->id, PDO::PARAM_INT);
@@ -197,11 +201,11 @@ class WarehouseProduct extends WarehouseAbstract
         return 0;
     }
 
-    public function moveToContainer($oldContainer, $newContainer, $count = 1)
+    public function moveToContainer($oldContainer, $newContainer, $count = 1, $noCheck = false)
     {
         error_log("Moving $count items from {$oldContainer->name} to {$newContainer->name}");
         if ($oldContainer instanceof WarehouseContainer && $newContainer instanceof WarehouseContainer && !empty($this->id) && $count>0) {
-            $newCount = $this->removeFromContainer($oldContainer, $count);
+            $newCount = $this->removeFromContainer($oldContainer, $count, $noCheck);
             error_log("  Removed $newCount items from {$oldContainer->name}");
             if ($newCount && $newCount<=$count) {
                 if ($this->placeInContainer($newContainer, $newCount)) {

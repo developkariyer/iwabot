@@ -204,7 +204,7 @@ function handleFlushBox() { //flush_box
             continue;
         }
         foreach ($container->getProducts() as $product) {
-            $product->moveToContainer($container, $flush_to, $product->getInContainerCount($container));
+            $product->moveToContainer($container, $flush_to, $product->getInContainerCount($container), true);
         }
         if ($container->delete()) {
             addMessage("{$container->name} içindeki ürünler {$flush_to->name} altına taşındı ve {$container->name} silindi");

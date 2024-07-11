@@ -173,15 +173,7 @@ class WarehouseContainer extends WarehouseAbstract
                 $sql .= " AND parent_id = :parent_id";
                 $params['parent_id'] = $parent_id;
             }
-        }/*TODO warehouse fix
-        if (is_null($warehouse)) {
-            $sql .= " AND warehouse IS NULL";
-        } else {
-            if (static::validateField('warehouse', $warehouse)) {
-                $sql .= " AND warehouse = :warehouse";
-                $params['warehouse'] = $warehouse;
-            }
-        }*/
+        }
         $sql .= " ORDER BY name ASC";
         $stmt = $GLOBALS['pdo']->prepare($sql);
         $stmt->execute($params);
