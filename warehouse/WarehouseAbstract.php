@@ -154,7 +154,6 @@ abstract class WarehouseAbstract
         if (is_null(static::$predis)) {
             static::$predis = new Predis\Client();
         }
-        error_log('Redis cache flushed');
         return static::$predis->flushdb();
     }
 
