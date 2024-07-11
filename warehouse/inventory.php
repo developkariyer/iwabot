@@ -32,7 +32,7 @@ include '../_header.php';
 
 <div class="container mt-5">
     <div class="jumbotron text-center">
-        <h1>Envanter Yönetimi</h1>
+        <h1>Envanter Bilgisi</h1>
         <p>Depo envanterini görüntüleyin. Depo Ana Menü için <a href="./">buraya basınız.</a></p>
     </div>
     <div class="accordion mb-3" id="mainAccordion">
