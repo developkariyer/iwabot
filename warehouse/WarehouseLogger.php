@@ -176,7 +176,7 @@ class WarehouseLogger
                 $permType = $permParam[1];
                 $permAction = $permParam[2];
                 $content = "<strong>";
-                $content.= ($permType === 'view') ? channelIdToName($this->data['target_id'])."</strong> kanalı" : username($this->data['target_id'])."</strong> kullanıcısı";
+                $content.= ($permType === 'view') ? channelIdToName($this->data['target_id'][0])."</strong> kanalı" : username($this->data['target_id'][0])."</strong> kullanıcısı";
                 $content.= " için <strong>{$permissionList[$permType]}</strong> yetkisi ";
                 $content.= ($permAction === 'add') ? 'verildi' : 'kaldırıldı';
                 return $content;
