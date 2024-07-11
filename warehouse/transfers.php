@@ -22,7 +22,6 @@ include '../_header.php';
     <div class="jumbotron text-center">
         <h1>İşlem Kayıtları</h1>
         <p>İşlem kayıtlarını ve sipariş karşılanma durumunu görüntüleyin. Depo Ana Menü için <a href="./">buraya basınız.</a></p>
-        <p><i>Bu sayfadaki tüm saatler Greenwitch/UTC/Z saat dilimindedir.</i></p>
 
     </div>
     <div class="accordion mb-3" id="mainAccordion">

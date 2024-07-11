@@ -251,7 +251,11 @@ abstract class WarehouseAbstract
         if ($this->canDelete()) {
             $stmt = $GLOBALS['pdo']->prepare("UPDATE " . static::getTableName() . " SET deleted_at = NOW() WHERE id = ? AND deleted_at IS NULL LIMIT 1");
             static::clearAllCache();
-            return $stmt->execute([$this->id]);
+            if ($stmt->execute([$this->id])) {
+                WarehouseLogger::logAction('delete', ['id'=>$this->id], $this);
+                return true;
+            }
+            return false;
         }
         throw new Exception("Cannot delete object");
     }
