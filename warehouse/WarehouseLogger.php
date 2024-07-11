@@ -14,7 +14,7 @@ class WarehouseLogger
         if (!is_array($data)) {
             throw new Exception('logAction: Data must be an array');
         }
-        $data['user'] = $_SESSION['user_id'];
+        $data['user'] = $_SESSION['user_id'] ?? 'Unknown';
         if ($object) {
             $data['class'] = get_class($object);
             $data['id'] = $object->id;
