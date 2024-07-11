@@ -46,7 +46,9 @@ include '../_header.php';
                                         <th scope="col">Sipariş</th>
                                         <th scope="col">Açıklama</th>
                                         <th scope="col">Sipariş Giriş</th>
-                                        <th scope="col">Depo Çıkış</th>
+                                        <?php if ($soldTitle === "İşlem Yapılmış Son ~20 Sipariş"): ?>
+                                            <th scope="col">Depo Çıkış</th>
+                                        <?php endif; ?>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -60,7 +62,9 @@ include '../_header.php';
                                             <td><strong><?= $order->item_type === 'WarehouseProduct' ? 'Ürün' : 'Koli' ?></strong><br><?= htmlspecialchars($order->object->name) ?><br>(<?= $order->object instanceof WarehouseProduct ? htmlspecialchars($order->object->fnsku) : htmlspecialchars($order->object->parent->name) ?>)</td>
                                             <td><?= nl2br(htmlspecialchars($order->description)) ?></td>
                                             <td><strong><?= $logAdd ? $logAdd->username() : '' ?></strong><br><?= htmlspecialchars($order->created_at) ?></td>
-                                            <td><strong><?= $logFulfil ? $logFulfil->username() : '' ?></strong><br><?= htmlspecialchars($order->fulfilled_at) ?></td>
+                                            <?php if ($soldTitle === "İşlem Yapılmış Son ~20 Sipariş"): ?>
+                                                <td><strong><?= $logFulfil ? $logFulfil->username() : '' ?></strong><br><?= htmlspecialchars($order->fulfilled_at) ?></td>
+                                            <?php endif; ?>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
