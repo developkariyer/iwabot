@@ -136,6 +136,11 @@ class WarehouseLogger
     public function aciklama()
     {
         switch($this->action) {
+            case 'delete':
+                if (get_class($this->object) === 'WarehouseProduct') {
+                    return "<strong>{$this->object->name}</strong> ({$this->object->id}) ürünü silindi";
+                }
+                return "<strong>{$this->object->name}</strong> ({$this->object->id}) kolisi silindi";
             case 'placeInContainer':
                 $container_id = $this->data['container_id'];
                 if ($container = WarehouseContainer::getById($container_id)) {
