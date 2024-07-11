@@ -190,7 +190,7 @@ class WarehouseLogger
         $content.= '</nav>';
         $content.= '<table class="table table-striped-columns table-sm table-hover">';
         $content.= '    <thead>';
-        $content.= '        <tr>';
+        $content.= '        <tr class="table-dark">';
         $content.= '            <th scope="col">#</th>';
         $content.= '            <th scope="col">İşlem</th>';
         $content.= '            <th scope="col">Açıklama</th>';
