@@ -137,13 +137,11 @@ function handlePermissionChange($action) {
             if (!isset($channelList[$id]) || ($addRemove === 'remove' && !in_array($id, $GLOBALS['permissions']['view_channels']))) {
                 continue;
             }
-            error_log($sql);
             $flag = $flag || $stmt->execute(['user_id' => $id, 'permission' => 'view']);
         } else {
             if (!isset($userList[$id]) || ($addRemove === 'remove' && !in_array($id, $GLOBALS['permissions'][$permType]))) {
                 continue;
             }
-            error_log($sql);
             $flag = $flag || $stmt->execute(['user_id' => $id, 'permission' => $permType]);
         }
     }

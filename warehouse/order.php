@@ -206,16 +206,13 @@ include '../_header.php';
 
     $(document).ready(function(){$('#smart_container_id').select2({theme: "classic"});});
 
-    console.log('Loading script');
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM Loaded');
         const containerSelect = document.getElementById('smart_container_id');
         const containerInfoDiv = document.getElementById('containerInfo');
 
         $('#smart_container_id').on('select2:select', function(e) {
             const containerId = containerSelect.value;
             if (containerId) {
-                console.log('Container selected:', containerId);
                 fetch(`controller.php?action=container_info&container_id=${containerId}`)
                     .then(response => response.json())
                     .then(data => {
@@ -223,7 +220,6 @@ include '../_header.php';
                     })
                     .catch(error => console.error('Error fetching container info:', error));
             } else {
-                console.log('No container selected');
                 containerInfoDiv.innerHTML = '';
             }
         });
