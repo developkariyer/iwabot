@@ -202,7 +202,7 @@ include '../_header.php';
     <?= wh_menu() ?>
 </div>
 
-<script defer>
+<script>
     $(document).ready(function(){$('#smart_container_id').select2({theme: "classic"});});
 
     document.addEventListener('DOMContentLoaded', function() {
