@@ -77,6 +77,9 @@ switch($action) {
     case 'container_info':
         handleContainerInfo();
         break;
+    case 'handle_log':
+        WarehouseLogger::handleLog(getPostValue('offset'));
+        break;
     case 'clear_cache':
         WarehouseAbstract::clearAllCache();
         addMessage('Önbellek temizlendi');

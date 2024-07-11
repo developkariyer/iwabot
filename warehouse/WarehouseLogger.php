@@ -132,4 +132,91 @@ class WarehouseLogger
         return username($this->data['user']);
     }
 
+    public function aciklama()
+    {
+        switch($this->action) {
+            case 'placeInContainer':
+                $container_id = $this->data['container_id'];
+                if ($container = WarehouseContainer::getById($container_id)) {
+                    $container_name = $container->name;
+                    $container_type = $container->type === 'Raf' ? 'rafına' : 'kolisine';
+                } else {
+                    $container_name = 'Bilinmeyen';
+                    $container_type = 'yerine';
+                }
+                return "{$this->data['count']} adet \"{$this->object->name}\" \"{$container_name}\" $container_type yerleştirildi";
+            case 'removeFromContainer':
+                $container_id = $this->data['container_id'];
+                if ($container = WarehouseContainer::getById($container_id)) {
+                    $container_name = $container->name;
+                    $container_type = $container->type === 'Raf' ? 'rafından' : 'kolisinden';
+                } else {
+                    $container_name = 'Bilinmeyen';
+                    $container_type = 'yerine';
+                }
+                return "{$this->data['count']} adet \"{$this->object->name}\" \"{$container_name}\" $container_type alındı";
+            case 'setParent':
+                $newContainer = WarehouseContainer::getById($this->data['new_parent_id']);
+                $oldContainer = WarehouseContainer::getById($this->data['old_parent_id']);
+                $newContainerName = $newContainer ? $newContainer->name : 'Bilinmeyen';
+                $oldContainerName = $oldContainer ? $oldContainer->name : 'Bilinmeyen';
+                return "\"{$this->object->name}\" kolisi \"{$oldContainerName}\" rafından \"{$newContainerName}\" rafına taşındı";
+            case 'fulfilSoldItem':
+                return 'Sipariş karşılanma';
+            case 'addSoldItem':
+                return 'Sipariş oluşturma';
+            case 'addNew':
+                if ($this->object) {
+                    return (get_class($this->object) === 'WarehouseProduct') ? "\"{$this->object->name}\" ürünü eklendi" : "\"{$this->object->name}\" kolisi eklendi";
+                }
+                return 'Yeni ürün/koli eklendi';
+            default:
+                return 'Bilinmeyen işlem';
+        }
+    }
+
+    public static function handleLog($offset)
+    {
+        header('Content-Type: application/json');
+        $logStep = 20;
+        $logCount = self::getLogCount();
+        $content = '<nav aria-label="Page navigation example">';
+        $content.= '    <ul class="pagination">';
+        $content.= '        <li class="page-item"><a class="page-link" href="loadLogs(0)">&lt;&lt;</a></li>';
+        $content.= '        <li class="page-item ' . ($offset ? '' : 'disabled') . '"><a class="page-link" href="loadLogs(' . max(0, $offset-$logStep) . ')">&lt;</a></li>';
+        $content.= '        <li class="page-item ' . ($logCount<=$offset+$logStep ? 'disabled' : '') . '"><a class="page-link" href="loadLogs(' . ($offset+$logStep) . ')">&gt;</a></li>';
+        $content.= '        <li class="page-item ' . ($logCount<=$offset ? 'disabled' : '') . '"><a class="page-link" href="loadLogs(' . (floor($logCount / $logStep) * $logStep) . ')">&gt;&gt;</a></li>';
+        $content.= '    </ul>';
+        $content.= '</nav>';
+        $content.= '<table class="table table-striped-columns table-sm table-hover">';
+        $content.= '    <thead>';
+        $content.= '        <tr>';
+        $content.= '            <th scope="col">#</th>';
+        $content.= '            <th scope="col">İşlem</th>';
+        $content.= '            <th scope="col">Açıklama</th>';
+        $content.= '            <th scope="col">Kullanıcı</th>';
+        $content.= '            <th scope="col">Zaman</th>';
+        $content.= '        </tr>';
+        $content.= '    </thead>';
+        $content.= '    <tbody>';
+        if ($logs = self::findLogs([], 20, $offset)) {
+            foreach ($logs as $logIndex=>$log) {
+                $content.= '        <tr>';
+                $content.= '            <td>' . ($offset+$logIndex+1) . '</td>';
+                $content.= '            <td>' . htmlspecialchars($log->action) . '</td>';
+                $content.= '            <td>' . htmlspecialchars($log->aciklama()) . '</td>';
+                $content.= '            <td>' . htmlspecialchars($log->username()) . '</td>';
+                $content.= '            <td>' . htmlspecialchars($log->created_at) . '</td>';
+                $content.= '        </tr>';
+            }
+        } else {
+            $content.= '        <tr>';
+            $content.= '            <td colspan="5" class="text-center">İşlem kaydı bulunmamaktadır.</td>';
+            $content.= '        </tr>';
+        }
+        $content.= '    </tbody>';
+        $content.= '</table>';
+        die($content);
+   }
+
 }

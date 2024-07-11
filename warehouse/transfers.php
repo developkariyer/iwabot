@@ -13,48 +13,6 @@ $offset = $_GET['offset'] ?? 0;
 $logCount = WarehouseLogger::getLogCount();
 $logStep = 20;
 
-function aciklama($log)
-{
-    switch($log->action) {
-        case 'placeInContainer':
-            $container_id = $log->data['container_id'];
-            if ($container = WarehouseContainer::getById($container_id)) {
-                $container_name = $container->name;
-                $container_type = $container->type === 'Raf' ? 'rafına' : 'kolisine';
-            } else {
-                $container_name = 'Bilinmeyen';
-                $container_type = 'yerine';
-            }
-            return "{$log->data['count']} adet \"{$log->object->name}\" \"{$container_name}\" $container_type yerleştirildi";
-        case 'removeFromContainer':
-            $container_id = $log->data['container_id'];
-            if ($container = WarehouseContainer::getById($container_id)) {
-                $container_name = $container->name;
-                $container_type = $container->type === 'Raf' ? 'rafından' : 'kolisinden';
-            } else {
-                $container_name = 'Bilinmeyen';
-                $container_type = 'yerine';
-            }
-            return "{$log->data['count']} adet \"{$log->object->name}\" \"{$container_name}\" $container_type alındı";
-        case 'setParent':
-            $newContainer = WarehouseContainer::getById($log->data['new_parent_id']);
-            $oldContainer = WarehouseContainer::getById($log->data['old_parent_id']);
-            $newContainerName = $newContainer ? $newContainer->name : 'Bilinmeyen';
-            $oldContainerName = $oldContainer ? $oldContainer->name : 'Bilinmeyen';
-            return "\"{$log->object->name}\" kolisi \"{$oldContainerName}\" rafından \"{$newContainerName}\" rafına taşındı";
-        case 'fulfilSoldItem':
-            return 'Sipariş karşılanma';
-        case 'addSoldItem':
-            return 'Sipariş oluşturma';
-        case 'addNew':
-            if ($log->object) {
-                return (get_class($log->object) === 'WarehouseProduct') ? "\"{$log->object->name}\" ürünü eklendi" : "\"{$log->object->name}\" kolisi eklendi";
-            }
-            return 'Yeni ürün/koli eklendi';
-        default:
-            return 'Bilinmeyen işlem';
-    }
-}
 
 include '../_header.php';
 
@@ -64,6 +22,8 @@ include '../_header.php';
     <div class="jumbotron text-center">
         <h1>İşlem Kayıtları</h1>
         <p>İşlem kayıtlarını ve sipariş karşılanma durumunu görüntüleyin. Depo Ana Menü için <a href="./">buraya basınız.</a></p>
+        <p><i>Bu sayfadaki tüm saatler Greenwitch/UTC/Z saat dilimindedir.</i></p>
+
     </div>
     <div class="accordion mb-3" id="mainAccordion">
 
@@ -111,55 +71,23 @@ include '../_header.php';
             </div>
         </div>
 
-        <!-- First Main Accordion Item -->
+        <!-- Log Accordion Item -->
         <div class="accordion-item">
-            <h2 class="accordion-header" id="headingMain1">
-                <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#transfersAccordion1" aria-expanded="false" aria-controls="transfersAccordion1">
-                    <span><strong>Kronolojik İşlem Kayıtları</strong></span>
+            <h2 class="accordion-header" id="headingMainLogs">
+                <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#logsAccordion" aria-expanded="false" aria-controls="logsAccordion">
+                    <span><strong>İşlem Kayıtları</strong></span>
                 </button>
             </h2>
-            <div id="transfersAccordion1" class="accordion-collapse collapse " aria-labelledby="headingMain1" data-bs-parent="#mainAccordion">
+            <div id="logsAccordion" class="accordion-collapse collapse" aria-labelledby="headingMainLogs" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination">
-                            <li class="page-item"><a class="page-link" href="transfers.php">&lt;&lt;</a></li>
-                            <li class="page-item <?= $offset ? '' : 'disabled' ?>"><a class="page-link" href="transfers.php?offset=<?= $offset-$logStep ?>">&lt;</a></li>
-                            <li class="page-item <?= $logCount<=$offset+$logStep ? 'disabled' : '' ?>"><a class="page-link" href="transfers.php?offset=<?= $offset+$logStep ?>">&gt;</a></li>
-                            <li class="page-item <?= $logCount<=$offset ? 'disabled' : '' ?>"><a class="page-link" href="transfers.php?offset=<?= floor($logCount / $logStep) * $logStep ?>">&gt;&gt;</a></li>
-                        </ul>
-                    </nav>
-                    <i>Bu sayfadaki tüm saatler Greenwitch/UTC/Z saat dilimindedir.</i>
-                    <table class="table table-striped table-hover table-sm">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">İşlem</th>
-                                <th scope="col">Açıklama</th>
-                                <th scope="col">Kullanıcı</th>
-                                <th scope="col">Zaman</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if ($logs = WarehouseLogger::findLogs([], 20, $offset)): ?>
-                                <?php foreach ($logs as $logIndex=>$log): ?>
-                                    <tr>
-                                        <td><?= $offset+$logIndex+1 ?></td>
-                                        <td><?= htmlspecialchars($log->action) ?></td>
-                                        <td><?= htmlspecialchars(aciklama($log)) ?></td>
-                                        <td><?= htmlspecialchars($log->username()) ?></td>
-                                        <td><?= htmlspecialchars($log->created_at) ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="5" class="text-center">İşlem kaydı bulunmamaktadır.</td>
-                                </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
+                    <div id="logTable">
+                        <!-- Log content will be loaded here dynamically -->
+                        <p>Loglar yükleniyor...</p>
+                    </div>
                 </div>
             </div>
         </div>
+
 
         <!-- Second Main Accordion Item -->
         <div class="accordion-item">
@@ -238,6 +166,25 @@ $(document).ready(function() {
         }
     });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadLogs(0);
+});
+
+function loadLogs(offset) {
+    $.ajax({
+        url: 'controller.php',
+        type: 'GET',
+        data: { action: 'handleLog', offset: offset },
+        success: function(response) {
+            $('#logTable').html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading logs:', error);
+            $('#logTable').html('<p class="text-danger">Log yüklenirken hata oluştu.</p>');
+        }
+    });
+}
 
 
 </script>
