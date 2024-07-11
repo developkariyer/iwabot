@@ -29,10 +29,10 @@ foreach ($containers as $container) {
         $children[] = $container;
         foreach ($children as $child) {
             echo "    Found container: $child->name\n";
-            sleep(2);
+            //sleep(2);
             $products = $child->getProducts();
             foreach ($products as $product) {
-                echo "      Found product $product->name. Deleting...";/*
+                echo "      Found ".$product->getInContainerCount($child)." $product->name. Deleting...";/*
                 sleep(2);
                 if ($product->removeFromContainer($child, $product->getInContainerCount($child), true)) {
                     echo " OK\n";
