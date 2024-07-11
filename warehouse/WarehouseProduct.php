@@ -135,7 +135,7 @@ class WarehouseProduct extends WarehouseAbstract
                 }
             }
             $this->totalCount = $totalCount;
-            $GLOBALS['pdo']->query("INSERT INTO warehouse_product_total (product_id, total_count) 
+            $GLOBALS['pdo']->query("INSERT INTO warehouse_product_totals (product_id, total_count) 
                     VALUES ({$this->id}, $totalCount) ON DUPLICATE KEY 
                     UPDATE total_count = $totalCount ");
         }
