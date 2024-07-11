@@ -79,9 +79,9 @@ include '../_header.php';
                     <?php foreach ($allSoldOrders as $soldTitle => $soldOrders): ?>
                         <h3><?= $soldTitle ?></h3>
                         <div class="mb-3">
-                            <table class="table table-striped table-hover table-sm table-border">
+                            <table class="table table-striped-columns table-hover table-border">
                                 <thead>
-                                    <tr>
+                                    <tr class="table-dark">
                                         <th scope="col">#</th>
                                         <th scope="col">Sipariş</th>
                                         <th scope="col">Açıklama</th>
