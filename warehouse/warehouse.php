@@ -164,8 +164,8 @@ function productInfo($product) {
     $fnsku = htmlspecialchars($product->fnsku, ENT_QUOTES, 'UTF-8');
     return "
     <b>Ürün Adı:</b> {$product->name}<br>
-    <b>FNSKU:</b> <span id='fnsku'>{$fnsku}</span> 
-    <span class='badge bg-primary' style='cursor: pointer;' onclick='copyToClipboard(\"fnsku\")'>Kopyala</span> 
+    <b>FNSKU:</b> <span id='{$fnsku}'>{$fnsku}</span> 
+    <span class='badge bg-primary' style='cursor: pointer;' onclick='copyToClipboard(\"{$fnsku}\")'>Kopyala</span> 
     <span id='copyMessage' style='display:none; margin-left: 10px;'>Kopyalandı</span><br>
     <b>Kategori:</b> {$product->category}<br>
     <b>IWASKU:</b> {$product->iwasku}<br>
