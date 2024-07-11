@@ -194,7 +194,7 @@ include '../_header.php';
             </h2>
             <div id="inventoryAccordion4" class="accordion-collapse collapse" aria-labelledby="headingMain4" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
-                    <table class="table-sm table-columns-striped table-hover">
+                    <table class="table table-column-striped table-hover">
                         <thead>
                             <tr>
                                 <th>Ürün Adı</th>
