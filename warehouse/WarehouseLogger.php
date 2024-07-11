@@ -219,7 +219,7 @@ class WarehouseLogger
                 $content.= '        <tr>';
                 $content.= '            <td>' . ($offset+$logIndex+1) . '</td>';
                 $content.= '            <td>' . htmlspecialchars($log->action) . '</td>';
-                $content.= '            <td>' . htmlspecialchars($log->aciklama()) . '</td>';
+                $content.= '            <td>' . $log->aciklama() . '</td>';
                 $content.= '            <td>' . htmlspecialchars($log->username()) . '</td>';
                 $content.= '            <td>' . htmlspecialchars($log->created_at) . '</td>';
                 $content.= '        </tr>';
