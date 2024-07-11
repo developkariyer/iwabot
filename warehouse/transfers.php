@@ -4,7 +4,7 @@ require_once('warehouse.php');
 
 $allSoldOrders = [
     "İşlem Bekleyen Siparişler" => WarehouseSold::getSoldItems(fulfilled: false),
-    "İşlem Yapılmış Siparişler" => WarehouseSold::getSoldItems(fulfilled: true),
+    "İşlem Yapılmış Siparişler" => WarehouseSold::getSoldItems(fulfilled: true, limit:10),
 ];
 
 $slackUsers = slackUsers();
