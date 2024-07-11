@@ -204,13 +204,15 @@ include '../_header.php';
 
 <script>
 
+    $(document).ready(function(){$('#smart_container_id').select2({theme: "classic"});});
+
     console.log('Loading script');
     document.addEventListener('DOMContentLoaded', function() {
         console.log('DOM Loaded');
         const containerSelect = document.getElementById('smart_container_id');
         const containerInfoDiv = document.getElementById('containerInfo');
 
-        containerSelect.addEventListener('change', function() {
+        $('#smart_container_id').on('select2:select', function(e) {
             const containerId = containerSelect.value;
             if (containerId) {
                 console.log('Container selected:', containerId);
@@ -227,7 +229,6 @@ include '../_header.php';
         });
     });
 
-    $(document).ready(function(){$('#smart_container_id').select2({theme: "classic"});});
 
 </script>
 
