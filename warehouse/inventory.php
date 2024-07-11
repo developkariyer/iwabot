@@ -180,7 +180,7 @@ include '../_header.php';
         </div>
 
         <?php
-            $topProductsRows = $GLOBALS['pdo']->query("SELECT product_id FROM warehouse_product_totals ORDER BY total_count DESC LIMIT 100")->fetchAll(PDO::FETCH_ASSOC);
+            $topProductsRows = $GLOBALS['pdo']->query("SELECT product_id FROM warehouse_product_totals WHERE total_count > 0 ORDER BY total_count DESC")->fetchAll(PDO::FETCH_ASSOC);
             $topProducts = [];
             foreach ($topProductsRows as $row) {
                 $topProducts[] = WarehouseProduct::getById($row['product_id']);
