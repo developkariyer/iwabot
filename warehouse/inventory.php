@@ -187,6 +187,22 @@ include '../_header.php';
     <?= wh_menu() ?>
 </div>
 <script>
+    
+    function copyToClipboard(elementId) {
+        var text = document.getElementById(elementId).innerText;
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("Copy");
+        document.body.removeChild(textArea);
+        var copyMessage = document.getElementById('copyMessage');
+        copyMessage.style.display = 'inline';
+        setTimeout(function() {
+            copyMessage.style.display = 'none';
+        }, 1000);
+    }
+
     $(document).ready(function() {
         $('#inventoryAccordion2').on('shown.bs.collapse', function () {
             $('#filterInput2').on('keyup', function() {
@@ -250,27 +266,7 @@ include '../_header.php';
         });
 
     });
-
-
-    function copyToClipboard(elementId) {
-        var text = document.getElementById(elementId).innerText;
-        var textArea = document.createElement("textarea");
-        textArea.value = text;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand("Copy");
-        document.body.removeChild(textArea);
-
-        // Show the temporary message
-        var copyMessage = document.getElementById('copyMessage');
-        copyMessage.style.display = 'inline';
-        
-        // Hide the message after 1 second
-        setTimeout(function() {
-            copyMessage.style.display = 'none';
-        }, 1000);
-    }
-
+    
 </script>
 
 <?php
