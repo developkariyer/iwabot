@@ -58,7 +58,6 @@ include '../_header.php';
                                 <div id="collapseCategory<?= $category ?>" class="accordion-collapse collapse" aria-labelledby="headingCategory<?= $category ?>" data-bs-parent="#inventoryAccordion2">
                                     <div class="accordion-body">
                                         <?php foreach ($products as $index => $product): ?>
-                                            <?php if ($product->getTotalCount() == 0) continue; ?>
                                             <div class="accordion-item">
                                                 <h2 class="accordion-header" id="headingProduct<?= $category . $index ?>">
                                                     <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProduct<?= $category . $index ?>" aria-expanded="false" aria-controls="collapseProduct<?= $category . $index ?>">
