@@ -6,11 +6,11 @@ class WarehouseSold
     public $item_id = null;
     public $item_type = null;
     public $description = null;
-    public $created_at = null;
-    public $fulfilled_at = null;
+    private $created_at = null;
+    private $fulfilled_at = null;
     public $object = null;
-    public $updated_at = null;
-    public $deleted_at = null;
+    private $updated_at = null;
+    private $deleted_at = null;
 
     public static $soldItemsTableName = 'warehouse_sold';
 
@@ -25,6 +25,24 @@ class WarehouseSold
         $this->updated_at = $data['updated_at'];
         $this->deleted_at = $data['deleted_at'];
         $this->object = $this->item_type::getById($this->item_id);
+    }
+
+    public function __get($field)
+    {
+        if (in_array($field, ['created_at', 'updated_at', 'deleted_at', 'fulfilled_at'])) {
+            if (empty($this->$field)) {
+                return null;
+            }
+            $timezone = 'Europe/Istanbul';
+            if (isset($_COOKIE['timezone'])) {
+                $timezone = $_COOKIE['timezone'];
+            }
+            $date = new DateTime($this->$field);
+            $date->setTimezone(new DateTimeZone($timezone));
+            return $date->format('Y-m-d H:i:s T');
+
+        }
+        return $this->$field || null;
     }
 
     public static function getById($id)
