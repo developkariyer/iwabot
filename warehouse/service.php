@@ -24,6 +24,9 @@ $containers = WarehouseContainer::getAll();
 $ships = [];
 foreach ($containers as $container) {
     if ($container->type === 'Gemi') {
+        if ($container->name === 'Gemi-29') {
+            continue;
+        }
         echo "Found ship: $container->name\n";
         $children = $container->getChildren();
         $children[] = $container;
