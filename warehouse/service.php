@@ -24,14 +24,14 @@ $containers = WarehouseContainer::getAll();
 $ships = [];
 foreach ($containers as $container) {
     if ($container->type === 'Gemi') {
-        echo "  Found ship: $container->name\n";
+        echo "Found ship: $container->name\n";
         $children = $container->getChildren();
         $children[] = $container;
         foreach ($children as $child) {
             echo "    Found container: $child->name\n";
             $products = $child->getProducts();
             foreach ($products as $product) {
-                echo "      Found ".$product->getInContainerCount($child)." $product->name. Deleting...";
+                echo "        Found ".$product->getInContainerCount($child)." $product->name. Deleting...";
                 if ($product->removeFromContainer($child, $product->getInContainerCount($child), true)) {
                     echo " OK\n";
                 } else {
@@ -45,7 +45,7 @@ foreach ($containers as $container) {
                 echo " FAILED\n";
             }
         }
-        echo "  $container->name deleted\n";
+        echo "$container->name deleted\n";
     }
 }
 
