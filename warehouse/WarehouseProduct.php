@@ -122,10 +122,19 @@ class WarehouseProduct extends WarehouseAbstract
     public function getTotalCount()
     {
         if (empty($this->totalCount)) {
-            $stmt = $GLOBALS['pdo']->prepare("SELECT count(*) as count FROM " . WarehouseAbstract::$productJoinTableName . " WHERE deleted_at IS NULL AND product_id = :product_id"); 
+            $stmt = $GLOBALS['pdo']->prepare("SELECT container_id, count(*) as count FROM " . WarehouseAbstract::$productJoinTableName . " WHERE deleted_at IS NULL AND product_id = :product_id GROUP BY container_id"); 
             $stmt->execute(['product_id' => $this->id]);
-            $data = $stmt->fetch(PDO::FETCH_ASSOC);
-            $this->totalCount = $data['count'];
+            $totalCount = 0;
+            while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $container = WarehouseContainer::getById($data['container_id']);
+                if ($container) {
+                    if ($container->parent && $container->parent->type === 'Gemi') {
+                        continue;
+                    }
+                    $totalCount += $data['count'];
+                }
+            }
+            $this->totalCount = $totalCount;
         }
         return $this->totalCount;
     }
