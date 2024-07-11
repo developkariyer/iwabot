@@ -162,13 +162,13 @@ class WarehouseLogger
                 $oldContainerName = $oldContainer ? $oldContainer->name : 'Bilinmeyen';
                 return "<strong>{$this->object->name}</strong> kolisi <strong>{$oldContainerName}</strong> rafından <strong>{$newContainerName}</strong> rafına taşındı";
             case 'fulfilSoldItem':
-                return "Sipariş karşılanma ({$this->data['sold_id']})";
+                return "Sipariş karşılanma (#{$this->data['sold_id']})";
             case 'addSoldItem':
                 $tip = ($this->object instanceof WarehouseProduct) ? "ürünü" : "kolisi";
-                return "<strong>{$this->object->name}</strong> $tip için yeni sipariş kaydı girildi ({$this->data['sold_id']})";
+                return "<strong>{$this->object->name}</strong> $tip için yeni sipariş kaydı girildi (#{$this->data['sold_id']})";
             case 'deleteSoldItem':
-                $tip = ($this->object instanceof WarehouseProduct) ? "ürün" : "koli";
-                return "<strong>{$this->object->name}</strong> için $tip sipariş kaydı silindi ({$this->data['sold_id']})";
+                $tip = ($this->object instanceof WarehouseProduct) ? "ürünü" : "kolisi";
+                return "<strong>{$this->object->name}</strong> $tip için sipariş kaydı silindi (#{$this->data['sold_id']})";
             case 'permissionChange':
                 $permissionList = [
                     'manage' => 'IWA Depo Yönetme',
