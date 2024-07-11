@@ -214,7 +214,9 @@ $(document).ready(function() {
                 success: function(response) {
                     $('#product_info').html(response.info);
                     $('#selectedProduct').removeClass('d-none');
-                    $('#dynamic_container_list').html('<option value="">Mevcut Raf/Koli Seçin</option>' + response.container);
+                    // Convert the response.container HTML to <ul><li> format
+                    var ulList = convertToUlLi(response.container);
+                    $('#dynamic_container_list').html(ulList);
                 },
                 error: function(xhr, status, error) {
                     console.error('Error fetching product information:', error);
@@ -224,6 +226,30 @@ $(document).ready(function() {
             $('#selectedProduct').addClass('d-none');
         }
     });
+
+    function convertToUlLi(containerHtml) {
+        var ul = $('<ul></ul>');
+        var containerDiv = $('<div></div>').html(containerHtml);
+
+        containerDiv.find('optgroup').each(function() {
+            var optgroup = $(this);
+            var li = $('<li></li>').text(optgroup.attr('label'));
+            var subUl = $('<ul></ul>');
+
+            optgroup.find('option').each(function() {
+                var option = $(this);
+                var subLi = $('<li></li>').text(option.text()).attr('data-value', option.attr('value'));
+                subUl.append(subLi);
+            });
+
+            li.append(subUl);
+            ul.append(li);
+        });
+
+        return ul;
+    }
+});
+
 
 });
 
