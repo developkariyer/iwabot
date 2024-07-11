@@ -144,7 +144,7 @@ class WarehouseLogger
                     $container_name = 'Bilinmeyen';
                     $container_type = 'yerine';
                 }
-                return "{$this->data['count']} adet \"{$this->object->name}\" \"{$container_name}\" $container_type yerleştirildi";
+                return "{$this->data['count']} adet <strong>{$this->object->name}</strong> ürünü <strong>{$container_name}</strong> $container_type yerleştirildi";
             case 'removeFromContainer':
                 $container_id = $this->data['container_id'];
                 if ($container = WarehouseContainer::getById($container_id)) {
@@ -154,13 +154,13 @@ class WarehouseLogger
                     $container_name = 'Bilinmeyen';
                     $container_type = 'yerine';
                 }
-                return "{$this->data['count']} adet \"{$this->object->name}\" \"{$container_name}\" $container_type alındı";
+                return "{$this->data['count']} adet <strong>{$this->object->name}</strong> ürünü <strong>{$container_name}</strong> $container_type alındı";
             case 'setParent':
                 $newContainer = WarehouseContainer::getById($this->data['new_parent_id']);
                 $oldContainer = WarehouseContainer::getById($this->data['old_parent_id']);
                 $newContainerName = $newContainer ? $newContainer->name : 'Bilinmeyen';
                 $oldContainerName = $oldContainer ? $oldContainer->name : 'Bilinmeyen';
-                return "\"{$this->object->name}\" kolisi \"{$oldContainerName}\" rafından \"{$newContainerName}\" rafına taşındı";
+                return "<strong>{$this->object->name}</strong> kolisi <strong>{$oldContainerName}</strong> rafından <strong>{$newContainerName}</strong> rafına taşındı";
             case 'fulfilSoldItem':
                 return 'Sipariş karşılanma';
             case 'addSoldItem':
@@ -182,7 +182,7 @@ class WarehouseLogger
                 return $content;
             case 'addNew':
                 if ($this->object) {
-                    return (get_class($this->object) === 'WarehouseProduct') ? "\"{$this->object->name}\" ürünü eklendi" : "\"{$this->object->name}\" kolisi eklendi";
+                    return (get_class($this->object) === 'WarehouseProduct') ? "<strong>{$this->object->name}</strong> ürünü eklendi" : "<strong>{$this->object->name}</strong> kolisi eklendi";
                 }
                 return 'Yeni ürün/koli eklendi';
             default:
