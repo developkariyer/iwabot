@@ -179,6 +179,43 @@ include '../_header.php';
             </div>
         </div>
 
+        <?php
+            $topProductsRows = $GLOBALS['pdo']->query("SELECT product_id FROM warehouse_product_totals ORDER BY total_count DESC LIMIT 100")->fetchAll(PDO::FETCH_ASSOC);
+            $topProducts = [];
+            foreach ($topProductsRows as $row) {
+                $topProducts[] = WarehouseProduct::getById($row['product_id']);
+            }
+        ?>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingMain4">
+                <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#inventoryAccordion4" aria-expanded="false" aria-controls="inventoryAccordion4">
+                    <span><strong>Stoğu En Çok Olan Ürünler</strong></span>
+                </button>
+            </h2>
+            <div id="inventoryAccordion4" class="accordion-collapse collapse" aria-labelledby="headingMain4" data-bs-parent="#mainAccordion">
+                <div class="accordion-body p-5">
+                    <table class="table-sm table-columns-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Ürün Adı</th>
+                                <th>FNSKU</th>
+                                <th>Toplam Adet</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($topProducts as $product): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($product->name) ?></td>
+                                    <td><?= htmlspecialchars($product->fnsku) ?></td>
+                                    <td><?= $product->getTotalCount() ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <hr>
