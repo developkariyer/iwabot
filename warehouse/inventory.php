@@ -160,6 +160,28 @@ include '../_header.php';
             </div>
         </div>
 
+        <!-- Third Main Accordion Item -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingMain3">
+                <button class="accordion-button bg-success text-white collapsed w-100 py-3" data-bs-toggle="collapse" data-bs-target="#inventoryAccordion3" aria-expanded="false" aria-controls="inventoryAccordion3">
+                    <span><strong>Ürün Bilgisi Girerek Ara</strong></span>
+                </button>
+            </h2>
+            <div id="inventoryAccordion3" class="accordion-collapse collapse" aria-labelledby="headingMain3" data-bs-parent="#mainAccordion">
+                <div class="accordion-body p-5">
+                    <?= productSelect($product_id) ?>
+                    <div id="selectedProduct" class="d-none">
+                        <h4>Seçilen Ürün Bilgileri</h4>
+                        <div id="product_info"></div>
+                        <h4>Raflar ve Koliler</h4>
+                        <select id="dynamic_container_list" class="form-select">
+                            <?= $product_containers ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <hr>
@@ -181,6 +203,31 @@ $(document).ready(function() {
             });
         });
     });
+
+    $(document).ready(function() {
+    $('#product_select').on('change', function() {
+        var productId = $(this).val();
+        if (productId) {
+            $.ajax({
+                url: 'controller.php',
+                method: 'POST',
+                data: { product_id: productId , action: 'product_info', csrf_token: '<?= $_SESSION['csrf_token'] ?>'},
+                success: function(response) {
+                    $('#product_info').html(response.info);
+                    $('#selectedProduct').removeClass('d-none');
+                    $('#dynamic_container_list').html('<option value="">Mevcut Raf/Koli Seçin</option>' + response.container);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching product information:', error);
+                }
+            });
+        } else {
+            $('#selectedProduct').addClass('d-none');
+        }
+    });
+
+});
+
 });
 </script>
 
