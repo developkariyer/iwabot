@@ -86,7 +86,6 @@ $permissionList = [
             </div>
         </div>
 
-
         <?php foreach (array_keys($permissionList) as $permType): ?>
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingMain<?= $permType ?>">

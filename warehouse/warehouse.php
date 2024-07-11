@@ -31,11 +31,35 @@ function userCan($actions = []) {
     }
     loadPermissions();
     foreach ($actions as $action) {
-        if (!in_array($action, ['process', 'view', 'order', 'manage'])) {
-            throw new Exception("Geçersiz yetki: $action");
-        }
-        if (in_array($_SESSION['user_id'], $GLOBALS['permissions'][$action])) {
-            return true;
+        switch ($action) {
+            case 'view':
+                if (in_array($_SESSION['user_id'], $GLOBALS['permissions']['view'])) {
+                    return true;
+                }
+                break;
+            case 'process':
+                if (in_array($_SESSION['user_id'], $GLOBALS['permissions']['process'])) {
+                    return true;
+                }
+                if (in_array($_SESSION['user_id'], $GLOBALS['permissions']['manage'])) {
+                    return true;
+                }
+                break;
+            case 'order':
+                if (in_array($_SESSION['user_id'], $GLOBALS['permissions']['order'])) {
+                    return true;
+                }
+                if (in_array($_SESSION['user_id'], $GLOBALS['permissions']['manage'])) {
+                    return true;
+                }
+                break;
+            case 'manage':
+                if (in_array($_SESSION['user_id'], $GLOBALS['permissions']['manage'])) {
+                    return true;
+                }
+                break;
+            default:
+                error_log('Bilinmeyen izin: '.$action);
         }
     }
     return false;
