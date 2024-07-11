@@ -179,7 +179,7 @@ include '../_header.php';
                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <div class="mb-3">
                             <label for="container_id" class="form-label">Koli Seçin</label>
-                            <select id="container_id" name="container_id" class="form-select" required>
+                            <select id="smart_container_id" name="container_id" class="form-select" required>
                                 <option value="">Koli Seçin</option>
                                 <?= containersInOpt('Raf') ?>
                             </select>
@@ -200,6 +200,12 @@ include '../_header.php';
 
     <?= wh_menu() ?>
 </div>
+
+<script defer>
+    $(document).ready(function(){$('#smart_container_id').select2({theme: "classic"});});
+</script>
+
+
 
 <?php
 
