@@ -177,7 +177,7 @@ class WarehouseLogger
 
     public static function handleLog($offset)
     {
-        header('Content-Type: application/json');
+        header('Content-Type: text/html');
         $logStep = 20;
         $logCount = self::getLogCount();
         $content = '<nav aria-label="Page navigation example">';
