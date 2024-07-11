@@ -169,7 +169,7 @@ include '../_header.php';
             </h2>
             <div id="inventoryAccordion3" class="accordion-collapse collapse" aria-labelledby="headingMain3" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
-                    <?= productSelect($product_id) ?>
+                    <?= productSelect() ?>
                     <div id="selectedProduct" class="d-none">
                         <h4>Seçilen Ürün Bilgileri</h4>
                         <div id="product_info"></div>
@@ -203,56 +203,55 @@ $(document).ready(function() {
     });
 
     $(document).ready(function() {
-    $('#product_select').on('change', function() {
-        var productId = $(this).val();
-        if (productId) {
-            $.ajax({
-                url: 'controller.php',
-                method: 'POST',
-                data: { product_id: productId , action: 'product_info', csrf_token: '<?= $_SESSION['csrf_token'] ?>'},
-                success: function(response) {
-                    $('#product_info').html(response.info);
-                    $('#selectedProduct').removeClass('d-none');
-                    // Convert the response.container HTML to <ul><li> format
-                    var ulList = convertToUlLi(response.container);
-                    $('#dynamic_container_list').html(ulList);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error fetching product information:', error);
-                }
+        $('#product_select').on('change', function() {
+            var productId = $(this).val();
+            if (productId) {
+                $.ajax({
+                    url: 'controller.php',
+                    method: 'POST',
+                    data: { product_id: productId , action: 'product_info', csrf_token: '<?= $_SESSION['csrf_token'] ?>'},
+                    success: function(response) {
+                        $('#product_info').html(response.info);
+                        $('#selectedProduct').removeClass('d-none');
+                        // Convert the response.container HTML to <ul><li> format
+                        var ulList = convertToUlLi(response.container);
+                        $('#dynamic_container_list').html(ulList);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching product information:', error);
+                    }
+                });
+            } else {
+                $('#selectedProduct').addClass('d-none');
+            }
+        });
+
+        function convertToUlLi(containerHtml) {
+            var ul = $('<ul></ul>');
+            var containerDiv = $('<div></div>').html(containerHtml);
+
+            containerDiv.find('optgroup').each(function() {
+                var optgroup = $(this);
+                var li = $('<li></li>').text(optgroup.attr('label'));
+                var subUl = $('<ul></ul>');
+
+                optgroup.find('option').each(function() {
+                    var option = $(this);
+                    var subLi = $('<li></li>').text(option.text()).attr('data-value', option.attr('value'));
+                    subUl.append(subLi);
+                });
+
+                li.append(subUl);
+                ul.append(li);
             });
-        } else {
-            $('#selectedProduct').addClass('d-none');
+
+            return ul;
         }
     });
 
-    function convertToUlLi(containerHtml) {
-        var ul = $('<ul></ul>');
-        var containerDiv = $('<div></div>').html(containerHtml);
-
-        containerDiv.find('optgroup').each(function() {
-            var optgroup = $(this);
-            var li = $('<li></li>').text(optgroup.attr('label'));
-            var subUl = $('<ul></ul>');
-
-            optgroup.find('option').each(function() {
-                var option = $(this);
-                var subLi = $('<li></li>').text(option.text()).attr('data-value', option.attr('value'));
-                subUl.append(subLi);
-            });
-
-            li.append(subUl);
-            ul.append(li);
-        });
-
-        return ul;
-    }
-});
-
 
 });
 
-});
 </script>
 
 <?php
