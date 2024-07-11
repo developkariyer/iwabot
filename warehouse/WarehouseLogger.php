@@ -221,7 +221,7 @@ class WarehouseLogger
         if ($logs = self::findLogs([], 20, $offset)) {
             foreach ($logs as $logIndex=>$log) {
                 $content.= '        <tr>';
-                $content.= '            <td>' . ($offset+$logIndex+1) . '</td>';
+                $content.= '            <td>' . $log->id . '</td>';
                 $content.= '            <td>' . htmlspecialchars($log->action) . '</td>';
                 $content.= '            <td>' . $log->aciklama() . '</td>';
                 $content.= '            <td>' . htmlspecialchars($log->username()) . '</td>';
