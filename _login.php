@@ -10,9 +10,11 @@ $redirectUri1 = 'https://depo.iwa.web.tr/login.php';
 $loggedInUri1 = 'https://depo.iwa.web.tr/';
 
 if (strpos($_SERVER['REQUEST_URI'], 'depo.iwa.web.tr') !== false) {
-    error_log("Switching to depo.iwa.web.tr");
+    error_log("Switching to depo.iwa.web.tr ($_SERVER[REQUEST_URI])");
     $redirectUri = $redirectUri1;
     $loggedInUri = $loggedInUri1;
+} else {
+    error_log("Switching to iwarden.iwaconcept.com ($_SERVER[REQUEST_URI])");
 }
 
 if (!isset($guestFree) && !isset($_SESSION['logged_in'])) {
