@@ -205,7 +205,7 @@ class WarehouseContainer extends WarehouseAbstract
             'Raf' => '🗄️', // \u{1F5C4}
             'Koli' => '📦', //\u{1F4E6}
         ];
-        $html = '<div class="row">';
+        $html = '<div>';
         foreach ($emptyContainers as $container) {
             $html .= '<span class="badge bg-secondary me-2 mb-1" style="display:inline;">';
             $html .= "{$icon[$container->type]} {$container->name}</li>";
