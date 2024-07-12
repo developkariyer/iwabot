@@ -205,11 +205,13 @@ class WarehouseContainer extends WarehouseAbstract
             'Raf' => '🗄️', // \u{1F5C4}
             'Koli' => '📦', //\u{1F4E6}
         ];
-        $html = "<ul>";
+        $html = '<div class="row">';
         foreach ($emptyContainers as $container) {
-            $html .= "<li>{$icon[$container->type]} {$container->name}</li>";
+            $html .= '<div>';
+            $html .= "{$icon[$container->type]} {$container->name}</li>";
+            $html .= '</div>';
         }
-        $html .= "</ul>";
+        $html .= '</div>';
         return $html;
     }
 
