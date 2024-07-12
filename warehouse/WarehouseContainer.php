@@ -207,11 +207,11 @@ class WarehouseContainer extends WarehouseAbstract
         ];
         $html = '<div>';
         foreach ($emptyContainers as $container) {
-            $html .= '<span class="badge bg-info p-1 m-2" style="display:inline;">';
-            $html .= "<strong>{$icon[$container->type]} {$container->name}</strong>";
+            $html .= '<span class="badge bg-primary p-2 m-3" style="display:inline-block; font-size: larger;">';
+            $html .= "{$icon[$container->type]} {$container->name}";
             $html .= '</span>';
         }
-        $html .= '</div>';
+        $html .= '</div>';        
         return $html;
     }
 
