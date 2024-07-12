@@ -10,6 +10,7 @@ $redirectUri1 = 'https://depo.iwa.web.tr/login.php';
 $loggedInUri1 = 'https://depo.iwa.web.tr/';
 
 if (strpos($_SERVER['REQUEST_URI'], 'depo.iwa.web.tr') !== false) {
+    error_log("Switching to depo.iwa.web.tr");
     $redirectUri = $redirectUri1;
     $loggedInUri = $loggedInUri1;
 }
