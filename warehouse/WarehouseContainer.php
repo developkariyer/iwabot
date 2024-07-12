@@ -188,6 +188,26 @@ class WarehouseContainer extends WarehouseAbstract
         return $containers;
     }
 
+    public static function getEmptyContainers($ajax = false)
+    {
+        $containers = static::getAll();
+        $emptyContainers = [];
+        foreach ($containers as $container) {
+            if (!$container->getChildren() && !$container->getProducts()) {
+                $emptyContainers[] = $container;
+            }
+        }
+        if (!$ajax) {
+            return $emptyContainers;
+        }
+        $html = "<ul>";
+        foreach ($emptyContainers as $container) {
+            $html .= "<li>{$container->name}</li>";
+        }
+        $html .= "</ul>";
+        return $html;
+    }
+
     public function getAsArray()
     {
         $retval = parent::getAsArray();

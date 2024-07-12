@@ -15,8 +15,11 @@ require_once 'WarehouseContainer.php';
 require_once 'WarehouseSold.php';
 require_once 'WarehouseLogger.php';
 
-function button($url, $text, $color='primary') {
-    return "<div class=\"col-md-6\"><a href=\"$url\" class=\"btn btn-$color btn-lg rounded-pill w-100 py-3\">$text</a></div>";
+function button($url, $text, $color = 'primary', $id = null) {
+    if (!$id) {
+        $id = 'btn-' . uniqid();
+    }
+    return "<div id=\"$id\" class=\"col-md-6\"><a href=\"$url\" class=\"btn btn-$color btn-lg rounded-pill w-100 py-3\">$text</a></div>";
 }
 
 function userCan($actions = []) {
@@ -146,7 +149,7 @@ function wh_menu() {
         $menu .= '<div class="row g-3 m-1 mt-1">'.button('order.php', 'Sipariş İşlem', 'secondary').button('#', 'Yeni Gemi Yükle', 'secondary').'</div>';
     }
     if (userCan('manage')) {
-        $menu .= '<div class="row g-3 m-1 mt-1">'.button('users.php', 'Kullanıcı Yönetimi', 'secondary').button('controller.php?action=clear_cache', 'Önbellek Temizle', 'secondary').'</div>';
+        $menu .= '<div class="row g-3 m-1 mt-1">'.button('users.php', 'Kullanıcı Yönetimi', 'secondary').button('service.php', 'Servis İşlemleri', 'secondary').'</div>';
     }
     $menu .= '<div class="row g-3 m-1 mt-1">'.button('./', 'Depo Ana Sayfa', 'secondary').button('../', 'Ana Sayfa', 'secondary').'</div>';
     $menu .= '<div class="row g-3 m-1 mt-1">'.'<div class="col-md-3"></div>'.button('../?logout=1', 'Çıkış', 'danger').'</div>';

@@ -84,6 +84,9 @@ switch($action) {
     case 'handle_log':
         WarehouseLogger::handleLog(getPostValue('offset'));
         break;
+    case 'empty_containers':
+        header('Content-Type: text/html');
+        die(WarehouseContainer::getEmptyContainers(ajax:true));
     case 'clear_cache':
         WarehouseAbstract::clearAllCache();
         addMessage('Önbellek temizlendi');
@@ -377,7 +380,7 @@ function handleDeleteContainer() { // delete_container
             continue;
         }
         if ($container->getChildren(noCache:true)) {
-            addMessage("$container->name içinde alt konteynerler bulunmaktadır, silinemedi");
+            addMessage("$container->name içinde alt koliler bulunmaktadır, silinemedi");
             return;
         }
         if ($container->getProducts(noCache:true)) {

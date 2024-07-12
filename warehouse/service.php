@@ -1,244 +1,203 @@
 <?php
 
-if (php_sapi_name() !== 'cli') {
-    die('Hello World!');
+require_once __DIR__ . '/../vendor/autoload.php';
+
+if (php_sapi_name() === 'cli') {
+    require_once('../_init.php');
+    require_once 'WarehouseAbstract.php';
+    require_once 'WarehouseProduct.php';
+    require_once 'WarehouseContainer.php';
+    require_once 'WarehouseSold.php';
+    require_once 'WarehouseLogger.php';
+} else {
+    require_once 'warehouse.php';
+
+
+    include "../_header.php";
+
+?>
+
+<div class="container mt-5">
+    <div class="jumbotron text-center">
+        <h1>İşlem Kayıtları</h1>
+        <p>İşlem kayıtlarını ve sipariş karşılanma durumunu görüntüleyin. Depo Ana Menü için <a href="./">buraya basınız.</a></p>
+    </div>
+
+    <div class="row g-3 m-1 mt-1">
+        <?= button('controller.php?action=clear_cache', 'Önbellek Temizle', 'success') ?>
+        <?= button('controller.php?action=empty_containers', 'Önbellek Temizle', 'success', 'btn-empty-containers') ?>
+    </div>
+
+    <div id="empty-containers"></div>
+
+    <hr>
+
+    <?= wh_menu() ?>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#btn-empty-containers').click(function() {
+            $.ajax({
+                url: 'controller.php?action=empty_containers',
+                success: function(data) {
+                    $('#empty-containers').html(data);
+                }
+            });
+        });
+    });
+</script>
+
+<?php
+
+    include "../_footer.php";
+    exit;   
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function cleanShips() {
+    echo "Deleting products and containers in ships...\n";
+    $containers = WarehouseContainer::getAll();
+    $ships = [];
+    foreach ($containers as $container) {
+        if ($container->type === 'Gemi') {
+            if ($container->name === 'Gemi-29') {
+                continue;
+            }
+            echo "Found ship: $container->name\n";
+            $children = $container->getChildren();
+            $children[] = $container;
+            foreach ($children as $child) {
+                echo "    Found container: $child->name\n";
+                $products = $child->getProducts();
+                foreach ($products as $product) {
+                    echo "        Found ".$product->getInContainerCount($child)." $product->name. Deleting...";
+                    if ($product->removeFromContainer($child, $product->getInContainerCount($child), true)) {
+                        echo " OK\n";
+                    } else {
+                        echo " FAILED\n";
+                    }
+                }
+                echo "    Deleting container $child->name..."; 
+                if ($child->delete()) {
+                    echo " OK\n";
+                } else {
+                    echo " FAILED\n";
+                }
+            }
+            echo "$container->name deleted\n";
+        }
+    }
+}
+
 function cik() {
     echo "Exiting...\n";
     $GLOBALS['pdo']->rollBack();
     exit;
 }
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
-require_once('../_init.php');
-
-require_once 'WarehouseAbstract.php';
-require_once 'WarehouseProduct.php';
-require_once 'WarehouseContainer.php';
-require_once 'WarehouseSold.php';
-require_once 'WarehouseLogger.php';
-
-echo "Deleting products and containers in ships...\n";
-$containers = WarehouseContainer::getAll();
-$ships = [];
-foreach ($containers as $container) {
-    if ($container->type === 'Gemi') {
-        if ($container->name === 'Gemi-29') {
-            continue;
-        }
-        echo "Found ship: $container->name\n";
-        $children = $container->getChildren();
-        $children[] = $container;
-        foreach ($children as $child) {
-            echo "    Found container: $child->name\n";
-            $products = $child->getProducts();
-            foreach ($products as $product) {
-                echo "        Found ".$product->getInContainerCount($child)." $product->name. Deleting...";
-                if ($product->removeFromContainer($child, $product->getInContainerCount($child), true)) {
-                    echo " OK\n";
-                } else {
-                    echo " FAILED\n";
-                }
-            }
-            echo "    Deleting container $child->name..."; 
-            if ($child->delete()) {
-                echo " OK\n";
-            } else {
-                echo " FAILED\n";
-            }
-        }
-        echo "$container->name deleted\n";
-    }
-}
+function readCsv() {
+    echo "Flushing tables...\n";
+    $GLOBALS['pdo']->query('TRUNCATE warehouse_container_product');
+    $GLOBALS['pdo']->query('TRUNCATE warehouse_container');
+    $GLOBALS['pdo']->query('TRUNCATE warehouse_log');
 
 
-
-
-
-
-
-
-
-exit;
-
-echo "Flushing tables...\n";
-$GLOBALS['pdo']->query('TRUNCATE warehouse_container_product');
-$GLOBALS['pdo']->query('TRUNCATE warehouse_container');
-$GLOBALS['pdo']->query('TRUNCATE warehouse_log');
-
-
-echo "Reading koliler...";
-$boxcsv = file_get_contents('koliler.csv');
-$boxcsv = explode("\n", $boxcsv);
-echo "done\n";
-
-$raflar = [];
-
-$GLOBALS['pdo']->beginTransaction();
-
-foreach ($boxcsv as $line) {
-    $line = trim($line);
-    echo "Processing $line...";
-    if (empty($line)) {
-        echo "empty!\n";
-        continue;
-    }
-    $data = explode(',', $line);
-    $koli = $data[0];
-    if (strpos($koli, '-')) {
-        $raf = explode('-', $koli)[0];
-    } else {
-        $raf = substr($koli, 0, 1);
-    }
-    $urun = $data[1];
-    $adet = $data[2];
-
-    echo "********Raf: $raf, Koli: $koli, Ürün: $urun, Adet: $adet ...\n";
-
-    if (!($adet>0)) {
-        echo "invalid quantity!\n";
-        continue;
-    }
-    if (!isset($raflar[$raf])) {
-        $raflar[$raf] = WarehouseContainer::getByField('name', "Gemi-$raf");
-        if (!$raflar[$raf]) {
-            echo "creating shelf...";
-            $raflar[$raf] = WarehouseContainer::addNew(['name' => "Gemi-$raf", 'type' => 'Gemi', 'parent_id' => null]);
-        } else echo "shelf found...";
-        if (!$raflar[$raf]) {
-            echo "failed to create shelf\n";
-            cik();
-        }
-    }
-    if (!isset($raflar[$koli])) {
-        $raflar[$koli] = WarehouseContainer::getByField('name', $koli);
-        if (!$raflar[$koli]) {
-            echo "creating box...";
-            $raflar[$koli] = WarehouseContainer::addNew(['name' => $koli, 'type' => 'Koli', 'parent_id' => $raflar[$raf]->id]);
-        } else echo "box found...";
-        if (!$raflar[$koli]) {
-            echo "failed to create box\n";
-            cik();
-        }
-    }
-    if (!isset($urunler[$urun])) {
-        $urunler[$urun] = WarehouseProduct::getByField('fnsku', $urun);
-        if (!$urunler[$urun]) {
-            echo "product not found!\n";
-            file_put_contents('log.txt', "$line\n", FILE_APPEND);
-            continue;
-        }
-    }
-
-    for ($t=0;$t<$adet;$t++) {
-        if ($urunler[$urun]->placeInContainer($raflar[$koli])) {
-            echo ".";
-        } else {
-            echo "failed to place product in box\n";
-            cik();
-        }
-    }
+    echo "Reading koliler...";
+    $boxcsv = file_get_contents('koliler.csv');
+    $boxcsv = explode("\n", $boxcsv);
     echo "done\n";
+
+    $raflar = [];
+
+    $GLOBALS['pdo']->beginTransaction();
+
+    foreach ($boxcsv as $line) {
+        $line = trim($line);
+        echo "Processing $line...";
+        if (empty($line)) {
+            echo "empty!\n";
+            continue;
+        }
+        $data = explode(',', $line);
+        $koli = $data[0];
+        if (strpos($koli, '-')) {
+            $raf = explode('-', $koli)[0];
+        } else {
+            $raf = substr($koli, 0, 1);
+        }
+        $urun = $data[1];
+        $adet = $data[2];
+
+        echo "********Raf: $raf, Koli: $koli, Ürün: $urun, Adet: $adet ...\n";
+
+        if (!($adet>0)) {
+            echo "invalid quantity!\n";
+            continue;
+        }
+        if (!isset($raflar[$raf])) {
+            $raflar[$raf] = WarehouseContainer::getByField('name', "Gemi-$raf");
+            if (!$raflar[$raf]) {
+                echo "creating shelf...";
+                $raflar[$raf] = WarehouseContainer::addNew(['name' => "Gemi-$raf", 'type' => 'Gemi', 'parent_id' => null]);
+            } else echo "shelf found...";
+            if (!$raflar[$raf]) {
+                echo "failed to create shelf\n";
+                cik();
+            }
+        }
+        if (!isset($raflar[$koli])) {
+            $raflar[$koli] = WarehouseContainer::getByField('name', $koli);
+            if (!$raflar[$koli]) {
+                echo "creating box...";
+                $raflar[$koli] = WarehouseContainer::addNew(['name' => $koli, 'type' => 'Koli', 'parent_id' => $raflar[$raf]->id]);
+            } else echo "box found...";
+            if (!$raflar[$koli]) {
+                echo "failed to create box\n";
+                cik();
+            }
+        }
+        if (!isset($urunler[$urun])) {
+            $urunler[$urun] = WarehouseProduct::getByField('fnsku', $urun);
+            if (!$urunler[$urun]) {
+                echo "product not found!\n";
+                file_put_contents('log.txt', "$line\n", FILE_APPEND);
+                continue;
+            }
+        }
+
+        for ($t=0;$t<$adet;$t++) {
+            if ($urunler[$urun]->placeInContainer($raflar[$koli])) {
+                echo ".";
+            } else {
+                echo "failed to place product in box\n";
+                cik();
+            }
+        }
+        echo "done\n";
+    }
+    $GLOBALS['pdo']->commit();
 }
-$GLOBALS['pdo']->commit();
 
 
 
-
-
-
-
-
-/* Unknown Service
-$iblck = addInfluencerSuccessBlock('Umut');
-$json = json_encode($iblck, JSON_PRETTY_PRINT);
-print_r($json);
-*/
-
-/* Add Users Service
-$emails = "yukselaytac.sid@gmail.com
-mdnllcusa@gmail.com
-husbas@gmail.com
-Adamdorrsan@gmail.com
-amzhakankirec@gmail.com
-se.selimevren@gmail.com
-fatmarslan114@gmail.com
-maytac118@gmail.com
-sedatyayla2412@gmail.com
-gdanismanahmetercan@gmail.com
-iwa@kariyerfora.com
-brkmrl33@gmail.com
-fceyhan55@gmail.com
-kemalkurada@gmail.com
-berkayiwa@gmail.com
-ecepolatiwa@gmail.com
-serkaniwaconcept@gmail.com
-merve.yyorulmaz@gmail.com
-omermesut6406@gmail.com
-seymakandemirr99@gmail.com
-ctarikiwa@gmail.com
-iwacwf@gmail.com
-nyepey2023@gmail.com
-yuceliwa@gmail.com
-kadergulakyol@gmail.com
-mahiryusuf531@gmail.com
-emrahteacher4448@gmail.com
-iwaconcepttr@gmail.com
-kyhnbdrhn0@gmail.com
-7sagey1@gmail.com
-emrahbilaloglu@gmail.com
-nurten.yener.ba@gmail.com
-pogenver@gmail.com
-hbetulnursen@gmail.com
-alfonsooiwa@gmail.com
-hkus3052@gmail.com
-omermenekse@gmail.com
-citiglobalmobilya@gmail.com
-umitgulmaden@gmail.com
-srknkrgc@gmail.com
-niyazisonmez07@gmail.com
-iwaconceptpersonal@gmail.com
-cihatemreiwa@gmail.com
-zehraiwa@gmail.com
-iwaconcept06@gmail.com
-ilkermeric@gmail.com
-krmykmz@gmail.com
-iwaconcept1@gmail.com
-emrahiwa@gmail.com
-mustafacolakk1978@gmail.com
-yusufgozukara11@gmail.com
-ayselkurt987@gmail.com
-ugurkaraca1011@gmail.com
-dgnaltkn@gmail.com
-ozaneller29@gmail.com
-aligokkayaa2001@gmail.com
-usancar57@gmail.com
-Ot2825@gmail.com
-lvntats75@gmail.com
-unal.boztas3425@gmail.com
-elifnazli83@gmail.com
-mrvshn70@hotmail.com
-iwaconcept.office@gmail.com
-glsrn0633@gmail.com
-emrebedelnl@gmail.com
-umut@kariyerfora.com
-bahadiriwa@gmail.com
-ferdiozkayaiwa@gmail.com";
-
-
-$emails = explode("\n", $emails);
-
-foreach ($emails as $email) {
-    $email = trim($email);
-    $payload = [
-        'login' => $email,
-        'email' => $email,
-        'firstName' => $email,
-        'lastName' => $email,
-        'status' => 'invited',
-    ];
-    $response = openProjectApiPost('/api/v3/users', $payload);
-    echo "$email: $response\n\n";
-}
-*/
