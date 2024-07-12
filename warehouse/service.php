@@ -44,6 +44,7 @@ if (php_sapi_name() === 'cli') {
                     $('#empty-containers').html(data);
                 }
             });
+            return false;
         });
     });
 </script>
