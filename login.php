@@ -39,6 +39,7 @@ if (isset($_GET['code']) && isset($_GET['state']) && isset($_SESSION['state']) &
     ];
     $context = stream_context_create($options);
     $response = file_get_contents($url, false, $context);
+    error_log("Slack response received: $response");
     $response = json_decode($response, true);
     if (isset($response['ok']) && $response['ok'] && isset($response['id_token'])) {
         $_SESSION['logged_in'] = true;
