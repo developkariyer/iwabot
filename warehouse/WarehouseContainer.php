@@ -198,6 +198,7 @@ class WarehouseContainer extends WarehouseAbstract
         if (!$html) {
             return $retval;
         }
+        $html = '';
         foreach ($retval as $ship => $containers) {
             $html .= "<h3>$ship</h3>";
             $html .= '<ul>';
