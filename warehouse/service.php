@@ -106,6 +106,8 @@ function undeleteShipContainers($shipName, $containerNames = []) {
                 $product = WarehouseProduct::getById($product_id);
                 if ($product) {
                     echo "    Restoring product $product->fnsku ($product->name) to $container->name...\n";
+                } else {
+                    echo "    Product not found!\n";
                 }
             }
             echo "Continuing retrieve";
