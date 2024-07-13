@@ -168,7 +168,9 @@ function productInfo($product) {
         return "Ürün bilgisi alınamadı: Geçersiz ürün";
     }
     $fnsku = htmlspecialchars($product->fnsku, ENT_QUOTES, 'UTF-8');
+    $img = empty($product->image) ? 'https://picsum.photos/300' : $product->image;
     return "
+    <img src='{$img}' class='img-thumbnail' style='max-width: 300px;'><br>
     <b>Ürün Adı:</b> {$product->name}<br>
     <b>FNSKU:</b> <span id='{$fnsku}'>{$fnsku}</span> 
     <span class='badge bg-primary' style='cursor: pointer;' onclick='copyToClipboard(\"{$fnsku}\")'>Kopyala</span> 
