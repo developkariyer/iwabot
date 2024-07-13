@@ -318,6 +318,9 @@ function containerOptGrouped($product = null) {
             }
             if ($product instanceof WarehouseProduct) {
                 $html .= '('.$product->getInContainerCount($container).')';
+                if (count($container->getProducts()) > 1) {
+                    $html .= ' (Karışık koli)';
+                }
             }
             $html .= '</option>';
         }
