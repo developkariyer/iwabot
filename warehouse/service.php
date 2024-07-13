@@ -96,7 +96,7 @@ WarehouseAbstract::clearAllCache();
 
 function getMissingProductImages() {
     $products = WarehouseProduct::getAll();
-    $product_images = file_get_contents('images.colorful.json');
+    $product_images = file_get_contents('images_colorful.json');
     $product_images = json_decode($product_images, true);
     foreach ($products as $product) {
         if (empty($product->image_url)) {
