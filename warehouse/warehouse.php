@@ -167,7 +167,6 @@ function productInfo($product) {
     if (!$product instanceof WarehouseProduct) {
         return "Ürün bilgisi alınamadı: Geçersiz ürün";
     }
-    error_log('Product info: '.print_r($product, true));
     $fnsku = htmlspecialchars($product->fnsku, ENT_QUOTES, 'UTF-8');
     $img = $product->image_url ?? 'logo.jpg';
     return "
