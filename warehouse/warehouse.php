@@ -170,7 +170,7 @@ function productInfo($product) {
     $fnsku = htmlspecialchars($product->fnsku, ENT_QUOTES, 'UTF-8');
     $img = empty($product->image) ? 'logo.jpg' : $product->image;
     return "
-    <img src='{$img}' class='img-thumbnail' style='max-width: 300px;'><br>
+    <img src='{$img}'  class='img-fluid img-thumbnail'><br>
     <b>Ürün Adı:</b> {$product->name}<br>
     <b>FNSKU:</b> <span id='{$fnsku}'>{$fnsku}</span> 
     <span class='badge bg-primary' style='cursor: pointer;' onclick='copyToClipboard(\"{$fnsku}\")'>Kopyala</span> 
