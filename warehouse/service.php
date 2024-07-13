@@ -82,8 +82,8 @@ function undeleteShipContainers($shipName) {
                     echo "    Restoring product $product->fnsku ($product->name) to $container->name...\n";
                 }
             }
+            echo "Continuing retrieve";
         }
-        echo "Continuing retrieve";
     }
 
 }
