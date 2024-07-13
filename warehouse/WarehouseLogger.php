@@ -78,7 +78,7 @@ class WarehouseLogger
         foreach ($loginInfo as $login) {
             $content.= '        <tr>';
             $content.= '            <td>' . username($login['user_id']) . '</td>';
-            $content.= '            <td>' . $login['last_page'] . '</td>';
+            $content.= '            <td>' . self::showTimezoned($login['last_page']) . '</td>';
             $content.= '            <td>' . $login['total_page'] . '</td>';
             $content.= '        </tr>';
         }
