@@ -67,6 +67,7 @@ undeleteShipContainers('Gemi-28');
 
 
 function undeleteShipContainers($shipName) {
+    echo "Restoring products in $shipName...\n";
     $containers = WarehouseContainer::getAll();
     foreach ($containers as $container) {
         if ($container->type === 'Koli' && $container->parent->name === $shipName) {
