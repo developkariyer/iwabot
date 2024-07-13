@@ -15,6 +15,9 @@ require_once 'WarehouseContainer.php';
 require_once 'WarehouseSold.php';
 require_once 'WarehouseLogger.php';
 
+$stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_user_log (user_id, request_uri) VALUES (?, ?)");
+$stmt->execute([$_SESSION['user_id'] ?? 'Unknown', substr($_SERVER['REQUEST_URI'], 0, 255)]);
+
 function button($url, $text, $color = 'primary', $id = null) {
     if (!$id) {
         $id = 'btn-' . uniqid();
