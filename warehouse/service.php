@@ -201,7 +201,6 @@ function undeleteShipContainers($shipName, $containerNames = [], $dryRun = false
             } else {
                 echo "Container $container->name is not deleted\n";
             }
-
             echo "Continuing retrieve";
         }
     }
