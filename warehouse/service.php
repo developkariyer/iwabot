@@ -63,15 +63,41 @@ if (php_sapi_name() === 'cli') {
 
 WarehouseAbstract::clearAllCache();
 
-undeleteShipContainers('Gemi-28');
+undeleteShipContainers('Gemi-28', [
+    '28-0005',
+    '28-0010',
+    '28-0011',
+    '28-0012',
+    '28-0013',
+    '28-0014',
+    '28-0015',
+    '28-0016',
+    '28-0017',
+    '28-1001',
+    '28-1002',
+    '28-1003',
+    '28-1004',
+    '28-1005',
+    '28-1006',
+    '28-1007',
+    '28-1008',
+    '28-1009',
+    '28-1010',
+    '28-1011',
+    '28-1012',
+    '28-1013',
+    '28-1014',
+    '28-1016',
+    '28-1018',
+]);
 
 WarehouseAbstract::clearAllCache();
 
-function undeleteShipContainers($shipName) {
+function undeleteShipContainers($shipName, $containerNames = []) {
     echo "Retrieving containers in $shipName";
     $containers = WarehouseContainer::getAll();
     foreach ($containers as $container) {
-        if ($container->type === 'Koli' && $container->parent->name === $shipName) {
+        if ($container->type === 'Koli' && $container->parent->name === $shipName && in_array($container->name, $containerNames)) {
             $stmt = $GLOBALS['pdo']->prepare("SELECT product_id FROM warehouse_container_product WHERE container_id = :id AND deleted_at IS NOT NULL");
             $stmt->execute(['id' => $container->id]);
             $products = $stmt->fetchAll(PDO::FETCH_COLUMN);
