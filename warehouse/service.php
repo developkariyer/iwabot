@@ -67,20 +67,22 @@ undeleteShipContainers('Gemi-28');
 
 
 function undeleteShipContainers($shipName) {
-    echo "Restoring products in $shipName...\n";
+    echo "Retrieving containers in $shipName";
     $containers = WarehouseContainer::getAll();
     foreach ($containers as $container) {
+        echo ".";
         if ($container->type === 'Koli' && $container->parent->name === $shipName) {
             $stmt = $GLOBALS['pdo']->prepare("SELECT product_id FROM warehouse_container_product WHERE container_id = :id AND deleted_at IS NOT NULL");
             $stmt->execute(['id' => $container->id]);
             $products = $stmt->fetchAll(PDO::FETCH_COLUMN);
-            echo "Found ".count($products)." products in $container->name\n";
+            echo "\nFound ".count($products)." products in $container->name\n";
             foreach ($products as $product_id) {
                 $product = WarehouseProduct::getById($product_id);
                 if ($product) {
                     echo "    Restoring product $product->fnsku ($product->name) to $container->name...";
                 }
             }
+            echo "Continuing retrieve";
         }
     }
 
