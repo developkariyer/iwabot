@@ -55,6 +55,8 @@ class WarehouseProduct extends WarehouseAbstract
             case 'dimension3':
             case 'weight':
                 return empty($value) || is_numeric($value);
+            case 'image_url':
+                return empty($value) || is_string($value);
             default:
                 if (in_array($field, static::getDbFields())) {
                     throw new Exception("Field known but not set for validation");                    
