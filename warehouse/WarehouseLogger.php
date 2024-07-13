@@ -66,8 +66,8 @@ class WarehouseLogger
         $content.= '    <thead>';
         $content.= '        <tr class="table-dark">';
         $content.= '            <th scope="col">Kullanıcı</th>';
-        $content.= '            <th scope="col">Son Giriş</th>';
-        $content.= '            <th scope="col">Toplam Giriş</th>';
+        $content.= '            <th scope="col">Son Erişim</th>';
+        $content.= '            <th scope="col">Toplam Erişim</th>';
         $content.= '        </tr>';
         $content.= '    </thead>';
         $content.= '    <tbody>';

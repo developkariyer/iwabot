@@ -52,6 +52,26 @@ if (php_sapi_name() === 'cli') {
             });
             return false;
         });
+        $('#btn-containers-in-ship').click(function() {
+            $.ajax({
+                url: 'controller.php?action=containers_in_ship',
+                success: function(data) {
+                    $('#empty-containers').html(data);
+                    $('#empty-containers').removeClass('d-none');
+                }
+            });
+            return false;
+        });
+        $('#btn-user-info').click(function() {
+            $.ajax({
+                url: 'controller.php?action=user_info',
+                success: function(data) {
+                    $('#empty-containers').html(data);
+                    $('#empty-containers').removeClass('d-none');
+                }
+            });
+            return false;
+        });
     });
 </script>
 
