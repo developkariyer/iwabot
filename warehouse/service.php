@@ -96,43 +96,17 @@ WarehouseAbstract::clearAllCache();
 
 function getMissingProductImages() {
     $products = WarehouseProduct::getAll();
+    $product_images = file_get_contents('images.colorful.json');
+    $product_images = json_decode($product_images, true);
     foreach ($products as $product) {
         if (empty($product->image_url)) {
-            echo "Missing image for $product->fnsku ($product->name)\n";
-            $url = "https://www.amazon.com/dp/$product->fnsku";
-            echo "    Retrieving Amazon page... $url\n";
-
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-            curl_setopt($ch, CURLOPT_ENCODING, ""); // Handle all encodings
-            curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3");
-            $amazonPage = curl_exec($ch);
-            if (curl_errno($ch)) {
-                echo "cURL error: " . curl_error($ch);
-                continue;
-            }
-            curl_close($ch);
-            $pos = strpos($amazonPage, '"landingImageUrl"');
-            if ($pos === FALSE) {
-                echo "    Image not found\n";
-                continue;
-            }
-            $posFirstQuote = strpos($amazonPage, '"', $pos);
-            $posSecondQuote = strpos($amazonPage, '"', $posFirstQuote + 1);
-            $imageUrl = substr($amazonPage, $posFirstQuote + 1, $posSecondQuote - $posFirstQuote - 1);
-            if ($imageUrl) {
-                echo "    Image retrieved: $imageUrl\n";
-                $product->image_url = $imageUrl;
+            if  (isset($product_images[$product->fnsku])) {
+                $product->image_url = $product_images[$product->fnsku];
                 $product->save();
+                echo "Updated image for $product->fnsku\n";
             } else {
-                echo "    Image not found\n";
-                //echo $amazonPage;
-                exit;
+                echo "No image found for $product->fnsku\n";
             }
-        } else {
-            echo "    Image already loaded: $product->image_url\n";
         }
     }
 }
