@@ -85,8 +85,64 @@ if (php_sapi_name() === 'cli') {
 
 WarehouseAbstract::clearAllCache();
 
-
-getMissingProductImages();
+undeleteShipContainers('Gemi-28', [
+    '28-0004',
+    '28-0006',
+    '28-0009',
+    '28-4049',
+    '28-4046',
+    '28-4066',
+    '28-4065',
+    '28-4047',
+    '28-4062',
+    '28-4044',
+    '28-4039',
+    '28-4040',
+    '28-4062',
+    '28-4043',
+    '28-4041',
+    '28-4051',
+    '28-4050',
+    '28-4052',
+    '28-4053',
+    '28-4064',
+    '28-4069',
+    '28-4045',
+    '28-4048',
+    '28-4068',
+    '28-4063',
+    '28-4067',
+    '28-4055',
+    '28-4054',
+    '28-4036',
+    '28-4034',
+    '28-4035',
+    '28-4032',
+    '28-4033',
+    '28-4037',
+    '28-4038',
+    '28-1020',
+    '28-0007',
+    '28-0008',
+    '28-1017',
+    '28-0018',
+    '28-0003',
+    '28-0001',
+    '28-0002',
+    '28-0019',
+    '28-2011',
+    '28-2010',
+    '28-2005',
+    '28-2007',
+    '28-2004',
+    '28-2006',
+    '28-2009',
+    '28-2013',
+    '28-2012',
+    '28-2003',
+    '28-2008',
+    '28-2002',
+], true);
 
 
 
@@ -115,59 +171,40 @@ function getMissingProductImages() {
 }
 
 
-function undeleteShipContainers($shipName, $containerNames = []) {
-
-/*
-undeleteShipContainers('Gemi-28', [
-    '28-0005',
-    '28-0010',
-    '28-0011',
-    '28-0012',
-    '28-0013',
-    '28-0014',
-    '28-0015',
-    '28-0016',
-    '28-0017',
-    '28-1001',
-    '28-1002',
-    '28-1003',
-    '28-1004',
-    '28-1005',
-    '28-1006',
-    '28-1007',
-    '28-1008',
-    '28-1009',
-    '28-1010',
-    '28-1011',
-    '28-1012',
-    '28-1013',
-    '28-1014',
-    '28-1016',
-    '28-1018',
-]);
-*/
-
+function undeleteShipContainers($shipName, $containerNames = [], $dryRun = false) {
     echo "Retrieving containers in $shipName";
     $containers = WarehouseContainer::getAll();
     foreach ($containers as $container) {
         if ($container->type === 'Koli' && $container->parent->name === $shipName && in_array($container->name, $containerNames)) {
-            $stmt = $GLOBALS['pdo']->prepare("SELECT product_id FROM warehouse_container_product WHERE container_id = :id AND deleted_at IS NOT NULL");
+            $stmt = $GLOBALS['pdo']->prepare("SELECT deleted_at FROM warehouse_container WHERE id = :id");
             $stmt->execute(['id' => $container->id]);
-            $products = $stmt->fetchAll(PDO::FETCH_COLUMN);
-            echo "\nFound ".count($products)." products in $container->name\n";
-            foreach ($products as $product_id) {
-                $product = WarehouseProduct::getById($product_id);
-                if ($product) {
-                    echo "    Restoring product $product->fnsku ($product->name) to $container->name...\n";
-                    $product->placeInContainer($container);
-                } else {
-                    echo "    Product not found!\n";
+            $deleted_at = $stmt->fetchColumn();
+            if ($deleted_at) {
+                echo "Restoring container $container->name...\n";
+                $stmt = $GLOBALS['pdo']->prepare("SELECT product_id FROM warehouse_container_product WHERE container_id = :id AND deleted_at IS NOT NULL");
+                $stmt->execute(['id' => $container->id]);
+                $products = $stmt->fetchAll(PDO::FETCH_COLUMN);
+                echo "\nFound ".count($products)." products in $container->name\n";
+                foreach ($products as $product_id) {
+                    $product = WarehouseProduct::getById($product_id);
+                    if ($product) {
+                        echo "    Restoring product $product->fnsku ($product->name) to $container->name...\n";
+                        if ($dryRun) {
+                            echo "    Dry run for product->placeInContainer($container->id)\n";
+                        } else {
+                            $product->placeInContainer($container);
+                        }
+                    } else {
+                        echo "    Product not found!\n";
+                    }
                 }
+            } else {
+                echo "Container $container->name is not deleted\n";
             }
+
             echo "Continuing retrieve";
         }
     }
-
 }
 
 
