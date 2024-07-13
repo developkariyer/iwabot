@@ -142,7 +142,7 @@ undeleteShipContainers('Gemi-28', [
     '28-2003',
     '28-2008',
     '28-2002',
-], false);
+], true);
 
 
 
