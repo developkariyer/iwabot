@@ -184,7 +184,7 @@ class WarehouseProduct extends WarehouseAbstract
     {
         if ($container instanceof WarehouseContainer && !empty($this->id) && $count>0) {
             if (!$noCheck && $container->type === 'Koli') {
-                addMessage('Koli içerisinden ürün çıkartılamaz. Önce koliyi boşaltın!', 'alert-danger');
+                addMessage('Koli içerisinden ürün çıkartılamaz. Lütfen önce koliyi rafa boşaltın!', 'alert-danger');
                 return 0;
             }
             $sql = "UPDATE " . WarehouseAbstract::$productJoinTableName . " SET deleted_at = NOW() WHERE deleted_at IS NULL AND container_id = :container_id AND product_id = :product_id LIMIT $count";
