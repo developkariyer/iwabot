@@ -28,7 +28,11 @@ if (php_sapi_name() === 'cli') {
 
     <div class="row g-3 m-1 mt-1">
         <?= button('controller.php?action=clear_cache', 'Önbellek Temizle', 'success') ?>
+        <?= button('controller.php?action=user_info', 'Kullanıcı İstatistikleri', 'success', 'btn-user-info') ?>
+    </div>
+    <div class="row g-3 m-1 mt-1">
         <?= button('controller.php?action=empty_containers', 'Boş Raf/Koliler', 'success', 'btn-empty-containers') ?>
+        <?= button('controller.php?action=containers_in_ship', 'Gemide Kalan Koliler', 'success', 'btn-containers-in-ship') ?>
     </div>
 
     <hr>

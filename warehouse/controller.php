@@ -87,6 +87,9 @@ switch($action) {
     case 'empty_containers':
         header('Content-Type: text/html');
         die(WarehouseContainer::getEmptyContainers(ajax:true));
+    case 'user_info':
+        header('Content-Type: text/html');
+        die(WarehouseLogger::getUserLogs(true));
     case 'clear_cache':
         WarehouseAbstract::clearAllCache();
         addMessage('Önbellek temizlendi');

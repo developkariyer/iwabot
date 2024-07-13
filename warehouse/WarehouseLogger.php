@@ -55,6 +55,34 @@ class WarehouseLogger
         return $this->$field || null;
     }
 
+    public static function getUserLogs($html = false)
+    {
+        //warehouse_user_log
+        $loginInfo = $GLOBALS['pdo']->query("SELECT user_id, MAX(created_at) as last_page, COUNT(*) as total_page FROM warehouse_user_log GROUP BY user_id ORDER BY last_page DESC")->fetchAll();
+        if (!$html) {
+            return $loginInfo;
+        }
+        $content = '<table class="table table-striped-columns table-sm table-hover">';
+        $content.= '    <thead>';
+        $content.= '        <tr class="table-dark">';
+        $content.= '            <th scope="col">Kullanıcı</th>';
+        $content.= '            <th scope="col">Son Giriş</th>';
+        $content.= '            <th scope="col">Toplam Giriş</th>';
+        $content.= '        </tr>';
+        $content.= '    </thead>';
+        $content.= '    <tbody>';
+        foreach ($loginInfo as $login) {
+            $content.= '        <tr>';
+            $content.= '            <td>' . username($login['user_id']) . '</td>';
+            $content.= '            <td>' . $login['last_page'] . '</td>';
+            $content.= '            <td>' . $login['total_page'] . '</td>';
+            $content.= '        </tr>';
+        }
+        $content.= '    </tbody>';
+        $content.= '</table>';
+        return $content;
+    }
+
     public static function getLogCount()
     {
         $stmt = $GLOBALS['pdo']->prepare("SELECT count(*) as count FROM " . self::$logTableName);
