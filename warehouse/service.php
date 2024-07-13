@@ -173,29 +173,34 @@ function getMissingProductImages() {
 
 function undeleteShipContainers($shipName, $containerNames = [], $dryRun = false) {
     echo "Retrieving containers in $shipName";
-    $containers = WarehouseContainer::getAll();
-    foreach ($containers as $container) {
-        if ($container->type === 'Koli' && $container->parent->name === $shipName && in_array($container->name, $containerNames)) {
+    foreach ($containerNames as $containerName) {
+        $container = WarehouseContainer::getByField('name', $containerName);
+        if ($container && $container->type === 'Koli' && $container->parent->name === $shipName && in_array($container->name, $containerNames)) {
+            echo "Found container $container->name\n";
             $stmt = $GLOBALS['pdo']->prepare("SELECT deleted_at FROM warehouse_container WHERE id = :id");
             $stmt->execute(['id' => $container->id]);
             $deleted_at = $stmt->fetchColumn();
             if ($deleted_at) {
-                echo "Restoring container $container->name...\n";
+                echo "\tRestoring container $container->name...\n";
                 $stmt = $GLOBALS['pdo']->prepare("SELECT product_id FROM warehouse_container_product WHERE container_id = :id AND deleted_at IS NOT NULL");
                 $stmt->execute(['id' => $container->id]);
                 $products = $stmt->fetchAll(PDO::FETCH_COLUMN);
-                echo "\nFound ".count($products)." products in $container->name\n";
+                echo "\tFound ".count($products)." products in $container->name\n";
                 foreach ($products as $product_id) {
                     $product = WarehouseProduct::getById($product_id);
                     if ($product) {
-                        echo "    Restoring product $product->fnsku ($product->name) to $container->name...\n";
+                        echo "\t\tRestoring product $product->fnsku ($product->name) to $container->name...\n";
                         if ($dryRun) {
-                            echo "    Dry run for product->placeInContainer($container->id)\n";
+                            echo "\t\tDry run for product->placeInContainer($container->id)\n";
                         } else {
-                            $product->placeInContainer($container);
+                            if ($product->placeInContainer($container)) {
+                                echo "\t\tProduct {$product->name} restored\n";
+                            } else {
+                                echo "\t\tFailed to restore product {$product->name}\n";
+                            }
                         }
                     } else {
-                        echo "    Product not found!\n";
+                        echo "\t\tProduct not found!\n";
                     }
                 }
             } else {
