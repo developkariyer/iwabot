@@ -24,7 +24,7 @@ if (php_sapi_name() === 'cli') {
         <p>İşlem kayıtlarını ve sipariş karşılanma durumunu görüntüleyin. Depo Ana Menü için <a href="./">buraya basınız.</a></p>
     </div>
 
-    <div id="empty-containers" class="m-3 p-3 border d-none d-flex"></div>
+    <div id="empty-containers" class="m-3 p-3 border d-none"></div>
 
     <div class="row g-3 m-1 mt-1">
         <?= button('controller.php?action=clear_cache', 'Önbellek Temizle', 'success') ?>
