@@ -90,6 +90,9 @@ switch($action) {
     case 'user_info':
         header('Content-Type: text/html');
         die(WarehouseLogger::getUserLogs(true));
+    case 'containers_in_ship':
+        header('Content-Type: text/html');
+        die(WarehouseContainer::getContainersInShip(true));
     case 'clear_cache':
         WarehouseAbstract::clearAllCache();
         addMessage('Önbellek temizlendi');

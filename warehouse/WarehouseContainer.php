@@ -188,6 +188,27 @@ class WarehouseContainer extends WarehouseAbstract
         return $containers;
     }
 
+    public static function getContainersInShip($html = false)
+    {
+        $parent_containers = static::getContainers('Gemi');
+        $retval = [];
+        foreach ($parent_containers as $parent_container) {
+            $retval[$parent_container->name] = $parent_container->getChildren();
+        }
+        if (!$html) {
+            return $retval;
+        }
+        foreach ($retval as $ship => $containers) {
+            $html .= "<h3>$ship</h3>";
+            $html .= '<ul>';
+            foreach ($containers as $container) {
+                $html .= "<li>{$container->name} ({$container->getTotalCount()} adet ürün)</li>";
+            }
+            $html .= '</ul>';
+        }
+        return $html;
+    }
+
     public static function getEmptyContainers($ajax = false)
     {
         $containers = static::getAll();
