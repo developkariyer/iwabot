@@ -70,16 +70,18 @@ function undeleteShipContainers($shipName) {
     echo "Retrieving containers in $shipName";
     $containers = WarehouseContainer::getAll();
     foreach ($containers as $container) {
-        echo "    $container->type : $container->name\n";
-        if ($container->type === 'Koli' && $container->parent->name === $shipName) {
-            $stmt = $GLOBALS['pdo']->prepare("SELECT product_id FROM warehouse_container_product WHERE container_id = :id AND deleted_at IS NOT NULL");
-            $stmt->execute(['id' => $container->id]);
-            $products = $stmt->fetchAll(PDO::FETCH_COLUMN);
-            echo "\nFound ".count($products)." products in $container->name\n";
-            foreach ($products as $product_id) {
-                $product = WarehouseProduct::getById($product_id);
-                if ($product) {
-                    echo "    Restoring product $product->fnsku ($product->name) to $container->name...";
+        if ($container->type === 'Koli') {
+            echo "    $container->type : {$container->parent->name}\n";
+            if ($container->parent->name === $shipName) {
+                $stmt = $GLOBALS['pdo']->prepare("SELECT product_id FROM warehouse_container_product WHERE container_id = :id AND deleted_at IS NOT NULL");
+                $stmt->execute(['id' => $container->id]);
+                $products = $stmt->fetchAll(PDO::FETCH_COLUMN);
+                echo "\nFound ".count($products)." products in $container->name\n";
+                foreach ($products as $product_id) {
+                    $product = WarehouseProduct::getById($product_id);
+                    if ($product) {
+                        echo "    Restoring product $product->fnsku ($product->name) to $container->name...";
+                    }
                 }
             }
             echo "Continuing retrieve";
