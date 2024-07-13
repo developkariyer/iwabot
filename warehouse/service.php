@@ -114,8 +114,8 @@ function getMissingProductImages() {
                 $posSecondQuote = strpos($amazonPage, '"', $posFirstQuote + 1);
                 $imageUrl = substr($amazonPage, $posFirstQuote + 1, $posSecondQuote - $posFirstQuote - 1);
                 if ($imageUrl) {
-                    echo "    Image found: $product->image_url\n";
-                    $product->image_url = $matches[1];
+                    echo "    Image retrieved: $imageUrl\n";
+                    $product->image_url = $imageUrl;
                     $product->save();
                 } else {
                     echo "    Image not found\n";
@@ -125,6 +125,8 @@ function getMissingProductImages() {
             } else {
                 echo "    Failed to fetch Amazon page\n";
             }
+        } else {
+            echo "    Image already loaded: $product->image_url\n";
         }
     }
 }
