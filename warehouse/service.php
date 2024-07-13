@@ -12,10 +12,7 @@ if (php_sapi_name() === 'cli') {
     require_once 'WarehouseLogger.php';
 } else {
     require_once 'warehouse.php';
-
-
     include "../_header.php";
-
 ?>
 
 <div class="container mt-5">
@@ -120,8 +117,6 @@ function getMissingProductImages() {
             $pos = strpos($amazonPage, '"landingImageUrl"');
             if ($pos === FALSE) {
                 echo "    Image not found\n";
-                echo $amazonPage;
-                exit;
                 continue;
             }
             $posFirstQuote = strpos($amazonPage, '"', $pos);
