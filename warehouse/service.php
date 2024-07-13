@@ -120,6 +120,8 @@ function getMissingProductImages() {
             $pos = strpos($amazonPage, '"landingImageUrl"');
             if ($pos === FALSE) {
                 echo "    Image not found\n";
+                echo $amazonPage;
+                exit;
                 continue;
             }
             $posFirstQuote = strpos($amazonPage, '"', $pos);
