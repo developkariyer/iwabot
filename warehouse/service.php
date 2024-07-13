@@ -105,7 +105,7 @@ function getMissingProductImages() {
             echo "    Retrieving Amazon page... https://www.amazon.com/dp/{$product->fnsku}\n";
             $amazonPage = @file_get_contents("https://www.amazon.com/dp/{$product->fnsku}");
             if ($amazonPage !== FALSE) {
-                $pattern = '/\{"landingImageUrl":"(https:\/\/m\.media-amazon\.com\/images\/I\/[^\"]+)"\}/';
+                $pattern = '/"landingImageUrl":"([^"]+)"/';
                 preg_match($pattern, $amazonPage, $matches);
                 if (isset($matches[1])) {
                     echo "    Image found: $product->image_url\n";
