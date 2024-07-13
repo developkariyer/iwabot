@@ -98,12 +98,15 @@ function getMissingProductImages() {
     $products = WarehouseProduct::getAll();
     $product_images = file_get_contents('images_colorful.json');
     $product_images = json_decode($product_images, true);
+    $stmt = $GLOBALS['pdo']->prepare("UPDATE warehouse_product SET image_url = ? WHERE id = ?");
     foreach ($products as $product) {
         if (empty($product->image_url)) {
             if  (isset($product_images[$product->fnsku])) {
-                $product->image_url = $product_images[$product->fnsku];
-                $product->save();
-                echo "Updated image for $product->fnsku\n";
+                if ($stmt->execute([$product_images[$product->fnsku], $product->id])) {
+                    echo "Updated image for $product->fnsku\n";
+                } else {
+                    echo "Failed to update image for $product->fnsku\n";
+                }
             } else {
                 echo "No image found for $product->fnsku\n";
             }
