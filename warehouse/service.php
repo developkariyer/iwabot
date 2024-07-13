@@ -182,6 +182,14 @@ function undeleteShipContainers($shipName, $containerNames = [], $dryRun = false
             $deleted_at = $stmt->fetchColumn();
             if ($deleted_at) {
                 echo "\tRestoring container $container->name...\n";
+                $stmt = $GLOBALS['pdo']->prepare("UPDATE warehouse_container SET deleted_at = NULL WHERE id = :id");
+                if ($stmt->execute(['id' => $container->id])) {
+                    echo "\tContainer $container->name restored\n";
+                } else {
+                    echo "\tFailed to restore container $container->name\n";
+                    exit;
+                }
+                /*
                 $stmt = $GLOBALS['pdo']->prepare("SELECT product_id FROM warehouse_container_product WHERE container_id = :id AND deleted_at IS NOT NULL");
                 $stmt->execute(['id' => $container->id]);
                 $products = $stmt->fetchAll(PDO::FETCH_COLUMN);
@@ -204,7 +212,7 @@ function undeleteShipContainers($shipName, $containerNames = [], $dryRun = false
                         echo "\t\tProduct not found!\n";
                         exit;
                     }
-                }
+                }*/
             } else {
                 echo "Container $container->name is not deleted\n";
                 exit;
