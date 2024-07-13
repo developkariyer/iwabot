@@ -197,14 +197,17 @@ function undeleteShipContainers($shipName, $containerNames = [], $dryRun = false
                                 echo "\t\tProduct {$product->name} restored\n";
                             } else {
                                 echo "\t\tFailed to restore product {$product->name}\n";
+                                exit;
                             }
                         }
                     } else {
                         echo "\t\tProduct not found!\n";
+                        exit;
                     }
                 }
             } else {
                 echo "Container $container->name is not deleted\n";
+                exit;
             }
             echo "Continuing retrieve";
         }
