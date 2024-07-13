@@ -70,7 +70,7 @@ function undeleteShipContainers($shipName) {
     echo "Retrieving containers in $shipName";
     $containers = WarehouseContainer::getAll();
     foreach ($containers as $container) {
-        echo substr($container->type, 0, 1);
+        echo "    $container->type : $container->name\n";
         if ($container->type === 'Koli' && $container->parent->name === $shipName) {
             $stmt = $GLOBALS['pdo']->prepare("SELECT product_id FROM warehouse_container_product WHERE container_id = :id AND deleted_at IS NOT NULL");
             $stmt->execute(['id' => $container->id]);
