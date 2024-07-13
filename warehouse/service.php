@@ -176,18 +176,17 @@ function undeleteShipContainers($shipName, $containerNames = [], $dryRun = false
     foreach ($containerNames as $containerName) {
         $container = WarehouseContainer::getByField('name', $containerName);
         if ($container && $container->type === 'Koli' && $container->parent->name === $shipName && in_array($container->name, $containerNames)) {
-            echo "Found container $container->name\n";
+//            echo "Found container $container->name\n";
             $stmt = $GLOBALS['pdo']->prepare("SELECT deleted_at FROM warehouse_container WHERE id = :id");
             $stmt->execute(['id' => $container->id]);
             $deleted_at = $stmt->fetchColumn();
             if ($deleted_at) {
-                echo "\tRestoring container $container->name...\n";
+//                echo "\tRestoring container $container->name...\n";
                 $stmt = $GLOBALS['pdo']->prepare("UPDATE warehouse_container SET deleted_at = NULL WHERE id = :id");
                 if ($stmt->execute(['id' => $container->id])) {
-                    echo "\tContainer $container->name restored\n";
+//                    echo "\tContainer $container->name restored\n";
                 } else {
                     echo "\tFailed to restore container $container->name\n";
-                    exit;
                 }
                 /*
                 $stmt = $GLOBALS['pdo']->prepare("SELECT product_id FROM warehouse_container_product WHERE container_id = :id AND deleted_at IS NOT NULL");
