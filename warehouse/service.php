@@ -17,7 +17,7 @@ if (php_sapi_name() === 'cli') {
 
 <div class="container mt-5">
     <div class="jumbotron text-center">
-        <h1>İşlem Kayıtları</h1>
+        <h1>Servis İşlemleri</h1>
         <p>İşlem kayıtlarını ve sipariş karşılanma durumunu görüntüleyin. Depo Ana Menü için <a href="./">buraya basınız.</a></p>
     </div>
 
