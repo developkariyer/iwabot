@@ -208,7 +208,6 @@ $(document).ready(function() {
                     $('#selectedProduct').removeClass('d-none');
                     $('#hidden_product_id').val(response.id);
                     $('#dynamic_container_list').html('<option value="">Mevcut Raf/Koli Seçin</option>' + response.container);
-                    displayProductImage(response.fnsku);
                 },
                 error: function(xhr, status, error) {
                     console.error('Error fetching product information:', error);
@@ -271,55 +270,6 @@ $(document).ready(function() {
 });
 
 $(document).ready(function(){$('#dynamic_new_container').select2({theme: "classic"});});
-
-async function fetchAmazonProductPage(asin) {
-    const url = `https://www.amazon.com/dp/${asin}`;
-    try {
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'text/html',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-            }
-        });
-        const html = await response.text();
-        return html;
-    } catch (error) {
-        console.error('Error fetching the Amazon product page:', error);
-    }
-}
-
-function extractImageUrl(html) {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    const scriptTag = Array.from(doc.querySelectorAll('script')).find(script => 
-        script.textContent.includes('"landingImageUrl"')
-    );
-    if (scriptTag) {
-        const match = scriptTag.textContent.match(/"landingImageUrl":"([^"]+)"/);
-        if (match && match[1]) {
-            return match[1];
-        }
-    }
-    return null;
-}
-
-async function displayProductImage(asin) {
-    const html = await fetchAmazonProductPage(asin);
-    const imageUrl = extractImageUrl(html);
-    if (imageUrl) {
-        const imgElement = document.createElement('img');
-        imgElement.src = imageUrl;
-        imgElement.alt = 'Amazon Product Image';
-        imgElement.style.maxWidth = '100%';
-        document.getElementById('image-container').appendChild(imgElement);
-    } else {
-        console.error('Image URL not found.');
-    }
-}
-
-
-
 
 </script>
 
