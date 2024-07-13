@@ -168,7 +168,7 @@ function productInfo($product) {
         return "Ürün bilgisi alınamadı: Geçersiz ürün";
     }
     $fnsku = htmlspecialchars($product->fnsku, ENT_QUOTES, 'UTF-8');
-    $img = empty($product->image) ? 'https://picsum.photos/300?blur=5' : $product->image;
+    $img = empty($product->image) ? 'logo.jpg' : $product->image;
     return "
     <img src='{$img}' class='img-thumbnail' style='max-width: 300px;'><br>
     <b>Ürün Adı:</b> {$product->name}<br>
