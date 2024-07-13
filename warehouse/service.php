@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 if (php_sapi_name() === 'cli') {
+    echo "Running in CLI mode ...\n";
     require_once('../_init.php');
     require_once 'WarehouseAbstract.php';
     require_once 'WarehouseProduct.php';
@@ -60,8 +61,29 @@ if (php_sapi_name() === 'cli') {
 
 
 
+undeleteShipContainers('Gemi-28');
 
 
+
+
+function undeleteShipContainers($shipName) {
+    $containers = WarehouseContainer::getAll();
+    foreach ($containers as $container) {
+        if ($container->type === 'Koli' && $container->parent->name === $shipName) {
+            $stmt = $GLOBALS['pdo']->prepare("SELECT product_id FROM warehouse_container_product WHERE container_id = :id AND deleted_at IS NOT NULL");
+            $stmt->execute(['id' => $container->id]);
+            $products = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            echo "Found ".count($products)." products in $container->name\n";
+            foreach ($products as $product_id) {
+                $product = WarehouseProduct::getById($product_id);
+                if ($product) {
+                    echo "    Restoring product $product->fnsku ($product->name) to $container->name...";
+                }
+            }
+        }
+    }
+
+}
 
 
 
