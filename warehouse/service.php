@@ -87,6 +87,42 @@ if (php_sapi_name() === 'cli') {
 
 
 WarehouseAbstract::clearAllCache();
+
+
+getMissingProductImages();
+
+
+
+
+WarehouseAbstract::clearAllCache();
+
+
+function getMissingProductImages() {
+    $products = WarehouseProduct::getAll();
+    foreach ($products as $product) {
+        if (empty($product->image_url)) {
+            echo "Missing image for $product->fnsku ($product->name)\n";
+            $amazonPage = file_get_contents("https://www.amazon.com/dp/$product->fnsku");
+            if ($amazonPage !== FALSE) {
+                $pattern = '/\{"landingImageUrl":"(https:\/\/m\.media-amazon\.com\/images\/I\/[^\"]+)"\}/';
+                preg_match($pattern, $amazonPage, $matches);
+                if (isset($matches[1])) {
+                    echo "    Image found: $product->image_url\n";
+                    $product->image_url = $matches[1];
+                    $product->save();
+                } else {
+                    echo "    Image not found\n";
+                }
+            } else {
+                echo "    Failed to fetch Amazon page\n";
+            }
+        }
+    }
+}
+
+
+function undeleteShipContainers($shipName, $containerNames = []) {
+
 /*
 undeleteShipContainers('Gemi-28', [
     '28-0005',
@@ -116,9 +152,7 @@ undeleteShipContainers('Gemi-28', [
     '28-1018',
 ]);
 */
-WarehouseAbstract::clearAllCache();
 
-function undeleteShipContainers($shipName, $containerNames = []) {
     echo "Retrieving containers in $shipName";
     $containers = WarehouseContainer::getAll();
     foreach ($containers as $container) {
