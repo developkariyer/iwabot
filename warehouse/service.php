@@ -142,7 +142,7 @@ undeleteShipContainers('Gemi-28', [
     '28-2003',
     '28-2008',
     '28-2002',
-], true);
+], false);
 
 
 
@@ -212,6 +212,7 @@ function undeleteShipContainers($shipName, $containerNames = [], $dryRun = false
             echo "Continuing retrieve";
         }
     }
+    echo "All containers in $shipName retrieved\n";
 }
 
 
