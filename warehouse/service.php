@@ -102,7 +102,7 @@ function getMissingProductImages() {
     foreach ($products as $product) {
         if (empty($product->image_url)) {
             echo "Missing image for $product->fnsku ($product->name)\n";
-            $amazonPage = @file_get_contents("https://www.amazon.com/dp/$product->fnsku");
+            $amazonPage = @file_get_contents("https://www.amazon.com/dp/{$product->fnsku}");
             if ($amazonPage !== FALSE) {
                 $pattern = '/\{"landingImageUrl":"()"\}/';
                 preg_match($pattern, $amazonPage, $matches);
@@ -112,7 +112,7 @@ function getMissingProductImages() {
                     $product->save();
                 } else {
                     echo "    Image not found\n";
-                    echo $amazonPage;
+                    //echo $amazonPage;
                     exit;
                 }
             } else {
