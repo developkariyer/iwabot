@@ -143,7 +143,7 @@ class WarehouseSold
             }
             foreach ($this->object->getProducts() as $product) {
                 for ($i = 0; $i < $product->getInContainerCount($this->object); $i++) {
-                    if (!$product->removeFromContainer($this->object)) {
+                    if (!$product->removeFromContainer($this->object, noCheck: true)) {
                         throw new Exception("fulfil: Product could not be removed from container");
                     }
                     error_log($product->name . ' removed from ' . $this->object->name);
