@@ -60,6 +60,10 @@ switch($action) {
     case 'fulfil_box_delete':
         handleFulfilBoxUpdateDelete();
         break;
+    case 'fulfil_update':
+    case 'fulfil_delete':
+        handleFulfilUpdateDelete();
+        break;
     case 'add_sold_box':
         handleAddSoldBox();
         break;
@@ -473,6 +477,32 @@ function handleFulfilBoxUpdateDelete() { // fulfil_box_update fulfil_box_delete
             addMessage("Koli sipariş kaydı silindi");
         } else {
             addMessage("Koli sipariş kaydı silinemedi");
+        }
+    }
+}
+
+function handleFulfilUpdateDelete() { // fulfil_update fulfil_delete
+    $soldItem = WarehouseSold::getById(getPostValue('sold_id'));
+    if (!$soldItem || $soldItem->fulfilled_at || $soldItem->deleted_at) {
+        addMessage('fulfil_update_delete: Geçersiz parametre: sold_id!');
+        return;
+    }
+    if ($_POST['action'] === 'fulfil_update') {
+        $description = getPostValue('description');
+        if (empty($description) || !is_string($description)) {
+            addMessage('fulfil_update: Geçersiz parametre: description!');
+            return;
+        }
+        if ($soldItem->update(['description' => $description])) {
+            addMessage("Sipariş açıklaması güncellendi");
+        } else {
+            addMessage("Sipariş açıklaması güncellenemedi");
+        }
+    } elseif ($_POST['action'] === 'fulfil_delete') {
+        if ($soldItem->delete()) {
+            addMessage("Sipariş kaydı silindi");
+        } else {
+            addMessage("Sipariş kaydı silinemedi");
         }
     }
 }
