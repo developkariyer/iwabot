@@ -60,9 +60,11 @@ include '../_header.php';
                                             <label for="container_id_<?= $index ?>" class="form-label">Koli Seçin</label>
                                             <select id="container_id_<?= $index ?>" name="container_id" class="form-select" required>
                                                 <option value="">Çıkış Yapılacak Koli Seçin</option>
-                                                <optgroup label="Bu Koli">
-                                                    <option value="<?= htmlspecialchars($soldItem->object->id) ?>"><?= htmlspecialchars($soldItem->object->name) ?></option>
-                                                </optgroup>
+                                                <?php if (!$soldItem->object->deleted_at): ?>
+                                                    <optgroup label="Bu Koli">
+                                                        <option value="<?= htmlspecialchars($soldItem->object->id) ?>"><?= htmlspecialchars($soldItem->object->name) ?></option>
+                                                    </optgroup>
+                                                <?php endif; ?>
                                                 <optgroup label="Aynı İçerikli Koliler">
                                                     <?php foreach ($soldItem->object->findSimilar() as $sameContainer): ?>
                                                         <option value="<?= htmlspecialchars($sameContainer->id) ?>"><?= htmlspecialchars($sameContainer->name) ?> (<?= htmlspecialchars($sameContainer->parent->name) ?>)</option>
