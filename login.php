@@ -51,7 +51,9 @@ if (isset($_GET['code']) && isset($_GET['state']) && isset($_SESSION['state']) &
         $_SESSION['response'] = $response;
         $_SESSION['access_token'] = $response['access_token'];
         $tokenParts = explode('.', $response['id_token']);
+        error_log('Login.php: Token parts: '.json_encode($tokenParts));
         $_SESSION['user_info'] = json_decode(base64_decode($tokenParts[1]), true);
+        error_log('Login.php: User info: '.json_encode($_SESSION['user_info']));
         $_SESSION['user_id'] = $_SESSION['user_info']['sub'];
         if (isset($_SESSION['prev_url'])) {
             $loggedInUri = $_SESSION['prev_url'];
