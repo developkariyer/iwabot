@@ -41,6 +41,7 @@ if (isset($_GET['code']) && isset($_GET['state']) && isset($_SESSION['state']) &
         ],
     ];
     $context = stream_context_create($options);
+    error_log('Login.php requesting token from Slack: '.json_encode($url).' '.json_encode($options));
     $response = file_get_contents($url, false, $context);
     error_log("Login.php slack response received: $response");
     $response = json_decode($response, true);
