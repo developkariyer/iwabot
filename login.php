@@ -53,7 +53,7 @@ if (isset($_GET['code']) && isset($_GET['state']) && isset($_SESSION['state']) &
         $tokenParts = explode('.', $response['id_token']);
         error_log('Login.php: Token parts: '.json_encode($tokenParts));
         error_log('Login.php: Token payload: '.base64_decode(strtr($tokenParts[1], '-_', '+/')));
-        $_SESSION['user_info'] = json_decode(base64_decode(strtr($tokenParts[1], '-_', '+/'), true);
+        $_SESSION['user_info'] = json_decode(base64_decode(strtr($tokenParts[1], '-_', '+/')), true);
         error_log('Login.php: User info: '.json_encode($_SESSION['user_info']));
         $_SESSION['user_id'] = $_SESSION['user_info']['sub'];
         if (isset($_SESSION['prev_url'])) {
