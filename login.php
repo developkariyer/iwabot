@@ -5,6 +5,7 @@ $guestFree = true;
 require_once '_login.php';
 
 if (isset($_GET['logout'])) {
+    error_log('Login.php: Logging out');
     session_destroy();
     header("Location: $redirectUri");
     exit;
@@ -13,6 +14,7 @@ if (isset($_GET['logout'])) {
 require_once '_slack.php';
 
 if (isset($_SESSION['logged_in'])) {
+    error_log('Login.php: Already logged in');
     header("Location: $loggedInUri");
     exit;
 }
@@ -20,7 +22,7 @@ if (isset($_SESSION['logged_in'])) {
 $content = '';
 
 if (isset($_GET['code']) && isset($_GET['state']) && isset($_SESSION['state']) && $_GET['state'] === $_SESSION['state']) {
-    error_log('Called by Slack: '.json_encode($_GET));
+    error_log('Login.php called by Slack: '.json_encode($_GET));
     $code = $_GET['code'];
     $state = $_GET['state'];
     $url = 'https://slack.com/api/openid.connect.token';
@@ -40,7 +42,7 @@ if (isset($_GET['code']) && isset($_GET['state']) && isset($_SESSION['state']) &
     ];
     $context = stream_context_create($options);
     $response = file_get_contents($url, false, $context);
-    error_log("Slack response received: $response");
+    error_log("Login.php slack response received: $response");
     $response = json_decode($response, true);
     if (isset($response['ok']) && $response['ok'] && isset($response['id_token'])) {
         $_SESSION['logged_in'] = true;
@@ -54,12 +56,15 @@ if (isset($_GET['code']) && isset($_GET['state']) && isset($_SESSION['state']) &
             $loggedInUri = $_SESSION['prev_url'];
             unset($_SESSION['prev_url']);
         }
-        header('Location: '.$loggedInUri);
+        header("Location: $loggedInUri");
         exit;
     } else {
         $content = '<div class="alert alert-danger" role="alert">Error: '.$response['error'].'</div>';
+        error_log('Login.php: Error: '.json_encode($response));
     }
-} 
+}
+
+error_log('Login.php: Asking for Login with Slack');
 
 $_SESSION['state'] = bin2hex(random_bytes(16));
 $_SESSION['nonce'] = bin2hex(random_bytes(16));
