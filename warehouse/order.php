@@ -69,12 +69,10 @@ include '../_header.php';
                                                             </div>
                                                             <p><strong>Aynı İçerikli Koliler</strong></p>
                                                             <?php foreach ($soldItem->object->findSimilar() as $optgroup=>$sameContainers): ?>
-                                                                <strong><?= $optgroup ?></strong>
-                                                                <ul>
-                                                                    <?php foreach ($sameContainers as $sameContainer): ?>
-                                                                        <li><?= $icon[$sameContainer->type] ?> <?= htmlspecialchars($sameContainer->name) ?></li>
-                                                                    <?php endforeach; ?>
-                                                                </ul>
+                                                                <p><strong><?= $optgroup ?></strong></p>
+                                                                <?php foreach ($sameContainers as $sameContainer): ?>
+                                                                    <?= $icon[$sameContainer->type] ?> <?= htmlspecialchars($sameContainer->name) ?>&nbsp;&nbsp;&nbsp;
+                                                                <?php endforeach; ?>
                                                             <?php endforeach; ?>
                                                             <div class="mb-3">
                                                                 <label for="description" class="form-label">Açıklama</label>
