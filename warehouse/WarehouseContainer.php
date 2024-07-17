@@ -274,9 +274,9 @@ class WarehouseContainer extends WarehouseAbstract
             if ($container && !$container->deleted_at && $container->type === 'Koli') {
                 error_log("findSimilar: Found similar container {$container->id}, {$container->name}");
                 if (!isset($containers[$container->parent->name])) {
-                    $containers[$container->parent->name] = [];
+                    $containers[$container->getParent()->name] = [];
                 }
-                $containers[$container->parent->name][] = $container;
+                $containers[$container->getParent()->name][] = $container;
             }
         }
         static::setCache("findSimilar{$this->id}", serialize($containers));
