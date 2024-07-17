@@ -255,7 +255,7 @@ class WarehouseContainer extends WarehouseAbstract
 
     public function findSimilarIds()
     {
-        $sql = "SELECT container_id FROM ".WarehouseAbstract::$containerSignatureTableName." WHERE signature = (SELECT signature FROM ".WarehouseAbstract::$containerSignatureTableName." WHERE container_id = :container_id) AND container_id <> :container_id";
+        $sql = "SELECT container_id FROM ".WarehouseAbstract::$containerSignatureTableName." WHERE signature = (SELECT signature FROM ".WarehouseAbstract::$containerSignatureTableName." WHERE container_id = :container_id) AND container_id <> :container_id AND deleted_at IS NULL";
         $stmt = $GLOBALS['pdo']->prepare($sql);
         $stmt->execute(['container_id' => $this->id]);
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
