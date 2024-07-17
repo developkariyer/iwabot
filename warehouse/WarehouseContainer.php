@@ -258,7 +258,15 @@ class WarehouseContainer extends WarehouseAbstract
         $sql = "SELECT container_id FROM ".WarehouseAbstract::$containerSignatureTableName." WHERE signature = (SELECT signature FROM ".WarehouseAbstract::$containerSignatureTableName." WHERE container_id = :container_id) AND container_id <> :container_id";
         $stmt = $GLOBALS['pdo']->prepare($sql);
         $stmt->execute(['container_id' => $this->id]);
-        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+        $container_ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        $retval = [];
+        foreach ($container_ids as $container_id) {
+            $container = static::getById($container_id);
+            if (!$container->deleted_at) {
+                $retval[] = $container_id;
+            }
+        }
+        return $retval;
     }
 
     public function findSimilar()
