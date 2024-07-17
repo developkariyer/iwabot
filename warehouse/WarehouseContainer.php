@@ -272,7 +272,6 @@ class WarehouseContainer extends WarehouseAbstract
         foreach ($ids as $container_id) {
             $container = static::getById($container_id);
             if ($container && !$container->deleted_at && $container->type === 'Koli') {
-                error_log("findSimilar: Found similar container {$container->id}, {$container->name}");
                 if (!isset($containers[$container->getParent()->name])) {
                     $containers[$container->getParent()->name] = [];
                 }
