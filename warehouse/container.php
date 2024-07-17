@@ -64,8 +64,12 @@ include '../_header.php';
                                                     </optgroup>
                                                 <?php endif; ?>
                                                 <optgroup label="Aynı İçerikli Koliler">
-                                                    <?php foreach ($soldItem->object->findSimilar() as $sameContainer): ?>
-                                                        <option value="<?= htmlspecialchars($sameContainer->id) ?>"><?= htmlspecialchars($sameContainer->name) ?> (<?= htmlspecialchars($sameContainer->parent->name) ?>)</option>
+                                                    <?php foreach ($soldItem->object->findSimilar() as $optgroup=>$sameContainers): ?>
+                                                        <optgroup label="<?= htmlspecialchars($optgroup) ?>">
+                                                            <?php foreach ($sameContainers as $sameContainer): ?>
+                                                                <option value="<?= htmlspecialchars($sameContainer->id) ?>"><?= htmlspecialchars($sameContainer->name) ?> (<?= htmlspecialchars($sameContainer->parent->name) ?>)</option>
+                                                            <?php endforeach; ?>
+                                                        </optgroup>
                                                     <?php endforeach; ?>
                                                 </optgroup>
                                             </select>

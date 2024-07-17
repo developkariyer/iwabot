@@ -258,15 +258,7 @@ class WarehouseContainer extends WarehouseAbstract
         $sql = "SELECT container_id FROM ".WarehouseAbstract::$containerSignatureTableName." WHERE signature = (SELECT signature FROM ".WarehouseAbstract::$containerSignatureTableName." WHERE container_id = :container_id) AND container_id <> :container_id";
         $stmt = $GLOBALS['pdo']->prepare($sql);
         $stmt->execute(['container_id' => $this->id]);
-        $container_ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
-        $retval = [];
-        foreach ($container_ids as $container_id) {
-            $container = static::getById($container_id);
-            if (!$container->deleted_at) {
-                $retval[] = $container_id;
-            }
-        }
-        return $retval;
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 
     public function findSimilar()
@@ -278,7 +270,13 @@ class WarehouseContainer extends WarehouseAbstract
         $containers = [];
         $ids = $this->findSimilarIds();
         foreach ($ids as $container_id) {
-            $containers[] = static::getById($container_id);
+            $container = static::getById($container_id);
+            if (!$container->deleted_at && $container->type === 'Koli') {
+                if (!isset($containers[$container->parent->name])) {
+                    $containers[$container->parent->name] = [];
+                }
+                $containers[$container->parent->name][] = $container;
+            }
         }
         static::setCache("findSimilar{$this->id}", serialize($containers));
         return $containers;

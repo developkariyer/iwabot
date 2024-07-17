@@ -68,11 +68,14 @@ include '../_header.php';
                                                                 </p>
                                                             </div>
                                                             <p><strong>Aynı İçerikli Koliler</strong></p>
-                                                            <ul>
-                                                                <?php foreach ($soldItem->object->findSimilar() as $sameContainer): ?>
-                                                                    <li><?= $icon[$sameContainer->type] ?> <?= htmlspecialchars($sameContainer->name) ?> (<?= htmlspecialchars($sameContainer->parent->name) ?>)</li>
-                                                                <?php endforeach; ?>
-                                                            </ul>
+                                                            <?php foreach ($soldItem->object->findSimilar() as $optgroup=>$sameContainers): ?>
+                                                                <strong><?= $optgroup ?></strong>
+                                                                <ul>
+                                                                    <?php foreach ($sameContainers as $sameContainer): ?>
+                                                                        <li><?= $icon[$sameContainer->type] ?> <?= htmlspecialchars($sameContainer->name) ?></li>
+                                                                    <?php endforeach; ?>
+                                                                </ul>
+                                                            <?php endforeach; ?>
                                                             <div class="mb-3">
                                                                 <label for="description" class="form-label">Açıklama</label>
                                                                 <textarea id="description" name="description" rows="5" class="form-control btn-outline-success w-100 py-3" placeholder="Açıklama" required><?= htmlspecialchars($soldItem->description) ?></textarea>
