@@ -271,7 +271,7 @@ class WarehouseContainer extends WarehouseAbstract
         $ids = $this->findSimilarIds();
         foreach ($ids as $container_id) {
             $container = static::getById($container_id);
-            if (!$container->deleted_at && $container->type === 'Koli') {
+            if ($container && !$container->deleted_at && $container->type === 'Koli') {
                 if (!isset($containers[$container->parent->name])) {
                     $containers[$container->parent->name] = [];
                 }
