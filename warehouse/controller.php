@@ -510,8 +510,8 @@ function handleFulfilUpdateDelete() { // fulfil_update fulfil_delete
 function handleAddSoldBox() { // add_sold_box
     $container = WarehouseContainer::getById(getPostValue('container_id'));
     $description = getPostValue('description');
-    if (!$container || empty($description) || !is_string($description)) {
-        addMessage('add_sold_box: Geçersiz parametre!');
+    if (!$container || empty($description) || !is_string($description) || $container->deleted_at || $container->isPreviouslyOrdered() ) {
+        addMessage(['type'=>'alert-danger', 'msg'=>'add_sold_box: Geçersiz parametre!']);
         return;
     }
     WarehouseSold::addNewSoldItem($container, $description);

@@ -282,6 +282,14 @@ class WarehouseContainer extends WarehouseAbstract
         return $containers;
     }
 
+    public function isPreviouslyOrdered()
+    {
+        $sql = "SELECT count(*) FROM warehouse_sold WHERE item_type = 'WarehouseContainer' AND item_id = :item_id and deleted_at IS NULL";
+        $stmt = $GLOBALS['pdo']->prepare($sql);
+        $stmt->execute(['item_id' => $this->id]);
+        return $stmt->fetchColumn() > 0;
+    }
+
     /* ACTION METHODS BELOW */
 
     public function checkCompatibility($object)
