@@ -511,7 +511,7 @@ function handleAddSoldBox() { // add_sold_box
     $container = WarehouseContainer::getById(getPostValue('container_id'));
     $description = getPostValue('description');
     if (!$container || empty($description) || !is_string($description) || $container->deleted_at || $container->isPreviouslyOrdered() ) {
-        addMessage('add_sold_box: Geçersiz parametre!', 'alert-danger');
+        addMessage('add_sold_box: Bu koli daha önce çıkış yapılmış!', 'alert-danger');
         return;
     }
     WarehouseSold::addNewSoldItem($container, $description);
