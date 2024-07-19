@@ -193,24 +193,29 @@ function containerInfo($container) {
     ];
     $html = "<b>Adı:</b> {$container->name}<br>
     <b>Tipi:</b> {$icon[$container->type]} {$container->type}<br>";
-    if ($container->parent) {
-        $html .= "<b>Rafı:</b> {$icon[$container->parent->type]} {$container->parent->name}<br>";
-    }
-    $html .= "<b>İçindeki Ürünler:</b>";
-    $products = $container->getProducts();
-    if (empty($products)) {
-        if ($container->type == 'Koli') {
-            $html .= "<br>Bu koli boş görünüyor.";
-        }
-        if ($container->type == 'Raf') {
-            $html .= "<br>Bu rafta açıkta ürün yok.";
-        }
+    if ($container->deleted_at) {
+        // make a red background badge
+        $html .= "<b>Durumu:</b> <span class='badge bg-danger'>Çıkış Yapılmış/Silinmiş</span><br>";
     } else {
-        $html .= "<ul>";
-        foreach($products as $product) {
-            $html .= "<li>{$product->name} ({$product->fnsku}): ".$product->getInContainerCount($container)." adet</li>";
+        if ($container->parent) {
+            $html .= "<b>Rafı:</b> {$icon[$container->parent->type]} {$container->parent->name}<br>";
         }
-        $html .= "</ul>";
+        $html .= "<b>İçindeki Ürünler:</b>";
+        $products = $container->getProducts();
+        if (empty($products)) {
+            if ($container->type == 'Koli') {
+                $html .= "<br>Bu koli boş görünüyor.";
+            }
+            if ($container->type == 'Raf') {
+                $html .= "<br>Bu rafta açıkta ürün yok.";
+            }
+        } else {
+            $html .= "<ul>";
+            foreach($products as $product) {
+                $html .= "<li>{$product->name} ({$product->fnsku}): ".$product->getInContainerCount($container)." adet</li>";
+            }
+            $html .= "</ul>";
+        }
     }
     return $html;
 }

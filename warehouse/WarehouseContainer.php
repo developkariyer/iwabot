@@ -3,6 +3,23 @@
 require_once('WarehouseAbstract.php');
 require_once('WarehouseProduct.php');
 
+/**
+ * Class WarehouseContainer
+ * @property int $id
+ * @property string $name
+ * @property string $type
+ * @property int $parent_id
+ * @property string $warehouse
+ * @property string $created_at
+ * @property string $updated_at
+ * @property string $deleted_at
+ * 
+ * @method WarehouseContainer[] getChildren($noCache = false
+ * @method WarehouseProduct[] getProducts($noCache = false
+ * @method WarehouseContainer getParent()
+
+ */
+
 class WarehouseContainer extends WarehouseAbstract
 {
     protected array $children = [];
@@ -60,6 +77,19 @@ class WarehouseContainer extends WarehouseAbstract
             throw new Exception("Cannot delete container {$this->id} with products: ".json_encode($this->getProducts(noCache:true)));
         }
         return true;
+    }
+
+    public function getNameOrSimilar()
+    {
+        if (!$this->deleted_at) {
+            return $this->name;
+        }
+        $similars = $this->findSimilar();
+        if (empty($similars)) {
+            return $this->name;
+        }
+        $similar = reset($similars);
+        return $similar->name;
     }
 
     public function getChildren($noCache = false)
