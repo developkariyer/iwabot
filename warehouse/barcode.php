@@ -59,14 +59,11 @@ include '../_header.php';
         if (cameraOpenDiv.classList.contains('d-none')) {
             cameraOpenDiv.classList.remove('d-none');
             openCameraButton.textContent = 'Kamerayı Kapat';
-
             if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                 try {
                     stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
                     video.srcObject = stream;
-
                     barcodeDetector = new BarcodeDetector({ formats: ['code_128', 'ean_13'] });
-
                     video.addEventListener('play', scanBarcode);
                 } catch (error) {
                     console.error('Error accessing the camera:', error);
