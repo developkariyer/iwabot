@@ -489,6 +489,7 @@ function handleFulfilUpdateDelete() { // fulfil_update fulfil_delete
     }
     if ($_POST['action'] === 'fulfil_update') {
         $description = getPostValue('description');
+        error_log('UPDATE FULFIL INFO:'.print_r($description, true));
         if (empty($description) || !is_string($description)) {
             addMessage('fulfil_update: Geçersiz parametre: description!');
             return;
