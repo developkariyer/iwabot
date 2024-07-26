@@ -174,6 +174,7 @@ class WarehouseSold
 
     public function update($description)
     {
+        error_log('DEBUG:'.print_r($description, true));
         $stmt = $GLOBALS['pdo']->prepare("UPDATE " . self::$soldItemsTableName . " SET description = :description WHERE id = :id");
         if ($stmt->execute(['id' => $this->id, 'description' => $description])) {
             WarehouseLogger::logAction('updateSoldItem', ['sold_id' => $this->id, 'old_description' => $this->description, 'new_description'=>$description], $this->object);
