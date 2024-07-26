@@ -206,16 +206,24 @@ class WarehouseProduct extends WarehouseAbstract
     public function moveToContainer($oldContainer, $newContainer, $count = 1, $noCheck = false)
     {
         error_log("Moving $count items from {$oldContainer->name} to {$newContainer->name}");
-        if ($oldContainer instanceof WarehouseContainer && $newContainer instanceof WarehouseContainer && !empty($this->id) && $count>0) {
-            $newCount = $this->removeFromContainer($oldContainer, $count, $noCheck);
-            error_log("  Removed $newCount items from {$oldContainer->name}");
-            if ($newCount && $newCount<=$count) {
-                if ($this->placeInContainer($newContainer, $newCount)) {
-                    error_log("  Placed $newCount items in {$newContainer->name}");
-                    return true;
+        $GLOBALS['pdo']->beginTransaction();
+        try {
+            if ($oldContainer instanceof WarehouseContainer && $newContainer instanceof WarehouseContainer && !empty($this->id) && $count>0) {
+                $newCount = $this->removeFromContainer($oldContainer, $count, $noCheck);
+                error_log("  Removed $newCount items from {$oldContainer->name}");
+                if ($newCount && $newCount<=$count) {
+                    if ($this->placeInContainer($newContainer, $newCount)) {
+                        error_log("  Placed $newCount items in {$newContainer->name}");
+                        $GLOBALS["pdo"]->commit();
+                        return true;
+                    }
                 }
             }
-        }
+            $GLOBALS["pdo"]->rollBack();
+        } catch (Exception $e) {
+            addMessage($e->getMessage(), "danger");
+            $GLOBALS["pdo"]->rollBack();
+        } 
         return false;
     }
 

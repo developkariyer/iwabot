@@ -188,7 +188,7 @@ abstract class WarehouseAbstract
 
     protected function getField($field)
     {
-        if ($field === 'warehouse') {
+        if ($field === 'warehouse') { //hack solution for now
             return '';
         }
         if (!in_array($field, static::getDBFields())) {
@@ -211,7 +211,7 @@ abstract class WarehouseAbstract
 
     public function __get($field)
     {
-        if ($field === 'warehouse') {
+        if ($field === 'warehouse') { //hack solution for now
             return '';
         }
         if (in_array($field, static::getDBFields())) {

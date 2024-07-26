@@ -106,61 +106,60 @@ class WarehouseSold
 
     public function fulfil($object = null, $container = null)
     {
-        error_log('************ Fulfil called, beginning debug trace ***********');
         if ($this->fulfilled_at || $this->deleted_at) {
-            error_log('fulfil: Sold item already fulfilled or deleted');
+            addMessage('Bu sipariş zaten işlem görmüş veya silinmiş', 'danger');
             return false;
         }
         if (is_object($object)) {
-            error_log('fulfil: Object is object');
             if (!$object->checkCompatibility($this->object)) {
-                error_log("fulfil: Object is not compatible: " . get_class($object) . " vs " . get_class($this->object));
                 throw new Exception("fulfil: Object is not compatible");
             }
-            error_log('fulfil: Object is compatible');
             $this->object = $object;
         }
         if (!$this->object) {
             throw new Exception("fulfil: Object is required");
         }
-        if ($this->item_type === 'WarehouseProduct') {
-            error_log('fulfil: Item type is product');
-            if (!is_object($container)) {
-                throw new Exception("fulfil: Container is required for product");
-            }
-            if (!$this->object->getInContainerCount($container)) {
-                throw new Exception("fulfil: Product not found in container");
-            }
-            if (!$this->object->removeFromContainer($container)) {
-                throw new Exception("fulfil: Product could not be removed from container");
-            }
-            error_log($this->object->name . ' removed from ' . $container->name);
-        }
-        if ($this->item_type === 'WarehouseContainer') {
-            error_log('fulfil: Item type is container');
-            if ($this->object->type !== 'Koli') {
-                throw new Exception("fulfil: Container type is not Koli");
-            }
-            foreach ($this->object->getProducts() as $product) {
-                for ($i = 0; $i < $product->getInContainerCount($this->object); $i++) {
-                    if (!$product->removeFromContainer($this->object, noCheck: true)) {
-                        throw new Exception("fulfil: Product could not be removed from container");
-                    }
-                    error_log($product->name . ' removed from ' . $this->object->name);
+        $GLOBALS['pdo']->beginTransaction();
+        try {
+            if ($this->item_type === 'WarehouseProduct') {
+                if (!is_object($container)) {
+                    throw new Exception("fulfil: Container is required for product");
+                }
+                if (!$this->object->getInContainerCount($container)) {
+                    throw new Exception("fulfil: Product not found in container");
+                }
+                if (!$this->object->removeFromContainer($container)) {
+                    throw new Exception("fulfil: Product could not be removed from container");
                 }
             }
-            if (!$this->object->delete()) {
-                throw new Exception("fulfil: Container could not be deleted");
+            if ($this->item_type === 'WarehouseContainer') {
+                if ($this->object->type !== 'Koli') {
+                    throw new Exception("fulfil: Container type is not Koli");
+                }
+                foreach ($this->object->getProducts() as $product) {
+                    for ($i = 0; $i < $product->getInContainerCount($this->object); $i++) {
+                        if (!$product->removeFromContainer($this->object, noCheck: true)) {
+                            throw new Exception("fulfil: Product could not be removed from container");
+                        }
+                    }
+                }
+                if (!$this->object->delete()) {
+                    throw new Exception("fulfil: Container could not be deleted");
+                }
             }
-            error_log($this->object->name . ' deleted');
+            $stmt = $GLOBALS['pdo']->prepare("UPDATE " . self::$soldItemsTableName . " SET fulfilled_at = NOW(), item_id = :item_id WHERE id = :id AND deleted_at IS NULL");
+            if ($stmt->execute(['id' => $this->id, 'item_id' => $this->object->id])) {
+                WarehouseLogger::logAction('fulfilSoldItem', ['sold_id' => $this->id], $this->object);
+                WarehouseAbstract::clearAllCache();                
+                $GLOBALS["pdo"]->commit();
+                return true;
+            }
+            $GLOBALS['pdo']->rollBack();
+            return false;
+        } catch (Exception $e) {
+            $GLOBALS['pdo']->rollBack();
+            throw new Exception($e->getMessage());
         }
-        $stmt = $GLOBALS['pdo']->prepare("UPDATE " . self::$soldItemsTableName . " SET fulfilled_at = NOW(), item_id = :item_id WHERE id = :id AND deleted_at IS NULL");
-        if ($stmt->execute(['id' => $this->id, 'item_id' => $this->object->id])) {
-            WarehouseLogger::logAction('fulfilSoldItem', ['sold_id' => $this->id], $this->object);
-            WarehouseAbstract::clearAllCache();
-            return true;
-        }
-        return false;
     }
 
     public function delete()

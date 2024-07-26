@@ -1,24 +1,7 @@
 <?php
 
-require_once('WarehouseAbstract.php');
-require_once('WarehouseProduct.php');
-
-/**
- * Class WarehouseContainer
- * @property int $id
- * @property string $name
- * @property string $type
- * @property int $parent_id
- * @property string $warehouse
- * @property string $created_at
- * @property string $updated_at
- * @property string $deleted_at
- * 
- * @method WarehouseContainer[] getChildren($noCache = false
- * @method WarehouseProduct[] getProducts($noCache = false
- * @method WarehouseContainer getParent()
-
- */
+require_once 'WarehouseAbstract.php';
+require_once 'WarehouseProduct.php';
 
 class WarehouseContainer extends WarehouseAbstract
 {
