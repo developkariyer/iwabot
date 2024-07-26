@@ -493,7 +493,7 @@ function handleFulfilUpdateDelete() { // fulfil_update fulfil_delete
             addMessage('fulfil_update: Geçersiz parametre: description!');
             return;
         }
-        if ($soldItem->update(['description' => $description])) {
+        if ($soldItem->update($description)) {
             addMessage("Sipariş açıklaması güncellendi");
         } else {
             addMessage("Sipariş açıklaması güncellenemedi");
