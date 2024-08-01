@@ -7,6 +7,10 @@ namespace Composer\Autoload;
 class ComposerStaticInit690e04a27fa241bad9da145ee44cf2eb
 {
     public static $prefixLengthsPsr4 = array (
+        's' => 
+        array (
+            'setasign\\Fpdi\\' => 14,
+        ),
         'c' => 
         array (
             'chillerlan\\Settings\\' => 20,
@@ -19,6 +23,10 @@ class ComposerStaticInit690e04a27fa241bad9da145ee44cf2eb
     );
 
     public static $prefixDirsPsr4 = array (
+        'setasign\\Fpdi\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/setasign/fpdi/src',
+        ),
         'chillerlan\\Settings\\' => 
         array (
             0 => __DIR__ . '/..' . '/chillerlan/php-settings-container/src',
