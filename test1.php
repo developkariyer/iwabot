@@ -91,13 +91,13 @@ $pdf->Image('qrcode.png', 2, 2, 25, 25); // 2.5cm x 2.5cm
 $pdf->SetFont('Arial', 'B', 14);
 $pdf->SetXY(32, 5);
 $pdf->Cell(0, 10, '31-1234', 0, 1, 'L');
-
+/*
 // Set font for the small text
 $pdf->SetFont('Arial', '', 8);
 $pdf->SetXY(32, 20);
 $text = "MAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3";
 $pdf->MultiCell(0, 5, $text);
-
+*/
 // Output the PDF
 $pdf->Output('I', 'qrcode_label.pdf'); // 'I' for inline display in browser, 'D' for download
 
