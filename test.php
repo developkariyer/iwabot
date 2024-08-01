@@ -106,7 +106,7 @@ $qrOutputInterface = new QRImageWithLogo($options, $qrcode->getQRMatrix());
 
 // dump the output, with an additional logo
 // the logo could also be supplied via the options, see the svgWithLogo example
-$out = $qrOutputInterface->dump(null, __DIR__.'/octocat.png');
+$out = $qrOutputInterface->dump(null, __DIR__.'/iwagold.png');
 
 
 header('Content-type: image/png');
