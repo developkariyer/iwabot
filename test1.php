@@ -82,7 +82,7 @@ $pageWidth = 60;
 $pageHeight = 40;
 
 // Add a page with custom size
-$pdf->AddPage('P', [$pageWidth, $pageHeight]);
+$pdf->AddPage('L', [$pageWidth, $pageHeight]);
 
 // Add the QR code image
 $pdf->Image('qrcode.png', 5, 5, 25, 25); // 2.5cm x 2.5cm
