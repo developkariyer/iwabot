@@ -70,11 +70,11 @@ $pdf->SetMargins(0, 0, 0);
 // Set font for the big text
 $pdf->SetFont('Arial', 'B', 16);
 $pdf->SetXY(0, 0);
-$pdf->Cell(0, 5, '31-1234');
+$pdf->Cell(0, 5, '31-1234', 0, 0, 'C');
 
 // Set font for the small text
 $pdf->SetFont('Arial', '', 4);
-$pdf->SetXY(0, 0);
+//$pdf->SetXY(0, 0);
 $text = "MAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3";
 $pdf->MultiCell(40, 1.2, $text, 0, 'L');
 
