@@ -64,6 +64,9 @@ $pageWidth = 60;
 $pageHeight = 40;
 $pdf->AddPage('L', [$pageWidth, $pageHeight]);
 $pdf->Image('qrcode.png', 0, 0, 30, 30); // 2.5cm x 2.5cm
+// set page margins to 0
+$pdf->SetMargins(0, 0, 0);
+
 
 // Set font for the big text
 $pdf->SetFont('Arial', 'B', 16);
