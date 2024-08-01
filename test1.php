@@ -68,7 +68,7 @@ $pdf->Image('qrcode.png', 0, 0, 30, 30); // 2.5cm x 2.5cm
 // Set font for the big text
 $pdf->SetFont('Arial', 'B', 16);
 $pdf->SetXY(0, 30);
-$pdf->Cell(0, 10, '31-1234', 0, 1, 'L');
+$pdf->Cell(0, 1, '31-1234', 0, 1, 'L');
 
 // Set font for the small text
 $pdf->SetFont('Arial', '', 4);
