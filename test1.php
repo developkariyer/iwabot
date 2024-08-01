@@ -71,7 +71,7 @@ $pdf->SetXY(30, 0);
 $pdf->Cell(0, 10, '31-1234', 0, 1, 'L');
 
 // Set font for the small text
-$pdf->SetFont('Arial', '', 6);
+$pdf->SetFont('Arial', '', 4);
 $pdf->SetXY(31, 12);
 $text = "MAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3";
 $pdf->MultiCell(28, 4, $text, 0, 'L');
