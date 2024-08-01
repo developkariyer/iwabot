@@ -64,7 +64,7 @@ $pdf = new Fpdi('P', 'mm', [60, 40]);
 $pdf->AddPage();
 $pdf->SetMargins(1, 1, 0);
 
-$pdf->AddFont('DejaVuSans', '', 'DejaVuSans.ttf');
+$pdf->AddFont('DejaVuSans', '', '/var/www/html/iwabot/DejaVuSans.ttf');
 $pdf->SetFont('DejaVuSans', '', 24);
 
 // Set font for the big text
