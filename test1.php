@@ -61,9 +61,7 @@ file_put_contents('qrcode.png', $qrCodeImage);
 // Create instance of FPDF
 // page will be 60mm x 40mm
 $pdf = new Fpdi('L', 'mm', [60, 40]);
-/*$pageWidth = 60;
-$pageHeight = 40;
-$pdf->AddPage('L', [$pageWidth, $pageHeight]);*/
+$pdf->AddPage();
 $pdf->Image('qrcode.png', 0, 0, 30, 30); // 2.5cm x 2.5cm
 // set page margins to 0
 $pdf->SetMargins(0, 0, 0);
