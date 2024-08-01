@@ -64,7 +64,7 @@ $pdf = new Fpdi('P', 'mm', [60, 40]);
 $pdf->AddPage();
 //$pdf->Image('qrcode.png', 0, 0, 30, 30); // 2.5cm x 2.5cm
 // set page margins to 0
-$pdf->SetMargins(0, 0, 0);
+$pdf->SetMargins(1, 1, 0);
 
 
 // Set font for the big text
