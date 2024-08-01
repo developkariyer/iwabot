@@ -85,11 +85,11 @@ $pageHeight = 40;
 $pdf->AddPage('L', [$pageWidth, $pageHeight]);
 
 // Add the QR code image
-$pdf->Image('qrcode.png', 2, 2, 25, 25); // 2.5cm x 2.5cm
+$pdf->Image('qrcode.png', 1, 1, 30, 30); // 2.5cm x 2.5cm
 
 // Set font for the big text
 $pdf->SetFont('Arial', 'B', 14);
-$pdf->SetXY(32, 5);
+$pdf->SetXY(32, 1);
 $pdf->Cell(0, 10, '31-1234', 0, 1, 'L');
 /*
 // Set font for the small text
