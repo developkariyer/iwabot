@@ -62,15 +62,15 @@ file_put_contents('qrcode.png', $qrCodeImage);
 // page will be 60mm x 40mm
 $pdf = new Fpdi('L', 'mm', [60, 40]);
 $pdf->AddPage();
-$pdf->Image('qrcode.png', 0, 0, 30, 30); // 2.5cm x 2.5cm
+//$pdf->Image('qrcode.png', 0, 0, 30, 30); // 2.5cm x 2.5cm
 // set page margins to 0
 $pdf->SetMargins(0, 0, 0);
 
 
 // Set font for the big text
 $pdf->SetFont('Arial', 'B', 16);
-$pdf->SetXY(0, 20);
-$pdf->Cell(0, 1, '31-1234', 0, 1, 'L');
+$pdf->SetXY(0, 0);
+$pdf->Cell(0, 0, '31-1234', 0, 1, 'L');
 
 // Set font for the small text
 $pdf->SetFont('Arial', '', 4);
