@@ -56,7 +56,7 @@ $qrcode = new QRCode($options);
 $message = urlencode('31-1234');
 // find a way to encode and decode the message
 
-$qrcode->addByteSegment("https://iwa.web.tr/$message");
+$qrcode->addByteSegment("https://iwa.web.tr/c/$message");
 $qrOutputInterface = new QRImageWithLogo($options, $qrcode->getQRMatrix());
 $qrCodeImage = $qrOutputInterface->dump(null, __DIR__ . '/iwa_black.png');
 file_put_contents('qrcode.png', $qrCodeImage);
