@@ -74,7 +74,7 @@ $pdf->Cell(0, 10, '31-1234', 0, 1, 'L');
 $pdf->SetFont('Arial', '', 4);
 $pdf->SetXY(31, 12);
 $text = "MAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3";
-$pdf->MultiCell(28, 20, $text, 0, 'L');
+$pdf->MultiCell(28, 1, $text, 0, 'L');
 
 // Output the PDF
 $pdf->Output('I', 'qrcode_label.pdf'); // 'I' for inline display in browser, 'D' for download
