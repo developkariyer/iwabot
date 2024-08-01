@@ -63,11 +63,11 @@ $pdf = new Fpdi();
 $pageWidth = 60;
 $pageHeight = 40;
 $pdf->AddPage('L', [$pageWidth, $pageHeight]);
-$pdf->Image('qrcode.png', 1, 1, 30, 30); // 2.5cm x 2.5cm
+$pdf->Image('qrcode.png', 0, 0, 30, 30); // 2.5cm x 2.5cm
 
 // Set font for the big text
 $pdf->SetFont('Arial', 'B', 16);
-$pdf->SetXY(31, 1);
+$pdf->SetXY(30, 0);
 $pdf->Cell(0, 10, '31-1234', 0, 1, 'L');
 
 // Set font for the small text
