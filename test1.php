@@ -1,118 +1,104 @@
 <?php
-/**
- * GdImage example for displaying additional text under the QR Code
- *
- * @link https://github.com/chillerlan/php-qrcode/issues/35
- *
- * @created      22.06.2019
- * @author       Smiley <smiley@chillerlan.net>
- * @copyright    2019 Smiley
- * @license      MIT
- *
- * @noinspection PhpIllegalPsrClassPathInspection, PhpComposerExtensionStubsInspection
- */
-declare(strict_types=1);
+require 'vendor/autoload.php';
 
 use chillerlan\QRCode\{QRCode, QROptions};
+use chillerlan\QRCode\Common\EccLevel;
+use chillerlan\QRCode\Data\QRMatrix;
 use chillerlan\QRCode\Output\QRGdImagePNG;
+use setasign\Fpdi\Fpdi;
 
-require_once __DIR__.'/vendor/autoload.php';
+class QRImageWithLogo extends QRGdImagePNG {
 
-/*
- * Class definition
- */
+    public function dump(string|null $file = null, string|null $logo = null): string {
+        $logo ??= '';
 
-class QRImageWithText extends QRGdImagePNG{
+        $this->options->returnResource = true;
 
-	public function dump(string|null $file = null, string|null $text = null):string{
-		// set returnResource to true to skip further processing for now
-		$this->options->returnResource = true;
+        if (!is_file($logo) || !is_readable($logo)) {
+            throw new QRCodeOutputException('invalid logo');
+        }
 
-		// there's no need to save the result of dump() into $this->image here
-		parent::dump($file);
+        parent::dump($file);
 
-		// render text output if a string is given
-		if($text !== null){
-			$this->addText($text);
-		}
+        $im = imagecreatefrompng($logo);
 
-		$imageData = $this->dumpImage();
+        if ($im === false) {
+            throw new QRCodeOutputException('imagecreatefrompng() error');
+        }
 
-		$this->saveToFile($imageData, $file);
+        $w = imagesx($im);
+        $h = imagesy($im);
 
-		if($this->options->outputBase64){
-			$imageData = $this->toBase64DataURI($imageData);
-		}
+        $lw = (($this->options->logoSpaceWidth - 2) * $this->options->scale);
+        $lh = (($this->options->logoSpaceHeight - 2) * $this->options->scale);
 
-		return $imageData;
-	}
+        $ql = ($this->matrix->getSize() * $this->options->scale);
 
-	protected function addText(string $text):void{
-		// save the qrcode image
-		$qrcode = $this->image;
+        imagecopyresampled($this->image, $im, (($ql - $lw) / 2), (($ql - $lh) / 2), 0, 0, $lw, $lh, $w, $h);
 
-		// options things
-		$textSize  = 3; // see imagefontheight() and imagefontwidth()
-		$textBG    = [200, 200, 200];
-		$textColor = [50, 50, 50];
+        $imageData = $this->dumpImage();
 
-		$bgWidth  = $this->length;
-		$bgHeight = ($bgWidth + 20); // 20px extra space
+        $this->saveToFile($imageData, $file);
 
-		// create a new image with additional space
-		$this->image = imagecreatetruecolor($bgWidth, $bgHeight);
-		$background  = imagecolorallocate($this->image, ...$textBG);
+        if ($this->options->outputBase64) {
+            $imageData = $this->toBase64DataURI($imageData);
+        }
 
-		// allow transparency
-		if($this->options->imageTransparent){
-			imagecolortransparent($this->image, $background);
-		}
-
-		// fill the background
-		imagefilledrectangle($this->image, 0, 0, $bgWidth, $bgHeight, $background);
-
-		// copy over the qrcode
-		imagecopymerge($this->image, $qrcode, 0, 0, 0, 0, $this->length, $this->length, 100);
-		imagedestroy($qrcode);
-
-		$fontColor = imagecolorallocate($this->image, ...$textColor);
-		$w         = imagefontwidth($textSize);
-		$x         = round(($bgWidth - strlen($text) * $w) / 2);
-
-		// loop through the string and draw the letters
-		foreach(str_split($text) as $i => $chr){
-			imagechar($this->image, $textSize, (int)($i * $w + $x), $this->length, $chr, $fontColor);
-		}
-	}
-
+        return $imageData;
+    }
 }
-
-
-/*
- * Runtime
- */
 
 $options = new QROptions;
 
-$options->version      = 7;
-$options->scale        = 3;
+$options->version = 5;
 $options->outputBase64 = false;
-
+$options->scale = 6;
+$options->imageTransparent = false;
+$options->drawCircularModules = true;
+$options->circleRadius = 0.45;
+$options->keepAsSquare = [
+    QRMatrix::M_FINDER,
+    QRMatrix::M_FINDER_DOT,
+];
+$options->eccLevel = EccLevel::H;
+$options->addLogoSpace = true;
+$options->logoSpaceWidth = 13;
+$options->logoSpaceHeight = 13;
 
 $qrcode = new QRCode($options);
-//$qrcode->addByteSegment('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
 $qrcode->addByteSegment('https://iwa.web.tr/C1A43BDE3');
 
-// invoke the custom output interface manually
-$qrOutputInterface = new QRImageWithText($options, $qrcode->getQRMatrix());
+$qrOutputInterface = new QRImageWithLogo($options, $qrcode->getQRMatrix());
+$qrCodeImage = $qrOutputInterface->dump(null, __DIR__ . '/iwa_black.png');
 
-// dump the output, with additional text
-// the text could also be supplied via the options, see the svgWithLogo example
-$out = $qrOutputInterface->dump(null, 'example text');
+file_put_contents('qrcode.png', $qrCodeImage);
 
+// Create instance of FPDF
+$pdf = new Fpdi();
 
-header('Content-type: image/png');
+// Define page size in mm (60mm x 40mm)
+$pageWidth = 60;
+$pageHeight = 40;
 
-echo $out;
+// Add a page with custom size
+$pdf->AddPage('P', [$pageWidth, $pageHeight]);
 
-exit;
+// Add the QR code image
+$pdf->Image('qrcode.png', 5, 5, 25, 25); // 2.5cm x 2.5cm
+
+// Set font for the big text
+$pdf->SetFont('Arial', 'B', 14);
+$pdf->SetXY(32, 5);
+$pdf->Cell(0, 10, '31-1234', 0, 1, 'L');
+
+// Set font for the small text
+$pdf->SetFont('Arial', '', 8);
+$pdf->SetXY(32, 15);
+$text = "MAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3";
+$pdf->MultiCell(0, 5, $text);
+
+// Output the PDF
+$pdf->Output('I', 'qrcode_label.pdf'); // 'I' for inline display in browser, 'D' for download
+
+// Clean up
+unlink('qrcode.png');
