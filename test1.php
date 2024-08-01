@@ -58,31 +58,22 @@ $qrOutputInterface = new QRImageWithLogo($options, $qrcode->getQRMatrix());
 $qrCodeImage = $qrOutputInterface->dump(null, __DIR__ . '/iwa_black.png');
 file_put_contents('qrcode.png', $qrCodeImage);
 
-// Create instance of FPDF
-// page will be 60mm x 40mm
+function utf8_to_cp1254($str) {
+    return iconv('UTF-8', 'CP1254', $str);
+}
+
 $pdf = new Fpdi('P', 'mm', [60, 40]);
 $pdf->AddPage();
 $pdf->SetMargins(1, 1, 0);
-
-$pdf->AddFont('DejaVuSans', '', '/var/www/html/iwabot/DejaVuSans.ttf');
-$pdf->SetFont('DejaVuSans', '', 24);
-
-// Set font for the big text
-//$pdf->SetFont('Arial', 'B', 24);
+$pdf->SetFont('Arial', 'B', 24);
 $pdf->SetXY(0, 1);
 $pdf->Cell(0, 7, '31-1234', 0, 0, 'C');
-
-// Set font for the small text
 $pdf->SetFont('Arial', '', 4);
 $pdf->SetXY(0, 8);
 $text = "MAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3";
-$pdf->MultiCell(40, 1.5, $text, 0, 'C');
-
+$pdf->MultiCell(40, 1.5, utf8_to_cp1254($text), 0, 'C');
 $pdf->SetXY(0, 30);
 $pdf->Image('qrcode.png', 5, 30, 30, 30);
-
-// Output the PDF
 $pdf->Output('I', 'qrcode_label.pdf');
 
-// Clean up
 unlink('qrcode.png');
