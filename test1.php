@@ -53,7 +53,10 @@ $options->addLogoSpace = true;
 $options->logoSpaceWidth = 13;
 $options->logoSpaceHeight = 13;
 $qrcode = new QRCode($options);
-$qrcode->addByteSegment('https://iwa.web.tr/C1A43BDE3');
+$message = urlencode('31-1234');
+// find a way to encode and decode the message
+
+$qrcode->addByteSegment("https://iwa.web.tr/$message");
 $qrOutputInterface = new QRImageWithLogo($options, $qrcode->getQRMatrix());
 $qrCodeImage = $qrOutputInterface->dump(null, __DIR__ . '/iwa_black.png');
 file_put_contents('qrcode.png', $qrCodeImage);
