@@ -70,7 +70,7 @@ $pdf->SetMargins(1, 1, 0);
 // Set font for the big text
 $pdf->SetFont('Arial', 'B', 20);
 $pdf->SetXY(0, 0);
-$pdf->Cell(0, 6, '31-1234', 0, 0, 'C');
+$pdf->Cell(0, 7, '31-1234', 0, 0, 'C');
 
 // Set font for the small text
 $pdf->SetFont('Arial', '', 4);
