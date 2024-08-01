@@ -12,39 +12,26 @@ class QRImageWithLogo extends QRGdImagePNG {
 
     public function dump(string|null $file = null, string|null $logo = null): string {
         $logo ??= '';
-
         $this->options->returnResource = true;
-
         if (!is_file($logo) || !is_readable($logo)) {
             throw new QRCodeOutputException('invalid logo');
         }
-
         parent::dump($file);
-
         $im = imagecreatefrompng($logo);
-
         if ($im === false) {
             throw new QRCodeOutputException('imagecreatefrompng() error');
         }
-
         $w = imagesx($im);
         $h = imagesy($im);
-
         $lw = (($this->options->logoSpaceWidth - 2) * $this->options->scale);
         $lh = (($this->options->logoSpaceHeight - 2) * $this->options->scale);
-
         $ql = ($this->matrix->getSize() * $this->options->scale);
-
         imagecopyresampled($this->image, $im, (($ql - $lw) / 2), (($ql - $lh) / 2), 0, 0, $lw, $lh, $w, $h);
-
         $imageData = $this->dumpImage();
-
         $this->saveToFile($imageData, $file);
-
         if ($this->options->outputBase64) {
             $imageData = $this->toBase64DataURI($imageData);
         }
-
         return $imageData;
     }
 }
@@ -65,39 +52,30 @@ $options->eccLevel = EccLevel::H;
 $options->addLogoSpace = true;
 $options->logoSpaceWidth = 13;
 $options->logoSpaceHeight = 13;
-
 $qrcode = new QRCode($options);
 $qrcode->addByteSegment('https://iwa.web.tr/C1A43BDE3');
-
 $qrOutputInterface = new QRImageWithLogo($options, $qrcode->getQRMatrix());
 $qrCodeImage = $qrOutputInterface->dump(null, __DIR__ . '/iwa_black.png');
-
 file_put_contents('qrcode.png', $qrCodeImage);
 
 // Create instance of FPDF
 $pdf = new Fpdi();
-
-// Define page size in mm (60mm x 40mm)
 $pageWidth = 60;
 $pageHeight = 40;
-
-// Add a page with custom size
 $pdf->AddPage('L', [$pageWidth, $pageHeight]);
-
-// Add the QR code image
 $pdf->Image('qrcode.png', 1, 1, 30, 30); // 2.5cm x 2.5cm
 
 // Set font for the big text
-$pdf->SetFont('Arial', 'B', 14);
-$pdf->SetXY(32, 1);
+$pdf->SetFont('Arial', 'B', 16);
+$pdf->SetXY(31, 1);
 $pdf->Cell(0, 10, '31-1234', 0, 1, 'L');
-/*
+
 // Set font for the small text
-$pdf->SetFont('Arial', '', 8);
-$pdf->SetXY(32, 20);
+$pdf->SetFont('Arial', '', 6);
+$pdf->SetXY(31, 16);
 $text = "MAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3";
 $pdf->MultiCell(0, 5, $text);
-*/
+
 // Output the PDF
 $pdf->Output('I', 'qrcode_label.pdf'); // 'I' for inline display in browser, 'D' for download
 
