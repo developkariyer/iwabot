@@ -59,7 +59,8 @@ $qrCodeImage = $qrOutputInterface->dump(null, __DIR__ . '/iwa_black.png');
 file_put_contents('qrcode.png', $qrCodeImage);
 
 // Create instance of FPDF
-$pdf = new Fpdi();
+// page will be 60mm x 40mm
+$pdf = new Fpdi('L', 'mm', [60, 40]);
 $pageWidth = 60;
 $pageHeight = 40;
 $pdf->AddPage('L', [$pageWidth, $pageHeight]);
