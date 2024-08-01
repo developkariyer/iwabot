@@ -80,4 +80,4 @@ $pdf->MultiCell(28, 4, $text, 0, 'L');
 $pdf->Output('I', 'qrcode_label.pdf'); // 'I' for inline display in browser, 'D' for download
 
 // Clean up
-unlink('qrcode.png');
+//unlink('qrcode.png');
