@@ -16,7 +16,7 @@ declare(strict_types=1);
 use chillerlan\QRCode\{QRCode, QROptions};
 use chillerlan\QRCode\Output\QRGdImagePNG;
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__.'/vendor/autoload.php';
 
 /*
  * Class definition
