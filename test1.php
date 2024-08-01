@@ -5,7 +5,7 @@ use chillerlan\QRCode\{QRCode, QROptions};
 use chillerlan\QRCode\Common\EccLevel;
 use chillerlan\QRCode\Data\QRMatrix;
 use chillerlan\QRCode\Output\QRGdImagePNG;
-use setasign\Fpdi\Fpdi;
+use setasign\Fpdf\Fpdf;
 
 class QRImageWithLogo extends QRGdImagePNG {
 
@@ -74,7 +74,7 @@ $qrCodeImage = $qrOutputInterface->dump(null, __DIR__ . '/iwa_black.png');
 file_put_contents('qrcode.png', $qrCodeImage);
 
 // Create instance of FPDF
-$pdf = new Fpdi();
+$pdf = new Fpdf();
 
 // Define page size in mm (60mm x 40mm)
 $pageWidth = 60;
