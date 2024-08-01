@@ -60,7 +60,7 @@ file_put_contents('qrcode.png', $qrCodeImage);
 
 // Create instance of FPDF
 // page will be 60mm x 40mm
-$pdf = new Fpdi('L', 'mm', [60, 40]);
+$pdf = new Fpdi('P', 'mm', [60, 40]);
 $pdf->AddPage();
 //$pdf->Image('qrcode.png', 0, 0, 30, 30); // 2.5cm x 2.5cm
 // set page margins to 0
@@ -76,7 +76,7 @@ $pdf->Cell(0, 5, '31-1234');
 $pdf->SetFont('Arial', '', 4);
 $pdf->SetXY(0, 0);
 $text = "MAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3";
-$pdf->MultiCell(60, 1.2, $text, 0, 'L');
+$pdf->MultiCell(40, 1.2, $text, 0, 'L');
 
 // Output the PDF
 $pdf->Output('I', 'qrcode_label.pdf'); // 'I' for inline display in browser, 'D' for download
