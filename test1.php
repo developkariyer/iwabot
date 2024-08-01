@@ -64,9 +64,11 @@ $pdf = new Fpdi('P', 'mm', [60, 40]);
 $pdf->AddPage();
 $pdf->SetMargins(1, 1, 0);
 
+$pdf->AddFont('DejaVuSans', '', 'DejaVuSans.ttf');
+$pdf->SetFont('DejaVuSans', '', 24);
 
 // Set font for the big text
-$pdf->SetFont('Arial', 'B', 24);
+//$pdf->SetFont('Arial', 'B', 24);
 $pdf->SetXY(0, 1);
 $pdf->Cell(0, 7, '31-1234', 0, 0, 'C');
 
