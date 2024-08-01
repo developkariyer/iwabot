@@ -2,6 +2,6 @@
     "require": {
         "predis/predis": "^2.2",
         "chillerlan/php-qrcode": "^5.0",
-        "fpdf/fpdf": "^1.86"
+        "setasign/fpdf": "^1.8"
     }
 }
