@@ -6,6 +6,7 @@ use chillerlan\QRCode\Common\EccLevel;
 use chillerlan\QRCode\Data\QRMatrix;
 use chillerlan\QRCode\Output\QRGdImagePNG;
 use setasign\Fpdi\Fpdi;
+use setasign\Fpdf\Fpdf;
 
 class QRImageWithLogo extends QRGdImagePNG {
 
@@ -73,7 +74,7 @@ $qrCodeImage = $qrOutputInterface->dump(null, __DIR__ . '/iwa_black.png');
 
 file_put_contents('qrcode.png', $qrCodeImage);
 
-// Create instance of FPDI
+// Create instance of FPDF
 $pdf = new Fpdi();
 
 // Define page size in mm (60mm x 40mm)
@@ -93,7 +94,7 @@ $pdf->Cell(0, 10, '31-1234', 0, 1, 'L');
 
 // Set font for the small text
 $pdf->SetFont('Arial', '', 8);
-$pdf->SetXY(32, 15);
+$pdf->SetXY(32, 20);
 $text = "MAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3\nMAŞALLAH TEBAREKALLAH GOLD 69 CM (B0CD1WN9BZ) x 3";
 $pdf->MultiCell(0, 5, $text);
 
