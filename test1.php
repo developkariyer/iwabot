@@ -103,7 +103,7 @@ function generateQRPdf($codeParameter) {
     $pdf->SetMargins(1, 1, 0);
     $pdf->SetFont('Arial', 'B', 24);
     $pdf->SetXY(0, 2);
-    $pdf->Cell(0, 7, $message, 0, 0, 'C');
+    $pdf->Cell(0, 7, $codeParameter, 0, 0, 'C');
     $pdf->SetFont('Arial', '', 12);
     $pdf->SetXY(12, 11);
     $text = "iwa Concept\n";
