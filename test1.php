@@ -71,13 +71,15 @@ $pdf->SetMargins(1, 1, 0);
 $pdf->SetFont('Arial', 'B', 24);
 $pdf->SetXY(0, 2);
 $pdf->Cell(0, 7, '31-1234', 0, 0, 'C');
-$pdf->SetFont('Arial', '', 14);
-$pdf->SetXY(0, 11);
+$pdf->SetFont('Arial', '', 12);
+$pdf->SetXY(15, 11);
 $text = "iwa Concept\n";
 $text .= date('Y-m');
 $pdf->MultiCell(40, 5, removeTRChars($text), 0, 'C');
 $pdf->SetXY(0, 30);
 $pdf->Image('qrcode.png', 0, 20, 40, 40);
 $pdf->Output('I', 'qrcode_label.pdf');
+$pdf->SetXY(0,11);
+$pdf->Image('iwa_black.png', 0, 0, 10, 10);
 
 unlink('qrcode.png');
