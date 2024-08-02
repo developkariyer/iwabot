@@ -72,10 +72,10 @@ $pdf->SetFont('Arial', 'B', 24);
 $pdf->SetXY(0, 2);
 $pdf->Cell(0, 7, '31-1234', 0, 0, 'C');
 $pdf->SetFont('Arial', '', 12);
-$pdf->SetXY(10, 12);
+$pdf->SetXY(10, 13);
 $text = "iwa Concept\n";
 $text .= date('Y-m');
-$pdf->MultiCell(30, 5, removeTRChars($text), 0, 'L');
+$pdf->MultiCell(25, 5, removeTRChars($text), 0, 'L');
 
 $pdf->Image('qrcode.png', 0, 20, 40, 40);
 $pdf->Image('iwa_black.png', 3, 11, 8, 8);
