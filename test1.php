@@ -36,50 +36,54 @@ class QRImageWithLogo extends QRGdImagePNG {
     }
 }
 
-$options = new QROptions;
+function generateQRPdf($codeParameter) {
+    $options = new QROptions;
 
-$options->version = 5;
-$options->outputBase64 = false;
-$options->scale = 6;
-$options->imageTransparent = false;
-$options->drawCircularModules = true;
-$options->circleRadius = 0.45;
-$options->keepAsSquare = [
-    QRMatrix::M_FINDER,
-    QRMatrix::M_FINDER_DOT,
-];
-$options->eccLevel = EccLevel::H;
-$options->addLogoSpace = true;
-$options->logoSpaceWidth = 13;
-$options->logoSpaceHeight = 13;
-$qrcode = new QRCode($options);
-$message = urlencode('31-1234');
-// find a way to encode and decode the message
+    $options->version = 5;
+    $options->outputBase64 = false;
+    $options->scale = 6;
+    $options->imageTransparent = false;
+    $options->drawCircularModules = true;
+    $options->circleRadius = 0.45;
+    $options->keepAsSquare = [
+        QRMatrix::M_FINDER,
+        QRMatrix::M_FINDER_DOT,
+    ];
+    $options->eccLevel = EccLevel::H;
+    $options->addLogoSpace = true;
+    $options->logoSpaceWidth = 13;
+    $options->logoSpaceHeight = 13;
+    $qrcode = new QRCode($options);
+    $message = urlencode($codeParameter);
+    // find a way to encode and decode the message
 
-$qrcode->addByteSegment("https://iwa.web.tr/c/$message");
-$qrOutputInterface = new QRImageWithLogo($options, $qrcode->getQRMatrix());
-$qrCodeImage = $qrOutputInterface->dump(null, __DIR__ . '/iwapim.png');
-file_put_contents('qrcode.png', $qrCodeImage);
+    $qrcode->addByteSegment("https://iwa.web.tr/c/$message");
+    $qrOutputInterface = new QRImageWithLogo($options, $qrcode->getQRMatrix());
+    $qrCodeImage = $qrOutputInterface->dump(null, __DIR__ . '/iwapim.png');
+    file_put_contents('qrcode.png', $qrCodeImage);
 
-function removeTRChars($str) {
-    return str_replace(['ı', 'İ', 'ğ', 'Ğ', 'ü', 'Ü', 'ş', 'Ş', 'ö', 'Ö', 'ç', 'Ç'], ['i', 'I', 'g', 'G', 'u', 'U', 's', 'S', 'o', 'O', 'c', 'C'], $str);    
+    function removeTRChars($str) {
+        return str_replace(['ı', 'İ', 'ğ', 'Ğ', 'ü', 'Ü', 'ş', 'Ş', 'ö', 'Ö', 'ç', 'Ç'], ['i', 'I', 'g', 'G', 'u', 'U', 's', 'S', 'o', 'O', 'c', 'C'], $str);    
+    }
+
+    $pdf = new Fpdi('P', 'mm', [60, 40]);
+    $pdf->AddPage();
+    $pdf->SetMargins(1, 1, 0);
+    $pdf->SetFont('Arial', 'B', 24);
+    $pdf->SetXY(0, 2);
+    $pdf->Cell(0, 7, '31-1234', 0, 0, 'C');
+    $pdf->SetFont('Arial', '', 12);
+    $pdf->SetXY(12, 11);
+    $text = "iwa Concept\n";
+    $text .= date('Y-m');
+    $pdf->MultiCell(30, 5, removeTRChars($text), 0, 'L');
+
+    $pdf->Image('qrcode.png', 0, 20, 40, 40);
+    $pdf->Image('iwa_black.png', 3, 11, 8, 8);
+
+    $pdf->Output('D', 'qrcode_label.pdf');
+
+    unlink('qrcode.png');
 }
 
-$pdf = new Fpdi('P', 'mm', [60, 40]);
-$pdf->AddPage();
-$pdf->SetMargins(1, 1, 0);
-$pdf->SetFont('Arial', 'B', 24);
-$pdf->SetXY(0, 2);
-$pdf->Cell(0, 7, '31-1234', 0, 0, 'C');
-$pdf->SetFont('Arial', '', 12);
-$pdf->SetXY(12, 11);
-$text = "iwa Concept\n";
-$text .= date('Y-m');
-$pdf->MultiCell(30, 5, removeTRChars($text), 0, 'L');
-
-$pdf->Image('qrcode.png', 0, 20, 40, 40);
-$pdf->Image('iwa_black.png', 3, 11, 8, 8);
-
-$pdf->Output('D', 'qrcode_label.pdf');
-
-unlink('qrcode.png');
+generateQRPdf('31-9876');
