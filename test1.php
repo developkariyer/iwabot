@@ -72,7 +72,7 @@ $pdf->SetFont('Arial', 'B', 24);
 $pdf->SetXY(0, 2);
 $pdf->Cell(0, 7, '31-1234', 0, 0, 'C');
 $pdf->SetFont('Arial', '', 12);
-$pdf->SetXY(10, 13);
+$pdf->SetXY(12, 11);
 $text = "iwa Concept\n";
 $text .= date('Y-m');
 $pdf->MultiCell(25, 5, removeTRChars($text), 0, 'L');
