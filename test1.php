@@ -77,7 +77,7 @@ $text = "iwa Concept\n";
 $text .= date('Y-m');
 $pdf->MultiCell(40, 4, removeTRChars($text), 0, 'C');
 $pdf->SetXY(0, 30);
-$pdf->Image('qrcode.png', 5, 20, 35, 35);
+$pdf->Image('qrcode.png', 0, 20, 40, 40);
 $pdf->Output('I', 'qrcode_label.pdf');
 
 unlink('qrcode.png');
