@@ -75,7 +75,7 @@ $pdf->SetFont('Arial', '', 12);
 $pdf->SetXY(5, 11);
 $text = "iwa Concept\n";
 $text .= date('Y-m');
-$pdf->MultiCell(40, 5, removeTRChars($text), 0, 'C');
+$pdf->MultiCell(30, 5, removeTRChars($text), 0, 'C');
 $pdf->SetXY(0, 30);
 $pdf->Image('qrcode.png', 0, 20, 40, 40);
 $pdf->SetXY(4,11);
