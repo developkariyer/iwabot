@@ -118,8 +118,8 @@ function generateQRPdf($codeParameter) {
     unlink("$message.png");
 }
 
-if (isset($_GET['code'])) {
-    generateQRPdf($_POST['code']);
+if (!empty($_GET['code']) && strlen($_GET['code']) > 6 && strlen($_GET['code']) < 10) {
+    generateQRPdf($_GET['code']);
 } else {
     echo '<form method="get" action="test1.php"><input type="input" name="code"><input type="submit" value="Generate"></form>';
 }
