@@ -78,8 +78,9 @@ $text .= date('Y-m');
 $pdf->MultiCell(40, 5, removeTRChars($text), 0, 'C');
 $pdf->SetXY(0, 30);
 $pdf->Image('qrcode.png', 0, 20, 40, 40);
-$pdf->Output('I', 'qrcode_label.pdf');
 $pdf->SetXY(0,11);
 $pdf->Image('iwa_black.png', 0, 10, 10, 10);
+
+$pdf->Output('I', 'qrcode_label.pdf');
 
 unlink('qrcode.png');
