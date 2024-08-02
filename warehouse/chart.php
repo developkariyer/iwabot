@@ -15,7 +15,6 @@
             const data = await response.json();
             return data;
         }
-
         fetchData().then(chartData => {
             const ctx = document.getElementById('salesChart').getContext('2d');
             new Chart(ctx, {

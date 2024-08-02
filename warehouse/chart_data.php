@@ -61,7 +61,9 @@ $datasets = [];
 foreach ($items as $item_id) {
     $datasets[] = [
         'label' => "Item $item_id",
-        'data' => $data[$item_id],
+        'data' => array_map(function($date) use ($data, $item_id) {
+            return isset($data[$item_id][$date]) ? $data[$item_id][$date] : 0;
+        }, array_keys($dates)),
         'borderColor' => 'rgba(' . rand(0, 255) . ',' . rand(0, 255) . ',' . rand(0, 255) . ',1)',
         'fill' => false
     ];
