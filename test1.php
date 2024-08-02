@@ -92,7 +92,7 @@ function generateQRPdf($codeParameter) {
     $qrcode->addByteSegment("https://iwa.web.tr/c/$message");
     $qrOutputInterface = new QRImageWithLogo($options, $qrcode->getQRMatrix());
     $qrCodeImage = $qrOutputInterface->dump(null, __DIR__ . '/iwapim.png');
-    file_put_contents('qrcode.png', $qrCodeImage);
+    file_put_contents("$message.png", $qrCodeImage);
 
     function removeTRChars($str) {
         return str_replace(['ı', 'İ', 'ğ', 'Ğ', 'ü', 'Ü', 'ş', 'Ş', 'ö', 'Ö', 'ç', 'Ç'], ['i', 'I', 'g', 'G', 'u', 'U', 's', 'S', 'o', 'O', 'c', 'C'], $str);    
@@ -110,12 +110,12 @@ function generateQRPdf($codeParameter) {
     $text .= date('Y-m');
     $pdf->MultiCell(30, 5, removeTRChars($text), 0, 'L');
 
-    $pdf->Image('qrcode.png', 0, 20, 40, 40);
+    $pdf->Image("$message.png", 0, 20, 40, 40);
     $pdf->Image('iwa_black.png', 3, 11, 8, 8);
 
     $pdf->Output('D', "$codeParameter.pdf");
 
-    unlink('qrcode.png');
+    unlink("$message.png");
 }
 
 if (isset($_GET['code'])) {
