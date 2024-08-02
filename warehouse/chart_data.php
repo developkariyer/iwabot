@@ -1,8 +1,6 @@
 <?php
 
-require_once '../init.php';
-
-
+require_once '/var/www/html/iwabot/_init.php';
 
 $stmt = $GLOBALS['pdo']->prepare("
 WITH RECURSIVE DateSeries AS (
