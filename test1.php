@@ -36,9 +36,42 @@ class QRImageWithLogo extends QRGdImagePNG {
     }
 }
 
+function customBase64Encode($data) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_';
+    $base = 64;
+    $result = '';
+    while ($data > 0) {
+        $remainder = $data % $base;
+        $result = $characters[$remainder] . $result;
+        $data = floor($data / $base);
+    }
+    return $result;
+}
+
+function customBase64Decode($data) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_';
+    $base = 64;
+    $length = strlen($data);
+    $result = 0;
+    for ($i = 0; $i < $length; $i++) {
+        $result = $result * $base + strpos($characters, $data[$i]);
+    }
+    return $result;
+}
+
+function encodeMessage($message) {
+    list($part1, $part2) = explode('-', $message);
+    return customBase64Encode($part1 . str_pad($part2, 5, '0', STR_PAD_LEFT));
+}
+
+function decodeMessage($encodedMessage) {
+    $decodedNumber = customBase64Decode($encodedMessage);
+    $decodedString = str_pad((string)$decodedNumber, 8, '0', STR_PAD_LEFT);
+    return substr($decodedString, 0, -5). '-' . intval(substr($decodedString, -5));
+}
+
 function generateQRPdf($codeParameter) {
     $options = new QROptions;
-
     $options->version = 5;
     $options->outputBase64 = false;
     $options->scale = 6;
@@ -54,7 +87,7 @@ function generateQRPdf($codeParameter) {
     $options->logoSpaceWidth = 13;
     $options->logoSpaceHeight = 13;
     $qrcode = new QRCode($options);
-    $message = urlencode($codeParameter);
+    $message = encodeMessage($codeParameter);
     // find a way to encode and decode the message
 
     $qrcode->addByteSegment("https://iwa.web.tr/c/$message");
