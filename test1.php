@@ -69,7 +69,7 @@ $pdf = new Fpdi('P', 'mm', [60, 40]);
 $pdf->AddPage();
 $pdf->SetMargins(1, 1, 0);
 $pdf->SetFont('Arial', 'B', 24);
-$pdf->SetXY(0, 1);
+$pdf->SetXY(0, 2);
 $pdf->Cell(0, 7, '31-1234', 0, 0, 'C');
 $pdf->SetFont('Arial', '', 14);
 $pdf->SetXY(0, 11);
