@@ -80,6 +80,6 @@ $pdf->MultiCell(30, 5, removeTRChars($text), 0, 'L');
 $pdf->Image('qrcode.png', 0, 20, 40, 40);
 $pdf->Image('iwa_black.png', 3, 11, 8, 8);
 
-$pdf->Output('I', 'qrcode_label.pdf');
+$pdf->Output('D', 'qrcode_label.pdf');
 
 unlink('qrcode.png');
