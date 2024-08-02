@@ -118,4 +118,9 @@ function generateQRPdf($codeParameter) {
     unlink('qrcode.png');
 }
 
-generateQRPdf('31-4001');
+if (isset($_GET['code'])) {
+    generateQRPdf($_POST['code']);
+} else {
+    echo '<form method="post"><input type="input" name="code"><input type="submit" value="Generate"></form>';
+}
+
