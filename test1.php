@@ -121,6 +121,6 @@ function generateQRPdf($codeParameter) {
 if (isset($_GET['code'])) {
     generateQRPdf($_POST['code']);
 } else {
-    echo '<form method="post"><input type="input" name="code"><input type="submit" value="Generate"></form>';
+    echo '<form method="get" action="test1.php"><input type="input" name="code"><input type="submit" value="Generate"></form>';
 }
 
