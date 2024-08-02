@@ -88,7 +88,6 @@ function generateQRPdf($codeParameter) {
     $options->logoSpaceHeight = 13;
     $qrcode = new QRCode($options);
     $message = encodeMessage($codeParameter);
-    // find a way to encode and decode the message
 
     $qrcode->addByteSegment("https://iwa.web.tr/c/$message");
     $qrOutputInterface = new QRImageWithLogo($options, $qrcode->getQRMatrix());
