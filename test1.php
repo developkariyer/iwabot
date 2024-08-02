@@ -81,7 +81,7 @@ function generateQRPdf($codeParameter) {
     $pdf->Image('qrcode.png', 0, 20, 40, 40);
     $pdf->Image('iwa_black.png', 3, 11, 8, 8);
 
-    $pdf->Output('D', 'qrcode_label.pdf');
+    $pdf->Output('D', "$codeParameter.pdf");
 
     unlink('qrcode.png');
 }
