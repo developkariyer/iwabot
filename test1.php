@@ -58,7 +58,7 @@ $message = urlencode('31-1234');
 
 $qrcode->addByteSegment("https://iwa.web.tr/c/$message");
 $qrOutputInterface = new QRImageWithLogo($options, $qrcode->getQRMatrix());
-$qrCodeImage = $qrOutputInterface->dump(null, __DIR__ . '/iwa_black.png');
+$qrCodeImage = $qrOutputInterface->dump(null, __DIR__ . '/iwapim.png');
 file_put_contents('qrcode.png', $qrCodeImage);
 
 function removeTRChars($str) {
