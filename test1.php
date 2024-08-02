@@ -121,6 +121,9 @@ function generateQRPdf($codeParameter) {
 if (!empty($_GET['code']) && strlen($_GET['code']) > 6 && strlen($_GET['code']) < 10) {
     generateQRPdf($_GET['code']);
 } else {
-    echo '<form method="get" action="test1.php"><input type="input" name="code"><input type="submit" value="Generate"></form>';
+    echo '<form method="get" action="test1.php" style="font-size:24px; padding:20px;">
+    <input type="input" name="code" style="font-size:24px; padding:10px; width:300px;">
+    <input type="submit" value="Generate" style="font-size:24px; padding:10px; margin-top:10px;">
+</form>';
 }
 
