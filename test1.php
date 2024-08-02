@@ -86,4 +86,4 @@ function generateQRPdf($codeParameter) {
     unlink('qrcode.png');
 }
 
-generateQRPdf('31-9876');
+generateQRPdf('999-9876');
