@@ -96,7 +96,7 @@ class WarehouseSold
         }
         $signature = ($object instanceof WarehouseContainer) ? $object->getSignature() : "";
 
-        $stmt = $GLOBALS['pdo']->prepare("INSERT INTO " . self::$soldItemsTableName . " (item_id, item_type, container_signature, description) VALUES (:item_id, :item_type, :signature :description)");
+        $stmt = $GLOBALS['pdo']->prepare("INSERT INTO " . self::$soldItemsTableName . " (item_id, item_type, container_signature, description) VALUES (:item_id, :item_type, :signature, :description)");
         if ($stmt->execute(['item_id' => $object->id, 'item_type' => get_class($object), 'signature' => $signature, 'description' => $description])) {
             $id = $GLOBALS['pdo']->lastInsertId();
             WarehouseLogger::logAction('addSoldItem', ['sold_id' => $id, 'description' => $description], $object);
