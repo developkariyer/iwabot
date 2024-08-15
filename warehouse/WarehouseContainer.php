@@ -71,8 +71,14 @@ class WarehouseContainer extends WarehouseAbstract
         if (empty($similars)) {
             return $this->name;
         }
-        $similar = reset($similars);
-        return $similar->name;
+        $similar = null;
+        foreach ($similars as $optgroups) {
+            foreach ($optgroups as $option) {
+                $similar = $option;
+                break;
+            }
+        }
+        return $similar ? $similar->name : $this->name;
     }
 
     public function getChildren($noCache = false)
