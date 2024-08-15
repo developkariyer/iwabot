@@ -68,7 +68,7 @@ include '../_header.php';
                                                                 </p>
                                                             </div>
                                                             <p><strong>Aynı İçerikli Koliler</strong></p>
-                                                            <?php foreach ($soldItem->object->findSimilar() as $optgroup=>$sameContainers): ?>
+                                                            <?php foreach ($soldItem->object->findSimilar($soldItem->container_signature) as $optgroup=>$sameContainers): ?>
                                                                 <p><strong><?= $optgroup ?></strong></p>
                                                                 <?php foreach ($sameContainers as $sameContainer): ?>
                                                                     <?= $icon[$sameContainer->type] ?> <?= htmlspecialchars($sameContainer->name) ?>&nbsp;&nbsp;&nbsp;
