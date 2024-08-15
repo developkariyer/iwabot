@@ -77,7 +77,7 @@ $content .= '
     <div class="form-group">
         <input type="checkbox" id="rememberMe" name="rememberMe">
         <label for="rememberMe">Remember Me</label>
-    </div>
+    </div><br>
     <a href="#" id="slackLoginBtn" style="color:#fff;background-color:#4A154B;" class="btn btn-primary btn-lg">
         <svg xmlns="http://www.w3.org/2000/svg" style="height:24px;width:24px;margin-right:12px" viewBox="0 0 122.8 122.8">
             <path d="M25.8 77.6c0 7.1-5.8 12.9-12.9 12.9S0 84.7 0 77.6s5.8-12.9 12.9-12.9h12.9v12.9zm6.5 0c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9v32.3c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V77.6z" fill="#e01e5a"></path>
