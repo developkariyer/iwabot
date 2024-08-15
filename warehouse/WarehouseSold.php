@@ -6,7 +6,7 @@ class WarehouseSold
     public $item_id = null;
     public $item_type = null;
     public $description = null;
-    public $signature = null;
+    public $container_signature = null;
     private $created_at = null;
     private $fulfilled_at = null;
     public $object = null;
@@ -20,7 +20,7 @@ class WarehouseSold
         $this->id = $data['id'];
         $this->item_id = $data['item_id'];
         $this->item_type = $data['item_type'];
-        $this->signature = $data['signature'];
+        $this->container_signature = $data['container_signature'];
         $this->description = $data['description'];
         $this->created_at = $data['created_at'];
         $this->fulfilled_at = $data['fulfilled_at'];
