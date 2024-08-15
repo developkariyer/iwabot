@@ -50,7 +50,7 @@ include '../_header.php';
                                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                                         <input type="hidden" name="sold_id" value="<?= htmlspecialchars($soldItem->id) ?>">
                                         <div class="mb-3">
-                                            <p><?= $soldItem->object->deleted_at ? containerInfo($soldItem->object->getSimilar() ?? $soldItem->object) : containerInfo($soldItem->object) ?></p>
+                                            <p><?= $soldItem->object->deleted_at ? containerInfo($soldItem->object->getSimilar($soldItem->container_signature) ?? $soldItem->object) : containerInfo($soldItem->object) ?></p>
                                             <p>
                                                 <strong>Açıklama:</strong><br>
                                                 <?= nl2br(htmlspecialchars($soldItem->description)) ?>
