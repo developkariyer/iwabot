@@ -285,7 +285,7 @@ class WarehouseContainer extends WarehouseAbstract
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 
-    public function findSimilar($signature = "")
+    public function findSimilar($signature)
     {
         $cache = unserialize(static::getCache("findSimilar{$this->id}"));
         if (is_array($cache)) {
@@ -305,7 +305,7 @@ class WarehouseContainer extends WarehouseAbstract
         }*/
         $stmt = $GLOBALS['pdo']->prepare("SELECT container_id FROM warehouse_view_container_signatures WHERE signature = :signature");
         $stmt->execute(["signature"=> $signature]);
-        error_log("findSimilar: {$stmt->queryString} with signature $signature");
+        error_log("findSimilar: {$stmt->queryString} with signature '$signature'");
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             error_log("findSimilar: Found similar container {$row['container_id']}");
             $container = static::getById($row["container_id"]);
