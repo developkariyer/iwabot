@@ -307,7 +307,7 @@ class WarehouseContainer extends WarehouseAbstract
         $stmt->execute(["signature"=> $signature]);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $container = static::getById($row["container_id"]);
-            if ($container && !$container->deleted_at && $container->type === 'Koli') {
+            if ($container && !$container->deleted_at && $container->type === 'Koli' && $this->id != $container->id) {
                 if (!isset($containers[$container->getParent()->name])) {
                     $containers[$container->getParent()->name] = [];
                 }
