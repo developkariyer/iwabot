@@ -305,9 +305,11 @@ class WarehouseContainer extends WarehouseAbstract
         }*/
         $stmt = $GLOBALS['pdo']->prepare("SELECT container_id FROM warehouse_view_container_signatures WHERE signature = :signature");
         $stmt->execute(["signature"=> $signature]);
+        error_log("findSimilar: {$stmt->queryString} with signature $signature");
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            error_log("findSimilar: Found similar container {$row['container_id']}");
             $container = static::getById($row["container_id"]);
-            if ($container && !$container->deleted_at && $container->type === 'Koli' && $this->id != $container->id) {
+            if ($container && !$container->deleted_at && $container->type === 'Koli' && $this->id !== $container->id) {
                 if (!isset($containers[$container->getParent()->name])) {
                     $containers[$container->getParent()->name] = [];
                 }
