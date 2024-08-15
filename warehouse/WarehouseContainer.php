@@ -62,12 +62,12 @@ class WarehouseContainer extends WarehouseAbstract
         return true;
     }
 
-    public function getNameOrSimilar()
+    public function getNameOrSimilar($signature)
     {
         if (!$this->deleted_at) {
             return $this->name;
         }
-        $similars = $this->findSimilar();
+        $similars = $this->findSimilar($signature);
         if (empty($similars)) {
             return $this->name;
         }
