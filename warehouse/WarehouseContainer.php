@@ -285,16 +285,28 @@ class WarehouseContainer extends WarehouseAbstract
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 
-    public function findSimilar()
+    public function findSimilar($signature = "")
     {
         $cache = unserialize(static::getCache("findSimilar{$this->id}"));
         if (is_array($cache)) {
             return $cache;
         }
         $containers = [];
+        /*
         $ids = $this->findSimilarIds();
         foreach ($ids as $container_id) {
             $container = static::getById($container_id);
+            if ($container && !$container->deleted_at && $container->type === 'Koli') {
+                if (!isset($containers[$container->getParent()->name])) {
+                    $containers[$container->getParent()->name] = [];
+                }
+                $containers[$container->getParent()->name][] = $container;
+            }
+        }*/
+        $stmt = $GLOBALS['pdo']->prepare("SELECT container_id FROM warehouse_view_container_signatures WHERE signature = :signature");
+        $stmt->execute(["signature"=> $signature]);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $container = static::getById($row["container_id"]);
             if ($container && !$container->deleted_at && $container->type === 'Koli') {
                 if (!isset($containers[$container->getParent()->name])) {
                     $containers[$container->getParent()->name] = [];
