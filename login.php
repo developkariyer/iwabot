@@ -3,6 +3,7 @@
 $guestFree = true;
 
 require_once '_login.php';
+require_once '_db.php';
 
 if (isset($_GET['logout'])) {
     error_log('Login.php: Logging out');
@@ -23,6 +24,7 @@ function initializeSession($response) {
     $tokenParts = explode('.', $response['id_token']);
     $_SESSION['user_info'] = json_decode(base64_decode(strtr($tokenParts[1], '-_', '+/')), true);
     $_SESSION['user_id'] = $_SESSION['user_info']['sub'];
+    error_log("Login.php: Initializing session for user: ".$_SESSION['user_id']);
 }
 
 // Check if the remember_me cookie is set and valid
@@ -62,13 +64,9 @@ if (isset($_SESSION['logged_in'])) {
     exit;
 }
 
-
-
-
 $content = '';
 
 if (isset($_GET['code']) && isset($_GET['state']) && isset($_SESSION['state']) && $_GET['state'] === $_SESSION['state']) {
-    error_log('Login.php called by Slack: '.json_encode($_GET));
     $code = $_GET['code'];
     $state = $_GET['state'];
     $url = 'https://slack.com/api/openid.connect.token';
@@ -87,9 +85,7 @@ if (isset($_GET['code']) && isset($_GET['state']) && isset($_SESSION['state']) &
         ],
     ];
     $context = stream_context_create($options);
-    error_log('Login.php requesting token from Slack: '.json_encode($url).' '.json_encode($options));
     $response = file_get_contents($url, false, $context);
-    error_log("Login.php slack response received: $response");
     $response = json_decode($response, true);
     if (isset($response['ok']) && $response['ok'] && isset($response['id_token'])) {
         initializeSession($response);
@@ -116,7 +112,6 @@ if (isset($_GET['code']) && isset($_GET['state']) && isset($_SESSION['state']) &
     }
 }
 
-error_log('Login.php: Asking for Login with Slack');
 
 $_SESSION['state'] = bin2hex(random_bytes(16));
 $_SESSION['nonce'] = bin2hex(random_bytes(16));
