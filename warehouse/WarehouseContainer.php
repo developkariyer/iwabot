@@ -62,15 +62,9 @@ class WarehouseContainer extends WarehouseAbstract
         return true;
     }
 
-    public function getNameOrSimilar($signature)
+    public function getSimilar($signature)
     {
-        if (!$this->deleted_at) {
-            return $this->name;
-        }
         $similars = $this->findSimilar($signature);
-        if (empty($similars)) {
-            return $this->name;
-        }
         $similar = null;
         foreach ($similars as $optgroups) {
             foreach ($optgroups as $option) {
@@ -78,6 +72,15 @@ class WarehouseContainer extends WarehouseAbstract
                 break;
             }
         }
+        return $similar;
+    }
+
+    public function getNameOrSimilar($signature)
+    {
+        if (!$this->deleted_at) {
+            return $this->name;
+        }
+        $similar = $this->getSimilar($signature);        
         return $similar ? $similar->name : $this->name;
     }
 
