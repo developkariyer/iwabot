@@ -64,7 +64,7 @@ include '../_header.php';
                                                     </optgroup>
                                                 <?php endif; ?>
                                                 <optgroup label="Aynı İçerikli Koliler">
-                                                    <?php foreach ($soldItem->object->findSimilar($soldItem->object->getSignature()) as $optgroup=>$sameContainers): ?>
+                                                    <?php foreach ($soldItem->object->findSimilar($soldItem->signature) as $optgroup=>$sameContainers): ?>
                                                         <optgroup label="<?= htmlspecialchars($optgroup) ?>">
                                                             <?php foreach ($sameContainers as $sameContainer): ?>
                                                                 <option value="<?= htmlspecialchars($sameContainer->id) ?>"><?= htmlspecialchars($sameContainer->name) ?> (<?= htmlspecialchars($sameContainer->parent->name) ?>)</option>
