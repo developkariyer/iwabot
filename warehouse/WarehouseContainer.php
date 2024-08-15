@@ -103,6 +103,17 @@ class WarehouseContainer extends WarehouseAbstract
         return $this->children;
     }
 
+    public function getSignature()
+    {
+        $stmt = $GLOBALS["pdo"]->prepare("SELECT signature FROM warehouse_view_container_signatures WHERE container_id = :container_id");
+        if ($stmt->execute([':container_id' => $this->id])) {
+            if ($signature = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                return $signature["signature"];
+            }
+        }
+        return "";
+    }
+
     public function getProducts($noCache = false)
     {
         if ($noCache) {
