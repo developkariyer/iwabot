@@ -169,7 +169,9 @@ $(document).ready(function() {
         }
     });
 
-    $('#soldOrdersTable').DataTable();
+    $('#soldOrdersTable').DataTable({
+        "order": [1, 'desc'],
+    });
 
     // Custom search trigger after 3 characters
     var table = $('#soldOrdersTable').DataTable();
