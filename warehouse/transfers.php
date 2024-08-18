@@ -32,7 +32,6 @@ include '../_header.php';
             </h2>
             <div id="transfersAccordion3" class="accordion-collapse collapse show" aria-labelledby="headingMain3" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
-                    <h4><?= $soldTitle ?></h4>
                     <div class="mb-3">
                         <table class="table table-striped-columns table-hover table-border">
                             <thead>
@@ -50,7 +49,7 @@ include '../_header.php';
                                         $logFulfil = WarehouseLogger::findLog(['action'=>'fulfilSoldItem', 'sold_id' => $order->id]);
                                         $logAdd = WarehouseLogger::findLog(['action'=>'addSoldItem', 'sold_id' => $order->id]);
                                     ?>
-                                    <tr>
+                                    <tr class="<?= !$order->fulfilled_at ? 'alert alert-warning' : '' ?>">
                                         <td>#<?= $order->id ?></td>
                                         <td><strong><?= $order->item_type === 'WarehouseProduct' ? 'Ürün' : 'Koli' ?></strong><br><?= htmlspecialchars($order->object->name) ?><br>(<?= $order->object instanceof WarehouseProduct ? htmlspecialchars($order->object->fnsku) : htmlspecialchars($order->object->parent->name) ?>)</td>
                                         <td><?= nl2br(htmlspecialchars($order->description)) ?></td>
