@@ -44,6 +44,8 @@ include '../_header.php';
                                 </tr>
                             </thead>
                             <tbody>
+                            <?php if (!($cache = WarehouseAbstract::getCache('soldOrdersTable'))): ?>
+                                <?php ob_start(); ?>
                                 <?php foreach ($soldOrders as $index => $order): ?>
                                     <?php 
                                         $logFulfil = WarehouseLogger::findLog(['action'=>'fulfilSoldItem', 'sold_id' => $order->id]);
@@ -67,6 +69,9 @@ include '../_header.php';
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
+                                <?php $cache = ob_get_clean(); WarehouseAbstract::setCache('allProductsCategorized', $cache); ?>
+                            <?php endif; ?>
+                            <?= $cache ?>
                             </tbody>
                         </table>
                     </div>
