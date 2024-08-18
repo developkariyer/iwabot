@@ -49,12 +49,12 @@ include '../_header.php';
                                         $logFulfil = WarehouseLogger::findLog(['action'=>'fulfilSoldItem', 'sold_id' => $order->id]);
                                         $logAdd = WarehouseLogger::findLog(['action'=>'addSoldItem', 'sold_id' => $order->id]);
                                     ?>
-                                    <tr class="<?= !$order->fulfilled_at ? 'bg-danger text-white' : '' ?>">
-                                        <td>#<?= $order->id ?></td>
-                                        <td><strong><?= $order->item_type === 'WarehouseProduct' ? 'Ürün' : 'Koli' ?></strong><br><?= htmlspecialchars($order->object->name) ?><br>(<?= $order->object instanceof WarehouseProduct ? htmlspecialchars($order->object->fnsku) : htmlspecialchars($order->object->parent->name) ?>)</td>
-                                        <td><?= nl2br(htmlspecialchars($order->description)) ?></td>
-                                        <td><strong><?= $logAdd ? $logAdd->username() : '' ?></strong><br><?= htmlspecialchars($order->created_at) ?></td>
-                                        <td class="<?= !$order->fulfilled_at ? 'bg-danger text-white' : '' ?>"><strong><?= $logFulfil ? $logFulfil->username() : '' ?></strong><br><?= htmlspecialchars($order->fulfilled_at) ?></td>
+                                    <tr>
+                                        <td class="<?= !$order->fulfilled_at ? 'bg-warning' : '' ?>">#<?= $order->id ?></td>
+                                        <td class="<?= !$order->fulfilled_at ? 'bg-warning' : '' ?>"></td><strong><?= $order->item_type === 'WarehouseProduct' ? 'Ürün' : 'Koli' ?></strong><br><?= htmlspecialchars($order->object->name) ?><br>(<?= $order->object instanceof WarehouseProduct ? htmlspecialchars($order->object->fnsku) : htmlspecialchars($order->object->parent->name) ?>)</td>
+                                        <td class="<?= !$order->fulfilled_at ? 'bg-warning' : '' ?>"><?= nl2br(htmlspecialchars($order->description)) ?></td>
+                                        <td class="<?= !$order->fulfilled_at ? 'bg-warning' : '' ?>"></td><strong><?= $logAdd ? $logAdd->username() : '' ?></strong><br><?= htmlspecialchars($order->created_at) ?></td>
+                                        <td class="<?= !$order->fulfilled_at ? 'bg-warning' : '' ?>"><strong><?= $logFulfil ? $logFulfil->username() : '' ?></strong><br><?= htmlspecialchars($order->fulfilled_at) ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
