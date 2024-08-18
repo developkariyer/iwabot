@@ -57,10 +57,13 @@ class WarehouseSold
         return null;
     }
 
-    public static function getSoldItems($item_type = null, $fulfilled = false, $limit = 0)
+    public static function getSoldItems($item_type = null, $unfulfilled_only = false, $limit = 0)
     {
         $sql = "SELECT * FROM " . self::$soldItemsTableName . " WHERE deleted_at IS NULL ";
-        $sql .= $fulfilled ? " AND fulfilled_at IS NOT NULL" : " AND fulfilled_at IS NULL";
+        if ($unfulfilled_only) {
+            $sql .= "AND fulfilled_at IS NULL";
+        }
+//        $sql .= $fulfilled ? " AND fulfilled_at IS NOT NULL" : " AND fulfilled_at IS NULL";
         $sql .= $item_type ? " AND item_type = :item_type" : "";
         $sql .= " ORDER BY created_at ASC";
         if  ($limit) {
@@ -81,14 +84,14 @@ class WarehouseSold
         return $soldItems;
     }
 
-    public static function getSoldProducts($fulfilled = false)
+    public static function getSoldProducts($unfulfilled_only = true)
     {
-        return self::getSoldItems(item_type: 'WarehouseProduct', fulfilled: $fulfilled);
+        return self::getSoldItems(item_type: 'WarehouseProduct', unfulfilled_only: $unfulfilled_only);
     }
 
-    public static function getSoldContainers($fulfilled = false)
+    public static function getSoldContainers($unfulfilled_only = true)
     {
-        return self::getSoldItems(item_type: 'WarehouseContainer', fulfilled: $fulfilled);
+        return self::getSoldItems(item_type: 'WarehouseContainer', unfulfilled_only: $unfulfilled_only);
     }
 
     public static function addNewSoldItem($object, $description)

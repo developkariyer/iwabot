@@ -2,10 +2,7 @@
 
 require_once('warehouse.php');
 
-$allSoldOrders = [
-    "İşlem Bekleyen Siparişler" => WarehouseSold::getSoldItems(fulfilled: false),
-    "İşlem Yapılmış Son ~20 Sipariş" => WarehouseSold::getSoldItems(fulfilled: true, limit:20),
-];
+$soldOrders = WarehouseSold::getSoldItems();
 
 $slackUsers = slackUsers();
 
@@ -35,41 +32,35 @@ include '../_header.php';
             </h2>
             <div id="transfersAccordion3" class="accordion-collapse collapse show" aria-labelledby="headingMain3" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
-                    <?php foreach ($allSoldOrders as $soldTitle => $soldOrders): ?>
-                        <h4><?= $soldTitle ?></h4>
-                        <div class="mb-3">
-                            <table class="table table-striped-columns table-hover table-border">
-                                <thead>
-                                    <tr class="table-dark">
-                                        <th scope="col">#</th>
-                                        <th scope="col">Sipariş</th>
-                                        <th scope="col">Açıklama</th>
-                                        <th scope="col">Sipariş Giriş</th>
-                                        <?php if ($soldTitle === "İşlem Yapılmış Son ~20 Sipariş"): ?>
-                                            <th scope="col">Depo Çıkış</th>
-                                        <?php endif; ?>
+                    <h4><?= $soldTitle ?></h4>
+                    <div class="mb-3">
+                        <table class="table table-striped-columns table-hover table-border">
+                            <thead>
+                                <tr class="table-dark">
+                                    <th scope="col">#</th>
+                                    <th scope="col">Sipariş</th>
+                                    <th scope="col">Açıklama</th>
+                                    <th scope="col">Sipariş Giriş</th>
+                                    <th scope="col">Depo Çıkış</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($soldOrders as $index => $order): ?>
+                                    <?php 
+                                        $logFulfil = WarehouseLogger::findLog(['action'=>'fulfilSoldItem', 'sold_id' => $order->id]);
+                                        $logAdd = WarehouseLogger::findLog(['action'=>'addSoldItem', 'sold_id' => $order->id]);
+                                    ?>
+                                    <tr>
+                                        <td>#<?= $order->id ?></td>
+                                        <td><strong><?= $order->item_type === 'WarehouseProduct' ? 'Ürün' : 'Koli' ?></strong><br><?= htmlspecialchars($order->object->name) ?><br>(<?= $order->object instanceof WarehouseProduct ? htmlspecialchars($order->object->fnsku) : htmlspecialchars($order->object->parent->name) ?>)</td>
+                                        <td><?= nl2br(htmlspecialchars($order->description)) ?></td>
+                                        <td><strong><?= $logAdd ? $logAdd->username() : '' ?></strong><br><?= htmlspecialchars($order->created_at) ?></td>
+                                        <td><strong><?= $logFulfil ? $logFulfil->username() : '' ?></strong><br><?= htmlspecialchars($order->fulfilled_at) ?></td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($soldOrders as $index => $order): ?>
-                                        <?php 
-                                            $logFulfil = WarehouseLogger::findLog(['action'=>'fulfilSoldItem', 'sold_id' => $order->id]);
-                                            $logAdd = WarehouseLogger::findLog(['action'=>'addSoldItem', 'sold_id' => $order->id]);
-                                        ?>
-                                        <tr>
-                                            <td>#<?= $order->id ?></td>
-                                            <td><strong><?= $order->item_type === 'WarehouseProduct' ? 'Ürün' : 'Koli' ?></strong><br><?= htmlspecialchars($order->object->name) ?><br>(<?= $order->object instanceof WarehouseProduct ? htmlspecialchars($order->object->fnsku) : htmlspecialchars($order->object->parent->name) ?>)</td>
-                                            <td><?= nl2br(htmlspecialchars($order->description)) ?></td>
-                                            <td><strong><?= $logAdd ? $logAdd->username() : '' ?></strong><br><?= htmlspecialchars($order->created_at) ?></td>
-                                            <?php if ($soldTitle === "İşlem Yapılmış Son ~20 Sipariş"): ?>
-                                                <td><strong><?= $logFulfil ? $logFulfil->username() : '' ?></strong><br><?= htmlspecialchars($order->fulfilled_at) ?></td>
-                                            <?php endif; ?>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    <?php endforeach; ?>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
