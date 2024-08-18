@@ -14,7 +14,7 @@ $icon = [
     'Koli' => '📦', //\u{1F4E6}
 ];
 
-$unfulfilledBoxes = WarehouseSold::getSoldItems(item_type: 'WarehouseContainer');
+$unfulfilledBoxes = WarehouseSold::getSoldContainers();
 
 include '../_header.php';
 
