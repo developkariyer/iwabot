@@ -50,7 +50,7 @@ include '../_header.php';
                                         $logAdd = WarehouseLogger::findLog(['action'=>'addSoldItem', 'sold_id' => $order->id]);
                                     ?>
                                     <tr>
-                                        <td class="<?= !$order->fulfilled_at ? 'bg-warning' : '' ?>"><?= $order->id ?></td>
+                                        <td class="<?= !$order->fulfilled_at ? 'bg-warning' : '' ?>"><?= number_format($order->id, 5) ?></td>
                                         <td class="<?= !$order->fulfilled_at ? 'bg-warning' : '' ?>">
                                             <strong><?= $order->item_type === 'WarehouseProduct' ? 'Ürün' : 'Koli' ?></strong><br>
                                             <?= htmlspecialchars($order->object->name) ?><br>
