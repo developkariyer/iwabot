@@ -49,7 +49,7 @@ include '../_header.php';
                                         $logFulfil = WarehouseLogger::findLog(['action'=>'fulfilSoldItem', 'sold_id' => $order->id]);
                                         $logAdd = WarehouseLogger::findLog(['action'=>'addSoldItem', 'sold_id' => $order->id]);
                                     ?>
-                                    <tr class="<?= !$order->fulfilled_at ? 'alert alert-warning' : '' ?>">
+                                    <tr class="<?= !$order->fulfilled_at ? 'bg-danger text-white' : '' ?>">
                                         <td>#<?= $order->id ?></td>
                                         <td><strong><?= $order->item_type === 'WarehouseProduct' ? 'Ürün' : 'Koli' ?></strong><br><?= htmlspecialchars($order->object->name) ?><br>(<?= $order->object instanceof WarehouseProduct ? htmlspecialchars($order->object->fnsku) : htmlspecialchars($order->object->parent->name) ?>)</td>
                                         <td><?= nl2br(htmlspecialchars($order->description)) ?></td>
