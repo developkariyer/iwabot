@@ -69,7 +69,7 @@ include '../_header.php';
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
-                                <?php $cache = ob_get_clean(); WarehouseAbstract::setCache('allProductsCategorized', $cache); ?>
+                                <?php $cache = ob_get_clean(); WarehouseAbstract::setCache('soldOrdersTable', $cache); ?>
                             <?php endif; ?>
                             <?= $cache ?>
                             </tbody>
