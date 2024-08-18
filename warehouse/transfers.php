@@ -170,7 +170,7 @@ $(document).ready(function() {
     });
 
     $('#soldOrdersTable').DataTable({
-        "order": [1, 'desc'],
+        "order": [0, 'desc'],
     });
 
     // Custom search trigger after 3 characters
