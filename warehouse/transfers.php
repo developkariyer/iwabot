@@ -178,7 +178,8 @@ $(document).ready(function() {
         layout: {
             topStart: 'paging',
             topEnd: 'search'
-        }
+        },
+        order: [[0, 'desc']],
     });
 
     // Custom search trigger after 3 characters
