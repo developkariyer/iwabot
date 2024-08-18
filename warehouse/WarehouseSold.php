@@ -64,7 +64,11 @@ class WarehouseSold
             $sql .= "AND fulfilled_at IS NULL";
         }
 //        $sql .= $fulfilled ? " AND fulfilled_at IS NOT NULL" : " AND fulfilled_at IS NULL";
-        $sql .= $item_type ? " AND item_type = :item_type  ORDER BY created_at ASC" : " ORDER BY created_at DESC";
+        if ($item_type) {
+            $sql .= " AND item_type = :item_type  ORDER BY created_at ASC";
+        } else {
+            $sql .= " ORDER BY created_at DESC";
+        }
         if  ($limit) {
             $sql .= " LIMIT $limit";
         }
