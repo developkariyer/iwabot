@@ -115,7 +115,10 @@ class WarehouseSold
             return false;
         }
         if (is_object($object)) {
-            if (!$object->checkCompatibility($this->object)) {
+            if (get_class($object) !== get_class($this->object)) {
+                throw new Exception("fulfil: Object type is not compatible");
+            }
+            if (get_class($object) === 'WarehouseContainer' && $object->getSignature() !== $this->container_signature) {
                 throw new Exception("fulfil: Object is not compatible");
             }
             $this->object = $object;
