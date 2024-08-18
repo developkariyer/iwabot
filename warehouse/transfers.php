@@ -33,7 +33,7 @@ include '../_header.php';
             <div id="transfersAccordion3" class="accordion-collapse collapse show" aria-labelledby="headingMain3" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
                     <div class="mb-3">
-                        <table class="table table-striped-columns table-hover table-border">
+                        <table id="soldOrdersTable" class="table table-striped-columns table-hover table-border">
                             <thead>
                                 <tr class="table-dark">
                                     <th scope="col">#</th>
@@ -168,6 +168,31 @@ $(document).ready(function() {
             $('#selectedProduct').addClass('d-none');
         }
     });
+
+    $('#soldOrdersTable').DataTable({
+        "paging": true,
+        "searching": true,
+        "lengthChange": true,
+        "pageLength": 10, // Default number of items per page
+        "search": {
+            "search": "",
+            "smart": true,
+            "searchDelay": 500, // Delay before starting the search
+            "regex": false,
+            "caseInsensitive": true
+        }
+    });
+
+    // Custom search trigger after 3 characters
+    var table = $('#soldOrdersTable').DataTable();
+    $('#soldOrdersTable_filter input').unbind().bind('keyup', function() {
+        var searchTerm = this.value;
+
+        if (searchTerm.length >= 3 || searchTerm.length === 0) {
+            table.search(searchTerm).draw();
+        }
+    });
+
 });
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -188,7 +213,6 @@ function loadLogs(offset) {
         }
     });
 }
-
 
 </script>
 <?php
