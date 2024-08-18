@@ -169,20 +169,7 @@ $(document).ready(function() {
         }
     });
 
-    $('#soldOrdersTable').DataTable({
-        "paging": true,                     // Enable pagination
-        "searching": true,                  // Enable searching
-        "lengthChange": false,              // Disable the ability to change page length
-        "pageLength": 10,                   // Fix number of items per page to 10
-        "dom": '<"top"ip>rt<"bottom"flp><"clear">', // Move pagination buttons to the top
-        "search": {
-            "search": "",
-            "smart": true,
-            "searchDelay": 500,             // Delay before starting the search
-            "regex": false,
-            "caseInsensitive": true
-        }
-    });
+    $('#soldOrdersTable').DataTable();
 
     // Custom search trigger after 3 characters
     var table = $('#soldOrdersTable').DataTable();
