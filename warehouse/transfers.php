@@ -175,6 +175,10 @@ $(document).ready(function() {
     });
 
     $('#soldOrdersTable').DataTable({
+        layout: {
+            topStart: 'paging',
+            topEnd: 'search'
+        }
     });
 
     // Custom search trigger after 3 characters
