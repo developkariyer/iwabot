@@ -99,9 +99,7 @@ include '../_header.php';
             <input type="hidden" name="action" value="ship">
             <div class="form-group">
                 <label for="container_list">Koli Listesi</label>
-                <textarea class="form-control" name="container_list" id="container_list" rows="10" placeholder="Koli listesini TAB aralıklı giriniz.">
-                    <?= $_POST['container_list'] ?? '' ?>
-                </textarea>
+                <textarea class="form-control" name="container_list" id="container_list" rows="10" placeholder="Koli listesini TAB aralıklı giriniz."><?= $_POST['container_list'] ?? '' ?></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Gönder</button>
         </form>
