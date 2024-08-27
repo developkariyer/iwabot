@@ -36,48 +36,55 @@ if (isset($_POST['action']) && $_POST['action'] == 'ship') {
         ];
     }
 
-    foreach ($containers as $cname=>$contents) {
-        $msg .= 'Processing '. $cname .' with '. implode(',', array_column($contents, 'fnsku'))."\n";
-        $containerObject = WarehouseContainer::getByField('name', $cname);
-        if ($containerObject) {
-            $msg .= "    Container {$cname} already exists, skipping.\n";
-            continue;
-        }
-        $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_container (name, type, parent_id) VALUES (?, 'Gemi', 7226)");
-
-        $stmt->execute([$cname]);
-        $container_id = $GLOBALS['pdo']->lastInsertId();
-
-        $msg .= "    Container {$cname} created with id $container_id.\n";
-        foreach ($contents as $content) {
-            $product = WarehouseProduct::getByField('fnsku', $content['fnsku']);
-            if (!$product) {
-                $msg .= "    Product {$content['fnsku']} not found, creating.\n";
-                $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_product (name, category, fnsku) VALUES (?, ?, ?)");
-                $stmt->execute([
-                    $content['content'],
-                    match(substr($cname, 0 ,1)) {
-                        '0' => 'AHŞAP-IWA',
-                        '1' => 'METAL-IWA',
-                        '2' => 'CAM-IWA',
-                        '3' => 'HARİTA',
-                        '4' => 'MOBİLYA',
-                        '5' => 'Paket',
-                        default => 'Diğer'
-                    },
-                    $content['fnsku']
-                ]);
-                $product_id = $GLOBALS['pdo']->lastInsertId();                
-            } else {
-                $product_id = $product->id;
+    $GLOBALS['pdo']->beginTransaction();
+    try {
+        foreach ($containers as $cname=>$contents) {
+            $msg .= 'Processing '. $cname .' with '. implode(',', array_column($contents, 'fnsku'))."\n";
+            $containerObject = WarehouseContainer::getByField('name', $cname);
+            if ($containerObject) {
+                $msg .= "    Container {$cname} already exists, skipping.\n";
+                continue;
             }
-            $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_container_product (container_id, product_id) VALUES (?, ?)");
-            for ($t=0;$t<$content['count'];$t++) {
-                $stmt->execute([$container_id, $product_id, 1]);
+            $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_container (name, type, parent_id) VALUES (?, 'Gemi', 7226)");
+
+            $stmt->execute([$cname]);
+            $container_id = $GLOBALS['pdo']->lastInsertId();
+
+            $msg .= "    Container {$cname} created with id $container_id.\n";
+            foreach ($contents as $content) {
+                $product = WarehouseProduct::getByField('fnsku', $content['fnsku']);
+                if (!$product) {
+                    $msg .= "    Product {$content['fnsku']} not found, creating.\n";
+                    $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_product (name, category, fnsku) VALUES (?, ?, ?)");
+                    $stmt->execute([
+                        $content['content'],
+                        match(substr($cname, 0 ,1)) {
+                            '0' => 'AHŞAP-IWA',
+                            '1' => 'METAL-IWA',
+                            '2' => 'CAM-IWA',
+                            '3' => 'HARİTA',
+                            '4' => 'MOBİLYA',
+                            '5' => 'Paket',
+                            default => 'Diğer'
+                        },
+                        $content['fnsku']
+                    ]);
+                    $product_id = $GLOBALS['pdo']->lastInsertId();                
+                } else {
+                    $product_id = $product->id;
+                }
+                $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_container_product (container_id, product_id) VALUES (?, ?)");
+                for ($t=0;$t<$content['count'];$t++) {
+                    $stmt->execute([$container_id, $product_id, 1]);
+                }
+                $msg .= "    Product {$content['fnsku']} x {$content['count']} added to container {$cname}.\n";
             }
-            $msg .= "    Product {$content['fnsku']} x {$content['count']} added to container {$cname}.\n";
         }
-    }
+        $GLOBALS['pdo']->commit();
+    } catch (Exception $e) {
+        $GLOBALS['pdo']->rollBack();
+        $msg .= "An error occured: " . $e->getMessage();
+    } 
     $msg .= "All containers processed.";
 }
 
