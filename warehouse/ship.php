@@ -80,7 +80,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'ship') {
             for ($t=0;$t<$content['count'];$t++) {
                 //$stmt->execute([$container_id, $product_id, 1]);
             }
-            $msg .= "    Product {$content['fnsku']} x {$content['count']} added to container {$name}.\n";
+            $msg .= "    Product {$content['fnsku']} x {$content['count']} added to container {$cname}.\n";
         }
     }
     $msg .= "All containers processed.";
