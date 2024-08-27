@@ -75,7 +75,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'ship') {
                 }
                 $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_container_product (container_id, product_id) VALUES (?, ?)");
                 for ($t=0;$t<$content['count'];$t++) {
-                    $stmt->execute([$container_id, $product_id, 1]);
+                    $stmt->execute([$container_id, $product_id]);
                 }
                 $msg .= "    Product {$content['fnsku']} x {$content['count']} added to container {$cname}.\n";
             }
