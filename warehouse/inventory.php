@@ -26,6 +26,18 @@ function rafContainers() {
     return $retval;
 }
 
+function rafShips() {
+    $containers = WarehouseContainer::getContainers('Gemi');
+    $retval = [];
+    foreach ($containers as $container) {
+        if (!isset($retval[substr($container->name, 0, 1)])) {
+            $retval[substr($container->name, 0, 1)] = [];
+        }
+        $retval[substr($container->name, 0, 1)][] = $container;
+    }
+    return $retval;
+}
+
 include '../_header.php';
 
 ?>
@@ -104,7 +116,7 @@ include '../_header.php';
                 <div class="accordion-body p-5">
                     <?php if (!($cache = WarehouseAbstract::getCache('allContainersHtml'))): ?>
                         <?php ob_start(); ?>
-                        <?php foreach (rafContainers() as $grup => $raflar): ?>
+                        <?php foreach (array_merge(rafContainers(), rafShips()) as $grup => $raflar): ?>
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="headingGrup<?= $grup ?>">
                                     <button class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGrup<?= $grup ?>" aria-expanded="false" aria-controls="collapseGrup<?= $grup ?>">
