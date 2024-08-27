@@ -168,7 +168,7 @@ class WarehouseContainer extends WarehouseAbstract
         return $this->totalCount;
     }
 
-    protected function getParent()
+    public function getParent()
     {
         if (is_null($this->parent_id)) {
             return null;
