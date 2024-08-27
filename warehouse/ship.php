@@ -58,7 +58,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'ship') {
                     $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_product (name, category, fnsku) VALUES (?, ?, ?)");
                     $stmt->execute([
                         $content['content'],
-                        match(substr($cname, 0 ,1)) {
+                        match(substr($cname, 3 ,1)) {
                             '0' => 'AHŞAP-IWA',
                             '1' => 'METAL-IWA',
                             '2' => 'CAM-IWA',
