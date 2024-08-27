@@ -37,6 +37,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'ship') {
     }
 
     foreach ($containers as $cname=>$contents) {
+        $msg .= 'Processing '. $cname .' with '. implode(',', array_column($contents, 'fnsku'))."\n";
         $containerObject = WarehouseContainer::getByField('name', $cname);
         if ($containerObject) {
             $msg .= "    Container {$cname} already exists, skipping.\n";
