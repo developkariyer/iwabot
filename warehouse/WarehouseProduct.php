@@ -76,7 +76,7 @@ class WarehouseProduct extends WarehouseAbstract
         return true;
     }
 
-    public function getContainers()
+    public function getContainers($inShip = false)
     {
         if (empty($this->id)) {
             return [];
@@ -91,7 +91,7 @@ class WarehouseProduct extends WarehouseAbstract
                 $containers = [];
                 while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $container = WarehouseContainer::getById($data['container_id']);
-                    if ($container->parent && $container->parent->type === 'Gemi') {
+                    if (!$inShip && $container->parent && $container->parent->type === 'Gemi') {
                         continue;
                     }
                     $containers[] = $container;
