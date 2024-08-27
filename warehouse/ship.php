@@ -43,14 +43,18 @@ if (isset($_POST['action']) && $_POST['action'] == 'ship') {
             continue;
         }
         $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_containers (name, type, parent_id) VALUES (?, 'Gemi', 7226)");
-        $stmt->execute([$cname]);
-        $container_id = $GLOBALS['pdo']->lastInsertId();
+
+//        $stmt->execute([$cname]);
+//        $container_id = $GLOBALS['pdo']->lastInsertId();
+        $container_id = 1;
+
         $msg .= "    Container {$cname} created with id $container_id.\n";
         foreach ($contents as $content) {
             $product = WarehouseProduct::getByField('fnsku', $content['fnsku']);
             if (!$product) {
                 $msg .= "    Product {$content['fnsku']} not found, creating.\n";
                 $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_products (name, category, fnsku) VALUES (?, ?, ?)");
+                /*
                 $stmt->execute([
                     $content['content'],
                     match(substr($cname, 0 ,1)) {
@@ -65,12 +69,15 @@ if (isset($_POST['action']) && $_POST['action'] == 'ship') {
                     $content['fnsku']
                 ]);
                 $product_id = $GLOBALS['pdo']->lastInsertId();
+                */
+                $product_id = 1;
+                
             } else {
                 $product_id = $product->id;
             }
             $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_container_contents (container_id, product_id, count) VALUES (?, ?, ?)");
             for ($t=0;$t<$content['count'];$t++) {
-                $stmt->execute([$container_id, $product_id, 1]);
+                //$stmt->execute([$container_id, $product_id, 1]);
             }
             $msg .= "    Product {$content['fnsku']} x {$content['count']} added to container {$name}.\n";
         }
