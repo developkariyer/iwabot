@@ -71,7 +71,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'ship') {
             } else {
                 $product_id = $product->id;
             }
-            $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_container_product (container_id, product_id, count) VALUES (?, ?, ?)");
+            $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_container_product (container_id, product_id) VALUES (?, ?)");
             for ($t=0;$t<$content['count'];$t++) {
                 $stmt->execute([$container_id, $product_id, 1]);
             }
