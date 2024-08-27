@@ -81,9 +81,9 @@ include '../_header.php';
                                                         <p><?= productInfo($product) ?></p>
                                                         <h4>Ürünün Bulunduğu Raflar ve Koli Bilgileri</h4>
                                                         <ul>
-                                                            <?= empty($product->getContainers(true)) ? "<p>Bu ürün hiçbir raf veya koli içinde bulunmamaktadır.</p>" : "" ?>
-                                                            <?php foreach ($product->getContainers(true) as $container): ?>
-                                                                <li><?= $container->type === 'Gemi' ? $icon['Gemi'] : $icon[$container->type] ?> <?= $container->name ?> (<?= $container->type === 'Raf' ? 'Rafta açık' : $container->parent->name ?>) (<?= $product->getInContainerCount($container) ?> adet)</li>
+                                                            <?= empty($product->getContainers()) ? "<p>Bu ürün hiçbir raf veya koli içinde bulunmamaktadır.</p>" : "" ?>
+                                                            <?php foreach ($product->getContainers() as $container): ?>
+                                                                <li><?= $container->parent->type === 'Gemi' ? $icon['Gemi'] : $icon[$container->type] ?> <?= $container->name ?> (<?= $container->type === 'Raf' ? 'Rafta açık' : $container->parent->name ?>) (<?= $product->getInContainerCount($container) ?> adet)</li>
                                                             <?php endforeach; ?>
                                                         </ul>
                                                     </div>
