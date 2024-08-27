@@ -43,7 +43,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'ship') {
             $msg .= "    Container {$cname} already exists, skipping.\n";
             continue;
         }
-        $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_containers (name, type, parent_id) VALUES (?, 'Gemi', 7226)");
+        $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_container (name, type, parent_id) VALUES (?, 'Gemi', 7226)");
 
         $stmt->execute([$cname]);
         $container_id = $GLOBALS['pdo']->lastInsertId();
@@ -53,7 +53,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'ship') {
             $product = WarehouseProduct::getByField('fnsku', $content['fnsku']);
             if (!$product) {
                 $msg .= "    Product {$content['fnsku']} not found, creating.\n";
-                $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_products (name, category, fnsku) VALUES (?, ?, ?)");
+                $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_product (name, category, fnsku) VALUES (?, ?, ?)");
                 $stmt->execute([
                     $content['content'],
                     match(substr($cname, 0 ,1)) {
@@ -71,7 +71,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'ship') {
             } else {
                 $product_id = $product->id;
             }
-            $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_container_contents (container_id, product_id, count) VALUES (?, ?, ?)");
+            $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_container_product (container_id, product_id, count) VALUES (?, ?, ?)");
             for ($t=0;$t<$content['count'];$t++) {
                 $stmt->execute([$container_id, $product_id, 1]);
             }
