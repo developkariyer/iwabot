@@ -99,7 +99,6 @@ function rearrangeStrafors() {
     $stmt->execute();
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $shelf = [];
-    $db->beginTransaction();
     try {
         foreach ($results as $result) {
             if ($result['type'] === 'Raf') {
@@ -126,9 +125,7 @@ function rearrangeStrafors() {
                 addMessage("$container->name silinemedi");
             }
         }
-        $db->commit();
     } catch (Exception $e) {
-        $db->rollBack();
         echo "***************** Exception: ".$e->getMessage()."\n";
     }
     WarehouseAbstract::clearAllCache();
