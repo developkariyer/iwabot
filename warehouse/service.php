@@ -82,7 +82,8 @@ if (php_sapi_name() === 'cli') {
 
 
 function cli_exec() {
-    rearrangeStrafors();
+    //rearrangeStrafors();
+    echo "Nothng to do...\n";
 }
 
 
