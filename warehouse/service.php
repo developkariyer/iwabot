@@ -88,39 +88,49 @@ function cli_exec() {
 
 function rearrangeStrafors() {
     WarehouseAbstract::clearAllCache();
-
-    $toBeProcessedList = [];
-
-    // get product id list for type STRAFOR
     $db = $GLOBALS['pdo'];
-    $stmt = $db->prepare("SELECT id, name FROM warehouse_product WHERE category = 'STRAFOR' AND deleted_at IS NULL");
+    $stmt = $db->prepare("SELECT cp.product_id,cp.container_id,p.category,c.type,COUNT(*) AS product_count
+                        FROM warehouse_container_product cp
+                        JOIN warehouse_product p ON cp.product_id = p.id
+                        JOIN warehouse_container c ON cp.container_id = c.id
+                        WHERE p.category = 'STRAFOR' AND cp.deleted_at IS NULL AND p.deleted_at IS NULL AND c.deleted_at IS NULL
+                        GROUP BY cp.product_id,cp.container_id,p.category,c.type
+                        ORDER BY c.type DESC;");
     $stmt->execute();
-    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    foreach ($products as $product) {
-        $product_id = $product['id'];
-        $toBeProcessed = [
-            'product_id' => $product_id,
-            'product_name' => $product['name'],
-            'open_in' => null,
-            'containers' => []
-        ];
-        // find matching containers for product_id
-        $stmt = $db->prepare("SELECT container_id FROM warehouse_container_product WHERE product_id = :product_id AND deleted_at IS NULL");
-        $stmt->execute(['product_id' => $product_id]);
-        $container_ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
-        foreach ($container_ids as $container_id) {
-            $stmt = $db->prepare("SELECT * FROM warehouse_container WHERE id = :id AND deleted_at IS NULL");
-            $stmt->execute(['id' => $container_id]);
-            $container = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($container['type'] === 'Koli') {
-                $toBeProcessed['containers'][] = $container['id'];
-            } else if ($container['type'] === 'Raf') {
-                $toBeProcessed['open_in'] = $container['id'];
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $shelf = [];
+    $db->beginTransaction();
+    try {
+        foreach ($results as $result) {
+            if ($result['type'] === 'Raf') {
+                $shelf[$result['product_id']] = $result['container_id'];
+                continue;
+            }
+            if (empty($shelf[$result['product_id']])) {
+                echo "***************** Product {$result['product_id']} not found in shelf\n";
+                print_r($result);
+                continue;
+            }
+            $parent = WarehouseContainer::getById($shelf[$result['product_id']]);
+            $container = WarehouseContainer::getById($result['container_id']);
+            $product = WarehouseProduct::getById($result['product_id']);
+            if (!$parent || !$container || !$product) {
+                echo "***************** Product {$result['product_id']} not found\n";
+                print_r($result);
+                continue;
+            }
+            $product->moveToContainer($container, $parent, $result['product_count'], true);
+            if ($container->delete()) {
+                addMessage("{$container->name} içindeki ürünler {$parent->name} altına taşındı ve {$container->name} silindi");
+            } else {
+                addMessage("$container->name silinemedi");
             }
         }
-        $toBeProcessedList[] = $toBeProcessed;
+        $db->commit();
+    } catch (Exception $e) {
+        $db->rollBack();
+        echo "***************** Exception: ".$e->getMessage()."\n";
     }
-    print_r($toBeProcessedList);
     WarehouseAbstract::clearAllCache();
 }
 
