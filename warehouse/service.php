@@ -95,11 +95,12 @@ function rearrangeStrafors() {
     $db = $GLOBALS['pdo'];
     $stmt = $db->prepare("SELECT id, name FROM warehouse_product WHERE category = 'STRAFOR' AND deleted_at IS NULL");
     $stmt->execute();
-    $product_ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
-    foreach ($product_ids as $product_id) {
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($products as $product) {
+        $product_id = $product['id'];
         $toBeProcessed = [
             'product_id' => $product_id,
-            'product_name' => '',
+            'product_name' => $product['name'],
             'open_in' => null,
             'containers' => []
         ];
