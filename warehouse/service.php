@@ -10,6 +10,8 @@ if (php_sapi_name() === 'cli') {
     require_once 'WarehouseContainer.php';
     require_once 'WarehouseSold.php';
     require_once 'WarehouseLogger.php';
+    cli_exec();
+    exit;
 } else {
     require_once 'warehouse.php';
     include "../_header.php";
@@ -79,75 +81,45 @@ if (php_sapi_name() === 'cli') {
 }
 
 
+function cli_exec() {
+    rearrangeStrafors();
+}
 
 
+function rearrangeStrafors() {
+    WarehouseAbstract::clearAllCache();
 
+    $toBeProcessedList = [];
 
-WarehouseAbstract::clearAllCache();
+    // get product id list for type STRAFOR
+    $db = $GLOBALS['pdo'];
+    $stmt = $db->prepare("SELECT id FROM warehouse_product WHERE category = 'STRAFOR' AND deleted_at IS NULL");
+    $stmt->execute();
+    $product_ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    foreach ($product_ids as $product_id) {
+        $toBeProcessed = [
+            'product_id' => $product_id,
+            'containers' => []
+        ];
+        // find matching containers for product_id
+        $stmt = $db->prepare("SELECT container_id FROM warehouse_container_product WHERE product_id = :product_id AND deleted_at IS NULL");
+        $stmt->execute(['product_id' => $product_id]);
+        $container_ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        foreach ($container_ids as $container_id) {
+            $stmt = $db->prepare("SELECT * FROM warehouse_container WHERE id = :id AND deleted_at IS NULL");
+            $stmt->execute(['id' => $container_id]);
+            $container = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($container['type'] === 'Koli') {
+                $toBeProcessed['containers'][] = $container['id'];
+            } else if ($container['type'] === 'Raf') {
+                $toBeProcessed['open_in'] = $container['id'];
+            }
+        }
+    }
+    print_r($toBeProcessedList);
+    WarehouseAbstract::clearAllCache();
+}
 
-undeleteShipContainers('Gemi-28', [
-    '28-0004',
-    '28-0006',
-    '28-0009',
-    '28-4049',
-    '28-4046',
-    '28-4066',
-    '28-4065',
-    '28-4047',
-    '28-4062',
-    '28-4044',
-    '28-4039',
-    '28-4040',
-    '28-4062',
-    '28-4043',
-    '28-4041',
-    '28-4051',
-    '28-4050',
-    '28-4052',
-    '28-4053',
-    '28-4064',
-    '28-4069',
-    '28-4045',
-    '28-4048',
-    '28-4068',
-    '28-4063',
-    '28-4067',
-    '28-4055',
-    '28-4054',
-    '28-4036',
-    '28-4034',
-    '28-4035',
-    '28-4032',
-    '28-4033',
-    '28-4037',
-    '28-4038',
-    '28-1020',
-    '28-0007',
-    '28-0008',
-    '28-1017',
-    '28-0018',
-    '28-0003',
-    '28-0001',
-    '28-0002',
-    '28-0019',
-    '28-2011',
-    '28-2010',
-    '28-2005',
-    '28-2007',
-    '28-2004',
-    '28-2006',
-    '28-2009',
-    '28-2013',
-    '28-2012',
-    '28-2003',
-    '28-2008',
-    '28-2002',
-], true);
-
-
-
-
-WarehouseAbstract::clearAllCache();
 
 
 function getMissingProductImages() {
