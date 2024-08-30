@@ -110,6 +110,7 @@ function rearrangeStrafors() {
                 print_r($result);
                 continue;
             }
+            echo "Product {$result['product_id']} found in shelf {$shelf[$result['product_id']]} and in container {$result['container_id']}...\n";
             $parent = WarehouseContainer::getById($shelf[$result['product_id']]);
             $container = WarehouseContainer::getById($result['container_id']);
             $product = WarehouseProduct::getById($result['product_id']);
@@ -118,7 +119,9 @@ function rearrangeStrafors() {
                 print_r($result);
                 continue;
             }
+            echo "Moving {$result['product_count']} {$product->name} from {$container->name} to {$parent->name}...\n";
             $product->moveToContainer($container, $parent, $result['product_count'], true);
+            echo "Deleting container {$container->name}...\n";
             if ($container->delete()) {
                 addMessage("{$container->name} içindeki ürünler {$parent->name} altına taşındı ve {$container->name} silindi");
             } else {
