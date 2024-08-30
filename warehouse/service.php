@@ -93,12 +93,14 @@ function rearrangeStrafors() {
 
     // get product id list for type STRAFOR
     $db = $GLOBALS['pdo'];
-    $stmt = $db->prepare("SELECT id FROM warehouse_product WHERE category = 'STRAFOR' AND deleted_at IS NULL");
+    $stmt = $db->prepare("SELECT id, name FROM warehouse_product WHERE category = 'STRAFOR' AND deleted_at IS NULL");
     $stmt->execute();
     $product_ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
     foreach ($product_ids as $product_id) {
         $toBeProcessed = [
             'product_id' => $product_id,
+            'product_name' => '',
+            'open_in' => null,
             'containers' => []
         ];
         // find matching containers for product_id
