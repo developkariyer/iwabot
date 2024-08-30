@@ -115,6 +115,7 @@ function rearrangeStrafors() {
                 $toBeProcessed['open_in'] = $container['id'];
             }
         }
+        $toBeProcessedList[] = $toBeProcessed;
     }
     print_r($toBeProcessedList);
     WarehouseAbstract::clearAllCache();
