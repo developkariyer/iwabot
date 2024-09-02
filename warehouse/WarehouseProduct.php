@@ -130,9 +130,9 @@ class WarehouseProduct extends WarehouseAbstract
             while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $container = WarehouseContainer::getById($data['container_id']);
                 if ($container) {
-                    if ($container->parent && $container->parent->type === 'Gemi') {
-                        continue;
-                    }
+//                    if ($container->parent && $container->parent->type === 'Gemi') {
+//                        continue;
+//                    }
                     $totalCount += $data['count'];
                 }
             }

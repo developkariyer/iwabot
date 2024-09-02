@@ -1,6 +1,5 @@
 <?php
 
-
 require_once 'warehouse.php';
 
 if (!userCan(['manage'])) {
@@ -45,7 +44,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'ship') {
                 $msg .= "    Container {$cname} already exists, skipping.\n";
                 continue;
             }
-            $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_container (name, type, parent_id) VALUES (?, 'Gemi', 7226)");
+            $stmt = $GLOBALS['pdo']->prepare("INSERT INTO warehouse_container (name, type, parent_id) VALUES (?, 'Koli', 7226)");
 
             $stmt->execute([$cname]);
             $container_id = $GLOBALS['pdo']->lastInsertId();
