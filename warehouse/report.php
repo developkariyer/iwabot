@@ -1,0 +1,70 @@
+<?php
+
+require_once('warehouse.php');
+
+if (!userCan(['view'])) {
+    addMessage('Bu sayfaya erişim izniniz yok!', 'alert-danger');
+    header('Location: ./');
+    exit;
+}
+
+include '../_header.php';
+?>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>FNSKU</th>
+            <th>Count in Ship</th>
+            <th>Count in Raf</th>
+            <th>Total Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        $query = "
+            SELECT
+                p.name,
+                p.category,
+                p.fnsku,
+                SUM(c.type = 'Koli' AND parent_c.type = 'Gemi' AND c.deleted_at IS NULL AND parent_c.deleted_at IS NULL) AS count_in_ship,
+                SUM((c.type = 'Raf' OR parent_c.type = 'Raf') AND c.deleted_at IS NULL AND parent_c.deleted_at IS NULL) AS count_in_raf,
+                SUM(
+                    (c.type = 'Koli' AND parent_c.type = 'Gemi' AND c.deleted_at IS NULL AND parent_c.deleted_at IS NULL) +
+                    ((c.type = 'Raf' OR parent_c.type = 'Raf') AND c.deleted_at IS NULL AND parent_c.deleted_at IS NULL)
+                ) AS total_count
+            FROM
+                warehouse_product p
+            JOIN
+                warehouse_container_product cp ON cp.product_id = p.id AND cp.deleted_at IS NULL
+            JOIN
+                warehouse_container c ON c.id = cp.container_id AND c.deleted_at IS NULL
+            LEFT JOIN
+                warehouse_container parent_c ON c.parent_id = parent_c.id AND parent_c.deleted_at IS NULL
+            WHERE
+                p.deleted_at IS NULL AND p.category <> 'Paket'
+            GROUP BY
+                p.id, p.name, p.category, p.fnsku
+            ORDER BY
+                total_count DESC";
+        
+        $stmt = $GLOBALS['pdo']->query($query);
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($row['name']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['category']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['fnsku']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['count_in_ship']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['count_in_raf']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['total_count']) . "</td>";
+            echo "</tr>";
+        }
+        ?>
+    </tbody>
+</table>
+
+<?php
+include '../_footer.php';
