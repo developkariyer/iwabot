@@ -46,6 +46,7 @@ include '../_header.php';
     <div class="jumbotron text-center">
         <h1>Envanter Bilgisi</h1>
         <p>Depo envanterini görüntüleyin. Depo Ana Menü için <a href="./">buraya basınız.</a></p>
+        <p>Depo raporunu indirmek için <a href="report.php">buraya basınız.</a></p>
     </div>
     <div class="accordion mb-3" id="mainAccordion">
 
@@ -58,6 +59,7 @@ include '../_header.php';
             </h2>
             <div id="inventoryAccordion2" class="accordion-collapse collapse" aria-labelledby="headingMain2" data-bs-parent="#mainAccordion">
                 <div class="accordion-body p-5">
+                    <h4>Dikkat: Yoldaki ürünleri de gösterir, koli bilgisini inceleyin.</h4>
                     <?php if (!($cache = WarehouseAbstract::getCache('allProductsCategorized'))): ?>
                         <?php ob_start(); ?>
                         <?php foreach (WarehouseProduct::getAllCategorized() as $category => $products): ?>
