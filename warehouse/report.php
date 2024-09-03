@@ -25,30 +25,30 @@ include '../_header.php';
     <tbody>
         <?php
         $query = "
-            SELECT
-                p.name,
-                p.category,
-                p.fnsku,
-                SUM(c.type = 'Koli' AND parent_c.type = 'Gemi' AND c.deleted_at IS NULL AND parent_c.deleted_at IS NULL) AS count_in_ship,
-                SUM((c.type = 'Raf' OR parent_c.type = 'Raf') AND c.deleted_at IS NULL AND parent_c.deleted_at IS NULL) AS count_in_raf,
-                SUM(
-                    (c.type = 'Koli' AND parent_c.type = 'Gemi' AND c.deleted_at IS NULL AND parent_c.deleted_at IS NULL) +
-                    ((c.type = 'Raf' OR parent_c.type = 'Raf') AND c.deleted_at IS NULL AND parent_c.deleted_at IS NULL)
-                ) AS total_count
-            FROM
-                warehouse_product p
-            JOIN
-                warehouse_container_product cp ON cp.product_id = p.id AND cp.deleted_at IS NULL
-            JOIN
-                warehouse_container c ON c.id = cp.container_id AND c.deleted_at IS NULL
-            LEFT JOIN
-                warehouse_container parent_c ON c.parent_id = parent_c.id AND parent_c.deleted_at IS NULL
-            WHERE
-                p.deleted_at IS NULL AND p.category <> 'Paket'
-            GROUP BY
-                p.id, p.name, p.category, p.fnsku
-            ORDER BY
-                total_count DESC";
+        SELECT
+            p.name,
+            p.category,
+            p.fnsku,
+            COALESCE(SUM(c.type = 'Koli' AND parent_c.type = 'Gemi' AND c.deleted_at IS NULL AND parent_c.deleted_at IS NULL), 0) AS count_in_ship,
+            COALESCE(SUM((c.type = 'Raf' OR parent_c.type = 'Raf') AND c.deleted_at IS NULL AND parent_c.deleted_at IS NULL), 0) AS count_in_raf,
+            COALESCE(SUM(
+                (c.type = 'Koli' AND parent_c.type = 'Gemi' AND c.deleted_at IS NULL AND parent_c.deleted_at IS NULL) +
+                ((c.type = 'Raf' OR parent_c.type = 'Raf') AND c.deleted_at IS NULL AND parent_c.deleted_at IS NULL)
+            ), 0) AS total_count
+        FROM
+            warehouse_product p
+        LEFT JOIN
+            warehouse_container_product cp ON cp.product_id = p.id AND cp.deleted_at IS NULL
+        LEFT JOIN
+            warehouse_container c ON c.id = cp.container_id AND c.deleted_at IS NULL
+        LEFT JOIN
+            warehouse_container parent_c ON c.parent_id = parent_c.id AND parent_c.deleted_at IS NULL
+        WHERE
+            p.deleted_at IS NULL AND p.category <> 'Paket'
+        GROUP BY
+            p.id, p.name, p.category, p.fnsku
+        ORDER BY
+            p.category ASC, p.name ASC";
         
         $stmt = $GLOBALS['pdo']->query($query);
 
