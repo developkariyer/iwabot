@@ -48,7 +48,7 @@ include '../_header.php';
         GROUP BY
             p.id, p.name, p.category, p.fnsku
         ORDER BY
-            p.category ASC, p.name ASC";
+            total_count DESC";
         
         $stmt = $GLOBALS['pdo']->query($query);
 
