@@ -64,8 +64,7 @@ class QrModel{
         $stmt = $this->db->prepare('SELECT link FROM qr_records WHERE unique_code = ?');
         $stmt->bind_param('s', $uniqueCode);
         $stmt->execute();
-        $result = $stmt->get_result();
-        if ($row = $result->fetch_assoc()) {
+        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             return $row['link'];
         }
         return false;
@@ -178,10 +177,10 @@ class QrModel{
             $searchTerm = "%$search%";
             $stmt->bind_param('s', $searchTerm);
         }
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        return $row['total'];
+        if ($stmt->execute()) {
+            return $stmt->fetch(PDO::FETCH_COLUMN);
+        }
+        return 0;
     }
     public function getRecords($start, $limit, $search = null) {
         $sql = "SELECT * FROM qr_records WHERE deleted_at IS NULL";
@@ -197,8 +196,7 @@ class QrModel{
             $stmt->bind_param('ii', $start, $limit);
         }
         $stmt->execute();
-        $result = $stmt->get_result();
-        return $result->fetch_all(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function updateQRCode($uniqueCode, $description, $link){
@@ -231,18 +229,13 @@ class QrModel{
 
         if ($stmt) {
             $stmt->bind_param('s', $uniqueCode);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if ($result->num_rows > 0) {
-                return $result->fetch_assoc();
-            } else {
-                return null;
+            if ($stmt->execute()) {
+                return $stmt->fetch(PDO::FETCH_ASSOC);
             }
         } else {
             echo "Prepare failed: " . $this->db->error;
-            return null;
         }
+        return null;
     }
     public function saveQrCode($uniqueCode, $qrImagePath, $description, $link, $userName = ""){
         $userName = $_SESSION['user_info']['name'] ?? '';
