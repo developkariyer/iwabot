@@ -1,8 +1,26 @@
 <?php
 
 require_once "../_init.php";
-require_once "../_login.php";
 require_once 'QrModel.php';
+
+if ($_SERVER['HTTP_HOST'] === 'cfw.web.tr') {
+    $path = trim($_SERVER['REQUEST_URI'], '/');
+    if (strlen($path) === 5 && ctype_alnum($path)) {
+        $uniqueCode = $path;
+        $qrModel = new QrModel();
+        $link = $qrModel->getLinkByUniqueCode($uniqueCode);
+        unset($qrModel);
+        if ($link) {
+            $safeLink = filter_var($link, FILTER_SANITIZE_URL);
+            header("Location: $safeLink");
+            exit();
+        }
+    }
+}
+
+
+require_once "../_login.php";
+
 
 $uniqueCode = $_GET['code'] ?? null;
 $status = $_GET['status'] ?? null;
