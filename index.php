@@ -22,6 +22,9 @@ include '_header.php';
         <a href="warehouse/" class="btn btn-primary btn-lg">Depo Yönetim</a>
         <a href="iwalog.php" class="btn btn-primary btn-lg">Kanal Arşivleri</a>
     </div>
+    <div class="d-grid gap-2 m-3">
+        <a href="cfwqrcode/" class="btn btn-primary btn-lg">QR Code Yönetim</a>
+    </div>
     <div class="d-grid gap-2 m-3 mt-4">
         <a href="iwaaudiourl.php" class="btn btn-primary btn-lg">Audio URL Kütüphanesi</a>
         <a href="iwainfluencers.php" class="btn btn-primary btn-lg">Influencer Listesi</a>
