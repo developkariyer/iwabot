@@ -50,9 +50,6 @@ class QrModel{
 
     public function __construct() {
         $this->db = $GLOBALS['pdo'];
-        if ($this->db->connect_error) {
-            echo "Connection failed: " . $this->db->connect_error;
-        }
     }
 
     private function findByField($field, $value){
