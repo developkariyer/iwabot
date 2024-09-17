@@ -55,15 +55,13 @@ class QrModel{
     private function findByField($field, $value){
         $sql = "SELECT * FROM qr_records WHERE $field = ? LIMIT 1";
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param('s', $value);
-        $stmt->execute();
+        $stmt->execute([$value]);
         return $stmt->fetchOne(PDO::FETCH_ASSOC);
     }
 
     public function getLinkByUniqueCode($uniqueCode) {
         $stmt = $this->db->prepare('SELECT link FROM qr_records WHERE unique_code = ?');
-        $stmt->bind_param('s', $uniqueCode);
-        $stmt->execute();
+        $stmt->execute([$uniqueCode]);
         if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             return $row['link'];
         }
@@ -76,8 +74,7 @@ class QrModel{
         if ($stmt === false) {
             throw new Exception('Sorgu hazırlama hatası: ' . $this->db->error);
         }
-        $stmt->bind_param('s', $uniqueCode);
-        if (!$stmt->execute()) {
+        if (!$stmt->execute([$uniqueCode])) {
             throw new Exception("Sorgu çalıştırma hatası: {$stmt->error}");
         }
         if ($base64Image = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -175,30 +172,32 @@ class QrModel{
         $stmt = $this->db->prepare($sql);
         if ($search) {
             $searchTerm = "%$search%";
-            $stmt->bind_param('s', $searchTerm);
+            $stmt->execute([$searchTerm]);
+        } else {
+            $stmt->execute();
         }
-        if ($stmt->execute()) {
-            return $stmt->fetch(PDO::FETCH_COLUMN);
-        }
-        return 0;
+        return $stmt->fetch(PDO::FETCH_COLUMN) ?? 0;
     }
+
     public function getRecords($start, $limit, $search = null) {
         $sql = "SELECT * FROM qr_records WHERE deleted_at IS NULL";
         if ($search) {
-            $sql .= " AND link LIKE ?";
+            $sql .= " AND link LIKE :search";
         }
-        $sql .= " LIMIT ?, ?";
+        
+        $sql .= " LIMIT :start, :limit";
         $stmt = $this->db->prepare($sql);
+        
         if ($search) {
             $searchTerm = "%$search%";
-            $stmt->bind_param('ssi', $searchTerm, $start, $limit);
-        } else {
-            $stmt->bind_param('ii', $start, $limit);
+            $stmt->bindValue(':search', $searchTerm, PDO::PARAM_STR);
         }
+        $stmt->bindValue(':start', (int)$start, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
+    
     public function updateQRCode($uniqueCode, $description, $link){
         $sql = "UPDATE qr_records SET description = ?, link = ?, user_name = ? WHERE unique_code = ?";
         $stmt = $this->db->prepare($sql);
@@ -228,8 +227,7 @@ class QrModel{
         $stmt = $this->db->prepare($sql);
 
         if ($stmt) {
-            $stmt->bind_param('s', $uniqueCode);
-            if ($stmt->execute()) {
+            if ($stmt->execute([$uniqueCode])) {
                 return $stmt->fetch(PDO::FETCH_ASSOC);
             }
         } else {
