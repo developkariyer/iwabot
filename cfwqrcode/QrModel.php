@@ -56,12 +56,11 @@ class QrModel{
     }
 
     private function findByField($field, $value){
-        $sql = "SELECT * FROM qr_records WHERE $field = ?";
+        $sql = "SELECT * FROM qr_records WHERE $field = ? LIMIT 1";
         $stmt = $this->db->prepare($sql);
         $stmt->bind_param('s', $value);
         $stmt->execute();
-        $result = $stmt->get_result();
-        return $result->fetch_assoc();
+        return $stmt->fetchOne(PDO::FETCH_ASSOC);
     }
 
     public function getLinkByUniqueCode($uniqueCode) {
