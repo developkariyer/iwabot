@@ -13,9 +13,6 @@ if ($uniqueCode) {
     if ($link) {
         header("Location: $link");
         exit();
-    } else {
-        echo "Geçersiz QR kodu.";
-    }
-} else {
-    echo "Kod belirtilmedi.";
+    } 
 }
+header("Location: https://iwaconcept.com");
