@@ -56,7 +56,7 @@ class QrModel{
         $sql = "SELECT * FROM qr_records WHERE $field = ? LIMIT 1";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$value]);
-        return $stmt->fetchOne(PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getLinkByUniqueCode($uniqueCode) {
