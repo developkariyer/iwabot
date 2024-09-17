@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_info'])) {
 }
 unset($qrModel);
 
-include '../includes/_header.php';
+include '../_header.php';
 
 ?>
 
