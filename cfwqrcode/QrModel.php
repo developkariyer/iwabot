@@ -136,7 +136,7 @@ class QrModel{
 
     public function createQRCodeWithLogo($qrlink, $logoPath = null) {
         $options = new QROptions;
-        $options->version = 1;
+        $options->version = 5;
         $options->outputBase64 = true;
         $options->scale = 50;
         $options->imageTransparent = false;
