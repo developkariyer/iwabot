@@ -74,13 +74,14 @@ include '../_header.php';
     <table class="table table-bordered mt-5">
             <thead>
                 <tr>
-                    <th>Oluşturulma Tarihi</th>
-                    <th>QR Kod Yolu</th>
+                <th>Oluşturulma Tarihi</th>
+                    <th>QR Kod Png</th>
+                    <th>QR Kod Svg</th>
                     <th>Açıklama</th>
+                    <th>Kod</th>
                     <th>Link</th>
                     <th>Kullanıcı Adı</th>
                     <th>İşlemler</th>
-
                 </tr>
             </thead>
             <tbody>
@@ -88,7 +89,10 @@ include '../_header.php';
                     <tr>
                         <td><?php echo htmlspecialchars($record['created_at']); ?></td>
                         <td>
-                            <a href="download.php?code=<?php echo urlencode($record['unique_code']); ?>" class="btn btn-info">QR Kodunu İndir (PNG)</a>
+                            <a href="download.php?code=<?php echo urlencode($record['unique_code']); ?>&format=png"  class="btn btn-info">QR Kodunu İndir (PNG)</a>
+                        </td>
+                        <td>
+                            <a href="download.php?code=<?php echo urlencode($record['unique_code']); ?>&format=svg"  class="btn btn-info">QR Kodunu İndir (SVG)</a>
                         </td>
                         <td><?php echo htmlspecialchars($record['description']); ?></td>
                         <td><a href="<?php echo htmlspecialchars($record['link']); ?>" target="_blank">Linki Aç</a></td>

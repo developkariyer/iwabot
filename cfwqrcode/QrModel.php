@@ -68,8 +68,12 @@ class QrModel{
         return false;
     }
 
-    public function getQRCodeBase64($uniqueCode) {
-        $sql = "SELECT qr_code FROM qr_records WHERE unique_code = ?";
+    public function getQRCodeBase64($uniqueCode,$format) {
+        if ($format == 'png') 
+            $sql = "SELECT qr_code_png FROM qr_records WHERE unique_code = ?";
+        else
+            $sql = "SELECT qr_code_svg FROM qr_records WHERE unique_code = ?";
+        
         $stmt = $this->db->prepare($sql);
         if ($stmt === false) {
             throw new Exception('Sorgu hazırlama hatası: ' . $this->db->error);
@@ -94,7 +98,7 @@ class QrModel{
     }
 
     public static function generateCustomString($length = 5) {
-        $characters = 'ABCDEFGHJKMNPQRSTVWXYZ1234567890';
+        $characters = 'ABCDEFGHJKMNPQRSTVWXYZ1234567890abcdefghijklmnopqrstuvwxyz';
         $charactersLength = strlen($characters);
         $randomString = '';
 
@@ -103,6 +107,33 @@ class QrModel{
             $randomString .= $characters[$randomIndex];
         }
         return $randomString;
+    }
+    public function createQRCodeSvg($qrlink)
+    {
+        $options = new QROptions;
+        $options->version              = 5;
+        $options->outputBase64         = true;
+        $options->svgUseFillAttributes = false;
+        $options->drawCircularModules  = false;
+        $options->circleRadius         = 0.4;
+        $options->connectPaths         = true;
+        $options->keepAsSquare         = [
+            QRMatrix::M_FINDER_DARK,
+            QRMatrix::M_FINDER_DOT,
+            QRMatrix::M_ALIGNMENT_DARK,
+        ];
+   
+        $qrCode = new QRCode($options);
+        $qrCode->addByteSegment($qrlink);
+        $outputInterface = new QRMarkupSVG($options, $qrCode->getQRMatrix());
+
+        try {
+            $base64Image = $outputInterface->dump();
+        } catch (Exception $e) {
+            echo 'QR kodu oluşturulurken bir hata oluştu: ' . $e->getMessage();
+            $base64Image = '';
+        }
+        return $base64Image;
     }
 
     // public function createQRCodeWithLogo($qrlink, $qrImagePath, $logoPath=null){
@@ -235,12 +266,12 @@ class QrModel{
         }
         return null;
     }
-    public function saveQrCode($uniqueCode, $qrImagePath, $description, $link, $userName = ""){
+    public function saveQrCode($uniqueCode, $qrPng,$qrSvg, $description, $link, $userName = ""){
         $userName = $_SESSION['user_info']['name'] ?? '';
-        $sql = "INSERT INTO qr_records (unique_code, qr_code, description, link, user_name) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO qr_records (unique_code, qr_code_png,qr_code_svg, description, link, user_name) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $this->db->prepare($sql);
         if ($stmt) {
-            return $stmt->execute([$uniqueCode, $qrImagePath, $description, $link, $userName]);
+            return $stmt->execute([$uniqueCode, $qrPng,$qrSvg, $description, $link, $userName]);
         } else {
             echo "Prepare failed: " . $this->db->error;
             return false;

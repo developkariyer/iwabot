@@ -31,21 +31,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_info'])) {
         exit();
     }
     //$result = $qrModel->createQRCodeWithLogo($qrbaselink, $qrImagePath, $logoPath);
-    $result = $qrModel->createQRCodeWithLogo($qrbaselink, $logoPath);
-    if ($result) {
-        $qrModel->saveQrCode($uniqueCode, $result, $description, $qrlink, "test");
+   
+    $result_png = $qrModel->createQRCodeWithLogo($qrbaselink, $logoPath);
+    $result_svg = $qrModel->createQRCodeSvg($qrbaselink);
+    if ($result_png&&$result_svg) {
+        $qrModel->saveQrCode($uniqueCode, $result_png,$result_svg, $description, $qrlink, "test");
         header('Location: index.php?status=success&code=' . urlencode($uniqueCode));
     } else {
         header('Location: index.php?status=error');
     }
-
-    // if ($result) {
-    //     header('Location: index.php?status=success&code=' . urlencode($uniqueCode) . '&file=' . urlencode($qrImagePath));
-    //     $qrModel->saveQrCode($uniqueCode, $qrImagePath, $description, $qrlink, "test");
-
-    // } else {
-    //     header('Location: index.php?status=error');
-    // }
     unset($qrModel);
     exit();
 }
