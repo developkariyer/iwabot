@@ -69,20 +69,29 @@ class QrModel{
     }
 
     public function getQRCodeBase64($uniqueCode,$format) {
-        if ($format == 'png') 
-            $sql = "SELECT qr_code_png FROM qr_records WHERE unique_code = ?";
-        else
-            $sql = "SELECT qr_code_svg FROM qr_records WHERE unique_code = ?";
+        $sql = ($format == 'png') ? "SELECT unique_code, qr_code_png FROM qr_records WHERE unique_code = ?" : "SELECT unique_code, qr_code_svg FROM qr_records WHERE unique_code = ?";
         
         $stmt = $this->db->prepare($sql);
-        if ($stmt === false) {
+        if ($stmt === false ) {
             throw new Exception('Sorgu hazırlama hatası: ' . $this->db->error);
         }
         if (!$stmt->execute([$uniqueCode])) {
             throw new Exception("Sorgu çalıştırma hatası: {$stmt->error}");
         }
         if ($base64Image = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            return $base64Image['qr_code'];
+            if ($format === 'png') {
+                if (!empty($base64Image['qr_code_png'])) {
+                    return $base64Image['qr_code_png'];
+                } else {
+                    return $this->createQRCodeWithLogo("https://cfw.web.tr/".$base64Image['unique_code']);
+                }
+            } else {
+                if (!empty($base64Image['qr_code_svg'])) {
+                    return $base64Image['qr_code_svg'];
+                } else {
+                    return $this->createQRCodeSvg("https://cfw.web.tr/".$base64Image['unique_code']);
+                }
+            }
         }
         return null;
     }
