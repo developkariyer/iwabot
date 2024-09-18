@@ -8,6 +8,7 @@ use chillerlan\QRCode\Output\QRGdImagePNG;
 use chillerlan\QRCode\Data\QRMatrix;
 use chillerlan\QRCode\Common\EccLevel;
 use chillerlan\QRCode\Output\QRCodeOutputException;
+use chillerlan\QRCode\Output\QRMarkupSVG;
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
