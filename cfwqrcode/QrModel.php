@@ -121,11 +121,11 @@ class QrModel{
     public function createQRCodeSvg($qrlink)
     {
         $options = new QROptions;
-        $options->version              = 5;
+        $options->version              = 1;
         $options->outputBase64         = true;
-        $options->svgUseFillAttributes = false;
-        $options->drawCircularModules  = false;
-        $options->circleRadius         = 0.4;
+        //$options->svgUseFillAttributes = false;
+        $options->drawCircularModules  = true;
+        $options->circleRadius         = 0.45;
         $options->connectPaths         = true;
         $options->keepAsSquare         = [
             QRMatrix::M_FINDER_DARK,
@@ -177,12 +177,12 @@ class QrModel{
 
     public function createQRCodeWithLogo($qrlink, $logoPath = null) {
         $options = new QROptions;
-        $options->version = 5;
+        $options->version = 1;
         $options->outputBase64 = true;
         $options->scale = 50;
         $options->imageTransparent = false;
-        $options->drawCircularModules = false;
-        $options->circleRadius = 0.5;
+        $options->drawCircularModules = true;
+        $options->circleRadius = 0.45;
         $options->keepAsSquare = [
             QRMatrix::M_FINDER,
             QRMatrix::M_FINDER_DOT,
