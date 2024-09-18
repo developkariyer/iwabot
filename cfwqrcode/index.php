@@ -94,7 +94,9 @@ include '../_header.php';
                         <td>
                             <a href="download.php?code=<?php echo urlencode($record['unique_code']); ?>&format=svg"  class="btn btn-info">QR Kodunu İndir (SVG)</a>
                         </td>
+
                         <td><?php echo htmlspecialchars($record['description']); ?></td>
+                        <td><?php echo htmlspecialchars($record['unique_code']); ?></td>
                         <td><a href="<?php echo htmlspecialchars($record['link']); ?>" target="_blank">Linki Aç</a></td>
                         <td><?php echo htmlspecialchars($record['user_name']); ?></td>
                         <td>
