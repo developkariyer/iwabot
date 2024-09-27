@@ -290,9 +290,9 @@ function containerOptGrouped($product = null) {
         'Koli' => '📦', //\u{1F4E6}
     ];
     foreach($containers as $container) {
-        if ($product && ($container->type === 'Gemi' || ($container->parent && $container->parent->type === 'Gemi'))) {
-            continue;
-        }
+        //if ($product && ($container->type === 'Gemi' || ($container->parent && $container->parent->type === 'Gemi'))) {
+        //    continue;
+        //}
         if ($container->type === 'Raf' || $container->type === 'Gemi') {
             if (!isset($raflar["{$icon[$container->type]} {$container->name}"])) {
                 $raflar["{$icon[$container->type]} {$container->name}"] = [];
