@@ -183,6 +183,7 @@ include '../_header.php';
                             <select id="smart_container_id" name="container_id" class="select2-select form-select w-100" style="width: 100%;" required>
                                 <option value="">Koli Seçin</option>
                                 <?= containersInOpt('Raf') ?>
+                                <?= containersInOpt('Gemi') ?>
                             </select>
                         </div>
                         <div id="containerInfo" class="m-3"></div>

@@ -7,7 +7,7 @@ class WarehouseContainer extends WarehouseAbstract
 {
     protected array $children = [];
     protected array $products = [];
-    protected $parent = null;
+    public $parent = null;
     protected static $dbFields = [];
     protected static $warehouses = [];
     protected static $parentContainers = [];
