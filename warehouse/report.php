@@ -2,6 +2,8 @@
 
 require_once('warehouse.php');
 
+$guestFree = true;
+
 $query = "
         SELECT
             p.name,
