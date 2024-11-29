@@ -1,8 +1,10 @@
 <?php
 
-require_once('warehouse.php');
 
 $guestFree = true;
+
+require_once('warehouse.php');
+
 
 $query = "
         SELECT
