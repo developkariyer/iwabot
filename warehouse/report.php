@@ -2,12 +2,6 @@
 
 require_once('warehouse.php');
 
-if (!userCan(['view'])) {
-    addMessage('Bu sayfaya erişim izniniz yok!', 'alert-danger');
-    header('Location: ./');
-    exit;
-}
-
 $query = "
         SELECT
             p.name,
@@ -57,6 +51,12 @@ if (isset($_GET['csv']) && $_GET['csv'] == 1) {
     
     fclose($output);
     exit();
+}
+
+if (!userCan(['view'])) {
+    addMessage('Bu sayfaya erişim izniniz yok!', 'alert-danger');
+    header('Location: ./');
+    exit;
 }
 
 include '../_header.php';
