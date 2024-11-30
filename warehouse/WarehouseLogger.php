@@ -133,7 +133,7 @@ class WarehouseLogger
                     break;
             }
         }
-        $sql .= " WHERE created_at > NOW() - INTERVAL 1 MONTH";
+        $sql .= $limit ? " WHERE 1=1" : " WHERE created_at > NOW() - INTERVAL 1 MONTH";
         if (count($where) > 0) {
             $sql .= " AND " . implode(' AND ', $where);
         }
