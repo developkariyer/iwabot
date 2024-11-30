@@ -62,7 +62,7 @@ class WarehouseLogger
     public static function getUserLogs($html = false)
     {
         //warehouse_user_log
-        $loginInfo = $GLOBALS['pdo']->query("SELECT user_id, MAX(created_at) as last_page, COUNT(*) as total_page FROM warehouse_user_log GROUP BY user_id ORDER BY last_page DESC")->fetchAll();
+        $loginInfo = $GLOBALS['pdo']->query("SELECT user_id, MAX(created_at) as last_page, COUNT(*) as total_page FROM warehouse_user_log WHERE created_at > NOW() - INTERVAL 1 MONTH GROUP BY user_id ORDER BY last_page DESC")->fetchAll();
         if (!$html) {
             return $loginInfo;
         }
