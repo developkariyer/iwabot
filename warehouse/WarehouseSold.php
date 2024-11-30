@@ -59,7 +59,7 @@ class WarehouseSold
 
     public static function getSoldItems($item_type = null, $unfulfilled_only = false, $limit = 0)
     {
-        $sql = "SELECT * FROM " . self::$soldItemsTableName . " WHERE deleted_at IS NULL AND updated_at > NOW() - INTERVAL 3 MONTH ";
+        $sql = "SELECT * FROM " . self::$soldItemsTableName . " WHERE deleted_at IS NULL AND (updated_at > NOW() - INTERVAL 1 MONTH OR fulfilled_at IS NULL) ";
         if ($unfulfilled_only) {
             $sql .= "AND fulfilled_at IS NULL";
         }
