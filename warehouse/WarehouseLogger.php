@@ -89,7 +89,7 @@ class WarehouseLogger
 
     public static function getLogCount()
     {
-        $stmt = $GLOBALS['pdo']->prepare("SELECT count(*) as count FROM " . self::$logTableName);
+        $stmt = $GLOBALS['pdo']->prepare("SELECT count(*) as count FROM " . self::$logTableName ." WHERE created_at > NOW() - INTERVAL 1 MONTH");
         $stmt->execute();
         if ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
             return $data['count'];
