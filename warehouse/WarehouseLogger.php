@@ -133,8 +133,9 @@ class WarehouseLogger
                     break;
             }
         }
+        $sql .= " WHERE created_at > NOW() - INTERVAL 1 MONTH";
         if (count($where) > 0) {
-            $sql .= " WHERE " . implode(' AND ', $where);
+            $sql .= " AND " . implode(' AND ', $where);
         }
         $sql .= " ORDER BY created_at DESC, id DESC";
         if ($limit > 0) {
